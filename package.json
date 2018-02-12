@@ -29,5 +29,6 @@
     "/api": {
       "target": "http://localhost:3001"
     }
-  }
+  },
+  "homepage": "https://fpl-app-fe.herokuapp.com"
 }
