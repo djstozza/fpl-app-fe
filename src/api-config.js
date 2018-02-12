@@ -4,7 +4,7 @@ const apiVersion = 'v1';
 if (process.env.NODE_ENV === 'development') {
   backendHost = 'http://localhost:3001';
 } else if (process.env.NODE_ENV === 'production') {
-  backendHost = 'https://fpl-app-api.com';
+  backendHost = 'https://fpl-app-api.herokuapp.com';
 }
 
 export const API_ROOT = `${backendHost}/api/${apiVersion}`;
