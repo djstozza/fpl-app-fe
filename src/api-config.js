@@ -1,9 +1,9 @@
 let backendHost;
 const apiVersion = 'v1';
 
-if (process.env.NODE_ENV === 'development') {
+if (window.location.hostname == "localhost") {
   backendHost = 'http://localhost:3001';
-} else if (process.env.NODE_ENV === 'production') {
+} else if (window.location.hostname == "fpl-app-fe.herokuapp.com") {
   backendHost = 'https://fpl-app-api.herokuapp.com';
 }
 
