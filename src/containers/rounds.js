@@ -6,9 +6,11 @@ import fetchRounds from '../actions/rounds/fetch_rounds.js';
 import fetchRound from '../actions/round/fetch_round.js';
 import fetchTeams from '../actions/teams/fetch_teams.js';
 
-
 import Round from '../components/rounds/round.js';
 import RoundNav from '../components/rounds/round_nav.js';
+
+const ActionCable = require('actioncable');
+const cable = ActionCable.createConsumer('ws://localhost:3001/cable');
 
 class Rounds extends Component {
   constructor (props) {
@@ -30,7 +32,13 @@ class Rounds extends Component {
     this.props.fetchTeams();
   }
 
+  componentDidMount () {
+
+  }
+
   componentWillReceiveProps(nextProps) {
+    const self = this;
+
     this.setState({
       rounds: nextProps.rounds,
       round: nextProps.round,
@@ -41,7 +49,17 @@ class Rounds extends Component {
     if (nextProps.rounds.length > 0 && nextProps.round && nextProps.teams.length > 0) {
       this.setState({
         loaded: true
-      })
+      });
+
+      cable.subscriptions.create({ channel: 'RoundChannel', room: nextProps.round.id }, {
+        received: function (data) {
+          if (self.state.round === data.round) {
+            self.setState({
+              fixtures: data.fixtures
+            });
+          }
+        }
+      });
     }
   }
 
