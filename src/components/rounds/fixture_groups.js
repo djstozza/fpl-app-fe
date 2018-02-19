@@ -1,15 +1,22 @@
 import React from 'react'
 import Matches from './matches.js';
+import _ from 'underscore';
+
+const moment = require('moment-timezone');
 
 export default class FixtureGroups extends React.Component {
   render () {
-    const fixtureGroups = Object.entries(this.props.fixtures);
+    const fixtureGroups = _.groupBy(this.props.fixtures, (fixture) => {
+      return moment(fixture.attributes.kickoff_time).tz(this.props.tz).format('dddd, Do MMMM Y')
+    });
+
+    const fixtureGroupsEntries = Object.entries(fixtureGroups);
     const self = this;
 
     return (
       <div>
         {
-          fixtureGroups.map((fixtureGroup, key) => {
+          fixtureGroupsEntries.map((fixtureGroup, key) => {
             return [
               <b key={`game-day-${key}`}>{ fixtureGroup[0] }</b>,
               <Matches

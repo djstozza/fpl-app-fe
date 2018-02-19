@@ -28,7 +28,7 @@ class Rounds extends Component {
 
   componentWillMount() {
     this.props.fetchRounds();
-    this.props.fetchRound(this.props.match.params.id, this.state.tz);
+    this.props.fetchRound(this.props.match.params.id);
     this.props.fetchTeams();
   }
 
@@ -38,7 +38,7 @@ class Rounds extends Component {
 
   componentWillReceiveProps(nextProps) {
     const self = this;
-
+  
     this.setState({
       rounds: nextProps.rounds,
       round: nextProps.round,
