@@ -10,6 +10,7 @@ import Rounds from './containers/rounds.js';
 
 import '../node_modules/materialize-css/dist/js/materialize.min.js';
 import '../node_modules/materialize-css/dist/css/materialize.min.css';
+import 'react-table/react-table.css';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -18,6 +19,7 @@ const store = createStoreWithMiddleware(reducers);
 
 const moment = require('moment-timezone');
 const tz = moment.tz.guess();
+
 
 export default class App extends Component {
   render () {

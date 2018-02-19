@@ -9,6 +9,8 @@ import fetchTeams from '../actions/teams/fetch_teams.js';
 import Round from '../components/rounds/round.js';
 import RoundNav from '../components/rounds/round_nav.js';
 
+import TeamLadder from '../components/teams/team_ladder.js';
+
 import { CABLE_CONNECTION } from '../api-config.js';
 
 const ActionCable = require('actioncable');
@@ -66,12 +68,13 @@ class Rounds extends Component {
   }
 
   selectRound (roundId) {
-    this.props.fetchRound(roundId, this.state.tz);
+    this.props.fetchRound(roundId);
     window.history.pushState(null, '', `/rounds/${roundId}`);
   }
 
   render () {
     if (this.state.loaded) {
+
       return (
         <div>
           <RoundNav rounds={ this.state.rounds } round={this.state.round } selectRound={ this.selectRound }/>
@@ -83,6 +86,7 @@ class Rounds extends Component {
                 teams={ this.state.teams }
                 tz={ this.state.tz }
               />
+              <TeamLadder teams={ this.state.teams } />
             </div>
           </div>
         </div>
@@ -90,7 +94,6 @@ class Rounds extends Component {
     } else {
       return <p>Loading...</p>
     }
-
   }
 }
 

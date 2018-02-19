@@ -21,3 +21,7 @@ ul.rounds-nav > li > a.round-link {
 .rounds-nav::-webkit-scrollbar {
   display: none;
 }
+
+.centered {
+  text-align: center;
+}
