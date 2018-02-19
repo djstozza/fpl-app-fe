@@ -9,8 +9,10 @@ import fetchTeams from '../actions/teams/fetch_teams.js';
 import Round from '../components/rounds/round.js';
 import RoundNav from '../components/rounds/round_nav.js';
 
+import { CABLE_CONNECTION } from '../api-config.js';
+
 const ActionCable = require('actioncable');
-const cable = ActionCable.createConsumer('ws://localhost:3001/cable');
+const cable = ActionCable.createConsumer(CABLE_CONNECTION);
 
 class Rounds extends Component {
   constructor (props) {
@@ -38,7 +40,7 @@ class Rounds extends Component {
 
   componentWillReceiveProps(nextProps) {
     const self = this;
-  
+
     this.setState({
       rounds: nextProps.rounds,
       round: nextProps.round,
