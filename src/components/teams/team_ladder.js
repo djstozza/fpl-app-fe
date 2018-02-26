@@ -1,31 +1,38 @@
 import React, { Component } from 'react';
-import ReactTable from 'react-table';
+import $ from 'jquery';
+import BootstrapTable from 'react-bootstrap-table-next';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 export default class TeamLadder extends Component {
+  componentDidMount () {
+    $('.team-ladder-table table').addClass('scroll-table');
+  }
   render () {
     const data = this.props.teams
     const columns = [
-      { Header: () => <b>Position</b>, accessor: 'attributes.position' },
-      { Header: () => <b>Name</b>, accessor: 'attributes.name' },
-      { Header: () => <b>Played</b>, accessor: 'attributes.played' },
-      { Header: () => <b>Wins</b>, accessor: 'attributes.wins' },
-      { Header: () => <b>Losses</b>, accessor: 'attributes.losses' },
-      { Header: () => <b>Draws</b>, accessor: 'attributes.draws' },
-      { Header: () => <b>Form</b>, accessor: 'attributes.current_form' },
-      { Header: () => <b>P/D</b>, accessor: 'attributes.goal_difference' },
-      { Header: () => <b>Points</b>, accessor: 'attributes.points' }
+      { dataField: 'attributes.position', text: 'Position' },
+      { dataField: 'attributes.name', text: 'Name' },
+      { dataField: 'attributes.played', text: 'Played' },
+      { dataField: 'attributes.wins', text: 'Wins' },
+      { dataField: 'attributes.losses', text: 'Losses' },
+      { dataField: 'attributes.draws', text: 'Draws' },
+      { dataField: 'attributes.current_form', text: 'Current Form' },
+      { dataField: 'attributes.goal_difference', text: 'G/D' },
+      { dataField: 'attributes.points' , text: 'Points'}
     ]
 
     return (
-      <ReactTable
-        data={ data }
-        columns={ columns }
-        showPaginationBottom={ false }
-        defaultSorted={[
-          { id: "attributes.position", asc: true }
-        ]}
-        className="-striped -highlight centered"
-      />
+      <div className='team-ladder-table'>
+        <BootstrapTable
+          keyField='attributes.name'
+          data={ data }
+          columns={ columns }
+          striped
+          hover
+          condensed
+          className='foo'
+        />
+      </div>
     );
   }
 }
