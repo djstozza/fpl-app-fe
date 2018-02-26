@@ -7,10 +7,10 @@ import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import Rounds from './containers/rounds.js';
+import Team from './containers/team.js';
+import $ from 'jquery';
 
-import '../node_modules/materialize-css/dist/js/materialize.min.js';
-import '../node_modules/materialize-css/dist/css/materialize.min.css';
-import 'react-table/react-table.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -19,6 +19,9 @@ const store = createStoreWithMiddleware(reducers);
 
 const moment = require('moment-timezone');
 const tz = moment.tz.guess();
+
+require('bootstrap');
+
 
 
 export default class App extends Component {
@@ -30,6 +33,7 @@ export default class App extends Component {
             <Route exact path="/" render={(props) => (<Rounds {...props} tz={tz}/>)} />
             <Route exact path="/rounds" render={(props) => (<Rounds {...props} tz={tz}/>)} />
             <Route exact path="/rounds/:id(\d+)" render={(props) => (<Rounds {...props} tz={tz}/>)} />
+            <Route exact path="/teams/:id(\d+)" render={(props) => (<Team {...props} tz={tz}/>)} />
           </Switch>
         </Router>
       </Provider>

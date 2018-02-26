@@ -58,27 +58,28 @@ export default class MatchDetailsTable extends React.Component {
           </td>
         </tr>
       ]
-
     }
 
     return (
-      <table className="centered bordered striped">
-        <tbody>
+      <table className="table table-striped table-bordered table-hover centered-table">
+        <thead>
           <tr>
-            <td/>
-            <td>
-              <b>{ this.props.homeTeam.attributes.name }</b>
-            </td>
-            <td>
-              <b>{ this.props.match.attributes.team_h_score }</b>
-            </td>
-            <td>
-              <b>{ this.props.awayTeam.attributes.name }</b>
-            </td>
-            <td>
-              <b>{ attributes.team_a_score }</b>
-            </td>
+            <th/>
+            <th>
+              { this.props.homeTeam.attributes.name }
+            </th>
+            <th>
+              { this.props.match.attributes.team_h_score }
+            </th>
+            <th>
+              { this.props.awayTeam.attributes.name }
+            </th>
+            <th>
+              { attributes.team_a_score }
+            </th>
           </tr>
+        </thead>
+        <tbody>
           { matchStatRows(goalsScored) }
           { matchStatRows(assists) }
           { matchStatRows(ownGoals) }

@@ -7,7 +7,7 @@ import fetchRound from '../actions/round/fetch_round.js';
 import fetchTeams from '../actions/teams/fetch_teams.js';
 
 import Round from '../components/rounds/round.js';
-import RoundNav from '../components/rounds/round_nav.js';
+import RoundsNav from '../components/rounds/rounds_nav.js';
 
 import TeamLadder from '../components/teams/team_ladder.js';
 
@@ -30,17 +30,13 @@ class Rounds extends Component {
     this.selectRound = this.selectRound.bind(this);
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.fetchRounds();
     this.props.fetchRound(this.props.match.params.id);
     this.props.fetchTeams();
   }
 
-  componentDidMount () {
-
-  }
-
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     const self = this;
 
     this.setState({
@@ -57,7 +53,7 @@ class Rounds extends Component {
 
       cable.subscriptions.create({ channel: 'RoundChannel', room: nextProps.round.id }, {
         received: function (data) {
-          if (self.state.round === data.round) {
+          if (self.state.round.id === data.round.id) {
             self.setState({
               fixtures: data.fixtures
             });
@@ -74,12 +70,11 @@ class Rounds extends Component {
 
   render () {
     if (this.state.loaded) {
-
       return (
         <div>
-          <RoundNav rounds={ this.state.rounds } round={this.state.round } selectRound={ this.selectRound }/>
+          <RoundsNav rounds={ this.state.rounds } round={this.state.round } selectRound={ this.selectRound }/>
           <div className="row">
-            <div className="col s12 offset-m1 m10">
+            <div className="col col-md-10 offset-md-1">
               <Round
                 round={ this.state.round }
                 fixtures={ this.state.fixtures }

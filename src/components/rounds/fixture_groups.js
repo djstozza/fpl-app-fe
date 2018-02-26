@@ -6,7 +6,11 @@ const moment = require('moment-timezone');
 
 export default class FixtureGroups extends React.Component {
   render () {
-    const fixtureGroups = _.groupBy(this.props.fixtures, (fixture) => {
+    const sortedFixtureGroups = _.sortBy(this.props.fixtures, (fixture) => {
+      return fixture.attributes.kickoff_time
+    });
+
+    const fixtureGroups = _.groupBy(sortedFixtureGroups, (fixture) => {
       return moment(fixture.attributes.kickoff_time).tz(this.props.tz).format('dddd, Do MMMM Y')
     });
 

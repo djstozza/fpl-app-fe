@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import { centerItVariableWidth } from '../../utils/nav_tab.js';
+
 
 export default class RoundsNav extends Component {
   componentDidMount () {
-    $('ul.tabs').tabs();
-    centerItVariableWidth(`round-tab-${this.props.round.id}`, "rounds-nav");
+
+    centerItVariableWidth(`round-tab-${this.props.round.id}`, "nav-tabs", true);
   }
 
   render () {
     const self = this;
     const roundId = this.props.round.id;
-    let roundList = this.props.rounds.map(function (round) {
+    const roundList = this.props.rounds.map(function (round) {
       let roundTabClass = `round-tab-${round.id}`
       return (
         <li
           key={ round.id }
-          className={ `tab col s4 m2` }
+          className='nav-item'
         >
           <a
-            className={ `round-link ${round.id == roundId ? 'active' : ''} ${roundTabClass}` }
+            className={ `nav-link ${round.id == roundId ? 'active' : ''} ${roundTabClass}` }
+            role="tab"
             onClick={ () => {
-              centerItVariableWidth(roundTabClass, "rounds-nav");
+              centerItVariableWidth(roundTabClass, "nav-tabs", false);
               self.props.selectRound(round.id) }
             }
           >
@@ -32,13 +33,10 @@ export default class RoundsNav extends Component {
     });
 
     return (
-      <div className="row">
-        <div className="col s12">
-          <ul className="rounds-nav tabs tabs-fixed-width">
-            { roundList }
-          </ul>
-        </div>
-      </div>
-    )
+      <ul className="nav nav-tabs scroll-nav">
+        { roundList }
+        <li className='indicator' />
+      </ul>
+    );
   }
 }

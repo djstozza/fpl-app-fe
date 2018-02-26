@@ -2,15 +2,15 @@ import { FETCH_TEAMS } from '../types';
 import axios from 'axios';
 import { API_ROOT } from './../../api-config.js';
 
-export default function fetchTeamss (tz) {
+export default function fetchTeams () {
   return dispatch => {
     axios.get(`${API_ROOT}/teams.json`).then(res => {
-      dispatch(fetchTeamssAsync(res.data));
+      dispatch(fetchTeamsAsync(res.data));
     });
   }
 }
 
-function fetchTeamssAsync (data) {
+function fetchTeamsAsync (data) {
   return {
     type: FETCH_TEAMS,
     payload: data
