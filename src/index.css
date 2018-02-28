@@ -3,9 +3,15 @@ body {
   padding: 0;
   font-family: sans-serif; }
 
-@media (max-width: 768px) {
+@media (max-width: 991.98px) {
   .image-crest {
-    zoom: 60%; } }
+    zoom: 60%; }
+  table.scroll-table {
+    overflow-x: auto;
+    display: -webkit-box; }
+  .bs-table table {
+    overflow-x: auto;
+    display: -webkit-box; } }
 
 .nav-img {
   zoom: 35%; }
@@ -17,18 +23,14 @@ ul.scroll-nav {
   display: -moz-box;
   margin-bottom: 3rem;
   cursor: pointer; }
-
-ul.scroll-nav::-webkit-scrollbar {
-  display: none; }
-
-ul.scroll-nav > li {
-  float: none; }
-
-a.nav-link {
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12); }
-
-ul.scroll-nav > li > a.nav-link.active {
-  color: #ee6e73; }
+  ul.scroll-nav::-webkit-scrollbar {
+    display: none; }
+  ul.scroll-nav li {
+    float: none; }
+    ul.scroll-nav li a.nav-link {
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12); }
+      ul.scroll-nav li a.nav-link.active {
+        color: #ee6e73; }
 
 .indicator {
   position: absolute;
@@ -51,10 +53,29 @@ ul.scroll-nav > li > a.nav-link.active {
 .team-ladder-table {
   margin: auto; }
 
-table.scroll-table {
-  text-align: center;
-  overflow-x: auto;
-  display: -webkit-box; }
+.diff-h-3 {
+  background-color: #3366ff; }
+
+.diff-h-2 {
+  background-color: #33ccff; }
+
+.diff-h-1 {
+  background-color: #33ffff; }
+
+.diff-e {
+  background-color: #4dff4d !important; }
+
+.diff-a-1 {
+  background-color: #ffff4d; }
+
+.diff-a-2 {
+  background-color: #ffd24d; }
+
+.diff-a-3 {
+  background-color: #ff4d4d; }
+
+.transparent-text {
+  color: transparent; }
 
 #root {
   overflow-x: hidden; }

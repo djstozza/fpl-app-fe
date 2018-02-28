@@ -1,0 +1,115 @@
+@import "../node_modules/bootstrap/scss/_functions";
+@import "../node_modules/bootstrap/scss/_variables";
+@import "../node_modules/bootstrap/scss/mixins/_breakpoints";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif; }
+
+@include media-breakpoint-down(md) {
+  .image-crest {
+    zoom: 60%;
+  }
+
+  table.scroll-table {
+    overflow-x: auto;
+    display: -webkit-box;
+  }
+
+  .bs-table table {
+    overflow-x: auto;
+    display: -webkit-box;
+  }
+}
+
+.nav-img {
+  zoom: 35%; }
+
+ul.scroll-nav {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: -webkit-box;
+  display: -moz-box;
+  margin-bottom: 3rem;
+  cursor: pointer;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  li {
+    float: none;
+
+    a.nav-link {
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+
+      &.active {
+        color: #ee6e73;
+      }
+    }
+
+  }
+}
+
+.indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background-color: #f6b2b5;
+  will-change: left, right; }
+
+.accordion-header {
+  cursor: pointer;
+}
+
+.accordion-header-info {
+  text-align: center;
+  margin: auto;
+}
+
+.centered-table {
+  thead th, tbody td {
+    vertical-align: middle;
+    text-align: center;
+  }
+}
+
+.team-ladder-table {
+  margin: auto;
+}
+
+.diff-h-3 {
+  background-color: #3366ff;
+}
+
+.diff-h-2 {
+  background-color: #33ccff;
+}
+
+.diff-h-1 {
+  background-color: #33ffff;
+}
+
+.diff-e {
+  background-color: #4dff4d !important;
+}
+
+.diff-a-1 {
+  background-color: #ffff4d;
+}
+
+.diff-a-2 {
+  background-color: #ffd24d;
+}
+
+.diff-a-3 {
+  background-color: #ff4d4d;
+}
+
+.transparent-text {
+  color: transparent;
+}
+
+#root {
+  overflow-x: hidden;
+}

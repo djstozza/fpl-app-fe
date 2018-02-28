@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ReactTable from 'react-table';
+import BootstrapTable from 'react-bootstrap-table-next';
+import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
 import _ from 'underscore';
 
 const moment = require('moment-timezone');
@@ -7,93 +8,101 @@ const moment = require('moment-timezone');
 export default class TeamFixtures extends Component {
   render () {
     const self = this;
-    const data = _.sortBy(this.props.fixtures, (fixture) =>  parseInt(fixture.relationships.round.data.id));
+    const data = this.props.fixtures;
+    const teams = this.props.teams;
+
+    const teamSelectOptionsArr = _.compact(_.map(teams, (team) => {
+      if (team.id !== self.props.team.id) {
+        return [team.attributes.short_name, team.attributes.short_name];
+      }
+    }));
+
+    const teamNameSelectOptions = _.object(teamSelectOptionsArr);
+
     const columns = [
       {
-        Header: 'Round',
-        accessor: 'relationships.round.data.id',
-        sortMethod: (a, b) => { return parseInt(a) > parseInt(b) ? 1 : -1 }
+        text: 'Round',
+        dataField: 'round_id',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
       }, {
-        Header: () => <b>Kickoff</b>,
-        accessor: 'attributes.kickoff_time',
-        Cell: (row) => {
-          return moment(row.original.attributes.kickoff_time).tz(this.props.tz).format('DD/MM/YY - HH:MM')
+        text: 'Kickoff',
+        dataField: 'kickoff_time',
+        align: 'center',
+        headerAlign: 'center',
+        sort: true,
+        formatter: (cell, row) => {
+          return moment(cell).tz(this.props.tz).format('DD/MM/YY - HH:MM');
         }
       }, {
-        Header: () => <b>Opponent</b>,
-        Cell: (row) => {
-          const homeTeamId = row.original.relationships.team_h.data.id
-          const awayTeamId = row.original.relationships.team_a.data.id
-
-          let opponentId;
-          homeTeamId === self.props.team.id ? opponentId = awayTeamId : opponentId = homeTeamId;
-
-          const opponent = _.find(self.props.teams, (team) => {
-            return team.id === opponentId
-          })
-          return opponent.attributes.name
-        }
+        text: 'Opponent',
+        dataField: 'opponent_short_name',
+        align: 'center',
+        headerAlign: 'center',
+        sort: true,
+        filter: selectFilter({
+          options: teamNameSelectOptions,
+          placeholder: ' '
+        })
       }, {
-        Header: () => <b>H/A</b>,
-        id: 'team_h_id',
-        accessor: 'relationships.team_h.data.id',
-        Cell: (row) => {
-          const homeTeamId = row.original.relationships.team_h.data.id
-          return homeTeamId === self.props.team.id ? 'Home' : 'Away';
-        },
-        filterMethod: (filter, row) => {
-          console.log(filter, row._original)
-          if (filter.value === "all") {
-            return true;
-          } else if (filter.value === "Home") {
-            return row._original.relationships.team_h.data.id === self.props.team.id;
+        text: 'H/A',
+        dataField: 'leg',
+        align: 'center',
+        headerAlign: 'center',
+        sort: true,
+        filter: selectFilter({
+          options: { H: 'H', A: 'A' },
+          placeholder: ' '
+        })
+      }, {
+        text: 'Result',
+        dataField: 'result',
+        align: 'center',
+        headerAlign: 'center',
+        sort: true,
+        filter: selectFilter({
+          options: { W: 'W', D: 'D', L: 'L' },
+          placeholder: ' '
+        })
+      }, {
+        text: 'Score',
+        dataField: 'score',
+        align: 'center',
+        headerAlign: 'center',
+      }, {
+        text: 'Advantage',
+        dataField: 'advantage',
+        align: 'center',
+        headerAlign: 'center',
+        sort: true,
+        classes: (cell, row, rowIndex, colIndex) => {
+          let adv;
+          if (cell > 0) {
+            adv = `diff-h-${cell}`;
+          } else if (cell < 0) {
+            adv = `diff-a-${Math.abs(cell)}`;
           } else {
-            return row._original.relationships.team_h.data.id !== self.props.team.id;
+            adv = `diff-e`
           }
-        },
-        Filter: ({ filter, onChange }) => {
-          return (
-            <select
-              onChange={event => onChange(event.target.value)}
-              style={{ width: "100%", display: 'block' }}
-              value={filter ? filter.value : "all"}
-            >
-              <option value="all"></option>
-              <option value="Home">Home</option>
-              <option value="Away">Away</option>
-            </select>
-          )
 
-        }
-      }, {
-        Header: () => <b>Result</b>,
-        Cell: (row) => {
-          const resultIndex = _.indexOf(data, row.original)
-          return self.props.team.attributes.form[resultIndex]
-        }
-      }, {
-        Header: () => <b>Score</b>,
-        Cell: (row) => {
-          if (row.original.attributes.team_h_score !== null) {
-            return `${row.original.attributes.team_h_score} - ${row.original.attributes.team_a_score}`
-          }
-        }
+          return `${adv} transparent-text`;
+        },
+
       }
     ]
 
     return (
-      <ReactTable
-        data={ data }
-        columns={ columns }
-        defaultSorted={[
-          { id: 'relationships.round.data.id', asc: true }
-        ]}
-        className="-striped -highlight centered"
-        defaultPageSize={ this.props.fixtures.length }
-        filterable
-        defaultFilterMethod={(filter, row) =>
-            String(row[filter.id]) === filter.value}
-      />
+      <div className='bs-table'>
+        <BootstrapTable
+          keyField='kickoff_time'
+          data={ data }
+          columns={ columns }
+          filter={ filterFactory() }
+          striped
+          hover
+        />
+      </div>
     );
   }
 }

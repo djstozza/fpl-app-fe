@@ -81,6 +81,8 @@ class Rounds extends Component {
                 teams={ this.state.teams }
                 tz={ this.state.tz }
               />
+              <br/>
+              <h4>Team Ladder</h4>
               <TeamLadder teams={ this.state.teams } />
             </div>
           </div>

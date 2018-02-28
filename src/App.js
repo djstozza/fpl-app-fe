@@ -22,8 +22,6 @@ const tz = moment.tz.guess();
 
 require('bootstrap');
 
-
-
 export default class App extends Component {
   render () {
     return (

@@ -1,36 +1,44 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import _ from 'underscore';
 
 export default class TeamLadder extends Component {
-  componentDidMount () {
-    $('.team-ladder-table table').addClass('scroll-table');
-  }
   render () {
-    const data = this.props.teams
+    const data = _.sortBy(this.props.teams, (team) => { return team.attributes.position });
+
     const columns = [
-      { dataField: 'attributes.position', text: 'Position' },
-      { dataField: 'attributes.name', text: 'Name' },
-      { dataField: 'attributes.played', text: 'Played' },
-      { dataField: 'attributes.wins', text: 'Wins' },
-      { dataField: 'attributes.losses', text: 'Losses' },
-      { dataField: 'attributes.draws', text: 'Draws' },
-      { dataField: 'attributes.current_form', text: 'Current Form' },
-      { dataField: 'attributes.goal_difference', text: 'G/D' },
-      { dataField: 'attributes.points' , text: 'Points'}
+      { dataField: 'attributes.position',text: 'Position', sort: true, align: 'center', headerAlign: 'center' },
+      { dataField: 'attributes.name', text: 'Name', sort: true, align: 'center', headerAlign: 'center' },
+      { dataField: 'attributes.played', text: 'Played', sort: true, align: 'center', headerAlign: 'center' },
+      { dataField: 'attributes.wins', text: 'Wins', sort: true, align: 'center', headerAlign: 'center' },
+      { dataField: 'attributes.losses', text: 'Losses', sort: true, align: 'center', headerAlign: 'center' },
+      { dataField: 'attributes.draws', text: 'Draws', sort: true, align: 'center', headerAlign: 'center' },
+      { dataField: 'attributes.current_form', text: 'Current Form', align: 'center', headerAlign: 'center' },
+      { dataField: 'attributes.goal_difference', text: 'G/D', sort: true, align: 'center', headerAlign: 'center' },
+      { dataField: 'attributes.points' , text: 'Points', sort: true, align: 'center', headerAlign: 'center' }
     ]
 
+    const defaultSorted = [{ dataField: 'attributes.position', order: 'asc' }];
+
+    const rowClasses = (row, rowIndex) => {
+      let classes;
+      if (this.props.team && row.id == this.props.team.id) {
+        classes = 'diff-e';
+      }
+
+      return classes;
+    };
+
     return (
-      <div className='team-ladder-table'>
+      <div className='bs-table'>
         <BootstrapTable
           keyField='attributes.name'
           data={ data }
           columns={ columns }
           striped
           hover
-          condensed
-          className='foo'
+          defaultSorted={ defaultSorted }
+          rowClasses={ rowClasses }
         />
       </div>
     );

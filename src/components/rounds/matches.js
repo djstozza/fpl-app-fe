@@ -27,7 +27,7 @@ export default class Match extends React.Component {
 
             if (match.attributes.team_h_score != null && match.attributes.team_a_score != null) {
               return (
-                <div className="card" key={`match-${match.id}` } >
+                <div className="card" key={`match-${match.id}` }>
                   <div
                     className="card-header accordion-header"
                     id={`match-${match.id}`}

@@ -4,7 +4,6 @@ import { centerItVariableWidth } from '../../utils/nav_tab.js';
 
 export default class RoundsNav extends Component {
   componentDidMount () {
-
     centerItVariableWidth(`round-tab-${this.props.round.id}`, "nav-tabs", true);
   }
 
@@ -12,7 +11,7 @@ export default class RoundsNav extends Component {
     const self = this;
     const roundId = this.props.round.id;
     const roundList = this.props.rounds.map(function (round) {
-      let roundTabClass = `round-tab-${round.id}`
+      const roundTabClass = `round-tab-${round.id}`
       return (
         <li
           key={ round.id }

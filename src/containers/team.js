@@ -53,12 +53,11 @@ class Team extends Component {
 
   render () {
     if (this.state.loaded) {
-      console.log(this.state)
       return (
         <div>
           <TeamsNav teams={ this.state.teams } team={this.state.team } selectTeam={ this.selectTeam }/>
           <div className="row">
-            <div className="col s12 offset-m1 m10">
+            <div className="col col-md-10 offset-md-1">
               <h4>{ this.state.team.attributes.name }</h4>
               <TeamAccordion team={ this.state.team } fixtures={ this.state.fixtures } tz={ this.state.tz } teams={ this.state.teams } />
             </div>

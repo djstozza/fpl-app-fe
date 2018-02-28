@@ -1,50 +1,43 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import { centerItVariableWidth } from '../../utils/nav_tab.js';
 
 export default class TeamsNav extends Component {
   componentDidMount () {
-    $('ul.tabs').tabs();
-    centerItVariableWidth(`team-tab-${this.props.team.id}`, "teams-nav");
+    centerItVariableWidth(`team-tab-${this.props.team.id}`, "nav-tabs", true);
   }
 
   render () {
     const self = this;
     const teamId = this.props.team.id;
     const teamList = this.props.teams.map(function (team) {
-
-      const teamImg = require(`../../images/shields/${team.attributes.short_name.toLowerCase()}.png`);
       const teamTabClass = `team-tab-${team.id}`
+      const teamImg = require(`../../images/shields/${team.attributes.short_name.toLowerCase()}.png`);
 
       return (
         <li
           key={ team.id }
-          className={ `tab col s4 m2` }
+          className='nav-item'
         >
           <a
             className={ `nav-link ${team.id == teamId ? 'active' : ''} ${teamTabClass}` }
+            role="tab"
             onClick={ () => {
-              centerItVariableWidth(teamTabClass, "nav-tabs");
+              centerItVariableWidth(teamTabClass, "nav-tabs", false);
               self.props.selectTeam(team.id) }
             }
           >
-            <div className='valign-wrapper'>
-              <img className='nav-img' src={ teamImg } alt={ team.attributes.name } />
-              <span>&nbsp;{ team.attributes.short_name }</span>
-            </div>
+            <img className='nav-img' src={ teamImg } alt={ team.attributes.name } />
+            <span>&nbsp;{ team.attributes.short_name }</span>
           </a>
         </li>
       );
     });
 
     return (
-      <div className="row">
-        <div className="col s12">
-          <ul className="nav-tabs tabs tabs-fixed-width">
-            { teamList }
-          </ul>
-        </div>
-      </div>
-    )
+      <ul className="nav nav-tabs scroll-nav">
+        { teamList }
+        <li className='indicator' />
+      </ul>
+    );
   }
 }
