@@ -22,7 +22,7 @@ export default class TeamLadder extends Component {
 
     const rowClasses = (row, rowIndex) => {
       let classes;
-      if (this.props.team && row.id == this.props.team.id) {
+      if (this.props.team && row.id === String(this.props.team.id)) {
         classes = 'diff-e';
       }
 

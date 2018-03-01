@@ -19,7 +19,7 @@ export default class TeamsNav extends Component {
           className='nav-item'
         >
           <a
-            className={ `nav-link ${team.id == teamId ? 'active' : ''} ${teamTabClass}` }
+            className={ `nav-link ${team.id === String(teamId) ? 'active' : ''} ${teamTabClass}` }
             role="tab"
             onClick={ () => {
               centerItVariableWidth(teamTabClass, "nav-tabs", false);

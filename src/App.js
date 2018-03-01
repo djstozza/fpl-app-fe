@@ -8,7 +8,6 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import Rounds from './containers/rounds.js';
 import Team from './containers/team.js';
-import $ from 'jquery';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

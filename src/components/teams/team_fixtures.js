@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
+import { Link } from 'react-router-dom';
 import _ from 'underscore';
 
 const moment = require('moment-timezone');
@@ -30,6 +31,9 @@ export default class TeamFixtures extends Component {
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        formatter: (cell, row) => {
+          return <Link to={ `/rounds/${cell}` }>{ cell }</Link>;
+        }
       }, {
         text: 'Kickoff',
         dataField: 'kickoff_time',

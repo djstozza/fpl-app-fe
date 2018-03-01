@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default class MatchDetailsTable extends React.Component {
   render () {
@@ -66,13 +67,13 @@ export default class MatchDetailsTable extends React.Component {
           <tr>
             <th/>
             <th>
-              { this.props.homeTeam.attributes.name }
+              <Link to={`/teams/${this.props.homeTeam.id}` } > { this.props.homeTeam.attributes.name }</Link>
             </th>
             <th>
               { this.props.match.attributes.team_h_score }
             </th>
             <th>
-              { this.props.awayTeam.attributes.name }
+            <Link to={`/teams/${this.props.awayTeam.id}` } > { this.props.awayTeam.attributes.name }</Link>
             </th>
             <th>
               { attributes.team_a_score }

@@ -26,9 +26,9 @@ class Team extends Component {
   }
 
   componentWillMount () {
-    this.props.fetchTeam(this.state.teamId);
+    this.props.fetchTeam(this.props.match.params.id);
     this.props.fetchTeams();
-    this.props.fetchTeamPlayers(this.state.teamId);
+    this.props.fetchTeamPlayers(this.props.match.params.id);
     this.props.fetchPositions();
   }
 
@@ -41,10 +41,10 @@ class Team extends Component {
       positions: nextProps.positions,
     });
 
-    if (nextProps.teams.length > 0 && nextProps.fixtures.length > 0) {
+    if (nextProps.teams.length > 0 && nextProps.team !== undefined) {
       this.setState({
         loaded: true
-      })
+      });
     }
   }
 
@@ -59,7 +59,7 @@ class Team extends Component {
     if (this.state.loaded) {
       return (
         <div>
-          <TeamsNav teams={ this.state.teams } team={this.state.team } selectTeam={ this.selectTeam }/>
+          <TeamsNav teams={ this.state.teams } team={ this.state.team } selectTeam={ this.selectTeam }/>
           <div className="row">
             <div className="col col-md-10 offset-md-1">
               <h4>{ this.state.team.attributes.name }</h4>
