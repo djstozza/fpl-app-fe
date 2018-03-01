@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
 import RoundsReducer from './reducer_rounds';
 import RoundReducer from './reducer_round';
 import TeamsReducer from './reducer_teams';
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   TeamsReducer: TeamsReducer,
   TeamReducer: TeamReducer,
   PlayersReducer: PlayersReducer,
-  PositionsReducer: PositionsReducer
+  PositionsReducer: PositionsReducer,
+  router: routerReducer
 });
 
 export default rootReducer;
