@@ -46,7 +46,7 @@ class Rounds extends Component {
       teams: nextProps.teams,
     });
 
-    if (nextProps.rounds.length > 0 && nextProps.round && nextProps.teams.length > 0) {
+    if (nextProps.rounds.length > 0 && nextProps.round !== undefined && nextProps.teams.length > 0) {
       this.setState({
         loaded: true
       });

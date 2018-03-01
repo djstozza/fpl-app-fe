@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'underscore';
-
 import MatchDetailsTable from './match_details_table.js';
 
 const moment = require('moment-timezone');
