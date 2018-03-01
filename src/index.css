@@ -6,10 +6,7 @@ body {
 @media (max-width: 991.98px) {
   .image-crest {
     zoom: 60%; }
-  table.scroll-table {
-    overflow-x: auto;
-    display: -webkit-box; }
-  .bs-md-scroll-table-table table {
+  .bs-md-scroll-table table {
     overflow-x: auto;
     display: -webkit-box; } }
 
