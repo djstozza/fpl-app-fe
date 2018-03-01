@@ -17,10 +17,22 @@ body {
     display: -webkit-box;
   }
 
-  .bs-table table {
+  .bs-md-scroll-table-table table {
     overflow-x: auto;
     display: -webkit-box;
   }
+}
+
+@include media-breakpoint-down(xs) {
+  .bs-xs-scroll-table table {
+    overflow-x: auto;
+    display: -webkit-box;
+  }
+}
+
+.bs-scroll-table table {
+  overflow-x: auto;
+  display: -webkit-box;
 }
 
 .nav-img {

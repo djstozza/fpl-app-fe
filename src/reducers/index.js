@@ -4,6 +4,7 @@ import RoundReducer from './reducer_round';
 import TeamsReducer from './reducer_teams';
 import TeamReducer from './reducer_team';
 import PlayersReducer from './reducer_players';
+import PositionsReducer from './reducer_positions';
 
 const rootReducer = combineReducers({
   RoundsReducer: RoundsReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   TeamsReducer: TeamsReducer,
   TeamReducer: TeamReducer,
   PlayersReducer: PlayersReducer,
+  PositionsReducer: PositionsReducer
 });
 
 export default rootReducer;

@@ -9,9 +9,18 @@ body {
   table.scroll-table {
     overflow-x: auto;
     display: -webkit-box; }
-  .bs-table table {
+  .bs-md-scroll-table-table table {
     overflow-x: auto;
     display: -webkit-box; } }
+
+@media (max-width: 575.98px) {
+  .bs-xs-scroll-table table {
+    overflow-x: auto;
+    display: -webkit-box; } }
+
+.bs-scroll-table table {
+  overflow-x: auto;
+  display: -webkit-box; }
 
 .nav-img {
   zoom: 35%; }

@@ -30,7 +30,7 @@ export default class TeamLadder extends Component {
     };
 
     return (
-      <div className='bs-table'>
+      <div className='bs-md-scroll-table'>
         <BootstrapTable
           keyField='attributes.name'
           data={ data }

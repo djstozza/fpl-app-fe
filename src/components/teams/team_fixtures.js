@@ -21,6 +21,10 @@ export default class TeamFixtures extends Component {
 
     const columns = [
       {
+       text: 'ID',
+       dataField: 'fixture_id',
+       hidden: true
+      }, {
         text: 'Round',
         dataField: 'round_id',
         sort: true,
@@ -40,7 +44,6 @@ export default class TeamFixtures extends Component {
         dataField: 'opponent_short_name',
         align: 'center',
         headerAlign: 'center',
-        sort: true,
         filter: selectFilter({
           options: teamNameSelectOptions,
           placeholder: ' '
@@ -50,7 +53,6 @@ export default class TeamFixtures extends Component {
         dataField: 'leg',
         align: 'center',
         headerAlign: 'center',
-        sort: true,
         filter: selectFilter({
           options: { H: 'H', A: 'A' },
           placeholder: ' '
@@ -60,7 +62,6 @@ export default class TeamFixtures extends Component {
         dataField: 'result',
         align: 'center',
         headerAlign: 'center',
-        sort: true,
         filter: selectFilter({
           options: { W: 'W', D: 'D', L: 'L' },
           placeholder: ' '
@@ -93,9 +94,9 @@ export default class TeamFixtures extends Component {
     ]
 
     return (
-      <div className='bs-table'>
+      <div className='bs-xs-scroll-table'>
         <BootstrapTable
-          keyField='kickoff_time'
+          keyField='fixture_id'
           data={ data }
           columns={ columns }
           filter={ filterFactory() }

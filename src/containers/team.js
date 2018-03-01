@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import fetchTeams from '../actions/teams/fetch_teams.js';
 import fetchTeam from '../actions/team/fetch_team.js';
 import fetchTeamPlayers from '../actions/players/fetch_team_players.js';
+import fetchPositions from '../actions/positions/fetch_positions.js';
 
 import TeamsNav from '../components/teams/teams_nav.js';
 import TeamAccordion from '../components/teams/team_accordion.js';
@@ -28,6 +29,7 @@ class Team extends Component {
     this.props.fetchTeam(this.state.teamId);
     this.props.fetchTeams();
     this.props.fetchTeamPlayers(this.state.teamId);
+    this.props.fetchPositions();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -36,6 +38,7 @@ class Team extends Component {
       team: nextProps.team,
       fixtures: nextProps.fixtures,
       players: nextProps.players,
+      positions: nextProps.positions,
     });
 
     if (nextProps.teams.length > 0 && nextProps.fixtures.length > 0) {
@@ -47,6 +50,7 @@ class Team extends Component {
 
   selectTeam (teamId) {
     this.props.fetchTeam(teamId);
+    this.props.fetchTeamPlayers(teamId);
     window.history.pushState(null, '', `/teams/${teamId}`);
   }
 
@@ -59,7 +63,14 @@ class Team extends Component {
           <div className="row">
             <div className="col col-md-10 offset-md-1">
               <h4>{ this.state.team.attributes.name }</h4>
-              <TeamAccordion team={ this.state.team } fixtures={ this.state.fixtures } tz={ this.state.tz } teams={ this.state.teams } />
+              <TeamAccordion
+                team={ this.state.team }
+                fixtures={ this.state.fixtures }
+                tz={ this.state.tz }
+                teams={ this.state.teams }
+                players={ this.state.players }
+                positions={ this.state.positions }
+              />
             </div>
           </div>
         </div>
@@ -76,6 +87,7 @@ function mapStateToProps (state) {
     team: state.TeamReducer.team,
     fixtures: state.TeamReducer.fixtures,
     players: state.PlayersReducer,
+    positions: state.PositionsReducer,
   }
 }
 
@@ -84,6 +96,7 @@ function mapDispatchToProps(dispatch) {
     fetchTeam: fetchTeam,
     fetchTeams: fetchTeams,
     fetchTeamPlayers: fetchTeamPlayers,
+    fetchPositions: fetchPositions,
   }, dispatch);
 }
 
