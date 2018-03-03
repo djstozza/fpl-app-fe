@@ -5,10 +5,11 @@ export const FETCH_TEAMS = 'FETCH_TEAMS';
 export const FETCH_TEAM = 'FETCH_TEAM';
 export const FETCH_TEAM_PLAYERS = 'FETCH_TEAM_PLAYERS';
 
+export const FETCH_PLAYERS = 'FETCH_PLAYERS';
+
 export const FETCH_POSITIONS = 'FETCH_POSITIONS';
 // export const FETCH_CURRENT_ROUND = 'FETCH_CURRENT_ROUND';
-//
-// export const FETCH_PLAYERS = 'FETCH_PLAYERS';
+
 // export const FETCH_PLAYER = 'FETCH_PLAYER';
 // export const FETCH_LEAGUE = 'FETCH_LEAGUE';
 //

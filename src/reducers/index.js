@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import { routerReducer } from 'react-router-redux'
 import RoundsReducer from './reducer_rounds';
 import RoundReducer from './reducer_round';
 import TeamsReducer from './reducer_teams';

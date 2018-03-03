@@ -18,14 +18,14 @@ export default class RoundsNav extends Component {
           className='nav-item'
         >
           <a
-            className={ `nav-link ${round.id === String(roundId) ? 'active' : ''} ${roundTabClass}` }
+            className={ `nav-link ${round.id === parseInt(roundId) ? 'active' : ''} ${roundTabClass}` }
             role="tab"
             onClick={ () => {
               centerItVariableWidth(roundTabClass, "nav-tabs", false);
               self.props.selectRound(round.id) }
             }
           >
-            { round.attributes.name }
+            { round.name }
           </a>
         </li>
       );

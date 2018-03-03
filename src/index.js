@@ -18,6 +18,7 @@ import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
 import rootReducer from './reducers/index'
 import Rounds from './containers/rounds.js';
 import Team from './containers/team.js';
+import Players from './containers/players.js';
 
 const history = createHistory()
 const initialState = {}
@@ -32,7 +33,7 @@ const composedEnhancers = compose(
   ...enhancers
 )
 
-const store = createStore(
+export const store = createStore(
   rootReducer,
   initialState,
   composedEnhancers
@@ -50,6 +51,7 @@ ReactDOM.render(
         <Route exact path="/rounds" render={(props) => (<Rounds {...props} tz={tz}/>)} />
         <Route exact path="/rounds/:id(\d+)" render={(props) => (<Rounds {...props} tz={tz}/>)} />
         <Route exact path="/teams/:id(\d+)" render={(props) => (<Team {...props} tz={tz}/>)} />
+        <Route exact path="/players" render={(props) => (<Players {...props} tz={tz}/>)} />
       </div>
     </ConnectedRouter>
   </Provider>,

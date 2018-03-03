@@ -31,6 +31,7 @@ export default class TeamAccordion extends Component {
                 teams={ this.props.teams }
                 fixtures={ this.props.fixtures }
                 tz={ this.props.tz }
+                selectTeam={ this.props.selectTeam }
               />
             </div>
           </div>
@@ -82,7 +83,11 @@ export default class TeamAccordion extends Component {
             data-parent="#team-accordion"
           >
             <div className="card-body">
-              <TeamLadder teams={ this.props.teams } team={ this.props.team } />
+              <TeamLadder
+                teams={ this.props.teams }
+                team={ this.props.team }
+                selectTeam={ this.props.selectTeam }
+              />
             </div>
           </div>
         </div>

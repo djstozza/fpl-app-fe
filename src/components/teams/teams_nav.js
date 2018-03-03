@@ -11,7 +11,7 @@ export default class TeamsNav extends Component {
     const teamId = this.props.team.id;
     const teamList = this.props.teams.map(function (team) {
       const teamTabClass = `team-tab-${team.id}`
-      const teamImg = require(`../../images/shields/${team.attributes.short_name.toLowerCase()}.png`);
+      const teamImg = require(`../../images/shields/${team.short_name.toLowerCase()}.png`);
 
       return (
         <li
@@ -19,15 +19,15 @@ export default class TeamsNav extends Component {
           className='nav-item'
         >
           <a
-            className={ `nav-link ${team.id === String(teamId) ? 'active' : ''} ${teamTabClass}` }
+            className={ `nav-link ${team.id === parseInt(teamId) ? 'active' : ''} ${teamTabClass}` }
             role="tab"
             onClick={ () => {
               centerItVariableWidth(teamTabClass, "nav-tabs", false);
               self.props.selectTeam(team.id) }
             }
           >
-            <img className='nav-img' src={ teamImg } alt={ team.attributes.name } />
-            <span>&nbsp;{ team.attributes.short_name }</span>
+            <img className='nav-img' src={ teamImg } alt={ team.name } />
+            <span>&nbsp;{ team.short_name }</span>
           </a>
         </li>
       );

@@ -14,17 +14,17 @@ export default class Match extends React.Component {
       <div id="matches-accordion">
         {
           matches.map(function (match, key) {
-            const homeTeam = _.find(teams, (team) => { return team.id === match.relationships.team_h.data.id });
-            const awayTeam = _.find(teams, (team) => { return team.id === match.relationships.team_a.data.id } );
+            const homeTeam = _.find(teams, (team) => { return team.id == match.team_h_id });
+            const awayTeam = _.find(teams, (team) => { return team.id == match.team_a_id } );
 
-            const homeTeamImg = require(`../../images/shields/${homeTeam.attributes.short_name.toLowerCase()}.png`);
-            const awayTeamImg = require(`../../images/shields/${awayTeam.attributes.short_name.toLowerCase()}.png`);
+            const homeTeamImg = require(`../../images/shields/${homeTeam.short_name.toLowerCase()}.png`);
+            const awayTeamImg = require(`../../images/shields/${awayTeam.short_name.toLowerCase()}.png`);
 
-            const homeTeamName = homeTeam.attributes.name;
-            const awayTeamName = awayTeam.attributes.name;
+            const homeTeamName = homeTeam.name;
+            const awayTeamName = awayTeam.name;
 
 
-            if (match.attributes.team_h_score != null && match.attributes.team_a_score != null) {
+            if (match.team_h_score != null && match.team_a_score != null) {
               return (
                 <div className="card" key={`match-${match.id}` }>
                   <div
@@ -37,19 +37,19 @@ export default class Match extends React.Component {
                     <h6 className="mb-0">
                       <div className="row">
                         <div className="col col-sm-4 accordion-header-info">
-                          { homeTeam.attributes.short_name }
+                          { homeTeam.short_name }
                         </div>
                         <div className="col col-sm-1 accordion-header-info">
                           <img className='image-crest' src={ homeTeamImg } alt={ homeTeamName } />
                         </div>
                         <div className="col col-sm-2 accordion-header-info">
-                          { match.attributes.team_h_score } - { match.attributes.team_a_score }
+                          { match.team_h_score } - { match.team_a_score }
                         </div>
                         <div className="col col-sm-1 accordion-header-info">
                           <img className='image-crest' src={ awayTeamImg } alt={ awayTeamName } />
                         </div>
                         <div className="col col-sm-4 accordion-header-info">
-                          { awayTeam.attributes.short_name }
+                          { awayTeam.short_name }
                         </div>
                       </div>
                     </h6>
@@ -71,7 +71,7 @@ export default class Match extends React.Component {
                 </div>
               )
             } else {
-              const kickoffTime = moment(match.attributes.kickoff_time).tz(tz).format('HH:MM')
+              const kickoffTime = moment(match.kickoff_time).tz(tz).format('HH:MM')
 
               return (
                 <div className="card" key={`match-${match.id}`}>
@@ -80,7 +80,7 @@ export default class Match extends React.Component {
                       <div>
                         <div className="row">
                           <div className="col col-sm-4 accordion-header-info">
-                            { homeTeam.attributes.short_name }
+                            { homeTeam.short_name }
                           </div>
                           <div className="col col-sm-1 accordion-header-info">
                             <img className='image-crest' src={ homeTeamImg } alt={ homeTeamName } />
@@ -92,7 +92,7 @@ export default class Match extends React.Component {
                             <img className='image-crest' src={ awayTeamImg } alt={ awayTeamName } />
                           </div>
                           <div className="col col-sm-4 accordion-header-info">
-                            { awayTeam.attributes.short_name }
+                            { awayTeam.short_name }
                           </div>
                         </div>
                       </div>

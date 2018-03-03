@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
+import { centerItVariableWidth } from '../../utils/nav_tab.js';
 import _ from 'underscore';
 
 const moment = require('moment-timezone');
@@ -14,9 +15,16 @@ export default class TeamFixtures extends Component {
 
     const teamSelectOptionsArr = _.compact(_.map(teams, (team) => {
       if (team.id !== self.props.team.id) {
-        return [team.attributes.short_name, team.attributes.short_name];
+        return [team.short_name, team.short_name];
       }
     }));
+
+    const selectTeam = (id) => {
+      if (self.props.selectTeam) {
+        self.props.selectTeam(id);
+        centerItVariableWidth( `team-tab-${id}`, "nav-tabs", false);
+      }
+    }
 
     const teamNameSelectOptions = _.object(teamSelectOptionsArr);
 
@@ -51,7 +59,14 @@ export default class TeamFixtures extends Component {
         filter: selectFilter({
           options: teamNameSelectOptions,
           placeholder: ' '
-        })
+        }),
+        formatter: (cell, row) => {
+          return (
+            <Link to={ `/teams/${row.opponent_id}` } onClick={ () => selectTeam(row.opponent_id) } >
+              { cell }
+            </Link>
+          );
+        }
       }, {
         text: 'H/A',
         dataField: 'leg',

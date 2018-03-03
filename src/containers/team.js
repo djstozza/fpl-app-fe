@@ -18,6 +18,8 @@ class Team extends Component {
       tz: this.props.tz,
       teams: [],
       fixtures: [],
+      players: [],
+      positions: [],
       teamId: this.props.match.params.id,
       loaded: false
     }
@@ -59,10 +61,10 @@ class Team extends Component {
     if (this.state.loaded) {
       return (
         <div>
-          <TeamsNav teams={ this.state.teams } team={ this.state.team } selectTeam={ this.selectTeam }/>
+          <TeamsNav teams={ this.state.teams } team={ this.state.team } selectTeam={ this.selectTeam } />
           <div className="row">
             <div className="col col-md-10 offset-md-1">
-              <h4>{ this.state.team.attributes.name }</h4>
+              <h4>{ this.state.team.name }</h4>
               <TeamAccordion
                 team={ this.state.team }
                 fixtures={ this.state.fixtures }
@@ -70,6 +72,7 @@ class Team extends Component {
                 teams={ this.state.teams }
                 players={ this.state.players }
                 positions={ this.state.positions }
+                selectTeam={ this.selectTeam }
               />
             </div>
           </div>

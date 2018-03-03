@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default class MatchDetailsTable extends React.Component {
   render () {
-    const attributes = this.props.match.attributes;
-    const stats = attributes.stats;
+    const stats = this.props.match.stats;
     const goalsScored = stats.goals_scored;
     const assists = stats.assists;
     const ownGoals = stats.own_goals;
@@ -67,16 +66,16 @@ export default class MatchDetailsTable extends React.Component {
           <tr>
             <th/>
             <th>
-              <Link to={`/teams/${this.props.homeTeam.id}` } > { this.props.homeTeam.attributes.name }</Link>
+              <Link to={`/teams/${this.props.homeTeam.id}` } > { this.props.homeTeam.name }</Link>
             </th>
             <th>
-              { this.props.match.attributes.team_h_score }
+              {stats.team_h_score }
             </th>
             <th>
-            <Link to={`/teams/${this.props.awayTeam.id}` } > { this.props.awayTeam.attributes.name }</Link>
+            <Link to={`/teams/${this.props.awayTeam.id}` } > { this.props.awayTeam.name }</Link>
             </th>
             <th>
-              { attributes.team_a_score }
+              { stats.team_a_score }
             </th>
           </tr>
         </thead>

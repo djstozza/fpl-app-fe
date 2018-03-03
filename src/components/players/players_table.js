@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import _ from 'underscore';
 
@@ -9,17 +10,21 @@ export default class PlayersTable extends Component {
     const team = this.props.team;
     const teams = this.props.teams;
     const players = this.props.players;
-    const data = _.sortBy(players, (player) => { return player.attributes.total_points }).reverse();
+    const data = _.sortBy(players, (player) => { return player.total_points }).reverse();
 
     const positionOptions = _.object(_.map(self.props.positions, (position) => {
       return [position.id, position.attributes.singular_name_short];
     }));
 
     const teamOptions = _.object(_.map(teams, (team) => {
-      return [team.id, team.attributes.short_name];
+      return [team.id, team.short_name];
     }));
 
     const defaultSorted = [{ dataField: 'attributes.total_points', order: 'desc' }];
+
+    const paginationOptions = {
+      hidePageListOnlyOnePage: true
+    }
 
     const columns = [
       {
@@ -28,7 +33,7 @@ export default class PlayersTable extends Component {
        hidden: true
       }, {
         text: 'Last Name',
-        dataField: 'attributes.last_name',
+        dataField: 'last_name',
         align: 'center',
         headerAlign: 'center',
         sort: true,
@@ -37,7 +42,7 @@ export default class PlayersTable extends Component {
         })
       }, {
         text: 'Position',
-        dataField: 'relationships.position.data.id',
+        dataField: 'position_id',
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
@@ -49,7 +54,7 @@ export default class PlayersTable extends Component {
         })
       }, {
         text: 'Team',
-        dataField: 'relationships.team.data.id',
+        dataField: 'team_id',
         align: 'center',
         headerAlign: 'center',
         hidden: team !== undefined,
@@ -62,61 +67,61 @@ export default class PlayersTable extends Component {
         }),
       }, {
         text: 'Goals',
-        dataField: 'attributes.goals_scored',
+        dataField: 'goals_scored',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       }, {
         text: 'Assists',
-        dataField: 'attributes.assists',
+        dataField: 'assists',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       }, {
         text: 'Yellow Cards',
-        dataField: 'attributes.yellow_cards',
+        dataField: 'yellow_cards',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       }, {
         text: 'Red Cards',
-        dataField: 'attributes.red_cards',
+        dataField: 'red_cards',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       }, {
         text: 'Clean Sheets',
-        dataField: 'attributes.clean_sheets',
+        dataField: 'clean_sheets',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       }, {
         text: 'Goals Conceded',
-        dataField: 'attributes.goals_conceded',
+        dataField: 'goals_conceded',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       }, {
         text: 'Saves',
-        dataField: 'attributes.saves',
+        dataField: 'saves',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       },{
         text: 'Form',
-        dataField: 'attributes.form',
+        dataField: 'form',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       }, {
         text: 'PPG',
-        dataField: 'attributes.points_per_game',
+        dataField: 'points_per_game',
         sort: true,
         align: 'center',
         headerAlign: 'center',
       }, {
         text: 'Deam Team',
-        dataField: 'attributes.in_dreamteam',
+        dataField: 'in_dreamteam',
         sort: true,
         align: 'center',
         headerAlign: 'center',
@@ -125,7 +130,7 @@ export default class PlayersTable extends Component {
         },
       }, {
         text: 'Total Points',
-        dataField: 'attributes.total_points',
+        dataField: 'total_points',
         sort: true,
         align: 'center',
         headerAlign: 'center',
@@ -139,6 +144,8 @@ export default class PlayersTable extends Component {
           data={ data }
           columns={ columns }
           filter={ filterFactory() }
+          pagination={ paginationFactory() }
+
           striped
           hover
         />
