@@ -14,11 +14,14 @@ import createHistory from 'history/createBrowserHistory'
 import { Route } from 'react-router'
 
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
+import { Switch } from 'react-router'
+
 
 import rootReducer from './reducers/index'
 import Rounds from './containers/rounds.js';
 import Team from './containers/team.js';
 import Players from './containers/players.js';
+import ErrorHandler from './containers/error_handler.js';
 
 const history = createHistory()
 const initialState = {}
@@ -46,13 +49,14 @@ const tz = moment.tz.guess();
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <div>
+      <Switch>
         <Route exact path="/" render={(props) => (<Rounds {...props} tz={tz}/>)} />
         <Route exact path="/rounds" render={(props) => (<Rounds {...props} tz={tz}/>)} />
         <Route exact path="/rounds/:id(\d+)" render={(props) => (<Rounds {...props} tz={tz}/>)} />
         <Route exact path="/teams/:id(\d+)" render={(props) => (<Team {...props} tz={tz}/>)} />
         <Route exact path="/players" render={(props) => (<Players {...props} tz={tz}/>)} />
-      </div>
+        <Route component={ ErrorHandler } />
+      </Switch>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

@@ -57,7 +57,7 @@ export default class PlayersTable extends Component {
         dataField: 'team_id',
         align: 'center',
         headerAlign: 'center',
-        hidden: team !== undefined,
+        hidden: team,
         formatter: (cell, row) => {
           return teamOptions[cell];
         },

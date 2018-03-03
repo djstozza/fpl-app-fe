@@ -11,6 +11,8 @@ import RoundsNav from '../components/rounds/rounds_nav.js';
 
 import TeamLadder from '../components/teams/team_ladder.js';
 
+import ErrorHandler from './error_handler.js';
+
 import { CABLE_CONNECTION } from '../api-config.js';
 
 const ActionCable = require('actioncable');
@@ -44,9 +46,10 @@ class Rounds extends Component {
       round: nextProps.round,
       fixtures: nextProps.fixtures,
       teams: nextProps.teams,
+      error: nextProps.error
     });
 
-    if (nextProps.rounds.length > 0 && nextProps.round !== undefined && nextProps.teams.length > 0) {
+    if (nextProps.rounds.length > 0 && nextProps.round && nextProps.teams.length > 0) {
       this.setState({
         loaded: true
       });
@@ -69,21 +72,29 @@ class Rounds extends Component {
   }
 
   render () {
+    if (this.state.error) {
+      return (
+        <ErrorHandler error={ this.state.error } />
+      )
+    }
+
     if (this.state.loaded) {
       return (
         <div>
           <RoundsNav rounds={ this.state.rounds } round={this.state.round } selectRound={ this.selectRound }/>
-          <div className="row">
-            <div className="col col-md-10 offset-md-1">
-              <Round
-                round={ this.state.round }
-                fixtures={ this.state.fixtures }
-                teams={ this.state.teams }
-                tz={ this.state.tz }
-              />
-              <br/>
-              <h4>Team Ladder</h4>
-              <TeamLadder teams={ this.state.teams } />
+          <div className='container-fluid'>
+            <div className="row">
+              <div className="col col-md-10 offset-md-1">
+                <Round
+                  round={ this.state.round }
+                  fixtures={ this.state.fixtures }
+                  teams={ this.state.teams }
+                  tz={ this.state.tz }
+                />
+                <br/>
+                <h4>Team Ladder</h4>
+                <TeamLadder teams={ this.state.teams } />
+              </div>
             </div>
           </div>
         </div>
@@ -100,6 +111,7 @@ function mapStateToProps (state) {
     round: state.RoundReducer.round,
     fixtures: state.RoundReducer.fixtures,
     teams: state.TeamsReducer,
+    error: state.RoundReducer.data,
   }
 }
 

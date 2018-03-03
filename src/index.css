@@ -83,5 +83,23 @@ ul.scroll-nav {
 .transparent-text {
   color: transparent; }
 
-#root {
-  overflow-x: hidden; }
+.gif-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white; }
+  .gif-container .gif-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    mix-blend-mode: overlay;
+    background-image: url("https://media.giphy.com/media/KGTTNpVuGVhN6/giphy.gif"); }

@@ -9,6 +9,7 @@ import fetchPositions from '../actions/positions/fetch_positions.js';
 
 import TeamsNav from '../components/teams/teams_nav.js';
 import TeamAccordion from '../components/teams/team_accordion.js';
+import ErrorHandler from './error_handler.js';
 
 class Team extends Component {
   constructor (props) {
@@ -41,9 +42,10 @@ class Team extends Component {
       fixtures: nextProps.fixtures,
       players: nextProps.players,
       positions: nextProps.positions,
+      error: nextProps.error,
     });
 
-    if (nextProps.teams.length > 0 && nextProps.team !== undefined) {
+    if (nextProps.teams.length > 0 && nextProps.team) {
       this.setState({
         loaded: true
       });
@@ -58,22 +60,30 @@ class Team extends Component {
 
 
   render () {
+    if (this.state.error) {
+      return (
+        <ErrorHandler error={ this.state.error } />
+      )
+    }
+
     if (this.state.loaded) {
       return (
         <div>
           <TeamsNav teams={ this.state.teams } team={ this.state.team } selectTeam={ this.selectTeam } />
-          <div className="row">
-            <div className="col col-md-10 offset-md-1">
-              <h4>{ this.state.team.name }</h4>
-              <TeamAccordion
-                team={ this.state.team }
-                fixtures={ this.state.fixtures }
-                tz={ this.state.tz }
-                teams={ this.state.teams }
-                players={ this.state.players }
-                positions={ this.state.positions }
-                selectTeam={ this.selectTeam }
-              />
+          <div className='container-fluid'>
+            <div className="row">
+              <div className="col col-md-10 offset-md-1">
+                <h4>{ this.state.team.name }</h4>
+                <TeamAccordion
+                  team={ this.state.team }
+                  fixtures={ this.state.fixtures }
+                  tz={ this.state.tz }
+                  teams={ this.state.teams }
+                  players={ this.state.players }
+                  positions={ this.state.positions }
+                  selectTeam={ this.selectTeam }
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -91,6 +101,7 @@ function mapStateToProps (state) {
     fixtures: state.TeamReducer.fixtures,
     players: state.PlayersReducer,
     positions: state.PositionsReducer,
+    error: state.TeamReducer.data,
   }
 }
 
