@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { Link } from 'react-router-dom';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import _ from 'underscore';
 
@@ -39,7 +40,10 @@ export default class PlayersTable extends Component {
         sort: true,
         filter: textFilter({
           placeholder: ' '
-        })
+        }),
+        formatter: (cell, row) => {
+          return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
+        }
       }, {
         text: 'Position',
         dataField: 'position_id',

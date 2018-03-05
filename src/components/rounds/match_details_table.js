@@ -24,7 +24,9 @@ export default class MatchDetailsTable extends React.Component {
             {
               matchStatHash.home_team.map((stat, key) => {
                 return (
-                  <p key={ `home-player-${matchStatHash.initials}-${key}` }>{ stat.player.last_name }</p>
+                  <p key={ `home-player-${matchStatHash.initials}-${key}` }>
+                    <Link to={ `/players/${stat.player.id}` }>{ stat.player.last_name }</Link>
+                  </p>
                 );
               })
             }
@@ -42,7 +44,9 @@ export default class MatchDetailsTable extends React.Component {
             {
               matchStatHash.away_team.map((stat, key) => {
                 return (
-                  <p key={ `away-player-${matchStatHash.initials}-${key}` }>{ stat.player.last_name }</p>
+                  <p key={ `away-player-${matchStatHash.initials}-${key}` }>
+                    <Link to={ `/players/${stat.player.id}` }>{ stat.player.last_name }</Link>
+                  </p>
                 );
               })
             }

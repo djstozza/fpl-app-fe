@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
+import { Link } from 'react-router-dom';
 
 export default class FixtureHistoriesTable extends Component {
   render () {
@@ -18,6 +18,9 @@ export default class FixtureHistoriesTable extends Component {
        sort: true,
        align: 'center',
        headerAlign: 'center',
+       formatter: (cell, row) => {
+         return <Link to={ `/rounds/${cell}` }>{ cell }</Link>;
+       }
      }, {
        text: 'Minutes',
        dataField: 'minutes',
@@ -115,7 +118,6 @@ export default class FixtureHistoriesTable extends Component {
           keyField='id'
           data={ data }
           columns={ columns }
-          filter={ filterFactory() }
           striped
           hover
         />
