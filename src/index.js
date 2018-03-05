@@ -21,6 +21,7 @@ import rootReducer from './reducers/index'
 import Rounds from './containers/rounds.js';
 import Team from './containers/team.js';
 import Players from './containers/players.js';
+import Player from './containers/player.js';
 import ErrorHandler from './containers/error_handler.js';
 
 const history = createHistory()
@@ -55,6 +56,7 @@ ReactDOM.render(
         <Route exact path="/rounds/:id(\d+)" render={(props) => (<Rounds {...props} tz={tz}/>)} />
         <Route exact path="/teams/:id(\d+)" render={(props) => (<Team {...props} tz={tz}/>)} />
         <Route exact path="/players" render={(props) => (<Players {...props} tz={tz}/>)} />
+        <Route exact path="/players/:id(\d+)" render={(props) => (<Player {...props} tz={tz}/>)} />
         <Route component={ ErrorHandler } />
       </Switch>
     </ConnectedRouter>

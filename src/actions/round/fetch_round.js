@@ -8,7 +8,7 @@ export default function fetchRound (roundId) {
       dispatch(fetchRoundAsync(res.data));
     }).catch(error => {
       dispatch({ type: SHOW_ERRORS, payload: error.response });
-    });;
+    });
   }
 }
 

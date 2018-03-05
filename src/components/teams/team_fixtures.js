@@ -49,7 +49,7 @@ export default class TeamFixtures extends Component {
         headerAlign: 'center',
         sort: true,
         formatter: (cell, row) => {
-          return moment(cell).tz(this.props.tz).format('DD/MM/YY - HH:MM');
+          return moment(cell).tz(this.props.tz).format('DD/MM/YY HH:MM');
         }
       }, {
         text: 'Opponent',

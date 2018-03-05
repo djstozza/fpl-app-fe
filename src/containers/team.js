@@ -11,6 +11,9 @@ import TeamsNav from '../components/teams/teams_nav.js';
 import TeamAccordion from '../components/teams/team_accordion.js';
 import ErrorHandler from './error_handler.js';
 
+import { store } from '../index.js';
+import { push } from 'react-router-redux';
+
 class Team extends Component {
   constructor (props) {
     super(props);
@@ -28,7 +31,7 @@ class Team extends Component {
     this.selectTeam = this.selectTeam.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.fetchTeam(this.props.match.params.id);
     this.props.fetchTeams();
     this.props.fetchTeamPlayers(this.props.match.params.id);
@@ -55,7 +58,7 @@ class Team extends Component {
   selectTeam (teamId) {
     this.props.fetchTeam(teamId);
     this.props.fetchTeamPlayers(teamId);
-    window.history.pushState(null, '', `/teams/${teamId}`);
+    store.dispatch(push(`/teams/${teamId}`))
   }
 
 
@@ -74,15 +77,7 @@ class Team extends Component {
             <div className="row">
               <div className="col col-md-10 offset-md-1">
                 <h4>{ this.state.team.name }</h4>
-                <TeamAccordion
-                  team={ this.state.team }
-                  fixtures={ this.state.fixtures }
-                  tz={ this.state.tz }
-                  teams={ this.state.teams }
-                  players={ this.state.players }
-                  positions={ this.state.positions }
-                  selectTeam={ this.selectTeam }
-                />
+                <TeamAccordion { ...this.state } selectTeam={ this.selectTeam } />
               </div>
             </div>
           </div>
@@ -105,7 +100,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     fetchTeam: fetchTeam,
     fetchTeams: fetchTeams,

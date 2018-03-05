@@ -13,7 +13,11 @@ import TeamLadder from '../components/teams/team_ladder.js';
 
 import ErrorHandler from './error_handler.js';
 
+import { store } from '../index.js';
+import { push } from 'react-router-redux';
+
 import { CABLE_CONNECTION } from '../api-config.js';
+
 
 const ActionCable = require('actioncable');
 const cable = ActionCable.createConsumer(CABLE_CONNECTION);
@@ -68,7 +72,7 @@ class Rounds extends Component {
 
   selectRound (roundId) {
     this.props.fetchRound(roundId);
-    window.history.pushState(null, '', `/rounds/${roundId}`);
+    store.dispatch(push(`/rounds/${roundId}`))
   }
 
   render () {
@@ -81,16 +85,11 @@ class Rounds extends Component {
     if (this.state.loaded) {
       return (
         <div>
-          <RoundsNav rounds={ this.state.rounds } round={this.state.round } selectRound={ this.selectRound }/>
-          <div className='container-fluid'>
+          <RoundsNav { ...this.state } selectRound={ this.selectRound }/>
+          <div className='container'>
             <div className="row">
               <div className="col col-md-10 offset-md-1">
-                <Round
-                  round={ this.state.round }
-                  fixtures={ this.state.fixtures }
-                  teams={ this.state.teams }
-                  tz={ this.state.tz }
-                />
+                <Round {...this.state } />
                 <br/>
                 <h4>Team Ladder</h4>
                 <TeamLadder teams={ this.state.teams } />
@@ -115,7 +114,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     fetchRounds: fetchRounds,
     fetchRound: fetchRound,

@@ -11,6 +11,10 @@ body {
     display: -webkit-box; } }
 
 @media (max-width: 575.98px) {
+  body {
+    font-size: 12px; }
+  .image-crest {
+    zoom: 50%; }
   .bs-xs-scroll-table table {
     overflow-x: auto;
     display: -webkit-box; } }
@@ -103,3 +107,11 @@ ul.scroll-nav {
     height: 100vh;
     mix-blend-mode: overlay;
     background-image: url("https://media.giphy.com/media/KGTTNpVuGVhN6/giphy.gif"); }
+
+.profile-photo.loading .player-img {
+  display: none; }
+
+.profile-photo.loaded {
+  margin-top: -6rem; }
+  .profile-photo.loaded .player-img {
+    width: 10rem; }

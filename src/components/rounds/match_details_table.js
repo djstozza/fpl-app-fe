@@ -69,13 +69,13 @@ export default class MatchDetailsTable extends React.Component {
               <Link to={`/teams/${this.props.homeTeam.id}` } > { this.props.homeTeam.name }</Link>
             </th>
             <th>
-              {stats.team_h_score }
+              { this.props.match.team_h_score }
             </th>
             <th>
             <Link to={`/teams/${this.props.awayTeam.id}` } > { this.props.awayTeam.name }</Link>
             </th>
             <th>
-              { stats.team_a_score }
+              { this.props.match.team_a_score }
             </th>
           </tr>
         </thead>

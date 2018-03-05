@@ -57,7 +57,7 @@ export default class PlayersTable extends Component {
         dataField: 'team_id',
         align: 'center',
         headerAlign: 'center',
-        hidden: team,
+        hidden: team !== undefined,
         formatter: (cell, row) => {
           return teamOptions[cell];
         },
@@ -145,7 +145,6 @@ export default class PlayersTable extends Component {
           columns={ columns }
           filter={ filterFactory() }
           pagination={ paginationFactory() }
-
           striped
           hover
         />

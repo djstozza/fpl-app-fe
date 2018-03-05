@@ -23,12 +23,7 @@ export default class FixtureGroups extends React.Component {
           fixtureGroupsEntries.map((fixtureGroup, key) => {
             return [
               <b key={`game-day-${key}`}>{ fixtureGroup[0] }</b>,
-              <Matches
-                key={`matches-${key}`}
-                matches={ fixtureGroup[1] }
-                teams={ self.props.teams }
-                tz={ self.props.tz }
-              />
+              <Matches { ...this.props } key={`matches-${key}`} matches={ fixtureGroup[1] } />
             ]
           })
         }
