@@ -86,7 +86,7 @@ class Rounds extends Component {
       return (
         <div>
           <RoundsNav { ...this.state } selectRound={ this.selectRound }/>
-          <div className='container'>
+          <div className='container-fluid'>
             <div className="row">
               <div className="col col-md-10 offset-md-1">
                 <Round {...this.state } />

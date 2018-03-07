@@ -3,8 +3,14 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Link } from 'react-router-dom';
 import _ from 'underscore';
 import { centerItVariableWidth } from '../../utils/nav_tab.js';
+import $ from 'jquery';
+import { tooltipHeader } from '../../utils/data_table.js';
 
 export default class TeamLadder extends Component {
+  componentDidMount () {
+    $('[data-toggle="tooltip"]').tooltip()
+  }
+
   render () {
     const self = this;
     const data = _.sortBy(this.props.teams, (team) => { return team.position });
@@ -29,15 +35,63 @@ export default class TeamLadder extends Component {
               { cell }
             </Link>
           );
-        }
+        },
+        headerFormatter: tooltipHeader
       },
-      { dataField: 'played', text: 'Played', sort: true, align: 'center', headerAlign: 'center' },
-      { dataField: 'wins', text: 'Wins', sort: true, align: 'center', headerAlign: 'center' },
-      { dataField: 'losses', text: 'Losses', sort: true, align: 'center', headerAlign: 'center' },
-      { dataField: 'draws', text: 'Draws', sort: true, align: 'center', headerAlign: 'center' },
-      { dataField: 'current_form', text: 'Current Form', align: 'center', headerAlign: 'center' },
-      { dataField: 'goal_difference', text: 'G/D', sort: true, align: 'center', headerAlign: 'center' },
-      { dataField: 'points' , text: 'Points', sort: true, align: 'center', headerAlign: 'center' }
+      {
+        dataField: 'played',
+        text: 'Played',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader
+      },
+      {
+        dataField: 'wins',
+        text: 'Wins',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader
+      },
+      {
+        dataField: 'losses',
+        text: 'Losses',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader
+      },
+      {
+        dataField: 'draws',
+        text: 'Draws',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader
+      },
+      {
+        dataField: 'current_form',
+        text: 'Current Form',
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader
+      },
+      {
+        dataField: 'goal_difference',
+        text: 'Goal Difference',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader
+      },
+      { dataField: 'points' ,
+        text: 'Points',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader
+      }
     ]
 
     const defaultSorted = [{ dataField: 'attributes.position', order: 'asc' }];
@@ -45,14 +99,14 @@ export default class TeamLadder extends Component {
     const rowClasses = (row, rowIndex) => {
       let classes;
       if (this.props.team && row.id === parseInt(this.props.team.id)) {
-        classes = 'diff-e';
+        classes = 'selected';
       }
 
       return classes;
     };
 
     return (
-      <div className='bs-md-scroll-table'>
+      <div className='bs-xs-scroll-table'>
         <BootstrapTable
           keyField='name'
           data={ data }

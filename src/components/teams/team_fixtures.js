@@ -4,10 +4,16 @@ import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 import { centerItVariableWidth } from '../../utils/nav_tab.js';
 import _ from 'underscore';
+import $ from 'jquery';
+import { tooltipHeader } from '../../utils/data_table.js';
 
 const moment = require('moment-timezone');
 
 export default class TeamFixtures extends Component {
+  componentDidMount () {
+    $('[data-toggle="tooltip"]').tooltip()
+  }
+
   render () {
     const self = this;
     const data = this.props.fixtures;
@@ -41,7 +47,8 @@ export default class TeamFixtures extends Component {
         headerAlign: 'center',
         formatter: (cell, row) => {
           return <Link to={ `/rounds/${cell}` }>{ cell }</Link>;
-        }
+        },
+        headerFormatter: tooltipHeader
       }, {
         text: 'Kickoff',
         dataField: 'kickoff_time',
@@ -50,7 +57,8 @@ export default class TeamFixtures extends Component {
         sort: true,
         formatter: (cell, row) => {
           return moment(cell).tz(this.props.tz).format('DD/MM/YY HH:MM');
-        }
+        },
+        headerFormatter: tooltipHeader
       }, {
         text: 'Opponent',
         dataField: 'opponent_short_name',
@@ -66,7 +74,8 @@ export default class TeamFixtures extends Component {
               { cell }
             </Link>
           );
-        }
+        },
+        headerFormatter: tooltipHeader
       }, {
         text: 'H/A',
         dataField: 'leg',
@@ -75,7 +84,8 @@ export default class TeamFixtures extends Component {
         filter: selectFilter({
           options: { H: 'H', A: 'A' },
           placeholder: ' '
-        })
+        }),
+        headerFormatter: tooltipHeader
       }, {
         text: 'Result',
         dataField: 'result',
@@ -84,17 +94,20 @@ export default class TeamFixtures extends Component {
         filter: selectFilter({
           options: { W: 'W', D: 'D', L: 'L' },
           placeholder: ' '
-        })
+        }),
+        headerFormatter: tooltipHeader
       }, {
         text: 'Score',
         dataField: 'score',
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
         text: 'Advantage',
         dataField: 'advantage',
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader,
         sort: true,
         classes: (cell, row, rowIndex, colIndex) => {
           let adv;
@@ -108,12 +121,11 @@ export default class TeamFixtures extends Component {
 
           return `${adv} transparent-text`;
         },
-
       }
     ]
 
     return (
-      <div className='bs-xs-scroll-table'>
+      <div>
         <BootstrapTable
           keyField='fixture_id'
           data={ data }

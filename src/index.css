@@ -72,7 +72,7 @@ ul.scroll-nav {
 .diff-h-1 {
   background-color: #33ffff; }
 
-.diff-e {
+.diff-e, .selected {
   background-color: #4dff4d !important; }
 
 .diff-a-1 {

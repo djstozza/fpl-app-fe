@@ -4,8 +4,14 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { Link } from 'react-router-dom';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import _ from 'underscore';
+import $ from 'jquery'
+import { tooltipHeader } from '../../utils/data_table.js';
 
 export default class PlayersTable extends Component {
+  componentDidMount () {
+    $('[data-toggle="tooltip"]').tooltip()
+  }
+
   render () {
     const self = this;
     const team = this.props.team;
@@ -27,6 +33,8 @@ export default class PlayersTable extends Component {
       hidePageListOnlyOnePage: true
     }
 
+
+
     const columns = [
       {
        text: 'ID',
@@ -43,7 +51,8 @@ export default class PlayersTable extends Component {
         }),
         formatter: (cell, row) => {
           return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
-        }
+        },
+        headerFormatter: tooltipHeader
       }, {
         text: 'Position',
         dataField: 'position_id',
@@ -52,6 +61,7 @@ export default class PlayersTable extends Component {
         formatter: (cell, row) => {
           return positionOptions[cell];
         },
+        headerFormatter: tooltipHeader,
         filter: selectFilter({
           options: positionOptions,
           placeholder: ' ',
@@ -65,6 +75,7 @@ export default class PlayersTable extends Component {
         formatter: (cell, row) => {
           return teamOptions[cell];
         },
+        headerFormatter: tooltipHeader,
         filter: selectFilter({
           options: teamOptions,
           placeholder: ' ',
@@ -75,54 +86,63 @@ export default class PlayersTable extends Component {
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
         text: 'Assists',
         dataField: 'assists',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
         text: 'Yellow Cards',
         dataField: 'yellow_cards',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
         text: 'Red Cards',
         dataField: 'red_cards',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
         text: 'Clean Sheets',
         dataField: 'clean_sheets',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
         text: 'Goals Conceded',
         dataField: 'goals_conceded',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
         text: 'Saves',
         dataField: 'saves',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       },{
         text: 'Form',
         dataField: 'form',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
-        text: 'PPG',
+        text: 'Points Per Game',
         dataField: 'points_per_game',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }, {
         text: 'Deam Team',
         dataField: 'in_dreamteam',
@@ -132,17 +152,19 @@ export default class PlayersTable extends Component {
         formatter: (cell, row) => {
           return cell ? 'Yes' : 'No';
         },
+        headerFormatter: tooltipHeader
       }, {
         text: 'Total Points',
         dataField: 'total_points',
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        headerFormatter: tooltipHeader
       }
     ]
 
     return (
-      <div className='bs-scroll-table'>
+      <div className='bs-md-scroll-table'>
         <BootstrapTable
           keyField='id'
           data={ data }

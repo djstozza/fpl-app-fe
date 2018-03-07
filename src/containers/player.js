@@ -48,7 +48,7 @@ class Player extends Component {
 
     if (this.state.loaded) {
       return (
-        <div className="container">
+        <div className="container-fluid">
           <PlayerHeader { ...this.state } />
           <PlayerAccordion { ...this.state } />
         </div>

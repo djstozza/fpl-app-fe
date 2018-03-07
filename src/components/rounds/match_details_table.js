@@ -18,7 +18,7 @@ export default class MatchDetailsTable extends React.Component {
       return [
         <tr key={`tr-${this.props.match.id}-${matchStatHash.initials}-${key}`}>
           <td>
-            <b>{ matchStatHash.initials }</b>
+            <b data-toggle="tooltip" data-placement="top" title={ matchStatHash.name }>{ matchStatHash.initials }</b>
           </td>
           <td>
             {

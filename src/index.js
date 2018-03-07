@@ -43,8 +43,9 @@ export const store = createStore(
   composedEnhancers
 )
 
+require('bootstrap');
+
 const moment = require('moment-timezone');
-const bootstrap = require('bootstrap');
 const tz = moment.tz.guess();
 
 ReactDOM.render(
