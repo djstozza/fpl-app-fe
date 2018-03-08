@@ -98,7 +98,7 @@ export default class TeamLadder extends Component {
 
     const rowClasses = (row, rowIndex) => {
       let classes;
-      if (this.props.team && row.id === parseInt(this.props.team.id)) {
+      if (this.props.team && row.id === parseInt(this.props.team.id, 10)) {
         classes = 'selected';
       }
 

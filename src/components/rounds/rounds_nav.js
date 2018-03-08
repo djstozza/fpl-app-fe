@@ -18,7 +18,7 @@ export default class RoundsNav extends Component {
           className='nav-item'
         >
           <a
-            className={ `nav-link ${round.id === parseInt(roundId) ? 'active' : ''} ${roundTabClass}` }
+            className={ `nav-link ${round.id === parseInt(roundId, 10) ? 'active' : ''} ${roundTabClass}` }
             role="tab"
             onClick={ () => {
               centerItVariableWidth(roundTabClass, "nav-tabs", false);

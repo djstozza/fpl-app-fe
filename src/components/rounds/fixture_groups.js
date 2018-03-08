@@ -15,7 +15,6 @@ export default class FixtureGroups extends React.Component {
     });
 
     const fixtureGroupsEntries = Object.entries(fixtureGroups);
-    const self = this;
 
     return (
       <div>

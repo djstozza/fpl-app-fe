@@ -23,7 +23,7 @@ export default class PlayerHeader extends Component {
     const backgroundImg = require("../../images/football-background.jpg");
 
     function playerAvailability (chance) {
-      return chance === undefined && player.status === "a" ? '100%' : `${chance}%`
+      return chance === null && player.status === "a" ? '100%' : `${chance}%`
     }
 
     function newsRow () {

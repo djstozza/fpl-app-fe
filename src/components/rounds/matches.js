@@ -14,8 +14,8 @@ export default class Match extends React.Component {
       <div id="matches-accordion">
         {
           matches.map(function (match, key) {
-            const homeTeam = _.find(teams, (team) => { return team.id === parseInt(match.team_h_id) });
-            const awayTeam = _.find(teams, (team) => { return team.id === parseInt(match.team_a_id) } );
+            const homeTeam = _.find(teams, (team) => { return team.id === parseInt(match.team_h_id, 10) });
+            const awayTeam = _.find(teams, (team) => { return team.id === parseInt(match.team_a_id, 10) } );
 
             const homeTeamImg = require(`../../images/shields/${homeTeam.short_name.toLowerCase()}.png`);
             const awayTeamImg = require(`../../images/shields/${awayTeam.short_name.toLowerCase()}.png`);
