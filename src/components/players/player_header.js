@@ -27,7 +27,7 @@ export default class PlayerHeader extends Component {
     }
 
     function newsRow () {
-      if (player.news.length > 0) {
+      if (player.news && player.news.length > 0) {
         return (
           <tr>
             <td><b>News</b></td>
