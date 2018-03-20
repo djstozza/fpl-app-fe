@@ -1,6 +1,7 @@
 import React from 'react';
-import _ from 'underscore';
 import MatchDetailsTable from './match_details_table.js';
+import { popup } from '../../utils/accordion_popup.js';
+import find from 'lodash/find';
 
 const moment = require('moment-timezone');
 
@@ -14,8 +15,8 @@ export default class Match extends React.Component {
       <div id="matches-accordion">
         {
           matches.map(function (match, key) {
-            const homeTeam = _.find(teams, (team) => { return team.id === parseInt(match.team_h_id, 10) });
-            const awayTeam = _.find(teams, (team) => { return team.id === parseInt(match.team_a_id, 10) } );
+            const homeTeam = find(teams, (team) => { return team.id === parseInt(match.team_h_id, 10) });
+            const awayTeam = find(teams, (team) => { return team.id === parseInt(match.team_a_id, 10) } );
 
             const homeTeamImg = require(`../../images/shields/${homeTeam.short_name.toLowerCase()}.png`);
             const awayTeamImg = require(`../../images/shields/${awayTeam.short_name.toLowerCase()}.png`);
@@ -23,16 +24,16 @@ export default class Match extends React.Component {
             const homeTeamName = homeTeam.name;
             const awayTeamName = awayTeam.name;
 
-
             if (match.team_h_score != null && match.team_a_score != null) {
               return (
-                <div className="card" key={`match-${match.id}` }>
+                <div className="card" key={ `match-${match.id}` }>
                   <div
                     className="card-header accordion-header"
                     id={`match-${match.id}`}
                     data-toggle="collapse"
                     data-target={ `#match-${match.id}-result` }
                     aria-expanded="false"
+                    onClick={ (e) => popup(e) }
                   >
                     <h6 className="mb-0">
                       <div className="row">
@@ -71,8 +72,7 @@ export default class Match extends React.Component {
                 </div>
               )
             } else {
-              const kickoffTime = moment(match.kickoff_time).tz(tz).format('HH:MM')
-
+              const kickoffTime = moment(match.kickoff_time).tz(tz).format('HH:mm')
               return (
                 <div className="card" key={`match-${match.id}`}>
                   <div className="card-header" id={`match-${match.id}`}>

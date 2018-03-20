@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TeamFixtures from './team_fixtures.js';
 import TeamLadder from './team_ladder.js';
 import PlayersTable from '../players/players_table.js';
+import { popup } from '../../utils/accordion_popup.js';
 
 export default class TeamAccordion extends Component {
   render () {
@@ -14,6 +15,7 @@ export default class TeamAccordion extends Component {
             data-target="#team-fixture-info"
             aria-controls="team-fixture-info"
             id="team-fixture-header"
+            onClick={ (e) => popup(e)}
           >
             <h6 className="mt-1">
               Team Fixtures
@@ -37,6 +39,7 @@ export default class TeamAccordion extends Component {
             data-target="#team-player-info"
             aria-controls="team-player-info"
             id="team-player-header"
+            onClick={ (e) => popup(e) }
           >
             <h6 className="mt-1">
               Players
@@ -60,6 +63,7 @@ export default class TeamAccordion extends Component {
             data-target="#team-ladder-info"
             aria-controls="team-ladder-info"
             id="team-ladder-header"
+            onClick={ (e) => popup(e) }
           >
             <h6 className="mt-1">
               Ladder

@@ -3,7 +3,9 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 import { centerItVariableWidth } from '../../utils/nav_tab.js';
-import _ from 'underscore';
+import compact from 'lodash/compact';
+import map from 'lodash/map';
+import { mappedObj } from '../../utils/lodash.js';
 import $ from 'jquery';
 import { tooltipHeader } from '../../utils/data_table.js';
 
@@ -19,9 +21,9 @@ export default class TeamFixtures extends Component {
     const data = this.props.fixtures;
     const teams = this.props.teams;
 
-    const teamSelectOptionsArr = _.compact(_.map(teams, (team) => {
+    const selectableTeams = compact(map(teams, (team) => {
       if (team.id !== self.props.team.id) {
-        return [team.short_name, team.short_name];
+        return team;
       }
     }));
 
@@ -32,7 +34,7 @@ export default class TeamFixtures extends Component {
       }
     }
 
-    const teamNameSelectOptions = _.object(teamSelectOptionsArr);
+    const teamNameSelectOptions = mappedObj(selectableTeams, 'id', 'short_name');
 
     const columns = [
       {
@@ -56,7 +58,7 @@ export default class TeamFixtures extends Component {
         headerAlign: 'center',
         sort: true,
         formatter: (cell, row) => {
-          return moment(cell).tz(this.props.tz).format('DD/MM/YY HH:MM');
+          return moment(cell).tz(this.props.tz).format('DD/MM/YY HH:mm');
         },
         headerFormatter: tooltipHeader
       }, {

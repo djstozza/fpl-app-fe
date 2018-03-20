@@ -10,7 +10,16 @@ export const FETCH_PLAYER = 'FETCH_PLAYER';
 
 export const FETCH_POSITIONS = 'FETCH_POSITIONS';
 
-export const SHOW_ERRORS = 'SHOW_ERRORS';
+export const SIGN_UP = 'SIGN_UP';
+export const LOG_IN = 'LOG_IN';
+export const LOG_OUT = 'LOG_OUT';
+export const PROFILE = 'PROFILE';
+export const VALIDATE_TOKEN = 'VALIDATE_TOKEN';
+
+export const SHOW_ROUND_ERRORS = 'SHOW_ROUND_ERRORS';
+export const SHOW_USER_ERRORS = 'SHOW_USER_ERRORS';
+export const SHOW_TEAM_ERRORS = 'SHOW_TEAM_ERRORS';
+export const SHOW_PLAYER_ERRORS = 'SHOW_TEAM_ERRORS';
 
 // export const FETCH_CURRENT_ROUND = 'FETCH_CURRENT_ROUND';
 

@@ -1,10 +1,10 @@
-import { FETCH_TEAM, SHOW_ERRORS } from '../actions/types';
+import { FETCH_TEAM, SHOW_TEAM_ERRORS } from '../actions/types';
 
 export default function(state=[], action) {
   switch (action.type) {
     case FETCH_TEAM:
       return action.payload;
-    case SHOW_ERRORS:
+    case SHOW_TEAM_ERRORS:
       return action.payload;
 
     default:

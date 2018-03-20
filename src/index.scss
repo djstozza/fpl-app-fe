@@ -31,6 +31,12 @@ body {
     overflow-x: auto;
     display: -webkit-box;
   }
+
+  .card-body {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .bs-scroll-table table {
@@ -163,5 +169,11 @@ ul.scroll-nav {
     .player-img {
       width: 10rem;
     }
+  }
+}
+
+.card {
+  &.popup {
+    box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   }
 }

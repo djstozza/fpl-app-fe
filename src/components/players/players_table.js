@@ -3,9 +3,10 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { Link } from 'react-router-dom';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
-import _ from 'underscore';
 import $ from 'jquery'
 import { tooltipHeader } from '../../utils/data_table.js';
+import { mappedObj } from '../../utils/lodash.js';
+import sortBy from 'lodash/sortBy';
 
 export default class PlayersTable extends Component {
   componentDidMount () {
@@ -17,23 +18,17 @@ export default class PlayersTable extends Component {
     const team = this.props.team;
     const teams = this.props.teams;
     const players = this.props.players;
-    const data = _.sortBy(players, (player) => { return player.total_points }).reverse();
+    const positions = this.props.positions;
+    const data = sortBy(players, (player) => { return player.total_points }).reverse();
 
-    const positionOptions = _.object(_.map(self.props.positions, (position) => {
-      return [position.id, position.attributes.singular_name_short];
-    }));
-
-    const teamOptions = _.object(_.map(teams, (team) => {
-      return [team.id, team.short_name];
-    }));
+    const positionOptions = mappedObj(positions, 'id', 'singular_name_short');
+    const teamOptions = mappedObj(teams, 'id', 'short_name');
 
     const defaultSorted = [{ dataField: 'attributes.total_points', order: 'desc' }];
 
     const paginationOptions = {
       hidePageListOnlyOnePage: true
     }
-
-
 
     const columns = [
       {

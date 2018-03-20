@@ -1,16 +1,17 @@
 import React from 'react'
 import Matches from './matches.js';
-import _ from 'underscore';
+import sortBy from 'lodash/sortBy';
+import groupBy from 'lodash/groupBy';
 
 const moment = require('moment-timezone');
 
 export default class FixtureGroups extends React.Component {
   render () {
-    const sortedFixtureGroups = _.sortBy(this.props.fixtures, (fixture) => {
+    const sortedFixtureGroups = sortBy(this.props.fixtures, (fixture) => {
       return fixture.kickoff_time
     });
 
-    const fixtureGroups = _.groupBy(sortedFixtureGroups, (fixture) => {
+    const fixtureGroups = groupBy(sortedFixtureGroups, (fixture) => {
       return moment(fixture.kickoff_time).tz(this.props.tz).format('dddd, Do MMMM Y')
     });
 

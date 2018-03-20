@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Link } from 'react-router-dom';
-import _ from 'underscore';
+import sortBy from 'lodash/sortBy';
 import { centerItVariableWidth } from '../../utils/nav_tab.js';
 import $ from 'jquery';
 import { tooltipHeader } from '../../utils/data_table.js';
@@ -13,7 +13,7 @@ export default class TeamLadder extends Component {
 
   render () {
     const self = this;
-    const data = _.sortBy(this.props.teams, (team) => { return team.position });
+    const data = sortBy(this.props.teams, (team) => { return team.position });
     const selectTeam = (id) => {
       if (self.props.selectTeam) {
         self.props.selectTeam(id);
@@ -22,7 +22,14 @@ export default class TeamLadder extends Component {
     }
 
     const columns = [
-      { dataField: 'position',text: 'Position', sort: true, align: 'center', headerAlign: 'center' },
+      {
+        dataField: 'position',
+        text: 'Position',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader
+      },
       {
         dataField: 'name',
         text: 'Name',

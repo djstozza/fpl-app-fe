@@ -13,10 +13,7 @@ export default class RoundsNav extends Component {
     const roundList = this.props.rounds.map(function (round) {
       const roundTabClass = `round-tab-${round.id}`
       return (
-        <li
-          key={ round.id }
-          className='nav-item'
-        >
+        <li key={ round.id } className='nav-item'>
           <a
             className={ `nav-link ${round.id === parseInt(roundId, 10) ? 'active' : ''} ${roundTabClass}` }
             role="tab"

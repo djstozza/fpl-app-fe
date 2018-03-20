@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import fetchRounds from '../actions/rounds/fetch_rounds.js';
-import fetchRound from '../actions/round/fetch_round.js';
-import fetchTeams from '../actions/teams/fetch_teams.js';
+import fetchRounds from '../../actions/rounds/fetch_rounds.js';
+import fetchRound from '../../actions/round/fetch_round.js';
+import fetchTeams from '../../actions/teams/fetch_teams.js';
 
-import Round from '../components/rounds/round.js';
-import RoundsNav from '../components/rounds/rounds_nav.js';
+import Round from './round.js';
+import RoundsNav from './rounds_nav.js';
 
-import TeamLadder from '../components/teams/team_ladder.js';
+import TeamLadder from '../teams/team_ladder.js';
 
-import ErrorHandler from './error_handler.js';
+import ErrorHandler from '../error_handler.js';
 
-import { store } from '../index.js';
+import { store } from '../../App.js';
 import { push } from 'react-router-redux';
 
-import { CABLE_CONNECTION } from '../api-config.js';
+import { CABLE_CONNECTION } from '../../api-config.js';
 
 
 const ActionCable = require('actioncable');
@@ -76,7 +76,8 @@ class Rounds extends Component {
   }
 
   render () {
-    if (this.state.error) {
+    if (this.state.error && this.state.error.status !== '422') {
+
       return (
         <ErrorHandler error={ this.state.error } />
       )
@@ -110,7 +111,7 @@ function mapStateToProps (state) {
     round: state.RoundReducer.round,
     fixtures: state.RoundReducer.fixtures,
     teams: state.TeamsReducer,
-    error: state.RoundReducer.data,
+    error: state.RoundReducer.error,
   }
 }
 

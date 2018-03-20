@@ -1,0 +1,115 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import signUp from '../../actions/users/sign_up.js';
+
+class Signup extends Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      username: '',
+      password: '',
+      error: null
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.showError = this.showError.bind(this);
+  }
+
+  handleChange(event) {
+    const target = event.target;
+
+    this.setState({ [target.name]: target.value });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.signUp(this.state);
+  }
+
+  showError(type) {
+    if (this.state && this.state.error && this.state.error.data.errors[type]) {
+      return this.state.error.data.errors[type][0];
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({ error: nextProps.error });
+  }
+
+  render () {
+    return (
+      <form onSubmit={ this.handleSubmit } >
+        <div className="form-row">
+          <div className="form-group col-md-12">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              className={ `form-control ${this.showError('email') ? 'is-invalid' : ''}` }
+              id="email"
+              placeholder="Email"
+              onChange={ this.handleChange }
+            />
+            <div className="invalid-feedback">
+              { this.showError('email') }
+            </div>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group col-md-12">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              name="username"
+              className={ `form-control ${this.showError('username') ? 'is-invalid' : ''}` }
+              id="username"
+              placeholder="Username"
+              onChange={ this.handleChange }
+            />
+            <div className="invalid-feedback">
+              { this.showError('username') }
+            </div>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group col-md-12">
+            <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                className={ `form-control ${this.showError('password') ? 'is-invalid' : ''}` }
+                id="password"
+                placeholder="Password"
+                onChange={ this.handleChange }
+              />
+              <div className="invalid-feedback">
+                { this.showError('password') }
+              </div>
+          </div>
+          <button type="submit" className="btn btn-primary">Sign Up</button>
+        </div>
+      </form>
+    )
+  }
+}
+
+function mapStateToProps (state) {
+  return {
+    email: state.UsersReducer.email,
+    username: state.UsersReducer.username,
+    password: state.UsersReducer.password,
+    error: state.UsersReducer.error,
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({
+    signUp: signUp,
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

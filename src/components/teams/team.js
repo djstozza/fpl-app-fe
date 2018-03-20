@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import fetchTeams from '../actions/teams/fetch_teams.js';
-import fetchTeam from '../actions/team/fetch_team.js';
-import fetchTeamPlayers from '../actions/players/fetch_team_players.js';
-import fetchPositions from '../actions/positions/fetch_positions.js';
+import fetchTeams from '../../actions/teams/fetch_teams.js';
+import fetchTeam from '../../actions/team/fetch_team.js';
+import fetchTeamPlayers from '../../actions/players/fetch_team_players.js';
+import fetchPositions from '../../actions/positions/fetch_positions.js';
 
-import TeamsNav from '../components/teams/teams_nav.js';
-import TeamAccordion from '../components/teams/team_accordion.js';
-import ErrorHandler from './error_handler.js';
+import TeamsNav from './teams_nav.js';
+import TeamAccordion from './team_accordion.js';
+import ErrorHandler from '../error_handler.js';
 
-import { store } from '../index.js';
+import { store } from '../../App.js';
 import { push } from 'react-router-redux';
 
 class Team extends Component {
@@ -96,7 +96,7 @@ function mapStateToProps (state) {
     fixtures: state.TeamReducer.fixtures,
     players: state.PlayersReducer,
     positions: state.PositionsReducer,
-    error: state.TeamReducer.data,
+    error: state.TeamReducer.error,
   }
 }
 

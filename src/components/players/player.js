@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import fetchTeam from '../actions/team/fetch_team.js';
-import fetchPlayer from '../actions/players/fetch_player.js';
-import fetchPositions from '../actions/positions/fetch_positions.js';
-import ErrorHandler from './error_handler.js';
+import fetchTeam from '../../actions/team/fetch_team.js';
+import fetchPlayer from '../../actions/players/fetch_player.js';
+import fetchPositions from '../../actions/positions/fetch_positions.js';
+import ErrorHandler from '../error_handler.js';
 
-import PlayerHeader from '../components/players/player_header.js';
-import PlayerAccordion from '../components/players/player_accordion.js';
+import PlayerHeader from './player_header.js';
+import PlayerAccordion from './player_accordion.js';
 
 class Player extends Component {
   constructor (props) {
@@ -49,8 +49,10 @@ class Player extends Component {
     if (this.state.loaded) {
       return (
         <div className="container-fluid">
-          <PlayerHeader { ...this.state } />
-          <PlayerAccordion { ...this.state } />
+          <div className="col col-md-10 offset-md-1">
+            <PlayerHeader { ...this.state } />
+            <PlayerAccordion { ...this.state } />
+          </div>
         </div>
       )
     } else {
@@ -64,7 +66,7 @@ function mapStateToProps (state) {
     team: state.PlayersReducer.team,
     position: state.PlayersReducer.position,
     player: state.PlayersReducer.player,
-    error: state.PlayersReducer.data
+    error: state.PlayersReducer.error
   }
 }
 

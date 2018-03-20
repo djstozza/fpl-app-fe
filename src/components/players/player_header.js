@@ -72,6 +72,10 @@ export default class PlayerHeader extends Component {
                 <td>{ player.total_points }</td>
               </tr>
               <tr>
+                <td><b>Minutes</b></td>
+                <td>{ player.minutes }</td>
+              </tr>
+              <tr>
                 <td><b>Status</b></td>
                 <td>{ player.status }</td>
               </tr>
