@@ -11,10 +11,10 @@ body {
     display: -webkit-box; } }
 
 @media (max-width: 575.98px) {
-  body {
+  body, span {
     font-size: 12px; }
   .image-crest {
-    zoom: 50%; }
+    zoom: 33%; }
   .bs-xs-scroll-table table {
     overflow-x: auto;
     display: -webkit-box; }

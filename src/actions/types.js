@@ -14,6 +14,8 @@ export const SIGN_UP = 'SIGN_UP';
 export const LOG_IN = 'LOG_IN';
 export const LOG_OUT = 'LOG_OUT';
 export const PROFILE = 'PROFILE';
+export const UPDATE_USER = 'UPDATE_USER';
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const VALIDATE_TOKEN = 'VALIDATE_TOKEN';
 
 export const SHOW_ROUND_ERRORS = 'SHOW_ROUND_ERRORS';

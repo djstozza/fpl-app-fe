@@ -20,11 +20,11 @@ body {
 }
 
 @include media-breakpoint-down(xs) {
-  body {
+  body, span {
     font-size: 12px;
   }
   .image-crest {
-    zoom: 50%;
+    zoom: 33%;
   }
 
   .bs-xs-scroll-table table {

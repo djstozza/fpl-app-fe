@@ -10,16 +10,16 @@ export function showErrorAlert (error) {
       <div className='alert alert-danger' role="alert">
         { errorMessage }
       </div>
-    )
+    );
   };
 }
 
-export function showSuccessAlert (success) {
-  if (!isEmpty(success)) {
+export function showSuccessAlert (success, error) {
+  if (!isEmpty(success) && isEmpty(error)) {
     return (
       <div className='alert alert-success' role="alert">
         { success }
       </div>
-    )
+    );
   };
 }

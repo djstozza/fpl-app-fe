@@ -35,7 +35,7 @@ export default class Match extends React.Component {
                     aria-expanded="false"
                     onClick={ (e) => popup(e) }
                   >
-                    <h6 className="mb-0">
+                    <div className="mb-0">
                       <div className="row">
                         <div className="col col-sm-4 accordion-header-info">
                           { homeTeam.short_name }
@@ -43,7 +43,7 @@ export default class Match extends React.Component {
                         <div className="col col-sm-1 accordion-header-info">
                           <img className='image-crest' src={ homeTeamImg } alt={ homeTeamName } />
                         </div>
-                        <div className="col col-sm-2 accordion-header-info">
+                        <div className="col col-sm-2 accordion-header-info text-nowrap">
                           { match.team_h_score } - { match.team_a_score }
                         </div>
                         <div className="col col-sm-1 accordion-header-info">
@@ -53,7 +53,7 @@ export default class Match extends React.Component {
                           { awayTeam.short_name }
                         </div>
                       </div>
-                    </h6>
+                    </div>
                   </div>
                   <div
                     id={ `match-${match.id}-result` }
@@ -76,7 +76,7 @@ export default class Match extends React.Component {
               return (
                 <div className="card" key={`match-${match.id}`}>
                   <div className="card-header" id={`match-${match.id}`}>
-                    <h6 className="mb-0">
+                    <div className="mb-0">
                       <div>
                         <div className="row">
                           <div className="col col-sm-4 accordion-header-info">
@@ -96,7 +96,7 @@ export default class Match extends React.Component {
                           </div>
                         </div>
                       </div>
-                    </h6>
+                    </div>
                   </div>
                 </div>
               )

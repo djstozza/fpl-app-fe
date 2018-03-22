@@ -18,6 +18,6 @@ export default function login (params) {
 function loginAsync (data) {
   return {
     type: LOG_IN,
-    payload: { current_user: data, success: `Welcome back, ${data.data.username}!` }
+    payload: { current_user: data.data, success: `Welcome back, ${data.data.username}!` }
   };
 }

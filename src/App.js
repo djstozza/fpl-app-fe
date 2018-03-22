@@ -19,6 +19,7 @@ import Player from './components/players/player.js';
 import Login from './components/users/login.js';
 import Signup from './components/users/signup.js';
 import Profile from './components/users/profile.js';
+import Edit from './components/users/edit.js';
 import ErrorHandler from './components/error_handler.js';
 
 import Navbar from './components/users/navbar.js';
@@ -82,6 +83,7 @@ export default class App extends Component {
               <PublicRoute exact path="/login" component={ Login } />
               <PublicRoute exact path="/sign-up" component={ Signup } />
               <PrivateRoute exact path="/profile" component={ Profile } />
+              <PrivateRoute exact path="/user/edit" component={ Edit } />
               <Route component={ ErrorHandler } />
             </Switch>
           </div>

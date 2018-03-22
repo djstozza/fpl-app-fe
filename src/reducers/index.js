@@ -8,6 +8,7 @@ import PlayersReducer from './reducer_players';
 import PositionsReducer from './reducer_positions';
 import UsersReducer from './reducer_users';
 
+
 const rootReducer = combineReducers({
   RoundsReducer: RoundsReducer,
   RoundReducer: RoundReducer,

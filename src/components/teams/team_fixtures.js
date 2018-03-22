@@ -103,7 +103,8 @@ export default class TeamFixtures extends Component {
         dataField: 'score',
         align: 'center',
         headerAlign: 'center',
-        headerFormatter: tooltipHeader
+        headerFormatter: tooltipHeader,
+        classes: 'text-nowrap',
       }, {
         text: 'Advantage',
         dataField: 'advantage',
@@ -127,7 +128,7 @@ export default class TeamFixtures extends Component {
     ]
 
     return (
-      <div>
+      <div className='bs-xs-scroll-table'>
         <BootstrapTable
           keyField='fixture_id'
           data={ data }

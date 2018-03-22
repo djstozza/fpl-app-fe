@@ -19,12 +19,15 @@ class Navbar extends Component {
   userLinks () {
     if (this.state.loggedIn) {
       return (
-        <button onClick={ () =>  this.props.logout() } className="btn btn-outline-secondary">Log out</button>
+        <div>
+          <Link to='/profile' className="btn btn-outline-secondary">Profile</Link>
+          <button onClick={ () =>  this.props.logout() } className="btn btn-outline-secondary">Log out</button>
+        </div>
       );
     } else {
       return (
         <div>
-          <Link to='/login' className="btn btn-outline-secondary">Log in</Link>,
+          <Link to='/login' className="btn btn-outline-secondary">Log in</Link>
           <Link to='/sign-up' className="btn btn-outline-secondary">Sign up</Link>
         </div>
       )
@@ -41,10 +44,13 @@ class Navbar extends Component {
 
   render () {
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
-        <Link className="navbar-brand" to="/">Fpl App Fe</Link>
-        { this.userLinks() }
-      </nav>
+
+
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+          <Link className="navbar-brand" to="/">Fpl App Fe</Link>
+          { this.userLinks() }
+        </nav>
+    
     );
   }
 }

@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import signUp from '../../actions/users/sign_up.js';
 
-class Signup extends Component {
+export default class Edit extends Component {
   constructor (props) {
     super(props);
 
     this.state = {
-      email: '',
-      username: '',
-      password: '',
+      email: this.props.current_user.email,
+      username: this.props.current_user.username,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,7 +22,7 @@ class Signup extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.signUp(this.state);
+    this.props.update({...this.state});
   }
 
   showError(type) {
@@ -51,6 +47,7 @@ class Signup extends Component {
               className={ `form-control ${this.showError('email') ? 'is-invalid' : ''}` }
               id="email"
               placeholder="Email"
+              value={ this.state.email }
               onChange={ this.handleChange }
             />
             <div className="invalid-feedback">
@@ -67,48 +64,17 @@ class Signup extends Component {
               className={ `form-control ${this.showError('username') ? 'is-invalid' : ''}` }
               id="username"
               placeholder="Username"
+              value={ this.state.username }
               onChange={ this.handleChange }
             />
             <div className="invalid-feedback">
               { this.showError('username') }
             </div>
           </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-12">
-            <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                className={ `form-control ${this.showError('password') ? 'is-invalid' : ''}` }
-                id="password"
-                placeholder="Password"
-                onChange={ this.handleChange }
-              />
-              <div className="invalid-feedback">
-                { this.showError('password') }
-              </div>
-          </div>
-          <button type="submit" className="btn btn-primary">Sign Up</button>
+
+          <button type="submit" className="btn btn-primary">Edit</button>
         </div>
       </form>
     )
   }
 }
-
-function mapStateToProps (state) {
-  return {
-    email: state.UsersReducer.email,
-    username: state.UsersReducer.username,
-    password: state.UsersReducer.password,
-    error: state.UsersReducer.error,
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators({
-    signUp: signUp,
-  }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
