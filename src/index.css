@@ -11,17 +11,21 @@ body {
     display: -webkit-box; } }
 
 @media (max-width: 575.98px) {
-  body, span {
-    font-size: 12px; }
+  body, span, button, a, input {
+    font-size: 12px !important; }
   .image-crest {
     zoom: 33%; }
   .bs-xs-scroll-table table {
     overflow-x: auto;
     display: -webkit-box; }
-  .card-body {
+  .card.popup .card-body {
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 10px; } }
+
+@media (max-width: 320px) {
+  body, span, button, a, input {
+    font-size: 9px !important; } }
 
 .bs-scroll-table table {
   overflow-x: auto;
@@ -122,3 +126,7 @@ ul.scroll-nav {
 
 .card.popup {
   box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12); }
+
+.foo {
+  width: 105%;
+  right: 3%; }

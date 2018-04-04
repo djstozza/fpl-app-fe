@@ -76,7 +76,7 @@ class Rounds extends Component {
   }
 
   render () {
-    if (this.state.error && this.state.error.status !== '422') {
+    if (this.state.error && this.state.error.status !== 422) {
 
       return (
         <ErrorHandler error={ this.state.error } />

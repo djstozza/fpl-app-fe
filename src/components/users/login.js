@@ -34,42 +34,50 @@ class LogInForm extends Component {
 
   render () {
     return (
-      <div className='container-fluid'>
-        <div className='row'>
-          <div className='col col-sm-12 offset-md-3 col-md-6 mb-auto mt-auto'>
-            { showSuccessAlert(this.state.success) }
-            { showErrorAlert(this.state.error) }
-            <h3>Login</h3>
-            <form onSubmit={ this.handleSubmit } >
-              <div className="form-row">
-                <div className="form-group col-sm-12">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    className='form-control'
-                    id="email"
-                    placeholder="Email"
-                    onChange={ this.handleChange }
-                  />
+      <div>
+        { showSuccessAlert(this.state.success) }
+        { showErrorAlert(this.state.error) }
+        <div className='container-fluid'>
+          <div className='row'>
+            <div className='col col-sm-12 offset-md-3 col-md-6 mb-auto mt-auto'>
+              <div className='card'>
+                <div className='card-header'>
+                  <h4>Login</h4>
+                </div>
+                <div className='card-body'>
+                  <form onSubmit={ this.handleSubmit } >
+                    <div className="form-row">
+                      <div className="form-group col-sm-12">
+                        <label htmlFor="email">Email</label>
+                        <input
+                          type="email"
+                          name="email"
+                          className='form-control'
+                          id="email"
+                          placeholder="Email"
+                          onChange={ this.handleChange }
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group col-sm-12">
+                        <label htmlFor="password">Password</label>
+                          <input
+                            type="password"
+                            name="password"
+                            className='form-control'
+                            id="password"
+                            placeholder="Password"
+                            autoComplete="on"
+                            onChange={ this.handleChange }
+                          />
+                      </div>
+                      <button type="submit" className="btn btn-primary">Login</button>
+                    </div>
+                  </form>
                 </div>
               </div>
-              <div className="form-row">
-                <div className="form-group col-sm-12">
-                  <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      name="password"
-                      className='form-control'
-                      id="password"
-                      placeholder="Password"
-                      autoComplete="on"
-                      onChange={ this.handleChange }
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">Login</button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>

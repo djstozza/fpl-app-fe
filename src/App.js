@@ -20,6 +20,11 @@ import Login from './components/users/login.js';
 import Signup from './components/users/signup.js';
 import Profile from './components/users/profile.js';
 import Edit from './components/users/edit.js';
+import NewLeague from './components/leagues/new_league.js';
+import JoinLeague from './components/leagues/join_league.js';
+import EditLeague from './components/leagues/edit_league.js';
+import League from './components/leagues/league.js';
+import Draft from './components/draft/draft.js';
 import ErrorHandler from './components/error_handler.js';
 
 import Navbar from './components/users/navbar.js';
@@ -84,6 +89,11 @@ export default class App extends Component {
               <PublicRoute exact path="/sign-up" component={ Signup } />
               <PrivateRoute exact path="/profile" component={ Profile } />
               <PrivateRoute exact path="/user/edit" component={ Edit } />
+              <PrivateRoute exact path="/leagues/new" component={ NewLeague } />
+              <PrivateRoute exact path="/leagues/join" component={ JoinLeague } />
+              <PrivateRoute exact path="/leagues/:id(\d+)" component={ League } />
+              <PrivateRoute exact path="/leagues/:id(\d+)/edit" component={ EditLeague } />
+              <PrivateRoute exact path="/leagues/:id(\d+)/draft" component={ Draft } />
               <Route component={ ErrorHandler } />
             </Switch>
           </div>

@@ -20,8 +20,8 @@ body {
 }
 
 @include media-breakpoint-down(xs) {
-  body, span {
-    font-size: 12px;
+  body, span, button, a, input {
+    font-size: 12px !important;
   }
   .image-crest {
     zoom: 33%;
@@ -32,10 +32,20 @@ body {
     display: -webkit-box;
   }
 
-  .card-body {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
+  .card {
+    &.popup {
+      .card-body {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  body, span, button, a, input {
+    font-size: 9px !important;
   }
 }
 
@@ -176,4 +186,9 @@ ul.scroll-nav {
   &.popup {
     box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   }
+}
+
+.foo {
+  width: 105%;
+  right: 3%;
 }

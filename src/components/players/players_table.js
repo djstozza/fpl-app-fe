@@ -14,7 +14,6 @@ export default class PlayersTable extends Component {
   }
 
   render () {
-    const self = this;
     const team = this.props.team;
     const teams = this.props.teams;
     const players = this.props.players;

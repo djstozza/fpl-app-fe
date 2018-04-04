@@ -5,6 +5,7 @@ import profile from '../../actions/users/profile.js';
 import { showErrorAlert, showSuccessAlert } from '../../utils/user.js';
 import update from '../../actions/users/update.js';
 import changePassword from '../../actions/users/change_password.js';
+
 import ChangePassword from './change_password.js';
 import Edit from './edit.js';
 import isEmpty from 'lodash/isEmpty';
@@ -75,7 +76,7 @@ class Profile extends Component {
                       aria-controls="nav-details"
                       aria-selected="true"
                     >
-                      Details
+                      Profile
                     </a>
                     <a
                       className="nav-item nav-link"

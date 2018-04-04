@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 
 import fetchTeams from '../../actions/teams/fetch_teams.js';
 import fetchTeam from '../../actions/team/fetch_team.js';
-import fetchTeamPlayers from '../../actions/players/fetch_team_players.js';
 import fetchPositions from '../../actions/positions/fetch_positions.js';
 
 import TeamsNav from './teams_nav.js';
@@ -34,7 +33,6 @@ class Team extends Component {
   componentDidMount () {
     this.props.fetchTeam(this.props.match.params.id);
     this.props.fetchTeams();
-    this.props.fetchTeamPlayers(this.props.match.params.id);
     this.props.fetchPositions();
   }
 
@@ -57,7 +55,6 @@ class Team extends Component {
 
   selectTeam (teamId) {
     this.props.fetchTeam(teamId);
-    this.props.fetchTeamPlayers(teamId);
     store.dispatch(push(`/teams/${teamId}`))
   }
 
@@ -94,7 +91,7 @@ function mapStateToProps (state) {
     teams: state.TeamsReducer,
     team: state.TeamReducer.team,
     fixtures: state.TeamReducer.fixtures,
-    players: state.PlayersReducer,
+    players: state.TeamReducer.players,
     positions: state.PositionsReducer,
     error: state.TeamReducer.error,
   }
@@ -104,7 +101,6 @@ function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     fetchTeam: fetchTeam,
     fetchTeams: fetchTeams,
-    fetchTeamPlayers: fetchTeamPlayers,
     fetchPositions: fetchPositions,
   }, dispatch);
 }
