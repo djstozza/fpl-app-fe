@@ -65,7 +65,6 @@ export default class App extends Component {
       <Route {...rest} render={(props) => (
         <div>
           <Navbar {...props} />
-          <Alert stack={ { limit: 3 } } />
           <Component {...props} tz={tz} />
         </div>
       )} />
@@ -74,7 +73,7 @@ export default class App extends Component {
     const PrivateRoute = ({ component: Component, ...rest }) => (
       <Route {...rest} render={(props) => (
         !isEmpty(localStorage.getItem('access-token'))
-          ? <div><Navbar { ...props } /><Alert stack={ { limit: 3 } } /><Component {...props } tz={tz} /></div>
+          ? <div><Navbar { ...props } /><Component {...props } tz={tz} /></div>
           : <Redirect to={{
               pathname: '/login',
               state: { referrer: props.location }
@@ -86,6 +85,7 @@ export default class App extends Component {
       <Provider store={store} >
         <ConnectedRouter history={history} >
           <div>
+            <Alert stack={ { limit: 3 } } />
             <Switch>
               <PublicRoute exact path="/" component={ Rounds } />
               <PublicRoute exact path="/rounds" component={ Rounds } />
