@@ -10,6 +10,7 @@ import { Route, Redirect } from 'react-router'
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
 import { Switch } from 'react-router'
 
+import Alert from 'react-s-alert';
 
 import rootReducer from './reducers/index'
 import Rounds from './components/rounds/rounds.js';
@@ -30,6 +31,12 @@ import ErrorHandler from './components/error_handler.js';
 import Navbar from './components/users/navbar.js';
 
 import isEmpty from 'lodash/isEmpty';
+
+import "./../node_modules/bootstrap/scss/_functions.scss";
+import "./../node_modules/bootstrap/scss/_variables.scss";
+import "./../node_modules/bootstrap/scss/mixins/_breakpoints.scss";
+import './../node_modules/react-s-alert/dist/s-alert-default.css';
+import './../node_modules/react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 
 const history = createHistory()
 const initialState = {}
@@ -58,6 +65,7 @@ export default class App extends Component {
       <Route {...rest} render={(props) => (
         <div>
           <Navbar {...props} />
+          <Alert stack={ { limit: 3 } } />
           <Component {...props} tz={tz} />
         </div>
       )} />
@@ -66,7 +74,7 @@ export default class App extends Component {
     const PrivateRoute = ({ component: Component, ...rest }) => (
       <Route {...rest} render={(props) => (
         !isEmpty(localStorage.getItem('access-token'))
-          ? <div><Navbar { ...props } /><Component {...props } tz={tz} /></div>
+          ? <div><Navbar { ...props } /><Alert stack={ { limit: 3 } } /><Component {...props } tz={tz} /></div>
           : <Redirect to={{
               pathname: '/login',
               state: { referrer: props.location }

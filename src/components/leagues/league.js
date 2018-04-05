@@ -106,7 +106,6 @@ class League extends Component {
 
   render () {
     if (this.state.error && this.state.error.status !== 422) {
-
       return (
         <ErrorHandler error={ this.state.error } />
       )

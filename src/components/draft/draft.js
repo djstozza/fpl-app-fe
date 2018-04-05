@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Alert from 'react-s-alert';
 
 import fetchLeague from  '../../actions/leagues/fetch_league.js';
 import fetchDraftPicks from  '../../actions/draft_picks/fetch_draft_picks.js';
@@ -31,6 +32,7 @@ class Draft extends Component {
     this.updateDraft = this.updateDraft.bind(this);
     this.draftDescription = this.draftDescription.bind(this);
     this.miniDraftPickButton = this.miniDraftPickButton.bind(this);
+    this.alert = this.alert.bind(this);
   }
 
   componentWillMount () {
@@ -42,7 +44,6 @@ class Draft extends Component {
 
     cable.subscriptions.create({ channel: 'DraftPickChannel', room: this.state.leagueId }, {
       received: function (data) {
-        console.log(data);
         self.setState({
           unpicked_players: data.unpicked_players,
           current_draft_pick: data.current_draft_pick,
@@ -50,6 +51,8 @@ class Draft extends Component {
           fpl_team: data.fpl_team,
           info: data.info,
         });
+
+        self.alert('info', data.info);
       }
     });
   }
@@ -71,10 +74,19 @@ class Draft extends Component {
       error: nextProps.error,
     });
 
+    console.log(nextProps.league, nextProps.current_user, nextProps.error)
+
     if (!isEmpty(nextProps.success)) {
-      this.setState({
-        success: nextProps.success
-      });
+      this.alert('success', nextProps.success);
+    }
+
+    if (!isEmpty(nextProps.info)) {
+      this.alert('info', nextProps.info);
+    }
+
+    if (!isEmpty(nextProps.error) && nextProps.error.status === 422) {
+      console.log(nextProps.error)
+      this.alert('error', nextProps.error.data.error.base[0]);
     }
 
     if (!isEmpty(nextProps.league) && !isEmpty(nextProps.draft_picks)) {
@@ -82,6 +94,18 @@ class Draft extends Component {
         loaded: true
       });
     }
+  }
+
+  alert (type, message) {
+    return (
+      Alert[type](
+        message, {
+          position: 'top',
+          effect: 'bouncyflip',
+          timeout: 5000,
+        }
+      )
+    )
   }
 
   draftDescription () {
@@ -129,14 +153,13 @@ class Draft extends Component {
 
   render () {
     if (this.state.error && this.state.error.status !== 422) {
-
       return (
         <ErrorHandler error={ this.state.error } />
       );
     }
 
     if (this.state.loaded) {
-      console.log(this.state)
+      console.log(this.state  )
       return (
         <div className='container-fluid'>
           <h3>League { this.state.leagueId } Draft</h3>
@@ -177,8 +200,9 @@ function mapStateToProps (state) {
     current_draft_pick: state.DraftPicksReducer.current_draft_pick,
     teams: state.TeamsReducer,
     positions: state.PositionsReducer,
-    success: state.LeaguesReducer.success,
-    error: state.LeaguesReducer.error,
+    success: state.DraftPicksReducer.success,
+    info: state.DraftPicksReducer.info,
+    error: state.LeaguesReducer.error || state.DraftPicksReducer.error,
   }
 }
 

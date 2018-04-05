@@ -18,7 +18,6 @@ import { push } from 'react-router-redux';
 
 import { CABLE_CONNECTION } from '../../api-config.js';
 
-
 const ActionCable = require('actioncable');
 const cable = ActionCable.createConsumer(CABLE_CONNECTION);
 

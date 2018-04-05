@@ -14,6 +14,7 @@ class Navbar extends Component {
     }
 
     this.userLinks = this.userLinks.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   userLinks () {
@@ -21,7 +22,7 @@ class Navbar extends Component {
       return (
         <div>
           <Link to='/profile' className="btn btn-outline-secondary">Profile</Link>
-          <button onClick={ (e) =>  { e.preventDefault; this.props.logout() } } className="btn btn-outline-secondary">Log out</button>
+          <button onClick={ (e) =>  { this.logout(e) } } className="btn btn-outline-secondary">Log out</button>
         </div>
       );
     } else {
@@ -32,6 +33,11 @@ class Navbar extends Component {
         </div>
       )
     }
+  }
+
+  logout (e) {
+    e.preventDefault();
+    this.props.logout();
   }
 
   componentWillMount () {

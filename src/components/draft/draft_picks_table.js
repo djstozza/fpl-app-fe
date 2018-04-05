@@ -24,8 +24,6 @@ export default class DraftPicksTable extends Component {
     const positionOptions = mappedObj(positions, 'singular_name_short', 'singular_name_short');
     const teamOptions = mappedObj(teams, 'short_name', 'short_name');
     const fplTeamOptions = mappedObj(fplTeams, 'name', 'name');
-    console.log(fplTeamOptions)
-
 
     const paginationOptions = {
       hidePageListOnlyOnePage: true

@@ -1,4 +1,4 @@
-import { UPDATE_DRAFT_PICK, SHOW_LEAGUE_ERRORS } from '../types';
+import { UPDATE_DRAFT_PICK, SHOW_DRAFT_PICK_ERRORS } from '../types';
 import axios from 'axios';
 import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
 
@@ -16,7 +16,22 @@ export default function updateDraftPick (leagueId, draftPickId, playerId, miniDr
       setLocalStorageHeader(res);
       dispatch(updateDraftPickAsync(res.data));
     }).catch(error => {
-      dispatch({ type: SHOW_LEAGUE_ERRORS, payload: { error: error.response } });
+      const errorResponse = error.response;
+      const errorData = errorResponse.data;
+      setLocalStorageHeader(error.response);
+      console.log(errorData)
+      dispatch({
+        type: SHOW_DRAFT_PICK_ERRORS,
+        payload: {
+          error: errorResponse,
+          draft_picks: errorData.draft_picks,
+          fpl_team: errorData.fpl_team,
+          mini_draft_picked: errorData.mini_draft_picked,
+          all_players_picked: errorData.all_players_picked,
+          current_draft_pick: errorData.current_draft_pick,
+          unpicked_players: errorData.unpicked_players,
+        }
+      });
     });
   }
 }

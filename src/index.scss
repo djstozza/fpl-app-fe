@@ -1,7 +1,3 @@
-@import "../node_modules/bootstrap/scss/_functions";
-@import "../node_modules/bootstrap/scss/_variables";
-@import "../node_modules/bootstrap/scss/mixins/_breakpoints";
-
 body {
   margin: 0;
   padding: 0;
@@ -186,9 +182,4 @@ ul.scroll-nav {
   &.popup {
     box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   }
-}
-
-.foo {
-  width: 105%;
-  right: 3%;
 }

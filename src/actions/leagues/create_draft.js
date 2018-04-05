@@ -12,7 +12,6 @@ export default function createDraft (leagueId) {
       dispatch(createDraftAsync(res.data));
     }).catch(error => {
       const data = error.response.data
-      console.log(error.data)
       dispatch({
         type: SHOW_LEAGUE_ERRORS,
         payload: {
