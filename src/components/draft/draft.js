@@ -44,6 +44,9 @@ class Draft extends Component {
 
     cable.subscriptions.create({ channel: 'DraftPickChannel', room: this.state.leagueId }, {
       received: function (data) {
+        if (data.fpl_team.user_id === self.state.current_user.id && data.fpl_team.id !== self.state.fpl_team.id) {
+          self.alert('info', "It's your turn.");
+        }
         self.setState({
           unpicked_players: data.unpicked_players,
           current_draft_pick: data.current_draft_pick,
@@ -74,18 +77,11 @@ class Draft extends Component {
       error: nextProps.error,
     });
 
-    console.log(nextProps.league, nextProps.current_user, nextProps.error)
-
     if (!isEmpty(nextProps.success)) {
       this.alert('success', nextProps.success);
     }
 
-    if (!isEmpty(nextProps.info)) {
-      this.alert('info', nextProps.info);
-    }
-
     if (!isEmpty(nextProps.error) && nextProps.error.status === 422) {
-      console.log(nextProps.error)
       this.alert('error', nextProps.error.data.error.base[0]);
     }
 
@@ -93,6 +89,10 @@ class Draft extends Component {
       this.setState({
         loaded: true
       });
+
+      if (nextProps.fpl_team.user_id === nextProps.current_user.id) {
+        this.alert('info', "It's your turn.");
+      }
     }
   }
 
@@ -109,7 +109,9 @@ class Draft extends Component {
   }
 
   draftDescription () {
-    if (isEmpty(this.state.current_draft_pick) || this.state.all_players_picked) {
+    const allPlayersPicked = this.state.all_players_picked;
+    const miniDraftPicked = this.state.mini_draft_picked
+    if (isEmpty(this.state.current_draft_pick) || allPlayersPicked && miniDraftPicked) {
       return;
     }
 
@@ -117,14 +119,17 @@ class Draft extends Component {
       return;
     }
 
-    let miniDraftText;
+    let miniDraftSubStr;
 
-    if (!this.state.mini_draft_picked) {
-      miniDraftText = ' or select your pick number for the mini draft'
+    if (!miniDraftPicked) {
+      miniDraftSubStr = ' or select your pick number for the mini draft'
     }
 
+    const draftPlayerStr = `Select the player you wish to draft${ !miniDraftPicked ? miniDraftSubStr : '' }.`
+    const miniDraftStr = 'Select your pick number for the mini draft.'
+
     return (
-      <div className='alert alert-primary' role='alert'>Select the player you wish to draft{ miniDraftText }.</div>
+      <div className='alert alert-primary' role='alert'>{ allPlayersPicked ? miniDraftStr : draftPlayerStr }</div>
     );
   }
 
@@ -159,7 +164,6 @@ class Draft extends Component {
     }
 
     if (this.state.loaded) {
-      console.log(this.state  )
       return (
         <div className='container-fluid'>
           <h3>League { this.state.leagueId } Draft</h3>
@@ -173,7 +177,7 @@ class Draft extends Component {
           <div className='row'>
             <div className='col col-12'>
               <h4>All Draft Picks</h4>
-              <DraftPicksTable {...this.state } />
+              <DraftPicksTable { ...this.state } />
             </div>
           </div>
         </div>

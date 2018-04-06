@@ -32,9 +32,6 @@ import Navbar from './components/users/navbar.js';
 
 import isEmpty from 'lodash/isEmpty';
 
-import "./../node_modules/bootstrap/scss/_functions.scss";
-import "./../node_modules/bootstrap/scss/_variables.scss";
-import "./../node_modules/bootstrap/scss/mixins/_breakpoints.scss";
 import './../node_modules/react-s-alert/dist/s-alert-default.css';
 import './../node_modules/react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 

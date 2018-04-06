@@ -1,3 +1,7 @@
+@import "./../node_modules/bootstrap/scss/_functions.scss";
+@import "./../node_modules/bootstrap/scss/_variables.scss";
+@import "./../node_modules/bootstrap/scss/mixins/_breakpoints.scss";
+
 body {
   margin: 0;
   padding: 0;
@@ -39,9 +43,9 @@ body {
   }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 360px) {
   body, span, button, a, input {
-    font-size: 9px !important;
+    font-size: 8px !important;
   }
 }
 

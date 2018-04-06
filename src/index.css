@@ -23,9 +23,9 @@ body {
     padding-right: 10px;
     padding-bottom: 10px; } }
 
-@media (max-width: 320px) {
+@media (max-width: 360px) {
   body, span, button, a, input {
-    font-size: 9px !important; } }
+    font-size: 8px !important; } }
 
 .bs-scroll-table table {
   overflow-x: auto;
@@ -126,7 +126,3 @@ ul.scroll-nav {
 
 .card.popup {
   box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12); }
-
-.foo {
-  width: 105%;
-  right: 3%; }
