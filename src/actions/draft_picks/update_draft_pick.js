@@ -19,7 +19,7 @@ export default function updateDraftPick (leagueId, draftPickId, playerId, miniDr
       const errorResponse = error.response;
       const errorData = errorResponse.data;
       setLocalStorageHeader(error.response);
-      console.log(errorData)
+
       dispatch({
         type: SHOW_DRAFT_PICK_ERRORS,
         payload: {

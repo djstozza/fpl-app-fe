@@ -20,7 +20,6 @@ export default function updateLeague (params) {
       dispatch(push(`/leagues/${res.data.league.id}`));
       dispatch(createLeagueAsync(res.data));
     }).catch(error => {
-      console.log(error.response)
       setLocalStorageHeader(error.response);
       dispatch({ type: SHOW_LEAGUE_ERRORS, payload: { league: params.league, error: error.response } });
     });

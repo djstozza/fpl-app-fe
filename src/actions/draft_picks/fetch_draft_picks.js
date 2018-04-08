@@ -1,13 +1,14 @@
-import { FETCH_DRAFT_PICKS, SHOW_LEAGUE_ERRORS } from '../types';
+import { FETCH_DRAFT_PICKS, SHOW_DRAFT_PICK_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
 
 export default function fetchDraftPicks (leagueId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/leagues/${leagueId}/draft_picks.json`).then(res => {
+    axios.get(`${API_ROOT}/leagues/${leagueId}/draft_picks.json`, getLocalStorageHeader()).then(res => {
+      setLocalStorageHeader(res);
       dispatch(fetchDraftPicksAsync(res.data));
     }).catch(error => {
-      dispatch({ type: SHOW_LEAGUE_ERRORS, payload: { error: error.response } });
+      dispatch({ type: SHOW_DRAFT_PICK_ERRORS, payload: { error: error.response } });
     });
   }
 }

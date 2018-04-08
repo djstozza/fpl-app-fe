@@ -89,7 +89,17 @@ class Profile extends Component {
                     >
                       Password
                     </a>
-                    <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+                    <a
+                      className="nav-item nav-link"
+                      id="nav-contact-tab"
+                      data-toggle="tab"
+                      href="#nav-contact"
+                      role="tab"
+                      aria-controls="nav-contact"
+                      aria-selected="false"
+                    >
+                      Contact
+                    </a>
                   </div>
                 </nav>
               <div className="tab-content" id="nav-tabContent">

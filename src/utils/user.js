@@ -7,7 +7,7 @@ export function showErrorAlert (error) {
     const errorMessage = isString(error) ? error : error.data.errors[0];
 
     return (
-      <div className='alert alert-danger text-center' role="alert">
+      <div className='alert alert-danger alert-dismissible fade show' role="alert">
         { errorMessage }
       </div>
     );
@@ -19,7 +19,7 @@ export function showBaseErrorAlert (error) {
     const errorMessage = isString(error) ? error : error.data.error.base[0];
 
     return (
-      <div className='alert alert-danger' role="alert">
+      <div className='alert alert-danger alert-dismissible fade show' role="alert">
         { errorMessage }
       </div>
     );

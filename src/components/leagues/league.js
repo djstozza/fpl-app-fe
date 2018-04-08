@@ -8,7 +8,7 @@ import createDraft from  '../../actions/leagues/create_draft.js';
 import { every, isEmpty, isNumber } from 'lodash';
 import ErrorHandler from '../error_handler.js';
 import { Link } from 'react-router-dom';
-import { showSuccessAlert } from '../../utils/user.js';
+import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user.js';
 import FplTeamsTable from '../fpl_teams/fpl_teams_table.js';
 
 class League extends Component {
@@ -60,6 +60,10 @@ class League extends Component {
 
   generatePickNumbers () {
     if (this.state.league.status !== 'generate_draft_picks') {
+      return;
+    }
+
+    if (this.state.fpl_teams.length < 8) {
       return;
     }
 
@@ -115,6 +119,7 @@ class League extends Component {
       return (
         <div>
           { showSuccessAlert(this.state.success) }
+          { showBaseErrorAlert(this.state.error) }
           <h3>{ this.state.league.name }</h3>
           <p>Commisioner: { this.state.commissioner.username }</p>
           <FplTeamsTable { ...this.state } updateDraftPickOrder={ this.updateDraftPickOrder } />

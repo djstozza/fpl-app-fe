@@ -87,7 +87,7 @@ export default class DraftPlayersTable extends Component {
         dataField: 'id',
         align: 'center',
         headerAlign: 'center',
-        hidden: this.props.fpl_team.user_id !== this.props.current_user.id || this.props.all_players_picked,
+        hidden: !this.props.your_turn || this.props.your_turn && this.props.all_players_picked,
         formatter: (cell, row) => {
           return (
             <button

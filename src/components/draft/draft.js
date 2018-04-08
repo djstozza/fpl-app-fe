@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Alert from 'react-s-alert';
 
-import fetchLeague from  '../../actions/leagues/fetch_league.js';
 import fetchDraftPicks from  '../../actions/draft_picks/fetch_draft_picks.js';
 import fetchTeams from '../../actions/teams/fetch_teams.js';
 import fetchPositions from '../../actions/positions/fetch_positions.js';
@@ -37,25 +36,41 @@ class Draft extends Component {
 
   componentWillMount () {
     const self = this;
-    this.props.fetchLeague(this.state.leagueId);
+
     this.props.fetchDraftPicks(this.state.leagueId);
     this.props.fetchTeams();
     this.props.fetchPositions();
 
     cable.subscriptions.create({ channel: 'DraftPickChannel', room: this.state.leagueId }, {
       received: function (data) {
-        if (data.fpl_team.user_id === self.state.current_user.id && data.fpl_team.id !== self.state.fpl_team.id) {
+        let currentUserTurn;
+        let yourTurnAlertable;
+
+        if (!isEmpty(data.current_draft_pick_user) && !isEmpty(self.state.current_user)) {
+          currentUserTurn = self.state.current_user.id === data.current_draft_pick_user.id;
+          yourTurnAlertable = data.current_draft_pick_user.id !== self.state.current_draft_pick_user.id
+        }
+
+        if (currentUserTurn && yourTurnAlertable) {
           self.alert('info', "It's your turn.");
         }
+
         self.setState({
           unpicked_players: data.unpicked_players,
           current_draft_pick: data.current_draft_pick,
           draft_picks: data.draft_picks,
-          fpl_team: data.fpl_team,
+          current_draft_pick_user: data.current_draft_pick_user,
+          your_turn: currentUserTurn,
+          mini_draft_picked: data.mini_draft_picked,
+          all_players_picked: data.all_players_picked,
           info: data.info,
         });
 
         self.alert('info', data.info);
+
+        if (data.league.status == 'active') {
+          self.alert('success', 'The draft has been completed.');
+        }
       }
     });
   }
@@ -63,15 +78,14 @@ class Draft extends Component {
   componentWillReceiveProps (nextProps) {
     this.setState({
       league: nextProps.league,
-      commissioner: nextProps.commissioner,
-      current_user: nextProps.current_user,
       fpl_teams: nextProps.fpl_teams,
-      fpl_team: nextProps.fpl_team,
       draft_picks: nextProps.draft_picks,
       mini_draft_picked: nextProps.mini_draft_picked,
       all_players_picked: nextProps.all_players_picked,
       unpicked_players: nextProps.unpicked_players,
       current_draft_pick: nextProps.current_draft_pick,
+      current_draft_pick_user: nextProps.current_draft_pick_user,
+      current_user: nextProps.current_user,
       teams: nextProps.teams,
       positions: nextProps.positions,
       error: nextProps.error,
@@ -86,12 +100,24 @@ class Draft extends Component {
     }
 
     if (!isEmpty(nextProps.league) && !isEmpty(nextProps.draft_picks)) {
+
+      if (
+        !isEmpty(nextProps.current_draft_pick_user) &&
+        nextProps.current_user.id === nextProps.current_draft_pick_user.id
+      ) {
+        this.alert('info', "It's your turn.");
+
+        this.setState({
+          your_turn: true
+        });
+      }
+
       this.setState({
         loaded: true
       });
 
-      if (nextProps.fpl_team.user_id === nextProps.current_user.id) {
-        this.alert('info', "It's your turn.");
+      if (nextProps.league.status === 'active') {
+        this.alert('success', 'The draft has been completed.');
       }
     }
   }
@@ -115,7 +141,7 @@ class Draft extends Component {
       return;
     }
 
-    if (this.state.fpl_team.user_id !== this.state.current_user.id) {
+    if (!this.state.your_turn) {
       return;
     }
 
@@ -138,7 +164,7 @@ class Draft extends Component {
       return;
     }
 
-    if (this.state.fpl_team.user_id !== this.state.current_user.id) {
+    if (!this.state.your_turn) {
       return;
     }
 
@@ -192,27 +218,25 @@ class Draft extends Component {
 
 function mapStateToProps (state) {
   return {
-    league: state.LeaguesReducer.league,
-    current_user: state.LeaguesReducer.current_user,
-    commissioner: state.LeaguesReducer.commissioner,
-    fpl_teams: state.LeaguesReducer.fpl_teams,
-    fpl_team: state.DraftPicksReducer.fpl_team,
+    teams: state.TeamsReducer,
+    positions: state.PositionsReducer,
+    league: state.DraftPicksReducer.league,
+    fpl_teams: state.DraftPicksReducer.fpl_teams,
+    current_draft_pick_user: state.DraftPicksReducer.current_draft_pick_user,
+    current_user: state.DraftPicksReducer.current_user,
     draft_picks: state.DraftPicksReducer.draft_picks,
     mini_draft_picked: state.DraftPicksReducer.mini_draft_picked,
     all_players_picked: state.DraftPicksReducer.all_players_picked,
     unpicked_players: state.DraftPicksReducer.unpicked_players,
     current_draft_pick: state.DraftPicksReducer.current_draft_pick,
-    teams: state.TeamsReducer,
-    positions: state.PositionsReducer,
     success: state.DraftPicksReducer.success,
     info: state.DraftPicksReducer.info,
-    error: state.LeaguesReducer.error || state.DraftPicksReducer.error,
+    error: state.DraftPicksReducer.error,
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    fetchLeague: fetchLeague,
     fetchDraftPicks: fetchDraftPicks,
     fetchTeams: fetchTeams,
     fetchPositions: fetchPositions,

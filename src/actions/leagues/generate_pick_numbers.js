@@ -12,7 +12,21 @@ export default function generatePickNumbers (leagueId) {
       setLocalStorageHeader(res);
       dispatch(generatePickNumbersAsync(res.data));
     }).catch(error => {
-      dispatch({ type: SHOW_LEAGUE_ERRORS, payload: { error: error.response } });
+      const errorResponse = error.response;
+      const errorData = errorResponse.data;
+
+      setLocalStorageHeader(errorResponse);
+
+      dispatch({
+        type: SHOW_LEAGUE_ERRORS,
+        payload: {
+          error: errorResponse,
+          league: errorData.league,
+          fpl_teams: errorData.fpl_teams,
+          current_user: errorData.current_user,
+          commissioner: errorData.commissioner,
+        }
+      });
     });
   }
 }
