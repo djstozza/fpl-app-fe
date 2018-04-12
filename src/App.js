@@ -26,6 +26,9 @@ import JoinLeague from './components/leagues/join_league.js';
 import EditLeague from './components/leagues/edit_league.js';
 import League from './components/leagues/league.js';
 import Draft from './components/draft/draft.js';
+import FplTeams from './components/fpl_teams/fpl_teams.js';
+import FplTeam from './components/fpl_teams/fpl_team.js';
+import EditFplTeam from './components/fpl_teams/edit_fpl_team.js';
 import ErrorHandler from './components/error_handler.js';
 
 import Navbar from './components/users/navbar.js';
@@ -99,6 +102,9 @@ export default class App extends Component {
               <PrivateRoute exact path="/leagues/:id(\d+)" component={ League } />
               <PrivateRoute exact path="/leagues/:id(\d+)/edit" component={ EditLeague } />
               <PrivateRoute exact path="/leagues/:id(\d+)/draft" component={ Draft } />
+              <PrivateRoute exact path="/fpl_teams" component={ FplTeams } />
+              <PrivateRoute exact path="/fpl_teams/:id(\d+)" component={ FplTeam } />
+              <PrivateRoute exact path="/fpl_teams/:id(\d+)/edit" component={ EditFplTeam } />
               <Route component={ ErrorHandler } />
             </Switch>
           </div>

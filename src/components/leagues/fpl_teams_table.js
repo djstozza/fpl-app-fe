@@ -13,6 +13,14 @@ export default class FplTeamsTable extends Component {
 
   render () {
     const data = this.props.fpl_teams;
+    const sortedFplTeamsByPickNumber = sortBy(data, (fplTeam) => { return fplTeam.draft_pick_number });
+    const pickNumberOptions = map(sortedFplTeamsByPickNumber, (fplTeam) => {
+      const pickNumber = fplTeam.draft_pick_number
+      return (
+        <option key={ pickNumber } value={ pickNumber }>{ pickNumber }</option>
+      )
+    });
+    const status = this.props.league.status
 
     const columns = [
       {
@@ -31,21 +39,36 @@ export default class FplTeamsTable extends Component {
         },
         headerFormatter: tooltipHeader
       }, {
-        text: 'League',
-        dataField: 'league_name',
+        text: 'User',
+        dataField: 'username',
         align: 'center',
         headerAlign: 'center',
         sort: true,
         formatter: (cell, row) => {
-          return <Link to={ `/leagues/${row.league_id}` }>{ cell }</Link>;
+          return <Link to={ `/users/${row.user_id}` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
-        text: 'Rank',
-        dataField: 'rank',
+        text: 'Pick Number',
+        dataField: 'draft_pick_number',
         align: 'center',
         headerAlign: 'center',
         sort: true,
+        formatter: (cell, row) => {
+          if (status === 'create_draft') {
+            return (
+              <select
+                defaultValue={ cell }
+                onChange={ (e) => this.props.updateDraftPickOrder(row.fpl_team_id, e.target.value, false) }
+              >
+                { pickNumberOptions }
+              </select>
+            )
+          } else {
+            return cell
+          }
+        },
+        style: status === 'generate_draft_picks',
         headerFormatter: tooltipHeader
       }, {
         text: 'Total Score',
@@ -53,6 +76,7 @@ export default class FplTeamsTable extends Component {
         align: 'center',
         headerAlign: 'center',
         sort: true,
+        hidden: this.props.noScore,
         headerFormatter: tooltipHeader
       }
     ]
@@ -61,7 +85,7 @@ export default class FplTeamsTable extends Component {
       <div>
         <BootstrapTable
           keyField='fpl_team_id'
-          data={ data }
+          data={ status === 'create_draft' ? sortedFplTeamsByPickNumber : data }
           columns={ columns }
           striped
           hover

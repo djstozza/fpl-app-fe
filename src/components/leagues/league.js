@@ -9,7 +9,7 @@ import { every, isEmpty, isNumber } from 'lodash';
 import ErrorHandler from '../error_handler.js';
 import { Link } from 'react-router-dom';
 import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user.js';
-import FplTeamsTable from '../fpl_teams/fpl_teams_table.js';
+import FplTeamsTable from '../leagues/fpl_teams_table.js';
 
 class League extends Component {
   constructor (props) {

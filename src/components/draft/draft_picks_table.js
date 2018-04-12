@@ -59,7 +59,7 @@ export default class DraftPicksTable extends Component {
           if (row.mini_draft) {
             return 'Mini Draft Pick'
           } else {
-            return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
+            return <Link to={ `/players/${row.player_id}` }>{ cell }</Link>;
           }
         },
         headerFormatter: tooltipHeader

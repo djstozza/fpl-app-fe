@@ -39,7 +39,7 @@ export default class DraftPlayersTable extends Component {
           placeholder: ' '
         }),
         formatter: (cell, row) => {
-          return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
+          return <Link to={ `/players/${row.player_id}` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
