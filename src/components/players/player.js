@@ -52,6 +52,7 @@ class Player extends Component {
           <div className="col col-md-10 offset-md-1">
             <PlayerHeader { ...this.state } />
             <PlayerAccordion { ...this.state } />
+            <br/>
           </div>
         </div>
       )

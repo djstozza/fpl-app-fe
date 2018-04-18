@@ -10,6 +10,8 @@ import UsersReducer from './reducer_users';
 import LeaguesReducer from './reducer_leagues';
 import DraftPicksReducer from './reducer_draft_picks';
 import FplTeamsReducer from './reducer_fpl_teams';
+import FplTeamListsReducer from './reducer_fpl_team_lists';
+import ListPositionsReducer from './reducer_list_positions';
 
 const rootReducer = combineReducers({
   RoundsReducer: RoundsReducer,
@@ -22,6 +24,8 @@ const rootReducer = combineReducers({
   LeaguesReducer: LeaguesReducer,
   DraftPicksReducer: DraftPicksReducer,
   FplTeamsReducer: FplTeamsReducer,
+  FplTeamListsReducer: FplTeamListsReducer,
+  ListPositionsReducer: ListPositionsReducer,
   router: routerReducer
 });
 

@@ -8,6 +8,7 @@ export default function fetchFplTeam (fplTeamId) {
       setLocalStorageHeader(res);
       dispatch(fetchFplTeamAsync(res.data));
     }).catch(error => {
+      setLocalStorageHeader(error.response);
       dispatch({ type: SHOW_FPL_TEAM_ERRORS, payload: { error: error.response } });
     });
   }

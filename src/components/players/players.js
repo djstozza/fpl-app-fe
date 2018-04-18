@@ -43,7 +43,7 @@ class Players extends Component {
   render () {
     if (this.state.loaded) {
       return (
-        <div className="row">
+        <div className="container-fluid">
           <div className="col col-md-12">
             <h4>Players</h4>
             <PlayersTable

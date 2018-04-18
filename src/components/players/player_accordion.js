@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FixtureHistoriesTable from './fixture_history_table.js';
 import PastHistoryTable from './past_history_table.js';
-import { popup } from '../../utils/accordion_popup.js';
 
 export default class PlayerAccordion extends Component {
   constructor (props) {
@@ -20,7 +19,6 @@ export default class PlayerAccordion extends Component {
             data-target="#player-past-info"
             aria-controls="player-past-info"
             id="player-past-header"
-            onClick={ (e) => popup(e) }
           >
             <h6 className="mt-1">
               Past Seasons
@@ -51,7 +49,6 @@ export default class PlayerAccordion extends Component {
             data-target="#player-fixture-info"
             aria-controls="player-fixture-info"
             id="player-fixture-header"
-            onClick={ (e) => popup(e) }
           >
             <h6 className="mt-1">
               Fixture History

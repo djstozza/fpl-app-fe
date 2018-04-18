@@ -49,7 +49,6 @@ class EditFplTeam extends Component {
   handleChange(event) {
 
     const target = event.target;
-    console.log(event.target, target.name, target.value)
     this.setState({ [target.name]: target.value });
   }
 
@@ -72,7 +71,6 @@ class EditFplTeam extends Component {
     }
 
     if (this.state.loaded) {
-      console.log(this.state)
       return (
         <div>
           { showSuccessAlert(this.state.success) }

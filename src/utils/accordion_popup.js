@@ -21,11 +21,9 @@ export function popup(e) {
     });
   }
 
-  $('.card').not($card).animate({
+  $(".card-header").not('.popup').animate({
     width: "100%",
     right: "0",
     "margin-bottom": "0",
-  }, 200, () => {
-    $('.card .collapse').not($card).removeClass('show')
-  });
+  }, 200)
 }

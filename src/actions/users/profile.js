@@ -4,7 +4,6 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 
 export default function profile () {
   return dispatch => {
-    console.log('blah');
     axios.get(`${API_ROOT}/profile.json`, getLocalStorageHeader()).then(res => {
       setLocalStorageHeader(res);
       dispatch(profileAsync(res.data));

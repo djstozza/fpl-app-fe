@@ -6,6 +6,15 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+
+}
+
+body, span, button, a, input {
+  font-size: 12px !important;
+}
+
+.image-crest {
+  zoom: 65%;
 }
 
 @include media-breakpoint-down(md) {
@@ -43,9 +52,14 @@ body {
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 450px) {
   body, span, button, a, input {
     font-size: 8px !important;
+  }
+
+  .bs-xxs-scroll-table table {
+    overflow-x: auto;
+    display: -webkit-box;
   }
 }
 
@@ -133,8 +147,8 @@ ul.scroll-nav {
   background-color: #ffd24d;
 }
 
-.diff-a-3 {
-  background-color: #ff4d4d;
+.diff-a-3, .select-option {
+  background-color: #ff4d4d !important;
 }
 
 .transparent-text {
@@ -186,4 +200,27 @@ ul.scroll-nav {
   &.popup {
     box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   }
+}
+
+.position-description {
+  transform: rotate(270deg);
+}
+
+.field {
+  background: linear-gradient(
+    to bottom,
+    green 0%,
+    teal 10%,
+    green 20%,
+    teal 30%,
+    green 40%,
+    teal 50%,
+    green 60%,
+    teal 70%,
+    green 80%,
+    teal 90%,
+    green 100%
+  );
+
+  color: white;
 }

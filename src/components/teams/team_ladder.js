@@ -31,7 +31,7 @@ export default class TeamLadder extends Component {
         headerFormatter: tooltipHeader
       },
       {
-        dataField: 'name',
+        dataField: 'short_name',
         text: 'Name',
         sort: true,
         align: 'center',
@@ -79,7 +79,7 @@ export default class TeamLadder extends Component {
       },
       {
         dataField: 'current_form',
-        text: 'Current Form',
+        text: 'Form',
         align: 'center',
         headerAlign: 'center',
         headerFormatter: tooltipHeader
@@ -113,7 +113,7 @@ export default class TeamLadder extends Component {
     };
 
     return (
-      <div className='bs-xs-scroll-table'>
+      <div className='bs-xxs-scroll-table'>
         <BootstrapTable
           keyField='name'
           data={ data }
