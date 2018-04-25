@@ -2,7 +2,7 @@ import { UPDATE_FPL_TEAM_LIST_ORDER, FETCH_LIST_POSITION, SHOW_FPL_TEAM_LIST_ERR
 import axios from 'axios';
 import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
-export default function updateOrder (listPositionId, substituteListPositionId) {
+export default function updateListPosition (listPositionId, substituteListPositionId) {
   return dispatch => {
     axios({
       url: `${API_ROOT}/list_positions/${listPositionId}.json`,
@@ -14,7 +14,7 @@ export default function updateOrder (listPositionId, substituteListPositionId) {
     }).then(res => {
       setLocalStorageHeader(res);
       dispatch(clearSubstituteOptions());
-      dispatch(updateOrderAsync(res.data));
+      dispatch(updateListPositionAsync(res.data));
     }).catch(error => {
       const data = error.response.data;
       setLocalStorageHeader(error.response);
@@ -31,7 +31,7 @@ export default function updateOrder (listPositionId, substituteListPositionId) {
   }
 }
 
-function updateOrderAsync (data) {
+function updateListPositionAsync (data) {
   return {
     type: UPDATE_FPL_TEAM_LIST_ORDER,
     payload: data

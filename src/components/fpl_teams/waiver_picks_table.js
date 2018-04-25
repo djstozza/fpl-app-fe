@@ -38,7 +38,7 @@ export default class WaiverPicksTable extends Component {
             return (
               <select
                 defaultValue={ cell }
-
+                onChange={ (e) => this.props.updateWaiverPickOrder(row.id, e.target.value) }
               >
                 { pickNumberOptions }
               </select>
@@ -78,6 +78,15 @@ export default class WaiverPicksTable extends Component {
         align: 'center',
         headerAlign: 'center',
         headerFormatter: tooltipHeader,
+      }, {
+        text: 'Delete',
+        dataField: 'id',
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader,
+        formatter: (cell, row) => {
+         return <button onClick={ (e) => this.props.deleteWaiverPick(cell) }>Delete</button>;
+        },
       }
     ];
 

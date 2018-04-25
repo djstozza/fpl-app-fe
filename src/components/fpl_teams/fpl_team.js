@@ -9,10 +9,12 @@ import fetchFplTeamList from  '../../actions/fpl_team_lists/fetch_fpl_team_list'
 import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchPositions from '../../actions/positions/fetch_positions';
 import fetchListPosition from '../../actions/list_positions/fetch_list_position';
-import updateOrder from '../../actions/fpl_team_lists/update_order';
+import updateListPositionOrder from '../../actions/fpl_team_lists/update_list_position_order';
 import fetchUnpickedPlayers from '../../actions/leagues/fetch_unpicked_players';
 import createWaiverPick from '../../actions/waiver_picks/create';
 import fetchCurrentWaiverPicks from '../../actions/waiver_picks/fetch_current_waiver_picks';
+import updateWaiverPickOrder from '../../actions/waiver_picks/update_waiver_pick_order';
+import deleteWaiverPick from '../../actions/waiver_picks/delete_waiver_pick';
 
 import ErrorHandler from '../error_handler';
 import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user';
@@ -41,6 +43,8 @@ class FplTeam extends Component {
     this.clearTradePlayer = this.clearTradePlayer.bind(this);
     this.completeTradeButtons = this.completeTradeButtons.bind(this);
     this.completeWaiverPick = this.completeWaiverPick.bind(this);
+    this.updateWaiverPickOrder = this.updateWaiverPickOrder.bind(this);
+    this.deleteWaiverPick = this.deleteWaiverPick.bind(this);
   }
 
   componentWillMount () {
@@ -89,11 +93,35 @@ class FplTeam extends Component {
     }
   }
 
-  descriptionText () {
+  descriptionTitle () {
+    if (!this.state.user_owns_fpl_team) {
+      return;
+    }
+
+    if (this.state.status === 'pre_game' || this.state.status === 'started') {
+      return;
+    }
+
+    let title;
+
     if (this.state.action === 'substitute') {
-        return <p>Select your starting lineup</p>;
+      title = 'Starting Lineup';
     } else if (this.state.action === 'waiver') {
-      return <p>(1) Select the player you wish to waiver out</p>;
+      title = 'Waiver Out'
+    }
+
+    return <h4 className='mb-0'>{ title }</h4>
+  }
+
+  descriptionText () {
+    if (this.state.status === 'pre_game' || this.state.status === 'started') {
+      return;
+    }
+
+    if (this.state.action === 'substitute') {
+        return <span>Select your starting lineup</span>;
+    } else if (this.state.action === 'waiver') {
+      return <span>(1) Select the player you wish to waiver out</span>;
     }
   }
 
@@ -121,6 +149,7 @@ class FplTeam extends Component {
   showFplTeamListTable () {
     return (
       <div>
+        { this.descriptionTitle() }
         { this.descriptionText() }
         <FplTeamListTable
           { ...this.state }
@@ -148,7 +177,8 @@ class FplTeam extends Component {
 
     return (
       <div>
-        <p>(2) Select the player you wish to wavier in</p>
+        <h4 className='mb-0'>Waiver In</h4>
+        <span>(2) Select the player you wish to wavier in</span>
         <TradePlayersTable
           { ...this.state }
           players={ this.state.unpicked_players }
@@ -172,7 +202,7 @@ class FplTeam extends Component {
   }
 
   substitutePlayers (substituteListPosition) {
-    this.props.updateOrder(this.state.selected.id, substituteListPosition.id);
+    this.props.updateListPositionOrder(this.state.selected.id, substituteListPosition.id);
     this.setState({ selected: '' });
   }
 
@@ -194,7 +224,14 @@ class FplTeam extends Component {
     }
 
     return (
-      <WaiverPicksTable { ...this.state } />
+      <div>
+        <h4 className='mt-3 mb-0'>Waiver Picks</h4>
+        <WaiverPicksTable
+          { ...this.state }
+          updateWaiverPickOrder={ this.updateWaiverPickOrder }
+          deleteWaiverPick={ this.deleteWaiverPick }
+        />
+      </div>
     );
   }
 
@@ -261,6 +298,14 @@ class FplTeam extends Component {
       selected: '',
       tradePlayer: '',
     })
+  }
+
+  updateWaiverPickOrder (waiverPickId, pickNumber) {
+    this.props.updateWaiverPickOrder(this.state.fpl_team_list.id, waiverPickId, pickNumber);
+  }
+
+  deleteWaiverPick (waiverPickId) {
+    this.props.deleteWaiverPick(this.state.fpl_team_list.id, waiverPickId);
   }
 
   colClass () {
@@ -331,9 +376,11 @@ function mapDispatchToProps (dispatch) {
     fetchPositions: fetchPositions,
     fetchListPosition: fetchListPosition,
     fetchUnpickedPlayers: fetchUnpickedPlayers,
-    updateOrder: updateOrder,
+    updateListPositionOrder: updateListPositionOrder,
     createWaiverPick: createWaiverPick,
     fetchCurrentWaiverPicks: fetchCurrentWaiverPicks,
+    updateWaiverPickOrder: updateWaiverPickOrder,
+    deleteWaiverPick: deleteWaiverPick,
   }, dispatch);
 }
 

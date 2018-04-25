@@ -3,6 +3,7 @@ import {
   FETCH_CURRENT_WAIVER_PICKS,
   CREATE_WAIVER_PICK,
   UPDATE_WAIVER_PICK_ORDER,
+  DELETE_WAIVER_PICK,
   SHOW_WAIVER_PICK_ERRORS
 } from '../actions/types';
 
@@ -15,6 +16,8 @@ export default function(state=[], action) {
     case CREATE_WAIVER_PICK:
       return action.payload;
     case UPDATE_WAIVER_PICK_ORDER:
+      return action.payload;
+    case DELETE_WAIVER_PICK:
       return action.payload;
     case SHOW_WAIVER_PICK_ERRORS:
       return action.payload;
