@@ -1,6 +1,6 @@
 import { CHANGE_PASSWORD, SHOW_USER_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
 export default function changePassword (params) {
   return dispatch => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import FixtureGroups from './fixture_groups.js';
+import FixtureGroups from './fixture_groups';
 
 export default class Round extends React.Component {
   render () {

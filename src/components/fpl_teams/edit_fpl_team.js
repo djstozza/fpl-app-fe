@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchFplTeam from  '../../actions/fpl_teams/fetch_fpl_team.js';
-import updateFplTeam from  '../../actions/fpl_teams/update_fpl_team.js';
+import fetchFplTeam from  '../../actions/fpl_teams/fetch_fpl_team';
+import updateFplTeam from  '../../actions/fpl_teams/update_fpl_team';
 import { every, isEmpty, isNumber } from 'lodash';
-import ErrorHandler from '../error_handler.js';
+import ErrorHandler from '../error_handler';
 import { Link } from 'react-router-dom';
-import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user.js';
+import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user';
 
 class EditFplTeam extends Component {
   constructor (props) {

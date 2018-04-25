@@ -1,7 +1,7 @@
 import { LOG_IN, SHOW_USER_ERRORS } from '../types';
 import axios from 'axios';
 import { push } from 'react-router-redux';
-import { API_ROOT, setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, setLocalStorageHeader } from './../../api-config';
 
 export default function login (params) {
   return dispatch => {
@@ -9,7 +9,7 @@ export default function login (params) {
       setLocalStorageHeader(res);
 
       const referrer = params.referrer || '/profile';
-      
+
       dispatch(push(referrer));
       dispatch(loginAsync(res.data));
     }).catch(error => {

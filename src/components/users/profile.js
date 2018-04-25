@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import profile from '../../actions/users/profile.js';
-import { showErrorAlert, showSuccessAlert } from '../../utils/user.js';
-import update from '../../actions/users/update.js';
-import changePassword from '../../actions/users/change_password.js';
+import profile from '../../actions/users/profile';
+import { showErrorAlert, showSuccessAlert } from '../../utils/user';
+import update from '../../actions/users/update';
+import changePassword from '../../actions/users/change_password';
 
-import ChangePassword from './change_password.js';
-import Edit from './edit.js';
+import ChangePassword from './change_password';
+import Edit from './edit';
 import isEmpty from 'lodash/isEmpty';
 
 class Profile extends Component {

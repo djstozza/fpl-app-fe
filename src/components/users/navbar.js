@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import logout from '../../actions/users/logout.js';
+import logout from '../../actions/users/logout';
 import isEmpty from 'lodash/isEmpty'
 
 class Navbar extends Component {

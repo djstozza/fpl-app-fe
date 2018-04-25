@@ -1,6 +1,6 @@
 import { FETCH_ROUNDS } from '../types';
 import axios from 'axios';
-import { API_ROOT } from './../../api-config.js';
+import { API_ROOT } from './../../api-config';
 
 export default function fetchRounds () {
   return dispatch => {

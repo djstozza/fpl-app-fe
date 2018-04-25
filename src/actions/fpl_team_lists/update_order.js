@@ -1,6 +1,6 @@
 import { UPDATE_FPL_TEAM_LIST_ORDER, FETCH_LIST_POSITION, SHOW_FPL_TEAM_LIST_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
 export default function updateOrder (listPositionId, substituteListPositionId) {
   return dispatch => {

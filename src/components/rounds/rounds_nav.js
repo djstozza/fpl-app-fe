@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { centerItVariableWidth } from '../../utils/nav_tab.js';
+import { centerItVariableWidth } from '../../utils/nav_tab';
 
 
 export default class RoundsNav extends Component {

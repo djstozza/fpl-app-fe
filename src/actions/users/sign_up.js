@@ -1,6 +1,6 @@
 import { SIGN_UP, SHOW_USER_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT,  setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT,  setLocalStorageHeader } from './../../api-config';
 import { push } from 'react-router-redux';
 
 export default function signUp (params) {

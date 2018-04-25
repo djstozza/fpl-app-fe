@@ -1,6 +1,6 @@
 import React from 'react';
-import MatchDetailsTable from './match_details_table.js';
-import { popup } from '../../utils/accordion_popup.js';
+import MatchDetailsTable from './match_details_table';
+import { popup } from '../../utils/accordion_popup';
 import find from 'lodash/find';
 
 const moment = require('moment-timezone');

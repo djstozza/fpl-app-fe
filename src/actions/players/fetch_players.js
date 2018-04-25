@@ -1,6 +1,6 @@
 import { FETCH_PLAYERS } from '../types';
 import axios from 'axios';
-import { API_ROOT } from './../../api-config.js';
+import { API_ROOT } from './../../api-config';
 
 export default function fetchPlayers (teamId) {
   return dispatch => {

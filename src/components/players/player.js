@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import fetchTeam from '../../actions/team/fetch_team.js';
-import fetchPlayer from '../../actions/players/fetch_player.js';
-import fetchPositions from '../../actions/positions/fetch_positions.js';
-import ErrorHandler from '../error_handler.js';
+import fetchTeam from '../../actions/team/fetch_team';
+import fetchPlayer from '../../actions/players/fetch_player';
+import fetchPositions from '../../actions/positions/fetch_positions';
+import ErrorHandler from '../error_handler';
 
-import PlayerHeader from './player_header.js';
-import PlayerAccordion from './player_accordion.js';
+import PlayerHeader from './player_header';
+import PlayerAccordion from './player_accordion';
 
 class Player extends Component {
   constructor (props) {

@@ -1,10 +1,10 @@
-import { FETCH_POSITIONS } from '../types';
+import { FETCH_CURRENT_WAIVER_PICKS } from '../types';
 import axios from 'axios';
 import { API_ROOT } from './../../api-config';
 
-export default function fetchPositions () {
+export default function fetchPositions (fplTeamId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/positions.json`).then(res => {
+    axios.get(`${API_ROOT}/fpl_teams/${fplTeamId}/waiver_picks.json`).then(res => {
       dispatch(fetchPositionsAsync(res.data));
     });
   }
@@ -12,7 +12,7 @@ export default function fetchPositions () {
 
 function fetchPositionsAsync (data) {
   return {
-    type: FETCH_POSITIONS,
+    type: FETCH_CURRENT_WAIVER_PICKS,
     payload: data
   };
 }

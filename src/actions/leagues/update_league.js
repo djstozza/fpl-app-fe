@@ -1,7 +1,7 @@
 import { UPDATE_LEAGUE, SHOW_LEAGUE_ERRORS } from '../types';
 import axios from 'axios';
 import { push } from 'react-router-redux';
-import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
 export default function updateLeague (params) {
   return dispatch => {

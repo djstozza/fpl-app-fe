@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchLeague from  '../../actions/leagues/fetch_league.js';
-import generatePickNumbers from  '../../actions/leagues/generate_pick_numbers.js';
-import updateDraftPickOrder from  '../../actions/leagues/update_draft_pick_order.js';
-import createDraft from  '../../actions/leagues/create_draft.js';
+import fetchLeague from  '../../actions/leagues/fetch_league';
+import generatePickNumbers from  '../../actions/leagues/generate_pick_numbers';
+import updateDraftPickOrder from  '../../actions/leagues/update_draft_pick_order';
+import createDraft from  '../../actions/leagues/create_draft';
 import { every, isEmpty, isNumber } from 'lodash';
-import ErrorHandler from '../error_handler.js';
+import ErrorHandler from '../error_handler';
 import { Link } from 'react-router-dom';
-import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user.js';
-import FplTeamsTable from '../leagues/fpl_teams_table.js';
+import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user';
+import FplTeamsTable from '../leagues/fpl_teams_table';
 
 class League extends Component {
   constructor (props) {

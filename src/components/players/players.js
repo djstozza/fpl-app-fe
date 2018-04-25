@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import fetchPlayers from '../../actions/players/fetch_players.js';
-import fetchPositions from '../../actions/positions/fetch_positions.js';
-import fetchTeams from '../../actions/teams/fetch_teams.js';
+import fetchPlayers from '../../actions/players/fetch_players';
+import fetchPositions from '../../actions/positions/fetch_positions';
+import fetchTeams from '../../actions/teams/fetch_teams';
 
-import PlayersTable from './players_table.js';
+import PlayersTable from './players_table';
 
 class Players extends Component {
   constructor (props) {

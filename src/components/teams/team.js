@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import fetchTeams from '../../actions/teams/fetch_teams.js';
-import fetchTeam from '../../actions/team/fetch_team.js';
-import fetchPositions from '../../actions/positions/fetch_positions.js';
+import fetchTeams from '../../actions/teams/fetch_teams';
+import fetchTeam from '../../actions/team/fetch_team';
+import fetchPositions from '../../actions/positions/fetch_positions';
 
-import TeamsNav from './teams_nav.js';
-import TeamAccordion from './team_accordion.js';
-import ErrorHandler from '../error_handler.js';
+import TeamsNav from './teams_nav';
+import TeamAccordion from './team_accordion';
+import ErrorHandler from '../error_handler';
 
-import { store } from '../../App.js';
+import { store } from '../../App';
 import { push } from 'react-router-redux';
 
 class Team extends Component {

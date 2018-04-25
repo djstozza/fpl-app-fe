@@ -3,18 +3,18 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Alert from 'react-s-alert';
 
-import fetchDraftPicks from  '../../actions/draft_picks/fetch_draft_picks.js';
-import fetchTeams from '../../actions/teams/fetch_teams.js';
-import fetchPositions from '../../actions/positions/fetch_positions.js';
-import updateDraftPick from '../../actions/draft_picks/update_draft_pick.js';
+import fetchDraftPicks from  '../../actions/draft_picks/fetch_draft_picks';
+import fetchTeams from '../../actions/teams/fetch_teams';
+import fetchPositions from '../../actions/positions/fetch_positions';
+import updateDraftPick from '../../actions/draft_picks/update_draft_pick';
 
-import ErrorHandler from '../error_handler.js';
-import DraftPlayersTable from './draft_players_table.js';
-import DraftPicksTable from './draft_picks_table.js';
+import ErrorHandler from '../error_handler';
+import DraftPlayersTable from './draft_players_table';
+import DraftPicksTable from './draft_picks_table';
 import { every, isEmpty, isNumber } from 'lodash';
-import { showSuccessAlert } from '../../utils/user.js';
+import { showSuccessAlert } from '../../utils/user';
 
-import { CABLE_CONNECTION } from '../../api-config.js';
+import { CABLE_CONNECTION } from '../../api-config';
 
 const ActionCable = require('actioncable');
 const cable = ActionCable.createConsumer(CABLE_CONNECTION);

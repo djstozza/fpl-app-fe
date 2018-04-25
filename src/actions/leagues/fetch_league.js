@@ -1,6 +1,6 @@
 import { FETCH_LEAGUE, SHOW_LEAGUE_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
 export default function fetchLeague (leagueId) {
   return dispatch => {

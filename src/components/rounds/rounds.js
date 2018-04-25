@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import fetchRounds from '../../actions/rounds/fetch_rounds.js';
-import fetchRound from '../../actions/round/fetch_round.js';
-import fetchTeams from '../../actions/teams/fetch_teams.js';
+import fetchRounds from '../../actions/rounds/fetch_rounds';
+import fetchRound from '../../actions/round/fetch_round';
+import fetchTeams from '../../actions/teams/fetch_teams';
 
-import Round from './round.js';
-import RoundsNav from './rounds_nav.js';
+import Round from './round';
+import RoundsNav from './rounds_nav';
 
-import TeamLadder from '../teams/team_ladder.js';
+import TeamLadder from '../teams/team_ladder';
 
-import ErrorHandler from '../error_handler.js';
+import ErrorHandler from '../error_handler';
 
-import { store } from '../../App.js';
+import { store } from '../../App';
 import { push } from 'react-router-redux';
 
-import { CABLE_CONNECTION } from '../../api-config.js';
+import { CABLE_CONNECTION } from '../../api-config';
 
 const ActionCable = require('actioncable');
 const cable = ActionCable.createConsumer(CABLE_CONNECTION);

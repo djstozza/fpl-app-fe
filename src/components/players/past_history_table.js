@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import $ from 'jquery';
-import { tooltipHeader } from '../../utils/data_table.js';
+import { tooltipHeader } from '../../utils/data_table';
 
 export default class PastHistoryTable extends Component {
   componentDidMount () {

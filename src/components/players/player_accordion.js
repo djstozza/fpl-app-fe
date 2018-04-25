@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import FixtureHistoriesTable from './fixture_history_table.js';
-import PastHistoryTable from './past_history_table.js';
+import FixtureHistoriesTable from './fixture_history_table';
+import PastHistoryTable from './past_history_table';
 
 export default class PlayerAccordion extends Component {
   constructor (props) {

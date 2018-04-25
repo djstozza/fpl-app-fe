@@ -14,7 +14,7 @@ body, span, button, a, input {
 }
 
 .image-crest {
-  zoom: 65%;
+  zoom: 60%;
 }
 
 @include media-breakpoint-down(md) {
@@ -210,17 +210,21 @@ ul.scroll-nav {
   background: linear-gradient(
     to bottom,
     green 0%,
-    teal 10%,
-    green 20%,
-    teal 30%,
+    #3DAF57 20%,
     green 40%,
-    teal 50%,
-    green 60%,
-    teal 70%,
+    #3DAF57 60%,
     green 80%,
-    teal 90%,
+    #3DAF57 100%,
+    green 60%,
+    #3DAF57 70%,
+    green 80%,
+    #3DAF57 90%,
     green 100%
   );
 
   color: white;
+
+  .selected {
+    color: black;
+  }
 }

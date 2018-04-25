@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
-import { centerItVariableWidth } from '../../utils/nav_tab.js';
+import { centerItVariableWidth } from '../../utils/nav_tab';
 import compact from 'lodash/compact';
 import map from 'lodash/map';
-import { mappedObj } from '../../utils/lodash.js';
+import { mappedObj } from '../../utils/lodash';
 import $ from 'jquery';
-import { tooltipHeader } from '../../utils/data_table.js';
+import { tooltipHeader } from '../../utils/data_table';
 
 const moment = require('moment-timezone');
 

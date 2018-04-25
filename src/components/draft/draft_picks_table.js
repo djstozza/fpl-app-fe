@@ -3,8 +3,8 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Link } from 'react-router-dom';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import $ from 'jquery'
-import { tooltipHeader } from '../../utils/data_table.js';
-import { mappedObj } from '../../utils/lodash.js';
+import { tooltipHeader } from '../../utils/data_table';
+import { mappedObj } from '../../utils/lodash';
 import sortBy from 'lodash/sortBy';
 
 export default class DraftPicksTable extends Component {

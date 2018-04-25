@@ -1,6 +1,6 @@
 import { FETCH_FPL_TEAM_LIST, SHOW_FPL_TEAM_LIST_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT } from './../../api-config.js';
+import { API_ROOT } from './../../api-config';
 
 export default function fetchFplTeamList (fplTeamId) {
   return dispatch => {

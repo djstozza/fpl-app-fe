@@ -1,5 +1,5 @@
 import React from 'react'
-import Matches from './matches.js';
+import Matches from './matches';
 import sortBy from 'lodash/sortBy';
 import groupBy from 'lodash/groupBy';
 

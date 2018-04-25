@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Link } from 'react-router-dom';
 import $ from 'jquery'
-import { tooltipHeader } from '../../utils/data_table.js';
+import { tooltipHeader } from '../../utils/data_table';
 
 export default class FixtureHistoriesTable extends Component {
   componentDidMount () {

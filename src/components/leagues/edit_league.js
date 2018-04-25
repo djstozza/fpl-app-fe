@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import editLeague from  '../../actions/leagues/edit_league.js';
-import updateLeague from '../../actions/leagues/update_league.js';
+import editLeague from  '../../actions/leagues/edit_league';
+import updateLeague from '../../actions/leagues/update_league';
 import isEmpty from 'lodash/isEmpty';
-import ErrorHandler from '../error_handler.js';
-import { showBaseErrorAlert } from '../../utils/user.js';
+import ErrorHandler from '../error_handler';
+import { showBaseErrorAlert } from '../../utils/user';
 
 class EditLeague extends Component {
   constructor (props) {

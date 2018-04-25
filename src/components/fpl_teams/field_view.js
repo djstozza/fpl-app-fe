@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { isEmpty, isNumber } from 'lodash';
+import $ from 'jquery';
 
 export default class FieldView extends Component {
   constructor (props) {
@@ -7,21 +8,21 @@ export default class FieldView extends Component {
     this.selectPlayer = this.selectPlayer.bind(this);
   }
 
+  componentDidMount () {
+    $('[data-toggle="tooltip"]').tooltip();
+  }
+
   selectPlayer (listPosition) {
     if (!this.props.user_owns_fpl_team) {
       return;
     }
 
-    if (!isNumber(this.props.selected)) {
-      this.props.fetchSubstitueOptions(listPosition.id);
-    }
-
-    if (listPosition.id === this.props.selected) {
+    if (isEmpty(this.props.selected)) {
+      this.props.fetchSubstitueOptions(listPosition);
+    } else if (listPosition.id === this.props.selected.id) {
       this.props.clearSelectedPlayer();
-    }
-
-    if (isNumber(this.props.selected) && this.validSubstitution(listPosition)) {
-      this.props.substitutePlayers(listPosition.id);
+    } else if ( this.validSubstitution(listPosition) && this.props.action === 'substitute') {
+      this.props.substitutePlayers(listPosition);
     }
   }
 
@@ -42,7 +43,6 @@ export default class FieldView extends Component {
     const substituteTwo = Object.values(groupedListPositions['S2'])[0][0];
     const substituteThree = Object.values(groupedListPositions['S3'])[0][0];
     const substituteGoalkeeper = Object.values(groupedListPositions['SGKP'])[0][0];
-    console.log(startingForwards, startingMidfielders, startingDefenders);
 
     function colSpacing(count) {
       const spacing = 5 - count
@@ -53,9 +53,9 @@ export default class FieldView extends Component {
     }
 
     function selectClass (listPosition) {
-      if (listPosition.id === self.props.selected) {
+      if (!isEmpty(self.props.selected) && listPosition.id === self.props.selected.id) {
         return 'selected';
-      } else if (self.validSubstitution(listPosition)) {
+      } else if (self.validSubstitution(listPosition) && self.props.action === 'substitute') {
         return 'select-option';
       }
     }
@@ -65,19 +65,34 @@ export default class FieldView extends Component {
 
       return (
         <div key={ key }
-          className={`col col-2 text-center border ${selectClass(listPosition)}`}
+          className={ `col col-2 border ${selectClass(listPosition)}` }
           onClick={ () => self.selectPlayer(listPosition) }
         >
-          <img className='image-crest mt-1 mt-md-3' src={ crest } alt={ listPosition['team_short_name'] } />
-          <p className='mb-0'>{ listPosition['last_name'] }</p>
-          <p className='mb-1 mb-md-3'>
-            <span>
-              { listPosition['opponent_short_name'] } ({listPosition['leg']})
-            </span>
-            <span>
-              { isNumber(listPosition['event_points']) ? ` - ${listPosition['event_points']}` : '' }
-            </span>
-          </p>
+          <div className='row'>
+            <div className='col col-12 mt-1'>
+              <span
+                data-toggle="tooltip"
+                data-placement="top"
+                title={ listPosition.news }
+              >
+                <i className={ `${listPosition.status} fa-lg` }></i>
+              </span>
+              <div className='text-center'>
+                <img className='image-crest' src={ crest } alt={ listPosition['team_short_name'] } />
+              </div>
+              <div className='mb-0 text-center'>{ listPosition['last_name'] }</div>
+              <div className='mb-0 text-center'>
+                <span>
+                  { listPosition['opponent_short_name'] } ({listPosition['leg']})
+                </span>
+              </div>
+              <div className='mb-1 mb-md-2 text-center'>
+                <span>
+                  { isNumber(listPosition['event_points']) ? listPosition['event_points'] : '' }
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )
     }

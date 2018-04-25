@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import TeamFixtures from './team_fixtures.js';
-import TeamLadder from './team_ladder.js';
-import PlayersTable from '../players/players_table.js';
+import TeamFixtures from './team_fixtures';
+import TeamLadder from './team_ladder';
+import PlayersTable from '../players/players_table';
 
 export default class TeamAccordion extends Component {
   render () {

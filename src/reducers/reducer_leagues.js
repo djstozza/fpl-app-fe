@@ -7,6 +7,7 @@ import {
   GENERATE_PICK_NUMBERS,
   UPDATE_DRAFT_PICK_ORDER,
   CREATE_DRAFT,
+  FETCH_UNPICKED_PLAYERS,
   SHOW_LEAGUE_ERRORS
 } from '../actions/types';
 
@@ -27,6 +28,8 @@ export default function(state=[], action) {
     case CREATE_DRAFT:
       return action.payload;
     case UPDATE_DRAFT_PICK_ORDER:
+      return action.payload;
+    case FETCH_UNPICKED_PLAYERS:
       return action.payload;
     case SHOW_LEAGUE_ERRORS:
       return action.payload;

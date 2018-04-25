@@ -1,7 +1,7 @@
 import { LOG_OUT, SHOW_USER_ERRORS } from '../types';
 import axios from 'axios';
 import { push } from 'react-router-redux';
-import { API_ROOT, getLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader } from './../../api-config';
 import isEmpty from 'lodash/isEmpty';
 
 

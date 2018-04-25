@@ -4,8 +4,8 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { Link } from 'react-router-dom';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import $ from 'jquery'
-import { tooltipHeader } from '../../utils/data_table.js';
-import { mappedObj } from '../../utils/lodash.js';
+import { tooltipHeader } from '../../utils/data_table';
+import { mappedObj } from '../../utils/lodash';
 import sortBy from 'lodash/sortBy';
 
 export default class DraftPlayersTable extends Component {
@@ -74,6 +74,9 @@ export default class DraftPlayersTable extends Component {
         sort: true,
         align: 'center',
         headerAlign: 'center',
+        formatter: (cell, row) => {
+          return <i className={ `${cell} fa-lg` } />
+        },
         headerFormatter: tooltipHeader
       }, {
         text: 'Total Points',

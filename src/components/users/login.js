@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import login from '../../actions/users/login.js';
+import login from '../../actions/users/login';
 import { isEmpty } from 'lodash';
-import { showErrorAlert, showSuccessAlert } from '../../utils/user.js';
+import { showErrorAlert, showSuccessAlert } from '../../utils/user';
 
 class LogInForm extends Component {
   constructor (props) {

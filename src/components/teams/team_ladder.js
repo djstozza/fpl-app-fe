@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Link } from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
-import { centerItVariableWidth } from '../../utils/nav_tab.js';
+import { centerItVariableWidth } from '../../utils/nav_tab';
 import $ from 'jquery';
-import { tooltipHeader } from '../../utils/data_table.js';
+import { tooltipHeader } from '../../utils/data_table';
 
 export default class TeamLadder extends Component {
   componentDidMount () {

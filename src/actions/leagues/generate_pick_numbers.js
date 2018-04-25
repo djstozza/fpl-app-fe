@@ -1,6 +1,6 @@
 import { GENERATE_PICK_NUMBERS, SHOW_LEAGUE_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
 export default function generatePickNumbers (leagueId) {
   return dispatch => {

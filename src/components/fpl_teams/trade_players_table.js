@@ -6,12 +6,32 @@ import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } fro
 import $ from 'jquery'
 import { tooltipHeader } from '../../utils/data_table';
 import { mappedObj } from '../../utils/lodash';
-import sortBy from 'lodash/sortBy';
+import { isEmpty, sortBy } from 'lodash';
 
 export default class PlayersTable extends Component {
+  constructor (props) {
+    super(props);
+    this.selectTradePlayer = this.selectTradePlayer.bind(this);
+  }
+
   componentDidMount () {
     $('[data-toggle="tooltip"]').tooltip()
   }
+
+  selectTradePlayer (row, isSelect) {
+    if (!this.props.user_owns_fpl_team) {
+      return;
+    }
+
+    if (isEmpty(this.props.selected)) {
+      return;
+    } else if (isEmpty(this.props.tradePlayer)) {
+      this.props.selectTradePlayer(row);
+    } else if (this.props.tradePlayer.id === row.id) {
+      this.props.clearTradePlayer();
+    }
+  }
+
 
   render () {
     const team = this.props.team;
@@ -48,19 +68,6 @@ export default class PlayersTable extends Component {
         },
         headerFormatter: tooltipHeader
       }, {
-        text: 'Position',
-        dataField: 'position_id',
-        align: 'center',
-        headerAlign: 'center',
-        formatter: (cell, row) => {
-          return positionOptions[cell];
-        },
-        headerFormatter: tooltipHeader,
-        filter: selectFilter({
-          options: positionOptions,
-          placeholder: ' ',
-        })
-      }, {
         text: 'Team',
         dataField: 'team_id',
         align: 'center',
@@ -75,77 +82,43 @@ export default class PlayersTable extends Component {
           placeholder: ' ',
         }),
       }, {
-        text: 'Goals',
-        dataField: 'goals_scored',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      }, {
-        text: 'Assists',
-        dataField: 'assists',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      }, {
-        text: 'Yellow Cards',
-        dataField: 'yellow_cards',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      }, {
-        text: 'Red Cards',
-        dataField: 'red_cards',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      }, {
-        text: 'Clean Sheets',
-        dataField: 'clean_sheets',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      }, {
-        text: 'Goals Conceded',
-        dataField: 'goals_conceded',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      }, {
-        text: 'Saves',
-        dataField: 'saves',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      },{
-        text: 'Form',
-        dataField: 'form',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      }, {
-        text: 'Points Per Game',
-        dataField: 'points_per_game',
-        sort: true,
-        align: 'center',
-        headerAlign: 'center',
-        headerFormatter: tooltipHeader
-      }, {
-        text: 'Deam Team',
-        dataField: 'in_dreamteam',
-        sort: true,
+        text: 'Position',
+        dataField: 'position_id',
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return cell ? 'Yes' : 'No';
+          return positionOptions[cell];
         },
+        headerFormatter: tooltipHeader,
+        filter: selectFilter({
+          options: isEmpty(this.props.selected) ? positionOptions :
+                    { [this.props.selected.position_id]: this.props.selected.singular_name_short },
+          placeholder: ' ',
+          withoutEmptyOption: !isEmpty(this.props.selected),
+        })
+      }, {
+        text: 'Status',
+        dataField: 'status',
+        align: 'center',
+        headerAlign: 'center',
+        headerFormatter: tooltipHeader,
+        formatter: (cell, row) => {
+          return (
+            <span
+              data-toggle="tooltip"
+              data-placement="top"
+              title={ row.news }
+            >
+              <i className={ `${cell} fa-lg` } ></i>
+            </span>
+          );
+        }
+      }, {
+        text: 'Last Round',
+        dataField: 'event_points',
+        sort: true,
+        align: 'center',
+        headerAlign: 'center',
         headerFormatter: tooltipHeader
       }, {
         text: 'Total Points',
@@ -155,16 +128,43 @@ export default class PlayersTable extends Component {
         headerAlign: 'center',
         headerFormatter: tooltipHeader
       }
-    ]
+    ];
+
+    const selectRow = {
+      mode: 'radio',
+      clickToSelect: true,
+      hideSelectColumn: true,
+      onSelect: this.selectTradePlayer
+    };
+
+    const rowClasses = (row, rowIndex) => {
+      let classes = null;
+
+      if (isEmpty(this.props.selected)) {
+        return;
+      }
+
+      if (isEmpty(this.props.tradePlayer)) {
+        return
+      }
+
+      if (this.props.tradePlayer.id === row.id) {
+        classes='select-option';
+      }
+
+      return classes;
+    }
 
     return (
-      <div className='bs-md-scroll-table'>
+      <div className='bs-xxs-scroll-table'>
         <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
           filter={ filterFactory() }
-          pagination={ paginationFactory() }
+          pagination={ paginationFactory({ hideSizePerPage: true }) }
+          selectRow={ selectRow }
+          rowClasses={ rowClasses }
           striped
           hover
         />

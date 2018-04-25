@@ -9,7 +9,6 @@ export default function(state=[], action) {
     case UPDATE_FPL_TEAM:
       return action.payload;
     case SHOW_FPL_TEAM_ERRORS:
-      console.log(action.payload)
       return action.payload;
 
     default:

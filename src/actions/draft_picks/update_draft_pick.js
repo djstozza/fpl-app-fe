@@ -1,6 +1,6 @@
 import { UPDATE_DRAFT_PICK, SHOW_DRAFT_PICK_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
 export default function updateDraftPick (leagueId, draftPickId, playerId, miniDraft) {
   return dispatch => {

@@ -1,6 +1,6 @@
 import { FETCH_FPL_TEAM, SHOW_FPL_TEAM_ERRORS } from '../types';
 import axios from 'axios';
-import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config.js';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
 export default function fetchFplTeam (fplTeamId) {
   return dispatch => {
@@ -8,7 +8,6 @@ export default function fetchFplTeam (fplTeamId) {
       setLocalStorageHeader(res);
       dispatch(fetchFplTeamAsync(res.data));
     }).catch(error => {
-      setLocalStorageHeader(error.response);
       dispatch({ type: SHOW_FPL_TEAM_ERRORS, payload: { error: error.response } });
     });
   }

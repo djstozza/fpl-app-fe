@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import createLeague from  '../../actions/leagues/create_league.js';
+import createLeague from  '../../actions/leagues/create_league';
 
 
 class NewLeague extends Component {

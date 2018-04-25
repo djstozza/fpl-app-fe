@@ -3,12 +3,12 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
-import { tooltipHeader } from '../../utils/data_table.js';
-import { mappedObj } from '../../utils/lodash.js';
+import { tooltipHeader } from '../../utils/data_table';
+import { mappedObj } from '../../utils/lodash';
 import { isEmpty, isNumber } from 'lodash';
 import $ from 'jquery'
 
-export default class PlayersTable extends Component {
+export default class FplTeamListTable extends Component {
   constructor (props) {
     super(props);
 
@@ -24,16 +24,12 @@ export default class PlayersTable extends Component {
       return;
     }
 
-    if (!isNumber(this.props.selected)) {
-      this.props.fetchSubstitueOptions(row.id);
-    }
-
-    if (row.id === this.props.selected) {
+    if (isEmpty(this.props.selected)) {
+      this.props.fetchSubstitueOptions(row);
+    } else if (row.id === this.props.selected.id) {
       this.props.clearSelectedPlayer();
-    }
-
-    if (isNumber(this.props.selected) && this.validSubstitution(row)) {
-      this.props.substitutePlayers(row.id);
+    } else if ( this.validSubstitution(row) && this.props.action === 'substitute') {
+      this.props.substitutePlayers(row);
     }
   }
 
@@ -44,21 +40,20 @@ export default class PlayersTable extends Component {
   }
 
   render () {
-    const data = this.props.fpl_team_list;
+    const data = this.props.list_positions;
 
     const columns = [
       {
        text: 'ID',
        dataField: 'id',
        hidden: true,
-       editable: false,
      }, {
         text: 'Role',
         dataField: 'role',
         align: 'center',
         headerAlign: 'center',
         headerFormatter: tooltipHeader
-      },, {
+      }, {
         text: 'Last Name',
         dataField: 'last_name',
         align: 'center',
@@ -88,6 +83,17 @@ export default class PlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         headerFormatter: tooltipHeader,
+        formatter: (cell, row) => {
+          return (
+            <span
+              data-toggle="tooltip"
+              data-placement="top"
+              title={ row.news }
+            >
+              <i className={ `${cell} fa-lg` } ></i>
+            </span>
+          );
+        }
       }, {
         text: 'Opponent',
         dataField: 'opponent_short_name',
@@ -128,11 +134,15 @@ export default class PlayersTable extends Component {
     const rowClasses = (row, rowIndex) => {
       let classes = null;
 
-      if (isNumber(this.props.selected) && this.validSubstitution(row)) {
+      if (isEmpty(this.props.selected)) {
+        return;
+      }
+
+      if (this.validSubstitution(row) && this.props.action === 'substitute') {
         classes='select-option';
       }
 
-      if (this.props.selected === row.id) {
+      if (this.props.selected.id === row.id) {
         classes='selected';
       }
 
@@ -140,7 +150,7 @@ export default class PlayersTable extends Component {
     }
 
     return (
-      <div className={ `bs-xxs-scroll-table d-sm-none`}>
+      <div className='bs-xxs-scroll-table d-sm-none'>
         <BootstrapTable
           keyField='id'
           data={ data }
@@ -151,6 +161,6 @@ export default class PlayersTable extends Component {
           hover
         />
       </div>
-    )
+    );
   }
 }
