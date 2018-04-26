@@ -6,7 +6,7 @@ import updateFplTeam from  '../../actions/fpl_teams/update_fpl_team';
 import { every, isEmpty, isNumber } from 'lodash';
 import ErrorHandler from '../error_handler';
 import { Link } from 'react-router-dom';
-import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user';
+import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
 
 class EditFplTeam extends Component {
   constructor (props) {

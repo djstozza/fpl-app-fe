@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import login from '../../actions/users/login';
 import { isEmpty } from 'lodash';
-import { showErrorAlert, showSuccessAlert } from '../../utils/user';
+import { showErrorAlert, showSuccessAlert } from '../../utils/general';
 
 class LogInForm extends Component {
   constructor (props) {

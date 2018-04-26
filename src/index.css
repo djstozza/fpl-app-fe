@@ -89,16 +89,16 @@ ul.scroll-nav {
 .diff-h-1 {
   background-color: #33ffff; }
 
-.diff-e, .selected {
+.diff-e, .selected, .approved {
   background-color: #4dff4d !important; }
 
-.diff-a-1 {
-  background-color: #ffff4d; }
+.diff-a-1, .pending {
+  background-color: #ffff4d !important; }
 
 .diff-a-2 {
   background-color: #ffd24d; }
 
-.diff-a-3, .select-option {
+.diff-a-3, .select-option, .declined {
   background-color: #ff4d4d !important; }
 
 .transparent-text {

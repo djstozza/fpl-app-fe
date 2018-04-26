@@ -12,7 +12,7 @@ import ErrorHandler from '../error_handler';
 import DraftPlayersTable from './draft_players_table';
 import DraftPicksTable from './draft_picks_table';
 import { every, isEmpty, isNumber } from 'lodash';
-import { showSuccessAlert } from '../../utils/user';
+import { showSuccessAlert } from '../../utils/general';
 
 import { CABLE_CONNECTION } from '../../api-config';
 

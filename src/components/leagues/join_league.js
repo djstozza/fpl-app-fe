@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { showBaseErrorAlert } from '../../utils/user';
+import { showBaseErrorAlert } from '../../utils/general';
 import joinLeague from  '../../actions/leagues/join_league';
 
 

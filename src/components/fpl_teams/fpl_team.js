@@ -15,9 +15,10 @@ import createWaiverPick from '../../actions/waiver_picks/create';
 import fetchCurrentWaiverPicks from '../../actions/waiver_picks/fetch_current_waiver_picks';
 import updateWaiverPickOrder from '../../actions/waiver_picks/update_waiver_pick_order';
 import deleteWaiverPick from '../../actions/waiver_picks/delete_waiver_pick';
+import tradePlayer from '../../actions/fpl_team_lists/trade_player';
 
 import ErrorHandler from '../error_handler';
-import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user';
+import { showSuccessAlert, showBaseErrorAlert, capitaliseText } from '../../utils/general';
 
 import FplTeamListTable from './fpl_team_list_table';
 import FieldView from './field_view';
@@ -38,11 +39,11 @@ class FplTeam extends Component {
     this.fetchSubstitueOptions = this.fetchSubstitueOptions.bind(this);
     this.clearSelectedPlayer = this.clearSelectedPlayer.bind(this);
     this.substitutePlayers = this.substitutePlayers.bind(this);
-    this.initiateWaiver = this.initiateWaiver.bind(this);
+    this.initiateTrade = this.initiateTrade.bind(this);
     this.selectTradePlayer = this.selectTradePlayer.bind(this);
     this.clearTradePlayer = this.clearTradePlayer.bind(this);
     this.completeTradeButtons = this.completeTradeButtons.bind(this);
-    this.completeWaiverPick = this.completeWaiverPick.bind(this);
+    this.completeTradeAction = this.completeTradeAction.bind(this);
     this.updateWaiverPickOrder = this.updateWaiverPickOrder.bind(this);
     this.deleteWaiverPick = this.deleteWaiverPick.bind(this);
   }
@@ -106,8 +107,8 @@ class FplTeam extends Component {
 
     if (this.state.action === 'substitute') {
       title = 'Starting Lineup';
-    } else if (this.state.action === 'waiver') {
-      title = 'Waiver Out'
+    } else {
+      title = `${capitaliseText(this.state.action)} Out`;
     }
 
     return <h4 className='mb-0'>{ title }</h4>
@@ -120,8 +121,8 @@ class FplTeam extends Component {
 
     if (this.state.action === 'substitute') {
         return <span>Select your starting lineup</span>;
-    } else if (this.state.action === 'waiver') {
-      return <span>(1) Select the player you wish to waiver out</span>;
+    } else {
+      return <span>(1) Select the player you wish to { this.state.action } out</span>;
     }
   }
 
@@ -177,8 +178,8 @@ class FplTeam extends Component {
 
     return (
       <div>
-        <h4 className='mb-0'>Waiver In</h4>
-        <span>(2) Select the player you wish to wavier in</span>
+        <h4 className='mb-0'>{ capitaliseText(this.state.action) } In</h4>
+        <span>(2) Select the player you wish to { this.state.action } in</span>
         <TradePlayersTable
           { ...this.state }
           players={ this.state.unpicked_players }
@@ -206,10 +207,10 @@ class FplTeam extends Component {
     this.setState({ selected: '' });
   }
 
-  initiateWaiver () {
+  initiateTrade () {
     this.props.fetchUnpickedPlayers(this.state.fpl_team.league_id);
     this.setState({
-      action: 'waiver',
+      action: this.state.status,
       selected: '',
     });
   }
@@ -257,12 +258,22 @@ class FplTeam extends Component {
         <button
           key='waiver'
           className='btn btn-secondary btn-lg'
-          onClick={ () => this.initiateWaiver() }
+          onClick={ () => this.initiateTrade() }
         >
           Waiver
         </button>,
       ]
-    } else if (this.state.action === 'waiver') {
+    } else if (this.state.action === 'substitute' && this.state.status === 'trade') {
+      return [
+        <button
+          key='waiver'
+          className='btn btn-secondary btn-lg'
+          onClick={ () => this.initiateTrade() }
+        >
+          Trade
+        </button>,
+      ]
+    } else {
       return [
         <button
           key='substitute'
@@ -280,20 +291,33 @@ class FplTeam extends Component {
       return;
     }
 
-    if (this.state.action === 'waiver' && !isEmpty(this.state.selected) && !isEmpty(this.state.tradePlayer)) {
-      return (
-        <button
-          className='btn btn-secondary'
-          onClick={ () => this.completeWaiverPick() }
-        >
-         Complete Waiver Pick
-        </button>
-      )
+    if (isEmpty(this.state.selected) || isEmpty(this.state.tradePlayer)) {
+      return;
     }
+
+    return (
+      <button
+        className='btn btn-secondary'
+        onClick={ () => this.completeTradeAction() }
+      >
+       Complete { capitaliseText(this.state.action) }
+      </button>
+    );
   }
 
-  completeWaiverPick () {
-    this.props.createWaiverPick(this.state.fpl_team_list.id, this.state.selected.id, this.state.tradePlayer.id);
+  completeTradeAction () {
+    if (this.state.action === 'waiver') {
+      this.props.createWaiverPick(this.state.fpl_team_list.id, this.state.selected.id, this.state.tradePlayer.id);
+    } else if (this.state.action === 'trade') {
+      const outPlayer = `${this.state.selected.first_name} ${this.state.selected.last_name}`;
+      const inPlayer = `${this.state.tradePlayer.first_name} ${this.state.tradePlayer.last_name}`
+      const confirmText = `Are you sure you want to trade out ${outPlayer} for ${inPlayer}?`;
+
+      if (window.confirm(confirmText)) {
+        this.props.tradePlayer(this.state.selected.id, this.state.tradePlayer.id);
+      }
+    }
+
     this.setState({
       selected: '',
       tradePlayer: '',
@@ -304,8 +328,15 @@ class FplTeam extends Component {
     this.props.updateWaiverPickOrder(this.state.fpl_team_list.id, waiverPickId, pickNumber);
   }
 
-  deleteWaiverPick (waiverPickId) {
-    this.props.deleteWaiverPick(this.state.fpl_team_list.id, waiverPickId);
+  deleteWaiverPick (waiverPick) {
+    const confirmText =
+      `Are you sure you want to delete this waiver pick - Pick Number: ${waiverPick.pick_number}, ` +
+      `Out: ${waiverPick.out_first_name} ${waiverPick.out_last_name}, ` +
+      `In: ${waiverPick.in_first_name} ${waiverPick.in_last_name}?`
+
+    if (window.confirm(confirmText)) {
+      this.props.deleteWaiverPick(this.state.fpl_team_list.id, waiverPick.id);
+    }
   }
 
   colClass () {
@@ -381,6 +412,7 @@ function mapDispatchToProps (dispatch) {
     fetchCurrentWaiverPicks: fetchCurrentWaiverPicks,
     updateWaiverPickOrder: updateWaiverPickOrder,
     deleteWaiverPick: deleteWaiverPick,
+    tradePlayer: tradePlayer,
   }, dispatch);
 }
 

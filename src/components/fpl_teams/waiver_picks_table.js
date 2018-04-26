@@ -4,6 +4,7 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 import { tooltipHeader } from '../../utils/data_table';
+import { capitaliseText } from '../../utils/general';
 import { map } from 'lodash';
 import $ from 'jquery'
 
@@ -77,6 +78,8 @@ export default class WaiverPicksTable extends Component {
         dataField: 'status',
         align: 'center',
         headerAlign: 'center',
+        formatter: (cell, row) => { return capitaliseText(cell) },
+        classes: (cell, row, rowIndex, colIndex) => { return cell },
         headerFormatter: tooltipHeader,
       }, {
         text: 'Delete',
@@ -84,8 +87,9 @@ export default class WaiverPicksTable extends Component {
         align: 'center',
         headerAlign: 'center',
         headerFormatter: tooltipHeader,
+        hidden: this.props.status !== 'waiver',
         formatter: (cell, row) => {
-         return <button onClick={ (e) => this.props.deleteWaiverPick(cell) }>Delete</button>;
+         return <button onClick={ (e) => this.props.deleteWaiverPick(row) }>Delete</button>;
         },
       }
     ];

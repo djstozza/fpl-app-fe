@@ -8,7 +8,7 @@ import createDraft from  '../../actions/leagues/create_draft';
 import { every, isEmpty, isNumber } from 'lodash';
 import ErrorHandler from '../error_handler';
 import { Link } from 'react-router-dom';
-import { showSuccessAlert, showBaseErrorAlert } from '../../utils/user';
+import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
 import FplTeamsTable from '../leagues/fpl_teams_table';
 
 class League extends Component {

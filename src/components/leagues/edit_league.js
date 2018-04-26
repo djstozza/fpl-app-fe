@@ -5,7 +5,7 @@ import editLeague from  '../../actions/leagues/edit_league';
 import updateLeague from '../../actions/leagues/update_league';
 import isEmpty from 'lodash/isEmpty';
 import ErrorHandler from '../error_handler';
-import { showBaseErrorAlert } from '../../utils/user';
+import { showBaseErrorAlert } from '../../utils/general';
 
 class EditLeague extends Component {
   constructor (props) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import profile from '../../actions/users/profile';
-import { showErrorAlert, showSuccessAlert } from '../../utils/user';
+import { showErrorAlert, showSuccessAlert } from '../../utils/general';
 import update from '../../actions/users/update';
 import changePassword from '../../actions/users/change_password';
 

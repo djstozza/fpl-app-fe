@@ -1,24 +1,23 @@
-import { UPDATE_FPL_TEAM_LIST_ORDER, FETCH_LIST_POSITION, SHOW_FPL_TEAM_LIST_ERRORS } from '../types';
+import { TRADE_PLAYER, SHOW_FPL_TEAM_LIST_ERRORS } from '../types';
 import axios from 'axios';
 import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
-export default function updateListPosition (listPositionId, substituteListPositionId) {
+export default function tradePlayer (listPositionId, inPlayerId) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/list_positions/${listPositionId}.json`,
-      method: 'PUT',
+      url: `${API_ROOT}/trades.json`,
+      method: 'POST',
       ...getLocalStorageHeader(),
       data: {
-        substitute_list_position_id: substituteListPositionId,
+        list_position_id: listPositionId,
+        in_player_id: inPlayerId,
       }
     }).then(res => {
       setLocalStorageHeader(res);
-      dispatch(clearSubstituteOptions());
-      dispatch(updateListPositionAsync(res.data));
+      dispatch(tradePlayerAsync(res.data));
     }).catch(error => {
       const data = error.response.data;
       setLocalStorageHeader(error.response);
-      dispatch(clearSubstituteOptions());
       dispatch({
         type: SHOW_FPL_TEAM_LIST_ERRORS,
         payload: {
@@ -33,15 +32,9 @@ export default function updateListPosition (listPositionId, substituteListPositi
   }
 }
 
-function updateListPositionAsync (data) {
+function tradePlayerAsync (data) {
   return {
-    type: UPDATE_FPL_TEAM_LIST_ORDER,
+    type: TRADE_PLAYER,
     payload: data
   };
-}
-
-function clearSubstituteOptions () {
-  return {
-    type: FETCH_LIST_POSITION, payload: { substitute_options: [] }
-  }
 }
