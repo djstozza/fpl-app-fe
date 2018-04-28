@@ -18,12 +18,9 @@ import deleteWaiverPick from '../../actions/waiver_picks/delete_waiver_pick';
 import tradePlayer from '../../actions/fpl_team_lists/trade_player';
 
 import ErrorHandler from '../error_handler';
-import { showSuccessAlert, showBaseErrorAlert, capitaliseText } from '../../utils/general';
+import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
 
-import FplTeamListTable from './fpl_team_list_table';
-import FieldView from './field_view';
-import TradePlayersTable from './trade_players_table';
-import WaiverPicksTable from './waiver_picks_table';
+import FplTeamListView from './fpl_team_list_view';
 
 class FplTeam extends Component {
   constructor (props) {
@@ -42,10 +39,10 @@ class FplTeam extends Component {
     this.initiateTrade = this.initiateTrade.bind(this);
     this.selectTradePlayer = this.selectTradePlayer.bind(this);
     this.clearTradePlayer = this.clearTradePlayer.bind(this);
-    this.completeTradeButtons = this.completeTradeButtons.bind(this);
     this.completeTradeAction = this.completeTradeAction.bind(this);
     this.updateWaiverPickOrder = this.updateWaiverPickOrder.bind(this);
     this.deleteWaiverPick = this.deleteWaiverPick.bind(this);
+    this.resetSelection = this.resetSelection.bind(this);
   }
 
   componentWillMount () {
@@ -70,6 +67,7 @@ class FplTeam extends Component {
       waiver_picks: nextProps.waiver_picks,
       current_user: nextProps.current_user,
       user_owns_fpl_team: nextProps.user_owns_fpl_team,
+      unSelectable: nextProps.status === 'pre_game' || nextProps.status === 'started',
       error: nextProps.error,
     });
 
@@ -94,105 +92,12 @@ class FplTeam extends Component {
     }
   }
 
-  descriptionTitle () {
-    if (!this.state.user_owns_fpl_team) {
-      return;
-    }
-
-    if (this.state.status === 'pre_game' || this.state.status === 'started') {
-      return;
-    }
-
-    let title;
-
-    if (this.state.action === 'substitute') {
-      title = 'Starting Lineup';
-    } else {
-      title = `${capitaliseText(this.state.action)} Out`;
-    }
-
-    return <h4 className='mb-0'>{ title }</h4>
-  }
-
-  descriptionText () {
-    if (this.state.status === 'pre_game' || this.state.status === 'started') {
-      return;
-    }
-
-    if (this.state.action === 'substitute') {
-        return <span>Select your starting lineup</span>;
-    } else {
-      return <span>(1) Select the player you wish to { this.state.action } out</span>;
-    }
-  }
-
-  fplTeamListView () {
-    if (isEmpty(this.state.fpl_team_list)) {
-      return;
-    }
-
-    return (
-      <div>
-        { this.showButtons() }
-        <div className='row'>
-          <div className={`col col-12 col-md-12 ${this.colClass()}`}>
-            { this.showFplTeamListTable() }
-          </div>
-          <div className='col col-12 col-md-12 col-lg-6'>
-            { this.showTradePlayersTable() }
-          </div>
-        </div>
-        { this.showWaiverPicksTable() }
-      </div>
-    )
-  }
-
-  showFplTeamListTable () {
-    return (
-      <div>
-        { this.descriptionTitle() }
-        { this.descriptionText() }
-        <FplTeamListTable
-          { ...this.state }
-          fetchSubstitueOptions={ this.fetchSubstitueOptions }
-          substitutePlayers={ this.substitutePlayers }
-          clearSelectedPlayer={ this.clearSelectedPlayer }
-        />
-        <FieldView { ...this.state }
-          fetchSubstitueOptions={ this.fetchSubstitueOptions }
-          substitutePlayers={ this.substitutePlayers }
-          clearSelectedPlayer={ this.clearSelectedPlayer }
-        />
-      </div>
-    );
-  }
-
-  showTradePlayersTable () {
-    if (isEmpty(this.state.unpicked_players)) {
-      return;
-    }
-
-    if (this.state.action === 'substitute') {
-      return;
-    }
-
-    return (
-      <div>
-        <h4 className='mb-0'>{ capitaliseText(this.state.action) } In</h4>
-        <span>(2) Select the player you wish to { this.state.action } in</span>
-        <TradePlayersTable
-          { ...this.state }
-          players={ this.state.unpicked_players }
-          selectTradePlayer={ this.selectTradePlayer }
-          clearTradePlayer={ this.clearTradePlayer }
-        />
-        { this.completeTradeButtons() }
-      </div>
-    )
-  }
-
   fetchSubstitueOptions (listPosition) {
-    this.setState({ selected: listPosition, playerIsSelected: true });
+    if (this.state.unSelectable) {
+      return;
+    }
+
+    this.setState({ selected: listPosition });
     if (this.state.action === 'substitute') {
       this.props.fetchListPosition(listPosition.id);
     }
@@ -215,94 +120,12 @@ class FplTeam extends Component {
     });
   }
 
-  showWaiverPicksTable () {
-    if (!this.state.user_owns_fpl_team) {
-      return;
-    }
-
-    if (isEmpty(this.state.waiver_picks)) {
-      return;
-    }
-
-    return (
-      <div>
-        <h4 className='mt-3 mb-0'>Waiver Picks</h4>
-        <WaiverPicksTable
-          { ...this.state }
-          updateWaiverPickOrder={ this.updateWaiverPickOrder }
-          deleteWaiverPick={ this.deleteWaiverPick }
-        />
-      </div>
-    );
-  }
-
   selectTradePlayer (tradePlayer) {
     this.setState({ tradePlayer: tradePlayer });
   }
 
   clearTradePlayer () {
     this.setState({ tradePlayer: '' });
-  }
-
-  showButtons () {
-    if (!this.state.user_owns_fpl_team) {
-      return;
-    }
-
-    if (this.state.status === 'pre_game' || this.state.status === 'started') {
-      return;
-    }
-
-    if (this.state.action === 'substitute' && this.state.status == 'waiver') {
-      return [
-        <button
-          key='waiver'
-          className='btn btn-secondary btn-lg'
-          onClick={ () => this.initiateTrade() }
-        >
-          Waiver
-        </button>,
-      ]
-    } else if (this.state.action === 'substitute' && this.state.status === 'trade') {
-      return [
-        <button
-          key='waiver'
-          className='btn btn-secondary btn-lg'
-          onClick={ () => this.initiateTrade() }
-        >
-          Trade
-        </button>,
-      ]
-    } else {
-      return [
-        <button
-          key='substitute'
-          className='btn btn-secondary btn-lg'
-          onClick={ () => this.setState({ action: 'substitute', selected: '', substitute_options: [] }) }
-        >
-          Change line up
-        </button>,
-      ]
-    }
-  }
-
-  completeTradeButtons () {
-    if (!this.state.user_owns_fpl_team) {
-      return;
-    }
-
-    if (isEmpty(this.state.selected) || isEmpty(this.state.tradePlayer)) {
-      return;
-    }
-
-    return (
-      <button
-        className='btn btn-secondary'
-        onClick={ () => this.completeTradeAction() }
-      >
-       Complete { capitaliseText(this.state.action) }
-      </button>
-    );
   }
 
   completeTradeAction () {
@@ -339,14 +162,8 @@ class FplTeam extends Component {
     }
   }
 
-  colClass () {
-    let classes;
-    if (this.state.action === 'substitute') {
-      classes = 'col-lg-12';
-    } else {
-      classes = 'col-lg-6';
-    }
-    return classes;
+  resetSelection () {
+    this.setState({ action: 'substitute', selected: '', substitute_options: [] });
   }
 
   render () {
@@ -363,7 +180,20 @@ class FplTeam extends Component {
             { showSuccessAlert(this.state.success) }
             { showBaseErrorAlert(this.state.error) }
             <h3>{ this.state.fpl_team.name } { this.editFplTeamButton() }</h3>
-            { this.fplTeamListView() }
+            <FplTeamListView
+              { ...this.state }
+              initiateTrade={ this.initiateTrade }
+              completeTradeAction={ this.completeTradeAction }
+              fetchSubstitueOptions={ this.fetchSubstitueOptions }
+              substitutePlayers={ this.substitutePlayers }
+              clearSelectedPlayer={ this.clearSelectedPlayer }
+              players={ this.props.unpicked_players }
+              selectTradePlayer={ this.selectTradePlayer }
+              clearTradePlayer={ this.clearTradePlayer }
+              updateWaiverPickOrder={ this.updateWaiverPickOrder }
+              deleteWaiverPick={ this.deleteWaiverPick }
+              resetSelection={ this.resetSelection }
+            />
           </div>
         </div>
       );
@@ -389,7 +219,7 @@ function mapStateToProps (state) {
     waiver_picks: state.WaiverPicksReducer.waiver_picks,
     teams: state.TeamsReducer,
     positions: state.PositionsReducer,
-    success: state.FplTeamsReducer.success || state.WaiverPicksReducer.success,
+    success: state.FplTeamsReducer.success || state.FplTeamListsReducer.success || state.WaiverPicksReducer.success,
     error: (
       state.FplTeamsReducer.error ||
       state.FplTeamListsReducer.error ||
