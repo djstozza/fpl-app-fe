@@ -3,6 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Link } from 'react-router-dom';
 import $ from 'jquery'
 import { tooltipHeader } from '../../utils/data_table';
+import { mappedObj } from '../../utils/lodash';
 
 export default class FixtureHistoriesTable extends Component {
   componentDidMount () {
@@ -11,7 +12,11 @@ export default class FixtureHistoriesTable extends Component {
 
   render () {
     const position = this.props.position;
-    const data = this.props.player.player_fixture_histories
+    const teams = this.props.teams;
+    const data = this.props.player.player_fixture_histories;
+
+    const teamOptions = mappedObj(teams, 'id', 'short_name');
+
     const columns = [
       {
        text: 'ID',
@@ -33,6 +38,16 @@ export default class FixtureHistoriesTable extends Component {
        sort: true,
        align: 'center',
        headerAlign: 'center',
+       headerFormatter: tooltipHeader
+     }, {
+       text: 'Opponent',
+       dataField: 'opponent_team',
+       sort: true,
+       align: 'center',
+       headerAlign: 'center',
+       formatter: (cell, row) => {
+         return <Link to={ `/teams/${cell}` }>{ teamOptions[cell] }</Link>;
+       },
        headerFormatter: tooltipHeader
      }, {
        text: 'Goals',

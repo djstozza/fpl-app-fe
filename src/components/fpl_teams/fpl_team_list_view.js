@@ -19,6 +19,17 @@ export default class FplTeamListView extends Component {
       return;
     }
 
+    return (
+      <div>
+        { this.listPositionSelectButton() }
+        <Link to={ `/fpl_teams/${this.props.fplTeamId}/inter_team_trades` } className='btn btn-secondary btn-lg'>
+          Inter Team Trades
+        </Link>
+      </div>
+    )
+  }
+
+  listPositionSelectButton () {
     if (this.props.action === 'substitute') {
       return (
         <button
@@ -39,14 +50,6 @@ export default class FplTeamListView extends Component {
         </button>
       )
     }
-  }
-
-  interTeamTradesLink () {
-    return (
-      <Link to={ `/fpl_teams/${this.props.fplTeamId}/inter_team_trades` } className='btn btn-secondary btn-lg'>
-        Inter Team Trades
-      </Link>
-    )
   }
 
   colClass () {
@@ -172,21 +175,28 @@ export default class FplTeamListView extends Component {
     );
   }
 
+  goToDraftLink () {
+    if (this.props.league_status === 'draft') {
+      return (
+        <Link to={ `/leagues/${this.props.fpl_team.league_id}/draft` } className='btn btn-primary'>
+          Go to Draft
+        </Link>
+      )
+    }
+  }
+
   render () {
-    if (isEmpty(this.props.fpl_team_list)) {
+    if (this.props.league_status !== 'active') {
       return (
         <div>
           <p>You will be able to view your players once the draft has been completed</p>
-          <Link to={ `/leagues/${this.props.fpl_team.league_id}/draft` } className='btn btn-primary'>
-            Go to Draft
-          </Link>
+          { this.goToDraftLink() }
         </div>
       )
     } else {
       return (
         <div>
           { this.showButtons() }
-          { this.interTeamTradesLink() }
           <div className='row'>
             <div className={`col col-12 col-md-12 ${this.colClass()}`}>
               { this.showFplTeamListTable() }

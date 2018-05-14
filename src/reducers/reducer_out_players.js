@@ -1,0 +1,11 @@
+import { FETCH_OUT_PLAYERS } from '../actions/types';
+
+export default function(state=[], action) {
+  switch (action.type) {
+    case FETCH_OUT_PLAYERS:
+      return action.payload;
+
+    default:
+      return state;
+  }
+}

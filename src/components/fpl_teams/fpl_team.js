@@ -33,7 +33,7 @@ class FplTeam extends Component {
       action: 'substitute',
     };
 
-    this.fetchSubstitueOptions = this.fetchSubstitueOptions.bind(this);
+    this.selectListPosition = this.selectListPosition.bind(this);
     this.clearSelectedPlayer = this.clearSelectedPlayer.bind(this);
     this.substitutePlayers = this.substitutePlayers.bind(this);
     this.initiateTrade = this.initiateTrade.bind(this);
@@ -59,6 +59,7 @@ class FplTeam extends Component {
       fpl_team_list: nextProps.fpl_team_list,
       list_positions: nextProps.list_positions,
       status: nextProps.status,
+      league_status: nextProps.league_status,
       grouped_list_positions: nextProps.grouped_list_positions,
       teams: nextProps.teams,
       positions: nextProps.positions,
@@ -77,7 +78,11 @@ class FplTeam extends Component {
       });
     }
 
-    if (!isEmpty(nextProps.fpl_team)) {
+    if (
+      (!isEmpty(nextProps.fpl_team) && (!isEmpty(nextProps.fpl_team_list) || nextProps.league_status !== 'active')) &&
+      !isEmpty(nextProps.teams) &&
+      !isEmpty(nextProps.positions)
+    ) {
       this.setState({
         loaded: true
       });
@@ -92,7 +97,7 @@ class FplTeam extends Component {
     }
   }
 
-  fetchSubstitueOptions (listPosition) {
+  selectListPosition (listPosition) {
     if (this.state.unSelectable) {
       return;
     }
@@ -174,6 +179,7 @@ class FplTeam extends Component {
     }
 
     if (this.state.loaded) {
+      console.log(this.state.selected);
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
@@ -184,7 +190,7 @@ class FplTeam extends Component {
               { ...this.state }
               initiateTrade={ this.initiateTrade }
               completeTradeAction={ this.completeTradeAction }
-              fetchSubstitueOptions={ this.fetchSubstitueOptions }
+              selectListPosition={ this.selectListPosition }
               substitutePlayers={ this.substitutePlayers }
               clearSelectedPlayer={ this.clearSelectedPlayer }
               players={ this.props.unpicked_players }
@@ -208,6 +214,7 @@ class FplTeam extends Component {
 function mapStateToProps (state) {
   return {
     fpl_team: state.FplTeamsReducer.fpl_team,
+    league_status: state.FplTeamsReducer.league_status,
     fpl_team_list: state.FplTeamListsReducer.fpl_team_list,
     list_positions: state.FplTeamListsReducer.list_positions,
     status: state.FplTeamListsReducer.status,

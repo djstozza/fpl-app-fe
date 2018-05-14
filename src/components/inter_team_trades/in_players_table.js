@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
+import cellEditFactory from 'react-bootstrap-table2-editor';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { Link } from 'react-router-dom';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
-import $ from 'jquery'
 import { tooltipHeader } from '../../utils/data_table';
 import { mappedObj } from '../../utils/lodash';
-import { isEmpty, sortBy } from 'lodash';
+import { isEmpty, isNumber, sortBy } from 'lodash';
+import { Link } from 'react-router-dom';
+import $ from 'jquery';
 
-export default class PlayersTable extends Component {
+export default class InPlayersTable extends Component {
   constructor (props) {
     super(props);
     this.selectTradePlayer = this.selectTradePlayer.bind(this);
@@ -32,32 +33,31 @@ export default class PlayersTable extends Component {
     }
   }
 
+
   render () {
     const teams = this.props.teams;
-    const players = this.props.players;
     const positions = this.props.positions;
-    const data = sortBy(players, (player) => { return player.total_points }).reverse();
+    const fplTeams = this.props.fpl_teams;
 
-    const positionOptions = mappedObj(positions, 'id', 'singular_name_short');
-    const teamOptions = mappedObj(teams, 'id', 'short_name');
+    const positionOptions = mappedObj(positions, 'singular_name_short', 'singular_name_short');
+    const teamOptions = mappedObj(teams, 'short_name', 'short_name');
+    const fplTeamOptions = mappedObj(fplTeams, 'name', 'name');
 
-    const defaultSorted = [{ dataField: 'attributes.total_points', order: 'desc' }];
+    const data = this.props.in_players;
 
-    const paginationOptions = {
-      hidePageListOnlyOnePage: true
-    }
+    let selectOptions;
+
 
     const columns = [
       {
        text: 'ID',
        dataField: 'id',
-       hidden: true
-      }, {
+       hidden: true,
+     }, {
         text: 'Last Name',
         dataField: 'last_name',
         align: 'center',
         headerAlign: 'center',
-        sort: true,
         filter: textFilter({
           placeholder: ' '
         }),
@@ -66,34 +66,52 @@ export default class PlayersTable extends Component {
         },
         headerFormatter: tooltipHeader
       }, {
+        text: 'Fpl Team Name',
+        dataField: 'fpl_team_name',
+        align: 'center',
+        headerAlign: 'center',
+        hidden: !isEmpty(this.props.tradeGroup),
+        formatter: (cell, row) => {
+          return <Link to={ `/fpl_teams/${row.fpl_team_id}` }>{ cell }</Link>;
+        },
+        filter: selectFilter({
+          options: fplTeamOptions,
+          placeholder: ' ',
+        }),
+        headerFormatter: tooltipHeader,
+      }, {
         text: 'Team',
-        dataField: 'team_id',
+        dataField: 'short_name',
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return teamOptions[cell];
+          return <Link to={ `/teams/${row.team_id}` }>{ cell }</Link>;
         },
-        headerFormatter: tooltipHeader,
         filter: selectFilter({
           options: teamOptions,
           placeholder: ' ',
         }),
+        headerFormatter: tooltipHeader,
       }, {
         text: 'Position',
-        dataField: 'position_id',
+        dataField: 'singular_name_short',
         align: 'center',
         headerAlign: 'center',
-        headerClasses: 'position-header',
-        formatter: (cell, row) => {
-          return positionOptions[cell];
-        },
         headerFormatter: tooltipHeader,
         filter: selectFilter({
           options: isEmpty(this.props.selected) ? positionOptions :
-                    { [this.props.selected.position_id]: this.props.selected.singular_name_short },
+                    { [this.props.selected.singular_name_short]: this.props.selected.singular_name_short },
+          getFilter: (filter) => {
+            console.log(filter)
+
+            selectOptions = filter
+            // qualityFilter was assigned once the component has been mounted.
+
+          },
           placeholder: ' ',
           withoutEmptyOption: !isEmpty(this.props.selected),
-        })
+          placeholder: ' ',
+        }),
       }, {
         text: 'Status',
         dataField: 'status',
@@ -112,21 +130,21 @@ export default class PlayersTable extends Component {
           );
         }
       }, {
-        text: 'Last Round',
+        text: 'Points',
         dataField: 'event_points',
-        sort: true,
         align: 'center',
         headerAlign: 'center',
-        headerFormatter: tooltipHeader
+        sort: true,
+        headerFormatter: tooltipHeader,
       }, {
         text: 'Total Points',
         dataField: 'total_points',
-        sort: true,
         align: 'center',
         headerAlign: 'center',
-        headerFormatter: tooltipHeader
+        sort: true,
+        headerFormatter: tooltipHeader,
       }
-    ];
+    ]
 
     const selectRow = {
       mode: 'radio',
@@ -154,19 +172,19 @@ export default class PlayersTable extends Component {
     }
 
     return (
-      <div className='bs-xxs-scroll-table'>
+      <div>
         <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
-          filter={ filterFactory() }
-          pagination={ paginationFactory({ hideSizePerPage: true }) }
+          striped
           selectRow={ selectRow }
           rowClasses={ rowClasses }
-          striped
+          filter={ filterFactory() }
+          pagination={ paginationFactory({ hideSizePerPage: true }) }
           hover
         />
       </div>
-    )
+    );
   }
 }

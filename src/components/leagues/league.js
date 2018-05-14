@@ -95,13 +95,11 @@ class League extends Component {
       return;
     }
 
-    if (this.props.current_user.id === this.props.commissioner.id) {
-      return (
-        <Link to={ `/leagues/${this.state.leagueId}/draft` } className='btn btn-secondary'>
-          Go to draft
-        </Link>
-      );
-    }
+    return (
+      <Link to={ `/leagues/${this.state.leagueId}/draft` } className='btn btn-secondary'>
+        Go to draft
+      </Link>
+    );
   }
 
   updateDraftPickOrder (fplTeamId, pickNumber) {

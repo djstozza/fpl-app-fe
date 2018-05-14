@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 import { tooltipHeader } from '../../utils/data_table';
 import { mappedObj } from '../../utils/lodash';
@@ -25,7 +24,7 @@ export default class FplTeamListTable extends Component {
     }
 
     if (isEmpty(this.props.selected)) {
-      this.props.fetchSubstitueOptions(row);
+      this.props.selectListPosition(row);
     } else if (row.id === this.props.selected.id) {
       this.props.clearSelectedPlayer();
     } else if ( this.validSubstitution(row) && this.props.action === 'substitute') {
@@ -40,12 +39,13 @@ export default class FplTeamListTable extends Component {
   }
 
   render () {
+    console.log(this.props.list_positions)
     const data = this.props.list_positions;
 
     const columns = [
       {
-       text: 'ID',
-       dataField: 'id',
+       text: 'i',
+       dataField: 'i',
        hidden: true,
      }, {
         text: 'Role',
@@ -139,11 +139,9 @@ export default class FplTeamListTable extends Component {
       }
 
       if (this.validSubstitution(row) && this.props.action === 'substitute') {
-        classes='select-option';
-      }
-
-      if (this.props.selected.id === row.id) {
-        classes='selected';
+        classes = 'select-option';
+      } else if (this.props.selected.id === row.id) {
+        classes = 'selected';
       }
 
       return classes;
@@ -152,7 +150,7 @@ export default class FplTeamListTable extends Component {
     return (
       <div className='bs-xxs-scroll-table d-sm-none'>
         <BootstrapTable
-          keyField='id'
+          keyField='i'
           data={ data }
           columns={ columns }
           striped

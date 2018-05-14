@@ -18,7 +18,7 @@ export default class FieldView extends Component {
     }
 
     if (isEmpty(this.props.selected)) {
-      this.props.fetchSubstitueOptions(listPosition);
+      this.props.selectListPosition(listPosition);
     } else if (listPosition.id === this.props.selected.id) {
       this.props.clearSelectedPlayer();
     } else if ( this.validSubstitution(listPosition) && this.props.action === 'substitute') {
@@ -83,12 +83,12 @@ export default class FieldView extends Component {
               <div className='mb-0 text-center'>{ listPosition['last_name'] }</div>
               <div className='mb-0 text-center'>
                 <span>
-                  { listPosition['opponent_short_name'] } ({listPosition['leg']})
+                  { listPosition['fixture'] }
                 </span>
               </div>
               <div className='mb-1 mb-md-2 text-center'>
                 <span>
-                  { isNumber(listPosition['event_points']) ? listPosition['event_points'] : '' }
+                  { isNumber(listPosition['fixture_points']) ? listPosition['fixture_points'] : '' }
                 </span>
               </div>
             </div>

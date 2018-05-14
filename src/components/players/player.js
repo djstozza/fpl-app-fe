@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import fetchTeam from '../../actions/team/fetch_team';
+import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchPlayer from '../../actions/players/fetch_player';
 import fetchPositions from '../../actions/positions/fetch_positions';
 import ErrorHandler from '../error_handler';
@@ -21,6 +22,7 @@ class Player extends Component {
   }
 
   componentWillMount () {
+    this.props.fetchTeams();
     this.props.fetchPlayer(this.props.match.params.id);
   }
 
@@ -29,6 +31,7 @@ class Player extends Component {
       player: nextProps.player,
       position: nextProps.position,
       team: nextProps.team,
+      teams: nextProps.teams,
       error: nextProps.error
     });
 
@@ -65,6 +68,7 @@ class Player extends Component {
 function mapStateToProps (state) {
   return {
     team: state.PlayersReducer.team,
+    teams: state.TeamsReducer,
     position: state.PlayersReducer.position,
     player: state.PlayersReducer.player,
     error: state.PlayersReducer.error
@@ -74,6 +78,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchTeam: fetchTeam,
+    fetchTeams: fetchTeams,
     fetchPlayer: fetchPlayer,
     fetchPositions: fetchPositions,
   }, dispatch);

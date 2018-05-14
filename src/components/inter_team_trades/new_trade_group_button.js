@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import $ from 'jquery';
+import { isEmpty } from 'lodash';
 
 export default class NewTradeGroupButton extends Component {
   newTradeGroupButton () {
@@ -8,26 +8,33 @@ export default class NewTradeGroupButton extends Component {
       return;
     }
 
+    let className;
+    let buttonText;
+
+    if (isEmpty(this.props.out_players)) {
+      className = 'btn-primary'
+      buttonText = 'Create A New Trade'
+    } else {
+      className = 'btn-danger'
+      buttonText = 'Cancel'
+    }
+
     return (
       <button
         id='new-trade-group-button'
-        className='btn btn-primary'
-        onClick={ () => this.toggleNewTradeGroup() }
+        className={ `btn ${className}` }
+        onClick={ () => this.toggleNewTradeButton() }
       >
-        Create A New Trade
+        { buttonText }
       </button>
     );
   }
 
-  toggleNewTradeGroup () {
-    const $tradeGroupList = $('#new-trade-group');
-    const $newTradeGroupButton = $('#new-trade-group-button');
-
-    $newTradeGroupButton.toggleClass('btn-danger', 'btn-primary');
-    if ($newTradeGroupButton.hasClass('btn-danger')) {
-      $($newTradeGroupButton).html('Cancel');
+  toggleNewTradeButton () {
+    if (isEmpty(this.props.out_players)) {
+      this.props.newInterTeamTrade();
     } else {
-      $($newTradeGroupButton).html('Create A New Trade');
+      this.props.cancelInterTeamTrade();
     }
   }
 
