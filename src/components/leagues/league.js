@@ -5,6 +5,7 @@ import fetchLeague from  '../../actions/leagues/fetch_league';
 import generatePickNumbers from  '../../actions/leagues/generate_pick_numbers';
 import updateDraftPickOrder from  '../../actions/leagues/update_draft_pick_order';
 import createDraft from  '../../actions/leagues/create_draft';
+import fetchRound from '../../actions/round/fetch_round';
 import { every, isEmpty, isNumber } from 'lodash';
 import ErrorHandler from '../error_handler';
 import { Link } from 'react-router-dom';
@@ -28,19 +29,18 @@ class League extends Component {
 
   componentWillMount () {
     this.props.fetchLeague(this.state.leagueId);
+    this.props.fetchRound();
   }
 
   componentWillReceiveProps (nextProps) {
     const fplTeams = nextProps.fpl_teams
 
-    const noScore = every(fplTeams, (fpl_team) => { return isEmpty(fpl_team.total_score) });
-
     this.setState({
       league: nextProps.league,
       commissioner: nextProps.commissioner,
       current_user: nextProps.current_user,
+      round: nextProps.round,
       fpl_teams: fplTeams,
-      noScore: noScore,
       error: nextProps.error,
     });
 
@@ -102,6 +102,16 @@ class League extends Component {
     );
   }
 
+  goToMiniDraftLink () {
+    if (this.state.round.mini_draft) {
+      return (
+        <Link to={ `/leagues/${this.state.leagueId}/mini_draft` } className='btn btn-secondary'>
+          Go to mini draft
+        </Link>
+      )
+    }
+  }
+
   updateDraftPickOrder (fplTeamId, pickNumber) {
     this.props.updateDraftPickOrder(this.state.leagueId, fplTeamId, pickNumber)
   }
@@ -115,7 +125,7 @@ class League extends Component {
 
     if (this.state.loaded) {
       return (
-        <div>
+        <div className='container-fluid'>
           { showSuccessAlert(this.state.success) }
           { showBaseErrorAlert(this.state.error) }
           <h3>{ this.state.league.name }</h3>
@@ -124,6 +134,7 @@ class League extends Component {
           { this.generatePickNumbers() }
           { this.createDraftButton() }
           { this.goToDraftLink() }
+          { this.goToMiniDraftLink() }
         </div>
       );
     } else {
@@ -140,6 +151,7 @@ function mapStateToProps (state) {
     current_user: state.LeaguesReducer.current_user,
     commissioner: state.LeaguesReducer.commissioner,
     fpl_teams: state.LeaguesReducer.fpl_teams,
+    round: state.RoundReducer.round,
     success: state.LeaguesReducer.success,
     error: state.LeaguesReducer.error,
   }
@@ -151,6 +163,7 @@ function mapDispatchToProps (dispatch) {
     generatePickNumbers: generatePickNumbers,
     updateDraftPickOrder: updateDraftPickOrder,
     createDraft: createDraft,
+    fetchRound: fetchRound,
   }, dispatch);
 }
 

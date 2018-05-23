@@ -19,7 +19,7 @@ export default class PlayersTable extends Component {
   }
 
   selectTradePlayer (row, isSelect) {
-    if (!this.props.user_owns_fpl_team) {
+    if (!this.props.user_owns_fpl_team && !this.props.your_turn) {
       return;
     }
 
@@ -34,11 +34,11 @@ export default class PlayersTable extends Component {
 
   render () {
     const teams = this.props.teams;
-    const players = this.props.players;
+    const unpicked_players = this.props.unpicked_players;
     const positions = this.props.positions;
-    const data = sortBy(players, (player) => { return player.total_points }).reverse();
-
-    const positionOptions = mappedObj(positions, 'id', 'singular_name_short');
+    const data = sortBy(unpicked_players, (player) => { return player.total_points }).reverse();
+    console.log(this.props)
+    const positionOptions = mappedObj(positions, 'singular_name_short', 'singular_name_short');
     const teamOptions = mappedObj(teams, 'id', 'short_name');
 
     const defaultSorted = [{ dataField: 'attributes.total_points', order: 'desc' }];
@@ -80,17 +80,14 @@ export default class PlayersTable extends Component {
         }),
       }, {
         text: 'Position',
-        dataField: 'position_id',
+        dataField: 'singular_name_short',
         align: 'center',
         headerAlign: 'center',
         headerClasses: 'position-header',
-        formatter: (cell, row) => {
-          return positionOptions[cell];
-        },
         headerFormatter: tooltipHeader,
         filter: selectFilter({
           options: isEmpty(this.props.selected) ? positionOptions :
-                    { [this.props.selected.position_id]: this.props.selected.singular_name_short },
+                    { [this.props.selected.singular_name_short]: this.props.selected.singular_name_short },
           placeholder: ' ',
           withoutEmptyOption: !isEmpty(this.props.selected),
         })

@@ -19,7 +19,7 @@ export default class OutPlayersTable extends Component {
   }
 
   selectPlayer (row, isSelect) {
-    if (!this.props.user_owns_fpl_team) {
+    if (!this.props.user_owns_fpl_team && !this.props.your_turn) {
       return;
     }
 
@@ -44,7 +44,7 @@ export default class OutPlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <Link to={ `/players/${row.player_id}` }>{ cell }</Link>;
+          return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {

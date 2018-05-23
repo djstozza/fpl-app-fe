@@ -179,7 +179,6 @@ class FplTeam extends Component {
     }
 
     if (this.state.loaded) {
-      console.log(this.state.selected);
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
@@ -193,7 +192,6 @@ class FplTeam extends Component {
               selectListPosition={ this.selectListPosition }
               substitutePlayers={ this.substitutePlayers }
               clearSelectedPlayer={ this.clearSelectedPlayer }
-              players={ this.props.unpicked_players }
               selectTradePlayer={ this.selectTradePlayer }
               clearTradePlayer={ this.clearTradePlayer }
               updateWaiverPickOrder={ this.updateWaiverPickOrder }

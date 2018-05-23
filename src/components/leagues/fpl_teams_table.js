@@ -27,7 +27,6 @@ export default class FplTeamsTable extends Component {
        text: 'ID',
        dataField: 'fpl_team_id',
        hidden: true,
-       editable: false,
       }, {
         text: 'Team Name',
         dataField: 'name',
@@ -68,7 +67,23 @@ export default class FplTeamsTable extends Component {
             return cell
           }
         },
-        style: status === 'generate_draft_picks',
+        hidden: status === 'generate_draft_picks',
+        headerFormatter: tooltipHeader
+      }, {
+        text: 'Mini Draft Pick Number',
+        dataField: 'mini_draft_pick_number',
+        align: 'center',
+        headerAlign: 'center',
+        sort: true,
+        hidden: this.props.league.status !== 'active',
+        headerFormatter: tooltipHeader
+      }, {
+        text: 'Rank',
+        dataField: 'rank',
+        align: 'center',
+        headerAlign: 'center',
+        sort: true,
+        hidden: this.props.league.status !== 'active',
         headerFormatter: tooltipHeader
       }, {
         text: 'Total Score',
@@ -76,7 +91,7 @@ export default class FplTeamsTable extends Component {
         align: 'center',
         headerAlign: 'center',
         sort: true,
-        hidden: this.props.noScore,
+        hidden: this.props.league.status !== 'active',
         headerFormatter: tooltipHeader
       }
     ]

@@ -2,7 +2,7 @@ import { CREATE_INTER_TEAM_TRADE_GROUP, SHOW_INTER_TEAM_TRADE_GROUP_ERRORS } fro
 import axios from 'axios';
 import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
-export default function createInterTeamTradeGroup (outListPositionId, inListPositionId) {
+export default function createInterTeamTradeGroup (outListPositionId, inListPositionId, fplTeamListId) {
   return dispatch => {
     axios({
       url: `${API_ROOT}/inter_team_trade_groups.json`,
@@ -11,6 +11,7 @@ export default function createInterTeamTradeGroup (outListPositionId, inListPosi
       data: {
         out_list_position_id: outListPositionId,
         in_list_position_id: inListPositionId,
+        fpl_team_list_id: fplTeamListId,
       }
     }).then(res => {
       setLocalStorageHeader(res);

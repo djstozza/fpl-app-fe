@@ -30,6 +30,7 @@ import FplTeams from './components/fpl_teams/fpl_teams';
 import FplTeam from './components/fpl_teams/fpl_team';
 import EditFplTeam from './components/fpl_teams/edit_fpl_team';
 import InterTeamTrades from './components/inter_team_trades/inter_team_trades';
+import MiniDraft from './components/mini_drafts/mini_draft';
 import ErrorHandler from './components/error_handler';
 
 import Navbar from './components/users/navbar';
@@ -105,6 +106,7 @@ export default class App extends Component {
               <PrivateRoute exact path="/leagues/:id(\d+)" component={ League } />
               <PrivateRoute exact path="/leagues/:id(\d+)/edit" component={ EditLeague } />
               <PrivateRoute exact path="/leagues/:id(\d+)/draft" component={ Draft } />
+              <PrivateRoute exact path="/leagues/:id(\d+)/mini_draft" component={ MiniDraft } />
               <PrivateRoute exact path="/fpl_teams" component={ FplTeams } />
               <PrivateRoute exact path="/fpl_teams/:id(\d+)" component={ FplTeam } />
               <PrivateRoute exact path="/fpl_teams/:id(\d+)/edit" component={ EditFplTeam } />

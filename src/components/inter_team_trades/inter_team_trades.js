@@ -158,7 +158,8 @@ class InterTeamTrades extends Component {
             this.clearSelectedPlayer()
             this.props.createInterTeamTradeGroup(
               this.state.selected.list_position_id,
-              this.state.tradePlayer.list_position_id
+              this.state.tradePlayer.list_position_id,
+              this.state.fpl_team_list.id
             )
           }
         }
@@ -190,6 +191,7 @@ class InterTeamTrades extends Component {
     }
 
     if (this.state.loaded) {
+      console.log(this.state.success)
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
@@ -228,11 +230,8 @@ function mapStateToProps (state) {
     current_user: state.FplTeamsReducer.current_user,
     teams: state.TeamsReducer,
     positions: state.PositionsReducer,
-    success: state.FplTeamsReducer.success || state.FplTeamsReducer.success,
-    error: (
-      state.FplTeamsReducer.error ||
-      state.FplTeamListsReducer.error
-    ),
+    success: state.InterTeamTradesReducer.success,
+    error: state.InterTeamTradesReducer.error,
   }
 }
 

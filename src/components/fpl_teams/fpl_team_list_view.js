@@ -23,13 +23,18 @@ export default class FplTeamListView extends Component {
       <div>
         { this.listPositionSelectButton() }
         <Link to={ `/fpl_teams/${this.props.fplTeamId}/inter_team_trades` } className='btn btn-secondary btn-lg'>
-          Inter Team Trades
+          Inter team trades
         </Link>
+        { this.goToMiniDraftLink() }
       </div>
     )
   }
 
   listPositionSelectButton () {
+    if (this.props.status === 'mini_draft') {
+      return;
+    }
+
     if (this.props.action === 'substitute') {
       return (
         <button
@@ -48,6 +53,16 @@ export default class FplTeamListView extends Component {
         >
           Change line up
         </button>
+      )
+    }
+  }
+
+  goToMiniDraftLink () {
+    if (this.props.status === 'mini_draft') {
+      return (
+        <Link to={ `/leagues/${this.props.fpl_team.league_id}/mini_draft` } className='btn btn-lg btn-secondary'>
+          Go to mini draft
+        </Link>
       )
     }
   }

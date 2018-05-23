@@ -34,7 +34,7 @@ export default class TeamFixtures extends Component {
       }
     }
 
-    const teamNameSelectOptions = mappedObj(selectableTeams, 'id', 'short_name');
+    const teamNameSelectOptions = mappedObj(selectableTeams, 'short_name', 'short_name');
 
     const columns = [
       {
