@@ -37,7 +37,6 @@ export default class PlayersTable extends Component {
     const unpicked_players = this.props.unpicked_players;
     const positions = this.props.positions;
     const data = sortBy(unpicked_players, (player) => { return player.total_points }).reverse();
-    console.log(this.props)
     const positionOptions = mappedObj(positions, 'singular_name_short', 'singular_name_short');
     const teamOptions = mappedObj(teams, 'id', 'short_name');
 

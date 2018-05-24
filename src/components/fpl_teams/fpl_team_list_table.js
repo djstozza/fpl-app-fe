@@ -39,7 +39,6 @@ export default class FplTeamListTable extends Component {
   }
 
   render () {
-    console.log(this.props.list_positions)
     const data = this.props.list_positions;
 
     const columns = [

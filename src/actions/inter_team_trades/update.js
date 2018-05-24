@@ -11,7 +11,6 @@ export default function updateInterTeamTradeGroup (
   action
 ) {
   return dispatch => {
-    console.log(fplTeamListId)
     axios({
       url: `${API_ROOT}/inter_team_trade_groups/${interTeamTradeGroupId}.json`,
       method: 'PUT',
@@ -25,7 +24,6 @@ export default function updateInterTeamTradeGroup (
       }
     }).then(res => {
       setLocalStorageHeader(res);
-      console.log(res.data)
       dispatch(updateInterTeamTradeGroupAsync(res.data));
     }).catch(error => {
       const data = error.response.data;

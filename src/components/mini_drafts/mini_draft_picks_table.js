@@ -15,10 +15,8 @@ export default class MiniDraftPicksTable extends Component {
 
   render () {
     const data = this.props.mini_draft_picks;
-    console.log(this.props.mini_draft_picks, this.props.fpl_teams)
     const fplTeams = this.props.fpl_teams;
     const fplTeamOptions = mappedObj(fplTeams, 'name', 'name');
-    console.log(fplTeamOptions)
 
     const options = {
       'team 1': 'team 1'

@@ -44,18 +44,19 @@ class MiniDraft extends Component {
   }
 
   componentWillMount () {
-    const self = this;
-
     this.props.fetchMiniDraftPicks(this.state.leagueId);
     this.props.fetchTeams();
     this.props.fetchPositions();
     this.props.fetchRound();
+  }
+
+  componentDidMount () {
+    const self = this;
 
     cable.subscriptions.create({ channel: 'MiniDraftPickChannel', room: this.state.leagueId }, {
       received: function (data) {
         let currentUserTurn;
         let yourTurnAlertable;
-
 
         if (!isEmpty(data.current_mini_draft_pick_user) && self.state.current_user.id === data.current_mini_draft_pick_user.id) {
           self.alert('info', "It's your turn.");
@@ -73,7 +74,6 @@ class MiniDraft extends Component {
           league: data.league,
           fpl_teams: data.fpl_teams,
           current_mini_draft_pick_user: data.current_mini_draft_pick_user,
-          current_user: data.current_user,
           mini_draft_picks: data.mini_draft_picks,
           mini_draft_picked: data.mini_draft_picked,
           all_players_picked: data.all_players_picked,
@@ -88,7 +88,6 @@ class MiniDraft extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(nextProps)
     this.setState({
       round: nextProps.round,
       league: nextProps.league,

@@ -191,7 +191,6 @@ class InterTeamTrades extends Component {
     }
 
     if (this.state.loaded) {
-      console.log(this.state.success)
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
