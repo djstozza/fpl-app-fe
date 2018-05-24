@@ -38,7 +38,6 @@ class MiniDraft extends Component {
     this.clearTradePlayer = this.clearTradePlayer.bind(this);
 
     this.pass = this.pass.bind(this);
-    this.draftDescription = this.draftDescription.bind(this);
     this.passMiniDraftPickButton = this.passMiniDraftPickButton.bind(this);
     this.alert = this.alert.bind(this);
   }
@@ -76,13 +75,13 @@ class MiniDraft extends Component {
           current_mini_draft_pick_user: data.current_mini_draft_pick_user,
           mini_draft_picks: data.mini_draft_picks,
           mini_draft_picked: data.mini_draft_picked,
-          all_players_picked: data.all_players_picked,
           unpicked_players: data.unpicked_players,
           current_mini_draft_pick: data.current_mini_draft_pick,
-          info: data.info,
         });
 
-        self.alert('info', data.info);
+        if (data.info) {
+          self.alert('info', data.info);
+        }
       }
     });
   }
@@ -96,7 +95,6 @@ class MiniDraft extends Component {
       out_players: nextProps.out_players,
       mini_draft_picks: nextProps.mini_draft_picks,
       mini_draft_picked: nextProps.mini_draft_picked,
-      all_players_picked: nextProps.all_players_picked,
       unpicked_players: nextProps.unpicked_players,
       current_mini_draft_pick: nextProps.current_mini_draft_pick,
       current_mini_draft_pick_user: nextProps.current_mini_draft_pick_user,
@@ -144,28 +142,17 @@ class MiniDraft extends Component {
     )
   }
 
-  draftDescription () {
-    const allPlayersPicked = this.state.all_players_picked;
-    const miniDraftPicked = this.state.mini_draft_picked
-    if (isEmpty(this.state.current_mini_draft_pick) || allPlayersPicked && miniDraftPicked) {
-      return;
-    }
 
+  outDescriptionText () {
     if (!this.state.your_turn) {
       return;
     }
 
-    let miniDraftSubStr;
-
-    if (!miniDraftPicked) {
-      miniDraftSubStr = ' or select your pick number for the mini draft'
-    }
-
-    const draftPlayerStr = `Select the player you wish to draft${ !miniDraftPicked ? miniDraftSubStr : '' }.`
-    const miniDraftStr = 'Select your pick number for the mini draft.'
-
     return (
-      <div className='alert alert-primary' role='alert'>{ allPlayersPicked ? miniDraftStr : draftPlayerStr }</div>
+      <div>
+        <h4 className='mb-0'>Trade out</h4>
+        <span>(1) Select the player you wish to trade out.</span>
+      </div>
     );
   }
 
@@ -219,17 +206,19 @@ class MiniDraft extends Component {
 
     return (
       <div className='col col-md-6 col-sm-12'>
+        <h4 className='mb-0'>Trade in</h4>
+        <span>(2) Select the player you wish to trade in.</span>
         <TradePlayersTable
           { ...this.state }
           selectTradePlayer={ this.selectTradePlayer }
           clearTradePlayer={ this.clearTradePlayer }
         />
-        { this.completeTradeButtons() }
+        { this.completeTradeButton() }
       </div>
     )
   }
 
-  completeTradeButtons () {
+  completeTradeButton () {
     if (!this.state.your_turn) {
       return;
     }
@@ -257,6 +246,27 @@ class MiniDraft extends Component {
     );
   }
 
+  showMiniDraftPicksTable () {
+    if (!isEmpty(this.state.mini_draft_picks)) {
+      return (
+        <div>
+          <h4>Mini draft picks</h4>
+          <MiniDraftPicksTable { ... this.state } />
+        </div>
+      )
+    }
+  }
+
+  showDraftCompletedAlert () {
+    if (isEmpty(this.state.current_mini_draft_pick_user)) {
+      return (
+        <div className='alert alert-danger alert-dismissible fade show' role="alert">
+          The mini draft has been completed
+        </div>
+      )
+    }
+  }
+
   render () {
     if (this.state.error && this.state.error.status !== 422) {
       return (
@@ -268,9 +278,11 @@ class MiniDraft extends Component {
       return (
         <div className='container-fluid'>
           <h3>League { this.state.leagueId } Mini Draft</h3>
+          { this.showDraftCompletedAlert() }
           { this.passMiniDraftPickButton() }
           <div className='row'>
             <div className={ `col col-sm-12 ${this.state.your_turn ? 'col-md-6' : ''}` }>
+              { this.outDescriptionText() }
               <OutPlayersTable
                 { ...this.state }
                 selectPlayer={ this.selectPlayer }
@@ -281,7 +293,7 @@ class MiniDraft extends Component {
           </div>
           <div className='row'>
             <div className='col col-sm-12'>
-              <MiniDraftPicksTable { ... this.state } />
+              { this.showMiniDraftPicksTable() }
             </div>
           </div>
         </div>
@@ -302,12 +314,11 @@ function mapStateToProps (state) {
     league: state.MiniDraftPicksReducer.league,
     fpl_teams: state.MiniDraftPicksReducer.fpl_teams,
     fpl_team_list: state.MiniDraftPicksReducer.fpl_team_list,
-    out_players: state.MiniDraftPicksReducer.list_positions,
+    out_players: state.MiniDraftPicksReducer.out_players,
     current_mini_draft_pick_user: state.MiniDraftPicksReducer.current_mini_draft_pick_user,
     current_user: state.MiniDraftPicksReducer.current_user,
     mini_draft_picks: state.MiniDraftPicksReducer.mini_draft_picks,
     mini_draft_picked: state.MiniDraftPicksReducer.mini_draft_picked,
-    all_players_picked: state.MiniDraftPicksReducer.all_players_picked,
     unpicked_players: state.MiniDraftPicksReducer.unpicked_players,
     current_mini_draft_pick: state.MiniDraftPicksReducer.current_mini_draft_pick,
     success: state.MiniDraftPicksReducer.success,

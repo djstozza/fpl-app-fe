@@ -17,23 +17,27 @@ export default function createMiniDraftPick (leagueId, outListPositionId, player
       setLocalStorageHeader(res);
       dispatch(createMiniDraftPickAsync(res.data));
     }).catch(error => {
+      console.log(error.response.data)
       const data = error.response.data;
       setLocalStorageHeader(error.response);
+      const payload = {
+        league: data.league,
+        fpl_team_list: data.fpl_team_list,
+        fpl_teams: data.fpl_teams,
+        out_players: data.out_players,
+        current_mini_draft_pick_user: data.current_mini_draft_pick_user,
+        current_user: data.current_user,
+        mini_draft_picks: data.mini_draft_picks,
+        mini_draft_picked: data.mini_draft_picked,
+        all_players_picked: data.all_players_picked,
+        unpicked_players: data.unpicked_players,
+        current_mini_draft_pick: data.current_mini_draft_pick,
+        error: error.response,
+      }
+      console.log(payload);
       dispatch({
         type: SHOW_MINI_DRAFT_PICK_ERRORS,
-        payload: {
-          league: data.league,
-          fpl_teams: data.fpl_teams,
-          out_players: data.list_positions,
-          current_mini_draft_pick_user: data.current_mini_draft_pick_user,
-          current_user: data.current_user,
-          mini_draft_picks: data.mini_draft_picks,
-          mini_draft_picked: data.mini_draft_picked,
-          all_players_picked: data.all_players_picked,
-          unpicked_players: data.unpicked_players,
-          current_mini_draft_pick: data.current_mini_draft_pick,
-          error: data.error,
-        }
+        payload: payload,
       });
     });
   }
