@@ -53,7 +53,11 @@ export default class FieldView extends Component {
     }
 
     function selectClass (listPosition) {
-      if (!isEmpty(self.props.selected) && listPosition.id === self.props.selected.id) {
+      if (isEmpty(self.props.selected)) {
+        return;
+      }
+
+      if (listPosition.id === self.props.selected.id) {
         return 'selected';
       } else if (self.validSubstitution(listPosition) && self.props.action === 'substitute') {
         return 'select-option';

@@ -14,14 +14,10 @@ body, span, button, a, input {
 }
 
 .image-crest {
-  zoom: 60%;
+  zoom: 55%;
 }
 
 @include media-breakpoint-down(md) {
-  .image-crest {
-    zoom: 60%;
-  }
-
   .bs-md-scroll-table table {
     overflow-x: auto;
     display: -webkit-box;

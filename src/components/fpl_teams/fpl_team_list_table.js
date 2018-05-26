@@ -147,7 +147,7 @@ export default class FplTeamListTable extends Component {
     }
 
     return (
-      <div className='bs-xxs-scroll-table d-sm-none'>
+      <div className='bs-xs-scroll-table d-sm-none'>
         <BootstrapTable
           keyField='i'
           data={ data }
