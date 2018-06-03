@@ -80,7 +80,7 @@ export default class App extends Component {
           ? <div><Navbar { ...props } /><Component {...props } tz={tz} /></div>
           : <Redirect to={{
               pathname: '/login',
-              state: { referrer: props.location }
+              state: { referrer: props.location, error: 'You must be signed in to continue' }
             }}/>
       )} />
     )

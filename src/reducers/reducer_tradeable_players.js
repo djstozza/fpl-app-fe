@@ -1,8 +1,8 @@
-import { FETCH_OUT_PLAYERS } from '../actions/types';
+import { NEW_INTER_TEAM_TRADE_GROUP } from '../actions/types';
 
 export default function(state=[], action) {
   switch (action.type) {
-    case FETCH_OUT_PLAYERS:
+    case NEW_INTER_TEAM_TRADE_GROUP:
       return action.payload;
 
     default:

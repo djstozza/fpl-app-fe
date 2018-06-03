@@ -13,7 +13,7 @@ import FplTeamsReducer from './reducer_fpl_teams';
 import FplTeamListsReducer from './reducer_fpl_team_lists';
 import ListPositionsReducer from './reducer_list_positions';
 import WaiverPicksReducer from './reducer_waiver_picks';
-import OutPlayersReducer from './reducer_out_players';
+import TradeablePlayersReducer from './reducer_tradeable_players';
 import InPlayersReducer from './reducer_in_players';
 import InterTeamTradesReducer from './reducer_inter_team_trades';
 import MiniDraftPicksReducer from './reducer_mini_draft_picks';
@@ -32,7 +32,7 @@ const rootReducer = combineReducers({
   FplTeamListsReducer: FplTeamListsReducer,
   ListPositionsReducer: ListPositionsReducer,
   WaiverPicksReducer: WaiverPicksReducer,
-  OutPlayersReducer: OutPlayersReducer,
+  TradeablePlayersReducer: TradeablePlayersReducer,
   InPlayersReducer: InPlayersReducer,
   InterTeamTradesReducer: InterTeamTradesReducer,
   MiniDraftPicksReducer: MiniDraftPicksReducer,

@@ -54,13 +54,15 @@ export default class FieldView extends Component {
 
     function selectClass (listPosition) {
       if (isEmpty(self.props.selected)) {
-        return;
+        return '';
       }
 
       if (listPosition.id === self.props.selected.id) {
         return 'selected';
       } else if (self.validSubstitution(listPosition) && self.props.action === 'substitute') {
         return 'select-option';
+      } else {
+        return ''
       }
     }
 
@@ -69,7 +71,7 @@ export default class FieldView extends Component {
 
       return (
         <div key={ key }
-          className={ `col col-2 border ${selectClass(listPosition)}` }
+          className={ `col col-2 border px-1 ${selectClass(listPosition)}` }
           onClick={ () => self.selectPlayer(listPosition) }
         >
           <div className='row'>
@@ -102,7 +104,7 @@ export default class FieldView extends Component {
     }
 
     return (
-      <div className='d-none d-sm-inline'>
+      <div className='d-none d-sm-inline field-view'>
         <div className='row'>
           <div className='col col-12 field'>
             <div className='row'>

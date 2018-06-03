@@ -29,7 +29,7 @@ export default class RoundsNav extends Component {
     });
 
     return (
-      <ul className="nav nav-tabs scroll-nav">
+      <ul className="nav nav-tabs scroll-nav mb-4">
         { roundList }
         <li className='indicator' />
       </ul>

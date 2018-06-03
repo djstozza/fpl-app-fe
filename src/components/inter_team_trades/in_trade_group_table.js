@@ -41,13 +41,10 @@ export default class InTradeGroupTable extends Component {
     const confirmText = `Are you sure you want to ${action} this trade?`
 
     if (window.confirm(confirmText)) {
-      this.props.updateTrade(
-        this.state.tradeGroup.id,
-        null,
-        null,
-        null,
-        action,
-      )
+      this.props.updateTrade({
+        inter_team_trade_group_id: this.state.tradeGroup.id,
+        action: action,
+      });
     }
   }
 

@@ -17,7 +17,6 @@ export default function createMiniDraftPick (leagueId, outListPositionId, player
       setLocalStorageHeader(res);
       dispatch(createMiniDraftPickAsync(res.data));
     }).catch(error => {
-      console.log(error.response.data)
       const data = error.response.data;
       setLocalStorageHeader(error.response);
       const payload = {
@@ -34,7 +33,6 @@ export default function createMiniDraftPick (leagueId, outListPositionId, player
         current_mini_draft_pick: data.current_mini_draft_pick,
         error: error.response,
       }
-      console.log(payload);
       dispatch({
         type: SHOW_MINI_DRAFT_PICK_ERRORS,
         payload: payload,

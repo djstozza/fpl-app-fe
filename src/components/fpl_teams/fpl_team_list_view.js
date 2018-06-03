@@ -15,7 +15,7 @@ export default class FplTeamListView extends Component {
       return;
     }
 
-    if (this.props.unSelectable) {
+    if (!this.props.editable) {
       return;
     }
 
@@ -69,7 +69,8 @@ export default class FplTeamListView extends Component {
 
   colClass () {
     let classes;
-    if (this.props.action === 'substitute') {
+
+    if (this.props.action === 'substitute' || (this.props.status !== 'waiver' && this.props.status !== 'trade')) {
       classes = 'col-lg-12';
     } else {
       classes = 'col-lg-6';
@@ -92,7 +93,7 @@ export default class FplTeamListView extends Component {
       return;
     }
 
-    if (this.props.unSelectable) {
+    if (!this.props.editable) {
       return;
     }
 
@@ -112,7 +113,7 @@ export default class FplTeamListView extends Component {
       return;
     }
 
-    if (this.props.unSelectable) {
+    if (!this.props.editable) {
       return;
     }
 
@@ -141,6 +142,10 @@ export default class FplTeamListView extends Component {
     }
 
     if (this.props.action === 'substitute') {
+      return;
+    }
+
+    if (!this.props.editable) {
       return;
     }
 
@@ -200,6 +205,16 @@ export default class FplTeamListView extends Component {
     }
   }
 
+  showScore () {
+    if (this.props.status !== 'started') {
+      return;
+    }
+
+    return (
+      <h5>Score: { this.props.fpl_team_list.total_score }</h5>
+    );
+  }
+
   render () {
     if (this.props.league_status !== 'active') {
       return (
@@ -211,6 +226,7 @@ export default class FplTeamListView extends Component {
     } else {
       return (
         <div>
+          { this.showScore() }
           { this.showButtons() }
           <div className='row'>
             <div className={`col col-12 col-md-12 ${this.colClass()}`}>

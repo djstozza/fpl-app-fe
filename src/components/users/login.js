@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import login from '../../actions/users/login';
 import { isEmpty } from 'lodash';
+import Alert from 'react-s-alert';
 import { showErrorAlert, showSuccessAlert } from '../../utils/general';
 
 class LogInForm extends Component {
@@ -16,6 +17,7 @@ class LogInForm extends Component {
 
     if (!isEmpty(this.props.location.state)) {
       this.state['referrer'] = this.props.location.state.referrer.pathname;
+      this.state['error'] = this.props.location.state.error;
     }
 
     this.handleChange = this.handleChange.bind(this);

@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 
 export default class NewTradeGroupButton extends Component {
   newTradeGroupButton () {
-    if (this.props.unSelectable) {
+    if (!this.props.editable) {
       return;
     }
 

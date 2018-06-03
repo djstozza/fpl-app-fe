@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { every, isEmpty, isNumber } from 'lodash';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 
 import fetchFplTeam from  '../../actions/fpl_teams/fetch_fpl_team';
-import fetchOutPlayers from  '../../actions/out_players/fetch_out_players';
+import newInterTeamTradeGroup from  '../../actions/inter_team_trades/new';
 import fetchAllTradeablePlayers from '../../actions/in_players/fetch_all_tradeable_players';
 import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchPositions from '../../actions/positions/fetch_positions';
@@ -41,8 +42,7 @@ class InterTeamTrades extends Component {
   }
 
   componentWillMount () {
-    this.props.fetchIntrTeamTradeGroups(this.state.fplTeamId);
-    this.props.fetchFplTeam(this.state.fplTeamId);
+    this.props.fetchFplTeam({ fpl_team_id: this.state.fplTeamId, show_waiver_picks: false, show_trade_groups: true });
     this.props.fetchTeams();
     this.props.fetchPositions();
   }
@@ -61,7 +61,7 @@ class InterTeamTrades extends Component {
       positions: nextProps.positions,
       current_user: nextProps.current_user,
       user_owns_fpl_team: nextProps.user_owns_fpl_team,
-      unSelectable: nextProps.status === 'pre_game' || nextProps.status === 'started',
+      editable: nextProps.editable,
       error: nextProps.error,
     });
 
@@ -79,8 +79,7 @@ class InterTeamTrades extends Component {
   }
 
   newInterTeamTrade () {
-    this.props.fetchOutPlayers(this.state.fplTeamId);
-    this.props.fetchAllTradeablePlayers(this.state.fplTeamId);
+    this.props.newInterTeamTradeGroup({ fpl_team_list_id: this.state.fpl_team_list.id });
   }
 
   selectPlayer (player) {
@@ -94,6 +93,7 @@ class InterTeamTrades extends Component {
   cancelInterTeamTrade () {
     this.setState({
       selected: '',
+      tradePlayer: '',
       out_players: [],
       in_players: []
     })
@@ -107,15 +107,9 @@ class InterTeamTrades extends Component {
     this.setState({ tradePlayer: '' });
   }
 
-  updateTrade (tradeGroupId, selectedId, tradePlayerId, tradeId, tradeAction) {
-    this.props.updateInterTeamTradeGroup(
-      this.state.fpl_team_list.id,
-      tradeGroupId,
-      selectedId,
-      tradePlayerId,
-      tradeId,
-      tradeAction,
-    );
+  updateTrade (params) {
+    params['fpl_team_list_id'] = this.state.fpl_team_list.id,
+    this.props.updateInterTeamTradeGroup(params);
   }
 
   showNewInterTeamTrade () {
@@ -155,7 +149,7 @@ class InterTeamTrades extends Component {
       <button
         className='btn btn-secondary'
         onClick={ () => {
-            this.clearSelectedPlayer()
+            this.clearSelectedPlayer();
             this.props.createInterTeamTradeGroup(
               this.state.selected.list_position_id,
               this.state.tradePlayer.list_position_id,
@@ -190,6 +184,10 @@ class InterTeamTrades extends Component {
       )
     }
 
+    if (!isEmpty(this.state.fpl_team) && !this.state.user_owns_fpl_team) {
+      return <Redirect to='/profile' error='You are not authorised to visit this page'/>
+    }
+
     if (this.state.loaded) {
       return (
         <div className='container-fluid'>
@@ -220,12 +218,13 @@ function mapStateToProps (state) {
     fpl_team: state.FplTeamsReducer.fpl_team,
     user_owns_fpl_team: state.FplTeamsReducer.user_owns_fpl_team,
     fpl_team_list: state.FplTeamsReducer.fpl_team_list,
-    out_players: state.OutPlayersReducer.out_players,
-    in_players: state.InPlayersReducer.in_players,
+    out_players: state.TradeablePlayersReducer.out_players,
+    in_players: state.TradeablePlayersReducer.in_players,
     fpl_teams: state.InPlayersReducer.tradeable_fpl_teams,
-    out_trade_groups: state.InterTeamTradesReducer.out_trade_groups,
-    in_trade_groups: state.InterTeamTradesReducer.in_trade_groups,
-    status: state.OutPlayersReducer.status,
+    out_trade_groups: state.InterTeamTradesReducer.out_trade_groups || state.FplTeamsReducer.out_trade_groups,
+    in_trade_groups: state.InterTeamTradesReducer.in_trade_groups || state.FplTeamsReducer.in_trade_groups,
+    editable: state.FplTeamsReducer.editable,
+    status: state.FplTeamsReducer.status,
     current_user: state.FplTeamsReducer.current_user,
     teams: state.TeamsReducer,
     positions: state.PositionsReducer,
@@ -237,7 +236,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     fetchFplTeam: fetchFplTeam,
-    fetchOutPlayers: fetchOutPlayers,
+    newInterTeamTradeGroup: newInterTeamTradeGroup,
     fetchTeams: fetchTeams,
     fetchPositions: fetchPositions,
     fetchAllTradeablePlayers: fetchAllTradeablePlayers,

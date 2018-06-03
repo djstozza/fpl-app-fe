@@ -34,7 +34,7 @@ export default class TeamsNav extends Component {
     });
 
     return (
-      <ul className="nav nav-tabs scroll-nav">
+      <ul className="nav nav-tabs scroll-nav mb-4">
         { teamList }
         <li className='indicator' />
       </ul>

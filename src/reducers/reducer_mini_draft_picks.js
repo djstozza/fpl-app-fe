@@ -14,7 +14,6 @@ export default function(state=[], action) {
     case PASS_MINI_DRAFT_PICK:
       return action.payload;
     case SHOW_MINI_DRAFT_PICK_ERRORS:
-      console.log(action.payload);
       return action.payload;
 
     default:

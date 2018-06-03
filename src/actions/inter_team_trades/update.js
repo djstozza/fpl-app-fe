@@ -2,26 +2,13 @@ import { UPDATE_INTER_TEAM_TRADE_GROUP, SHOW_INTER_TEAM_TRADE_GROUP_ERRORS } fro
 import axios from 'axios';
 import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
-export default function updateInterTeamTradeGroup (
-  fplTeamListId,
-  interTeamTradeGroupId,
-  outListPositionId,
-  inListPositionId,
-  tradeId,
-  action
-) {
+export default function updateInterTeamTradeGroup (params) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/inter_team_trade_groups/${interTeamTradeGroupId}.json`,
+      url: `${API_ROOT}/inter_team_trade_groups/${params['inter_team_trade_group_id']}.json`,
       method: 'PUT',
       ...getLocalStorageHeader(),
-      data: {
-        fpl_team_list_id: fplTeamListId,
-        out_list_position_id: outListPositionId,
-        in_list_position_id: inListPositionId,
-        inter_team_trade_id: tradeId,
-        trade_action: action,
-      }
+      params: params,
     }).then(res => {
       setLocalStorageHeader(res);
       dispatch(updateInterTeamTradeGroupAsync(res.data));

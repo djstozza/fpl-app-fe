@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
+import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
+import axios from 'axios';
+
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
@@ -18,10 +21,12 @@ export default class OutTradeGroupTable extends Component {
     this.state = {
       selected: '',
       user_owns_fpl_team: this.props.user_owns_fpl_team,
+      out_players: [],
+      in_players: [],
       tradeGroup: this.props.tradeGroup,
-      out_players: this.props.tradeGroup.out_players_tradeable,
       in_players: this.props.tradeGroup.in_players_tradeable,
       positions: this.props.positions,
+      fplTeamListId: this.props.fpl_team_list.id,
     }
 
     this.selectPlayer = this.selectPlayer.bind(this);
@@ -43,51 +48,61 @@ export default class OutTradeGroupTable extends Component {
   }
 
   showTradeList (selectorId, buttonId) {
-    const $selector = $(`#${selectorId}`);
     const $button = $(`#${buttonId}`);
+    $button.toggleClass('btn-danger', 'btn-primary');
 
-    if ($selector.hasClass('d-none')) {
-      $selector.removeClass('d-none');
-      $button.removeClass('btn-primary').addClass('btn-danger').text('Cancel');
+    if ($button.hasClass('btn-danger')) {
+      $button.text('Cancel');
+
+      axios({
+        url: `${API_ROOT}/fpl_team_lists/${this.state.fplTeamListId}/tradeable_players.json`,
+        method: 'GET',
+        params: { inter_team_trade_group_id: this.state.tradeGroup.id },
+      }).then(res => {
+        this.setState({
+          out_players: res.data.out_players,
+          in_players: res.data.in_players,
+        })
+      });
     } else {
-      $selector.addClass('d-none');
-      $button.removeClass('btn-danger').addClass('btn-primary').text('Add');
-      this.clearSelectedPlayer();
+      $button.text('Add');
+      this.setState({
+        out_players: [],
+        in_players: [],
+      })
     }
   }
 
   addTrade () {
-    this.props.updateTrade(
-      this.state.tradeGroup.id,
-      this.state.selected.list_position_id,
-      this.state.tradePlayer.list_position_id,
-      null,
-      'Add',
-    );
+    const $button = $(`#trade-group-${this.props.tradeGroup.id}-add-button`);
+    $button.removeClass('btn-danger').addClass('btn-primary').text('Add');
+
+    this.props.updateTrade({
+      inter_team_trade_group_id: this.state.tradeGroup.id,
+      out_list_position_id: this.state.selected.list_position_id,
+      in_list_position_id: this.state.tradePlayer.list_position_id,
+      trade_action: 'Add',
+    });
+
     this.clearSelectedPlayer();
   }
 
   deleteTrade (row) {
-    this.props.updateTrade(
-      this.state.tradeGroup.id,
-      null,
-      null,
-      row.id,
-      'RemoveFromTradeGroup',
-    );
+    this.props.updateTrade({
+      inter_team_trade_group_id: this.state.tradeGroup.id,
+      inter_team_trade_id: row.id,
+      trade_action: 'RemoveFromTradeGroup',
+    });
   }
 
   confirmTradeAction (action) {
     const confirmText = `Are you sure you want to ${action} this trade?`
 
     if (window.confirm(confirmText)) {
-      this.props.updateTrade(
-        this.state.tradeGroup.id,
-        null,
-        null,
-        null,
-        action,
-      )
+      this.props.updateTrade({
+        inter_team_trade_group_id: this.state.tradeGroup.id,
+        trade_action: action,
+      })
     }
   }
 
@@ -168,6 +183,32 @@ export default class OutTradeGroupTable extends Component {
     this.setState({ tradePlayer: '' });
   }
 
+  showTradeTables () {
+    if (isEmpty(this.state.out_players) || isEmpty(this.state.in_players)) {
+      return;
+    }
+
+    return (
+      <div id={ `trade-group-${this.props.tradeGroup.id}-add` } className='row'>
+        <div className='col col-md-6 col-sm-12'>
+          <OutPlayersTable
+            { ...this.state }
+            selectPlayer={ this.selectPlayer }
+            clearSelectedPlayer={ this.clearSelectedPlayer }
+          />
+        </div>
+        <div className='col col-md-6 col-sm-12'>
+          <InPlayersTable
+            { ...this.state }
+            selectTradePlayer={ this.selectTradePlayer }
+            clearTradePlayer={ this.clearTradePlayer }
+          />
+          { this.completeTradeButtons() }
+        </div>
+      </div>
+    );
+  }
+
   render () {
     const data = this.props.tradeGroup.trades;
 
@@ -218,23 +259,7 @@ export default class OutTradeGroupTable extends Component {
             </tr>
           </thead>
         </table>
-        <div id={ `trade-group-${this.props.tradeGroup.id}-add` } className={ `row d-none` }>
-          <div className='col col-md-6 col-sm-12'>
-            <OutPlayersTable
-              { ...this.state }
-              selectPlayer={ this.selectPlayer }
-              clearSelectedPlayer={ this.clearSelectedPlayer }
-            />
-          </div>
-          <div className='col col-md-6 col-sm-12'>
-            <InPlayersTable
-              { ...this.state }
-              selectTradePlayer={ this.selectTradePlayer }
-              clearTradePlayer={ this.clearTradePlayer }
-            />
-            { this.completeTradeButtons() }
-          </div>
-        </div>
+        { this.showTradeTables() }
         <BootstrapTable
           keyField='id'
           data={ data }

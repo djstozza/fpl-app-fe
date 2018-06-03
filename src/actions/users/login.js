@@ -7,7 +7,6 @@ export default function login (params) {
   return dispatch => {
     axios.post(`${API_ROOT}/auth/sign_in.json`, params).then(res => {
       setLocalStorageHeader(res);
-
       const referrer = params.referrer || '/profile';
 
       dispatch(push(referrer));
