@@ -34,6 +34,8 @@ export default class TradeGroupAccordions extends Component {
       headerText = 'Received';
     }
 
+    console.log('foo')
+
     return (
       <div>
         <h4>{ headerText } Trades</h4>
@@ -41,7 +43,7 @@ export default class TradeGroupAccordions extends Component {
           {
             Object.keys(tradeGroups).map( (tradeStatus, key) => {
               const tradeStatusKey = `${type}-${tradeStatus}-${key}`
-
+              console.log(tradeStatus)
               return (
                 <div className="card" key={ tradeStatusKey }>
                   <div

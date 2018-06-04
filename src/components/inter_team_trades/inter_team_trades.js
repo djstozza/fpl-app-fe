@@ -108,6 +108,7 @@ class InterTeamTrades extends Component {
   }
 
   updateTrade (params) {
+    console.log(params)
     params['fpl_team_list_id'] = this.state.fpl_team_list.id,
     this.props.updateInterTeamTradeGroup(params);
   }
@@ -189,6 +190,7 @@ class InterTeamTrades extends Component {
     }
 
     if (this.state.loaded) {
+      console.log(this.state)
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>

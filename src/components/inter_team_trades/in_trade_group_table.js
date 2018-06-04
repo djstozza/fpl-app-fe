@@ -43,7 +43,7 @@ export default class InTradeGroupTable extends Component {
     if (window.confirm(confirmText)) {
       this.props.updateTrade({
         inter_team_trade_group_id: this.state.tradeGroup.id,
-        action: action,
+        trade_action: action,
       });
     }
   }
