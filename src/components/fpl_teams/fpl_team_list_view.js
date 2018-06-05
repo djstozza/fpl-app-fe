@@ -105,7 +105,7 @@ export default class FplTeamListView extends Component {
       title = `${capitaliseText(this.props.action)} Out`;
     }
 
-    return <h4 className='mb-0'>{ title }</h4>
+    return <h5 className='mb-0'>{ title }</h5>
   }
 
   descriptionText () {
@@ -130,7 +130,7 @@ export default class FplTeamListView extends Component {
 
     return (
       <div>
-        <h4 className='mb-0'>{ title }</h4>
+        <h5 className='mb-0'>{ title }</h5>
         <span>{ text }</span>
       </div>
     )
@@ -151,7 +151,7 @@ export default class FplTeamListView extends Component {
 
     return (
       <div>
-        <h4 className='mb-0'>{ capitaliseText(this.props.action) } In</h4>
+        <h5 className='mb-0'>{ capitaliseText(this.props.action) } In</h5>
         <span>(2) Select the player you wish to { this.props.action } in</span>
         <TradePlayersTable { ...this.props } />
         { this.completeTradeButtons() }
@@ -189,7 +189,7 @@ export default class FplTeamListView extends Component {
 
     return (
       <div>
-        <h4 className='mt-3 mb-0'>Waiver Picks</h4>
+        <h5 className='mt-3 mb-0'>Waiver Picks</h5>
         <WaiverPicksTable { ...this.props } />
       </div>
     );

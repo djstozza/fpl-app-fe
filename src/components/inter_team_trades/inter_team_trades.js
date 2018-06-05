@@ -7,7 +7,6 @@ import { Redirect } from 'react-router';
 
 import fetchFplTeam from  '../../actions/fpl_teams/fetch_fpl_team';
 import newInterTeamTradeGroup from  '../../actions/inter_team_trades/new';
-import fetchAllTradeablePlayers from '../../actions/in_players/fetch_all_tradeable_players';
 import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchPositions from '../../actions/positions/fetch_positions';
 import createInterTeamTradeGroup from '../../actions/inter_team_trades/create';
@@ -190,7 +189,6 @@ class InterTeamTrades extends Component {
     }
 
     if (this.state.loaded) {
-      console.log(this.state)
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
@@ -241,7 +239,6 @@ function mapDispatchToProps (dispatch) {
     newInterTeamTradeGroup: newInterTeamTradeGroup,
     fetchTeams: fetchTeams,
     fetchPositions: fetchPositions,
-    fetchAllTradeablePlayers: fetchAllTradeablePlayers,
     createInterTeamTradeGroup: createInterTeamTradeGroup,
     fetchIntrTeamTradeGroups: fetchIntrTeamTradeGroups,
     updateInterTeamTradeGroup: updateInterTeamTradeGroup,
