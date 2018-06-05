@@ -16,11 +16,15 @@ import updateWaiverPickOrder from '../../actions/waiver_picks/update_waiver_pick
 import deleteWaiverPick from '../../actions/waiver_picks/delete_waiver_pick';
 import tradePlayer from '../../actions/fpl_team_lists/trade_player';
 
-
 import ErrorHandler from '../error_handler';
 import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
 import FplTeamListNav from './fpl_team_list_nav';
 import FplTeamListView from './fpl_team_list_view';
+
+import { CABLE_CONNECTION } from '../../api-config';
+
+const ActionCable = require('actioncable');
+const cable = ActionCable.createConsumer(CABLE_CONNECTION);
 
 class FplTeam extends Component {
   constructor (props) {
@@ -47,10 +51,31 @@ class FplTeam extends Component {
   }
 
   componentWillMount () {
+    const self = this;
+
     this.props.fetchFplTeam({ fpl_team_id: this.state.fplTeamId, show_waiver_picks: true, show_list_positions: true });
     // this.props.fetchFplTeamList(this.state.fplTeamId);
     this.props.fetchTeams();
     this.props.fetchPositions();
+
+    cable.subscriptions.create({ channel: 'FplTeamChannel', room: this.state.fplTeamId }, {
+      received: function (data) {
+        console.log(data);
+        self.setState({
+          fpl_team_list: data.fpl_team_list,
+          fpl_team_lists: data.fpl_team_lists,
+          list_positions: data.list_positions,
+          grouped_list_positions: data.grouped_list_positions,
+          editable: data.editable === 'true',
+        });
+
+        if (self.state.user_owns_fpl_team) {
+          self.setState({
+            waiver_picks: data.waiver_picks,
+          });
+        }
+      }
+    });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -205,7 +230,7 @@ class FplTeam extends Component {
     }
 
     if (this.state.loaded) {
-      console.log(this.state);
+      console.log(this.state)
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
