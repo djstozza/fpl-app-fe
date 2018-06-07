@@ -60,7 +60,6 @@ class FplTeam extends Component {
 
     cable.subscriptions.create({ channel: 'FplTeamChannel', room: this.state.fplTeamId }, {
       received: function (data) {
-        console.log(data);
         self.setState({
           fpl_team_list: data.fpl_team_list,
           fpl_team_lists: data.fpl_team_lists,
@@ -230,7 +229,6 @@ class FplTeam extends Component {
     }
 
     if (this.state.loaded) {
-      console.log(this.state)
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>

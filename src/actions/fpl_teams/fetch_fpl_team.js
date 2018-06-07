@@ -13,6 +13,8 @@ export default function fetchFplTeam (params) {
       setLocalStorageHeader(res);
       dispatch(fetchFplTeamAsync(res.data));
     }).catch(error => {
+      const data = error.response.data;
+      setLocalStorageHeader(error.response);
       dispatch({ type: SHOW_FPL_TEAM_ERRORS, payload: { error: error.response } });
     });
   }

@@ -3,7 +3,6 @@ import axios from 'axios';
 import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
 
 export default function newInterTeamTradeGroup (params) {
-  console.log(params)
   return dispatch => {
     axios({
       url: `${API_ROOT}/fpl_team_lists/${params['fpl_team_list_id']}/tradeable_players.json`,

@@ -21,6 +21,11 @@ import OutPlayersTable from './out_players_table';
 import InPlayersTable from './in_players_table';
 import TradeGroupAccordions from './trade_group_accordions';
 
+import { CABLE_CONNECTION } from '../../api-config';
+
+const ActionCable = require('actioncable');
+const cable = ActionCable.createConsumer(CABLE_CONNECTION);
+
 class InterTeamTrades extends Component {
   constructor (props) {
     super(props);
@@ -41,9 +46,23 @@ class InterTeamTrades extends Component {
   }
 
   componentWillMount () {
+    const self = this;
+
     this.props.fetchFplTeam({ fpl_team_id: this.state.fplTeamId, show_waiver_picks: false, show_trade_groups: true });
     this.props.fetchTeams();
     this.props.fetchPositions();
+
+    cable.subscriptions.create({ channel: 'FplTeamChannel', room: this.state.fplTeamId }, {
+      received: function (data) {
+        if (self.state.user_owns_fpl_team) {
+          self.setState({
+            out_trade_groups: data.out_trade_groups,
+            in_trade_groups: data.in_trade_groups,
+            editable: data.editable,
+          });
+        }
+      }
+    });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -107,7 +126,6 @@ class InterTeamTrades extends Component {
   }
 
   updateTrade (params) {
-    console.log(params)
     params['fpl_team_list_id'] = this.state.fpl_team_list.id,
     this.props.updateInterTeamTradeGroup(params);
   }
@@ -173,7 +191,7 @@ class InterTeamTrades extends Component {
     }
 
     return (
-      <TradeGroupAccordions { ...this.props } updateTrade={ this.updateTrade } />
+      <TradeGroupAccordions { ...this.state } updateTrade={ this.updateTrade } />
     );
   }
 

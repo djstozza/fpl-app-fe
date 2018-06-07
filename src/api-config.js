@@ -20,6 +20,10 @@ export function setLocalStorageHeader (res) {
   let accessToken;
   let expiry;
 
+  if (res.status === 401) {
+    return removeLocalStorageHeader();
+  }
+
   if (res.headers['access-token'] !== "") {
     accessToken = res.headers['access-token'];
     expiry = res.headers['expiry'];
@@ -47,6 +51,15 @@ export function getLocalStorageHeader () {
       'content-type': localStorage.getItem('content-type'),
     }
   };
+}
+
+export function removeLocalStorageHeader () {
+  localStorage.removeItem('access-token');
+  localStorage.removeItem('client');
+  localStorage.removeItem('token-type');
+  localStorage.removeItem('expiry');
+  localStorage.removeItem('uid');
+  localStorage.removeItem('content-type');
 }
 
 export const loggedIn = localStorage.getItem('access-token') ? true : false;
