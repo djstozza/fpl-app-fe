@@ -205,19 +205,22 @@ class FplTeam extends Component {
       return;
     }
     return (
-      <FplTeamListView
-        { ...this.state }
-        initiateTrade={ this.initiateTrade }
-        completeTradeAction={ this.completeTradeAction }
-        selectListPosition={ this.selectListPosition }
-        substitutePlayers={ this.substitutePlayers }
-        clearSelectedPlayer={ this.clearSelectedPlayer }
-        selectTradePlayer={ this.selectTradePlayer }
-        clearTradePlayer={ this.clearTradePlayer }
-        updateWaiverPickOrder={ this.updateWaiverPickOrder }
-        deleteWaiverPick={ this.deleteWaiverPick }
-        resetSelection={ this.resetSelection }
-      />
+      <div>
+        <FplTeamListNav { ...this.state } selectFplTeamList={ this.selectFplTeamList }/>
+        <FplTeamListView
+          { ...this.state }
+          initiateTrade={ this.initiateTrade }
+          completeTradeAction={ this.completeTradeAction }
+          selectListPosition={ this.selectListPosition }
+          substitutePlayers={ this.substitutePlayers }
+          clearSelectedPlayer={ this.clearSelectedPlayer }
+          selectTradePlayer={ this.selectTradePlayer }
+          clearTradePlayer={ this.clearTradePlayer }
+          updateWaiverPickOrder={ this.updateWaiverPickOrder }
+          deleteWaiverPick={ this.deleteWaiverPick }
+          resetSelection={ this.resetSelection }
+        />
+      </div>
     );
   }
 
@@ -235,7 +238,6 @@ class FplTeam extends Component {
             { showSuccessAlert(this.state.success) }
             { showBaseErrorAlert(this.state.error) }
             <h3>{ this.state.fpl_team.name } { this.editFplTeamButton() }</h3>
-            <FplTeamListNav { ...this.state } selectFplTeamList={ this.selectFplTeamList }/>
             { this.showFplTeamListView() }
           </div>
         </div>
