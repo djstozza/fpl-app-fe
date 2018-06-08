@@ -4,6 +4,7 @@ import {
   UPDATE_LEAGUE,
   JOIN_LEAGUE,
   FETCH_LEAGUE,
+  FETCH_LEAGUE_FPL_TEAMS,
   GENERATE_PICK_NUMBERS,
   UPDATE_DRAFT_PICK_ORDER,
   CREATE_DRAFT,
@@ -14,6 +15,8 @@ import {
 export default function(state=[], action) {
   switch (action.type) {
     case FETCH_LEAGUE:
+      return action.payload;
+    case FETCH_LEAGUE_FPL_TEAMS:
       return action.payload;
     case CREATE_LEAGUE:
       return action.payload;

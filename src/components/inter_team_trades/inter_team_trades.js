@@ -12,6 +12,7 @@ import fetchPositions from '../../actions/positions/fetch_positions';
 import createInterTeamTradeGroup from '../../actions/inter_team_trades/create';
 import fetchIntrTeamTradeGroups from '../../actions/inter_team_trades/fetch';
 import updateInterTeamTradeGroup from '../../actions/inter_team_trades/update';
+import fetchLeagueFplTeams from '../../actions/leagues/fetch_fpl_teams';
 
 import ErrorHandler from '../error_handler';
 import { showSuccessAlert, showBaseErrorAlert, capitaliseText } from '../../utils/general';
@@ -97,6 +98,10 @@ class InterTeamTrades extends Component {
   }
 
   newInterTeamTrade () {
+    if (isEmpty(this.state.fpl_teams)) {
+      this.props.fetchLeagueFplTeams(this.state.fpl_team.league_id, this.state.fplTeamId);
+    }
+
     this.props.newInterTeamTradeGroup({ fpl_team_list_id: this.state.fpl_team_list.id });
   }
 
@@ -238,7 +243,7 @@ function mapStateToProps (state) {
     fpl_team_list: state.FplTeamsReducer.fpl_team_list,
     out_players: state.TradeablePlayersReducer.out_players,
     in_players: state.TradeablePlayersReducer.in_players,
-    fpl_teams: state.InPlayersReducer.tradeable_fpl_teams,
+    fpl_teams: state.LeaguesReducer.fpl_teams,
     out_trade_groups: state.InterTeamTradesReducer.out_trade_groups || state.FplTeamsReducer.out_trade_groups,
     in_trade_groups: state.InterTeamTradesReducer.in_trade_groups || state.FplTeamsReducer.in_trade_groups,
     editable: state.FplTeamsReducer.editable,
@@ -260,6 +265,7 @@ function mapDispatchToProps (dispatch) {
     createInterTeamTradeGroup: createInterTeamTradeGroup,
     fetchIntrTeamTradeGroups: fetchIntrTeamTradeGroups,
     updateInterTeamTradeGroup: updateInterTeamTradeGroup,
+    fetchLeagueFplTeams: fetchLeagueFplTeams,
   }, dispatch);
 }
 
