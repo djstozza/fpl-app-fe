@@ -30,6 +30,7 @@ export default function updateDraftPick (leagueId, draftPickId, playerId, miniDr
           all_players_picked: errorData.all_players_picked,
           current_draft_pick: errorData.current_draft_pick,
           unpicked_players: errorData.unpicked_players,
+          fpl_teams: errorData.fpl_teams,
         }
       });
     });

@@ -15,7 +15,7 @@ export default function fetchFplTeam (params) {
     }).catch(error => {
       const data = error.response.data;
       setLocalStorageHeader(error.response);
-      dispatch({ type: SHOW_FPL_TEAM_ERRORS, payload: { error: error.response } });
+      dispatch({ type: SHOW_FPL_TEAM_ERRORS, payload: { error: error.response, ...data } });
     });
   }
 }

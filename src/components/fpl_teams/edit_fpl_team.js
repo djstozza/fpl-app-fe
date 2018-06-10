@@ -6,6 +6,7 @@ import updateFplTeam from  '../../actions/fpl_teams/update_fpl_team';
 import { every, isEmpty, isNumber } from 'lodash';
 import ErrorHandler from '../error_handler';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
 
 class EditFplTeam extends Component {
@@ -23,7 +24,7 @@ class EditFplTeam extends Component {
   }
 
   componentWillMount () {
-    this.props.fetchFplTeam(this.state.fplTeamId);
+    this.props.fetchFplTeam({ fpl_team_id: this.state.fplTeamId });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -71,6 +72,10 @@ class EditFplTeam extends Component {
     }
 
     if (this.state.loaded) {
+      if (this.state.fpl_team.user_id !== this.state.current_user.id) {
+        return <Redirect to='/profile' error='You are not authorised to visit this page'/>
+      }
+
       return (
         <div>
           { showSuccessAlert(this.state.success) }

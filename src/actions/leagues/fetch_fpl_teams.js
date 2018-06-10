@@ -3,7 +3,6 @@ import axios from 'axios';
 import { API_ROOT } from './../../api-config';
 
 export default function fetchLeagueFplTeams (leagueId, fplTeamId) {
-  console.log(fplTeamId)
   return dispatch => {
     axios({
       url: `${API_ROOT}/leagues/${leagueId}/fpl_teams.json`,

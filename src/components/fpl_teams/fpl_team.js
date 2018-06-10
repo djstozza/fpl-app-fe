@@ -197,16 +197,31 @@ class FplTeam extends Component {
   }
 
   selectFplTeamList (fplTeamListId) {
-    this.props.fetchFplTeamList({ fpl_team_list_id: fplTeamListId, show_waiver_picks: true, show_list_positions: true });
+    this.props.fetchFplTeamList({
+      fpl_team_list_id: fplTeamListId,
+      show_waiver_picks: true,
+      show_list_positions: true
+    });
+  }
+
+  showFplTeamListNav () {
+    if (isEmpty(this.state.fpl_team_lists)) {
+      return
+    }
+
+    return (
+      <FplTeamListNav { ...this.state } selectFplTeamList={ this.selectFplTeamList }/>
+    );
   }
 
   showFplTeamListView () {
     if (isEmpty(this.state.list_positions)) {
       return;
     }
+
     return (
       <div>
-        <FplTeamListNav { ...this.state } selectFplTeamList={ this.selectFplTeamList }/>
+
         <FplTeamListView
           { ...this.state }
           initiateTrade={ this.initiateTrade }
@@ -238,6 +253,7 @@ class FplTeam extends Component {
             { showSuccessAlert(this.state.success) }
             { showBaseErrorAlert(this.state.error) }
             <h3>{ this.state.fpl_team.name } { this.editFplTeamButton() }</h3>
+            { this.showFplTeamListNav() }
             { this.showFplTeamListView() }
           </div>
         </div>
