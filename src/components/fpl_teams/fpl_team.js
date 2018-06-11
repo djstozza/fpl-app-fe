@@ -83,6 +83,7 @@ class FplTeam extends Component {
       fpl_team_list: nextProps.fpl_team_list,
       fpl_team_lists: nextProps.fpl_team_lists,
       list_positions: nextProps.list_positions,
+      league: nextProps.league,
       editable: nextProps.editable === 'true',
       status: nextProps.status,
       league_status: nextProps.league_status,
@@ -247,12 +248,14 @@ class FplTeam extends Component {
     }
 
     if (this.state.loaded) {
+      console.log(this.state.status)
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
             { showSuccessAlert(this.state.success) }
             { showBaseErrorAlert(this.state.error) }
             <h3>{ this.state.fpl_team.name } { this.editFplTeamButton() }</h3>
+            <p>League: <Link to={ `/leagues/${this.state.league.id}` }> { this.state.league.name }</Link></p>
             { this.showFplTeamListNav() }
             { this.showFplTeamListView() }
           </div>
@@ -272,15 +275,23 @@ function mapStateToProps (state) {
     league_status: state.FplTeamsReducer.league_status,
     fpl_team_list: state.FplTeamListsReducer.fpl_team_list || state.FplTeamsReducer.fpl_team_list,
     fpl_team_lists: state.FplTeamsReducer.fpl_team_lists,
+    league: state.FplTeamsReducer.league,
     list_positions: state.FplTeamListsReducer.list_positions || state.FplTeamsReducer.list_positions,
     status: state.FplTeamListsReducer.status || state.FplTeamsReducer.status,
-    grouped_list_positions: state.FplTeamListsReducer.grouped_list_positions || state.FplTeamsReducer.grouped_list_positions,
+    grouped_list_positions: (
+      state.FplTeamListsReducer.grouped_list_positions ||
+      state.FplTeamsReducer.grouped_list_positions
+    ),
     editable: state.FplTeamListsReducer.editable || state.FplTeamsReducer.editable,
     current_user: state.FplTeamsReducer.current_user,
     user_owns_fpl_team: state.FplTeamsReducer.user_owns_fpl_team,
     substitute_options: state.ListPositionsReducer.substitute_options,
     unpicked_players: state.LeaguesReducer.unpicked_players,
-    waiver_picks: state.WaiverPicksReducer.waiver_picks|| state.FplTeamListsReducer.waiver_picks || state.FplTeamsReducer.waiver_picks,
+    waiver_picks: (
+      state.WaiverPicksReducer.waiver_picks ||
+      state.FplTeamListsReducer.waiver_picks ||
+      state.FplTeamsReducer.waiver_picks
+    ),
     teams: state.TeamsReducer,
     positions: state.PositionsReducer,
     success: state.FplTeamsReducer.success || state.FplTeamListsReducer.success || state.WaiverPicksReducer.success,
