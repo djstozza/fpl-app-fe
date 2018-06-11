@@ -85,6 +85,7 @@ class FplTeam extends Component {
       list_positions: nextProps.list_positions,
       league: nextProps.league,
       editable: nextProps.editable === 'true',
+      show_score: nextProps.show_score === 'true',
       status: nextProps.status,
       league_status: nextProps.league_status,
       grouped_list_positions: nextProps.grouped_list_positions,
@@ -248,7 +249,6 @@ class FplTeam extends Component {
     }
 
     if (this.state.loaded) {
-      console.log(this.state.status)
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
@@ -283,6 +283,7 @@ function mapStateToProps (state) {
       state.FplTeamsReducer.grouped_list_positions
     ),
     editable: state.FplTeamListsReducer.editable || state.FplTeamsReducer.editable,
+    show_score: state.FplTeamListsReducer.show_score || state.FplTeamsReducer.show_score,
     current_user: state.FplTeamsReducer.current_user,
     user_owns_fpl_team: state.FplTeamsReducer.user_owns_fpl_team,
     substitute_options: state.ListPositionsReducer.substitute_options,

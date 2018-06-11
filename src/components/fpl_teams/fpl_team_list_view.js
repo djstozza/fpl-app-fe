@@ -206,7 +206,7 @@ export default class FplTeamListView extends Component {
   }
 
   showScore () {
-    if (this.props.status !== 'started') {
+    if (!this.props.show_score) {
       return;
     }
 
