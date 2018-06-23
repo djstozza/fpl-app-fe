@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchFplTeam from  '../../actions/fpl_teams/fetch_fpl_team';
 import updateFplTeam from  '../../actions/fpl_teams/update_fpl_team';
-import { every, isEmpty, isNumber } from 'lodash';
 import ErrorHandler from '../error_handler';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';

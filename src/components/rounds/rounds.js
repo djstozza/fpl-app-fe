@@ -35,38 +35,39 @@ class Rounds extends Component {
     this.selectRound = this.selectRound.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.fetchRounds();
     this.props.fetchRound(this.props.match.params.id);
     this.props.fetchTeams();
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
     const self = this;
+    let loaded;
 
-    this.setState({
-      rounds: nextProps.rounds,
-      round: nextProps.round,
-      fixtures: nextProps.fixtures,
-      teams: nextProps.teams,
-      error: nextProps.error
-    });
+    if (prevProps === props) {
+      return;
+    }
 
-    if (nextProps.rounds.length > 0 && nextProps.round && nextProps.teams.length > 0) {
-      this.setState({
-        loaded: true
-      });
+    if (props.rounds && props.round && props.teams) {
+      loaded = true;
 
-      cable.subscriptions.create({ channel: 'RoundChannel', room: nextProps.round.id }, {
+      cable.subscriptions.create({ channel: 'RoundChannel', room: props.round.id }, {
         received: function (data) {
-          if (self.state.round.id === data.round.id) {
+          if (props.round.id === data.round.id && props.round.is_current) {
             self.setState({
-              fixtures: data.fixtures
+              fixtures: data.fixtures,
             });
           }
         }
       });
     }
+
+    this.setState({
+      ...props,
+      loaded: loaded,
+    });
   }
 
   selectRound (roundId) {

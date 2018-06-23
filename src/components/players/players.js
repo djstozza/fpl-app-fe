@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isEmpty } from 'lodash';
 
 import fetchPlayers from '../../actions/players/fetch_players';
 import fetchPositions from '../../actions/positions/fetch_positions';
@@ -13,31 +14,32 @@ class Players extends Component {
     super(props);
 
     this.state = {
-      teams: [],
-      players: [],
-      positions: [],
       loaded: false,
     }
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.fetchTeams();
     this.props.fetchPlayers();
     this.props.fetchPositions();
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      teams: nextProps.teams,
-      players: nextProps.players,
-      positions: nextProps.positions,
-    });
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    let loaded;
 
-    if (nextProps.teams.length > 0 && nextProps.players.length > 0) {
-      this.setState({
-        loaded: true
-      });
+    if (prevProps === props) {
+      return;
     }
+
+    if (!isEmpty(props.players) && !isEmpty(props.teams) && !isEmpty(props.positions)) {
+      loaded = true;
+    }
+
+    this.setState({
+      ...props,
+      loaded: loaded,
+    });
   }
 
   render () {

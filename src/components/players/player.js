@@ -21,25 +21,27 @@ class Player extends Component {
     }
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.fetchTeams();
     this.props.fetchPlayer(this.props.match.params.id);
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      player: nextProps.player,
-      position: nextProps.position,
-      team: nextProps.team,
-      teams: nextProps.teams,
-      error: nextProps.error
-    });
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    let loaded;
 
-    if (nextProps.player) {
-      this.setState({
-        loaded: true
-      });
+    if (prevProps === props) {
+      return;
     }
+
+    if (props.player && props.teams && props.position) {
+      loaded = true;
+    }
+
+    this.setState({
+      ...props,
+      loaded: loaded,
+    });
   }
 
   render () {

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import editLeague from  '../../actions/leagues/edit_league';
 import updateLeague from '../../actions/leagues/update_league';
-import isEmpty from 'lodash/isEmpty';
 import ErrorHandler from '../error_handler';
 import { showBaseErrorAlert } from '../../utils/general';
 
@@ -13,8 +12,6 @@ class EditLeague extends Component {
 
     this.state = {
       loaded: false,
-      name: '',
-      code: '',
       leagueId: this.props.match.params.id
     }
 
@@ -48,30 +45,26 @@ class EditLeague extends Component {
     this.setState({ code: code })
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.editLeague(this.props.match.params.id);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    let loaded;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    if (props.league) {
+      loaded = true;
+    }
+
     this.setState({
-      league: nextProps.league,
-      name: nextProps.league.name,
-      code: nextProps.league.code,
-      error: nextProps.error,
+      ...props,
+      loaded: loaded,
     });
-
-    if (!isEmpty(nextProps.success)) {
-      this.setState({
-        success: nextProps.success
-      });
-    }
-
-
-    if (!isEmpty(nextProps.league)) {
-      this.setState({
-        loaded: true
-      });
-    }
   }
 
   render () {
@@ -84,28 +77,30 @@ class EditLeague extends Component {
 
     if (this.state.loaded) {
       return (
-        <div>
+        <div className='container-fluid'>
           { showBaseErrorAlert(this.state.error) }
           <h3>Edit { this.state.league.name }</h3>
+
+
           <form onSubmit={ this.handleSubmit } >
             <div className="form-row">
               <div className="form-group col-md-12">
-                <label htmlFor="name">League Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  className={ `form-control ${this.showError('name') ? 'is-invalid' : ''}` }
-                  id="name"
-                  value={ this.state.name }
-                  onChange={ this.handleChange }
-                />
-                <div className="invalid-feedback">
-                  { this.showError('name') }
-                </div>
+                <label htmlFor="name">Leage Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    className={ `form-control ${this.showError('name') ? 'is-invalid' : ''}` }
+                    id="name"
+                    value={ this.state.name || this.state.league.name }
+                    onChange={ this.handleChange }
+                  />
+                  <div className="invalid-feedback">
+                    { this.showError('name') }
+                  </div>
               </div>
             </div>
             <div className="form-row">
-              <div className="form-group col-md-12">
+              <div className="form-group col-md-12 mb-0">
                 <label htmlFor="code">Code</label>
                 <input
                   type="text"
@@ -113,17 +108,20 @@ class EditLeague extends Component {
                   disabled="true"
                   className={ `form-control ${this.showError('code') ? 'is-invalid' : ''}` }
                   id="code"
-                  value={ this.state.code }
+                  value={ this.state.code || this.state.league.code }
                 />
                 <div className="invalid-feedback">
                   { this.showError('code') }
                 </div>
               </div>
-              <button type="button" className="btn btn-secondary" onClick={ (e) => this.generateCode(e) } >
-                Generate Code
-              </button>
             </div>
-            <br/>
+            <div className="form-row">
+              <div className="form-group col-md-12 mb-2">
+                <button type="button" className="btn btn-secondary" onClick={ (e) => this.generateCode(e) } >
+                  Generate Code
+                </button>
+              </div>
+            </div>
             <div className="form-row">
               <div className="form-group col-md-12">
                 <button type="submit" className="btn btn-primary">Submit</button>

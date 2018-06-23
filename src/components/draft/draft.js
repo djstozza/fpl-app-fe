@@ -11,8 +11,7 @@ import updateDraftPick from '../../actions/draft_picks/update_draft_pick';
 import ErrorHandler from '../error_handler';
 import DraftPlayersTable from './draft_players_table';
 import DraftPicksTable from './draft_picks_table';
-import { every, isEmpty, isNumber } from 'lodash';
-import { showSuccessAlert } from '../../utils/general';
+import { isEmpty } from 'lodash';
 
 import { CABLE_CONNECTION } from '../../api-config';
 
@@ -34,7 +33,7 @@ class Draft extends Component {
     this.alert = this.alert.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     const self = this;
 
     this.props.fetchDraftPicks(this.state.leagueId);
@@ -68,58 +67,53 @@ class Draft extends Component {
 
         self.alert('info', data.info);
 
-        if (data.league.status == 'active') {
+        if (data.league.status === 'active') {
           self.alert('success', 'The draft has been completed.');
         }
       }
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    let loaded;
+    let your_turn;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    if (props.league && props.draft_picks && props.positions && props.teams) {
+      loaded = true;
+    }
+
+    if (props.current_draft_pick_user && props.current_user.id === props.current_draft_pick_user.id) {
+      this.alert('info', "It's your turn.");
+      your_turn = true;
+    }
+
+    if (props.league && props.league.status === 'active') {
+      this.alert('success', 'The draft has been completed.');
+    }
+
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
+    if (props.error && props.error !== state.error && props.error.status === 422) {
+      const baseError = props.error.data.error.base;
+
+      if (!isEmpty(baseError)) {
+        this.alert('error', baseError[0]);
+      }
+    }
+
     this.setState({
-      league: nextProps.league,
-      fpl_teams: nextProps.fpl_teams,
-      draft_picks: nextProps.draft_picks,
-      mini_draft_picked: nextProps.mini_draft_picked,
-      all_players_picked: nextProps.all_players_picked,
-      unpicked_players: nextProps.unpicked_players,
-      current_draft_pick: nextProps.current_draft_pick,
-      current_draft_pick_user: nextProps.current_draft_pick_user,
-      current_user: nextProps.current_user,
-      teams: nextProps.teams,
-      positions: nextProps.positions,
-      error: nextProps.error,
+      ...props,
+      loaded: loaded,
+      your_turn: your_turn,
     });
-
-    if (!isEmpty(nextProps.success)) {
-      this.alert('success', nextProps.success);
-    }
-
-    if (!isEmpty(nextProps.error) && nextProps.error.status === 422) {
-      this.alert('error', nextProps.error.data.error.base[0]);
-    }
-
-    if (!isEmpty(nextProps.league) && !isEmpty(nextProps.draft_picks)) {
-
-      if (
-        !isEmpty(nextProps.current_draft_pick_user) &&
-        nextProps.current_user.id === nextProps.current_draft_pick_user.id
-      ) {
-        this.alert('info', "It's your turn.");
-
-        this.setState({
-          your_turn: true
-        });
-      }
-
-      this.setState({
-        loaded: true
-      });
-
-      if (nextProps.league.status === 'active') {
-        this.alert('success', 'The draft has been completed.');
-      }
-    }
   }
 
   alert (type, message) {
@@ -137,7 +131,7 @@ class Draft extends Component {
   draftDescription () {
     const allPlayersPicked = this.state.all_players_picked;
     const miniDraftPicked = this.state.mini_draft_picked
-    if (isEmpty(this.state.current_draft_pick) || allPlayersPicked && miniDraftPicked) {
+    if (isEmpty(this.state.current_draft_pick) || (allPlayersPicked && miniDraftPicked)) {
       return;
     }
 

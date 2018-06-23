@@ -53,7 +53,11 @@ class FplTeam extends Component {
   componentDidMount () {
     const self = this;
 
-    this.props.fetchFplTeam({ fpl_team_id: this.state.fplTeamId, show_waiver_picks: true, show_list_positions: true });
+    this.props.fetchFplTeam({
+      fpl_team_id: this.state.fplTeamId,
+      show_waiver_picks: true,
+      show_list_positions: true,
+    });
     this.props.fetchTeams();
     this.props.fetchPositions();
 

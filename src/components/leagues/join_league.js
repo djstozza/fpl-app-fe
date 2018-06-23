@@ -37,13 +37,21 @@ class JoinLeague extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({ error: nextProps.error });
+  componentDidUpdate(prevProps, prevState) {
+    const props = this.props;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    this.setState({
+      ...props,
+    });
   }
 
   render () {
     return (
-      <div>
+      <div className='container-fluid'>
         <h3>Join a League</h3>
         { showBaseErrorAlert(this.state.error) }
         <form onSubmit={ this.handleSubmit } >

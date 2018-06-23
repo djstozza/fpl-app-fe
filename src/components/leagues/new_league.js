@@ -44,13 +44,21 @@ class NewLeague extends Component {
     this.setState({ code: code })
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({ error: nextProps.error });
+  componentDidUpdate(prevProps, prevState) {
+    const props = this.props;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    this.setState({
+      ...props,
+    });
   }
 
   render () {
     return (
-      <div>
+      <div className="container-fluid">
         <h3>Create League</h3>
         <form onSubmit={ this.handleSubmit } >
           <div className="form-row">
@@ -69,7 +77,7 @@ class NewLeague extends Component {
             </div>
           </div>
           <div className="form-row">
-            <div className="form-group col-md-12">
+            <div className="form-group col-md-12 mb-0">
               <label htmlFor="code">Code</label>
               <input
                 type="text"
@@ -82,9 +90,13 @@ class NewLeague extends Component {
                 { this.showError('code') }
               </div>
             </div>
-            <button type="button" className="btn btn-secondary" onClick={ (e) => this.generateCode(e) } >
-              Generate Code
-            </button>
+          </div>
+          <div className="form-row">
+            <div className="form-group col-md-12">
+              <button type="button" className="btn btn-secondary" onClick={ (e) => this.generateCode(e) } >
+                Generate Code
+              </button>
+            </div>
           </div>
           <div className="form-row">
             <div className="form-group col-md-12">

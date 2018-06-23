@@ -17,14 +17,38 @@ class FplTeams extends Component {
     this.fplTeamsTable = this.fplTeamsTable.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.fetchFplTeams()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    let loaded;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    if (props.fpl_teams) {
+      loaded = true;
+    }
+
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
+    if (props.error && props.error !== state.error && props.error.status === 422) {
+      const baseError = props.error.data.error.base;
+
+      if (!isEmpty(baseError)) {
+        this.alert('error', baseError[0]);
+      }
+    }
+
     this.setState({
-      fpl_teams: nextProps.fpl_teams,
-      loaded: true
+      ...props,
+      loaded: loaded,
     });
   }
 

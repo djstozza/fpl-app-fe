@@ -13,7 +13,6 @@ import fetchRound from '../../actions/round/fetch_round';
 import ErrorHandler from '../error_handler';
 import OutPlayersTable from '../inter_team_trades/out_players_table';
 import TradePlayersTable from '../fpl_teams/trade_players_table';
-// import DraftPlayersTable from './draft_players_table';
 import MiniDraftPicksTable from './mini_draft_picks_table';
 import { every, isEmpty, isNumber } from 'lodash';
 import { showSuccessAlert } from '../../utils/general';
@@ -34,30 +33,31 @@ class MiniDraft extends Component {
 
     this.selectPlayer = this.selectPlayer.bind(this);
     this.clearSelectedPlayer = this.clearSelectedPlayer.bind(this);
-    this.selectTradePlayer = this.selectTradePlayer.bind(this);
-    this.clearTradePlayer = this.clearTradePlayer.bind(this);
+    this.selectTradeablePlayer = this.selectTradeablePlayer.bind(this);
+    this.clearTradeablePlayer = this.clearTradeablePlayer.bind(this);
 
     this.pass = this.pass.bind(this);
     this.passMiniDraftPickButton = this.passMiniDraftPickButton.bind(this);
     this.alert = this.alert.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
+    const self = this;
+
     this.props.fetchMiniDraftPicks(this.state.leagueId);
     this.props.fetchTeams();
     this.props.fetchPositions();
     this.props.fetchRound();
-  }
-
-  componentDidMount () {
-    const self = this;
 
     cable.subscriptions.create({ channel: 'MiniDraftPickChannel', room: this.state.leagueId }, {
       received: function (data) {
         let currentUserTurn;
         let yourTurnAlertable;
 
-        if (!isEmpty(data.current_mini_draft_pick_user) && self.state.current_user.id === data.current_mini_draft_pick_user.id) {
+        if (
+          data.current_mini_draft_pick_user &&
+          self.state.current_user.id === data.current_mini_draft_pick_user.id
+        ) {
           self.alert('info', "It's your turn.");
 
           self.setState({
@@ -86,48 +86,47 @@ class MiniDraft extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      round: nextProps.round,
-      league: nextProps.league,
-      fpl_teams: nextProps.fpl_teams,
-      fpl_team_list: nextProps.fpl_team_list,
-      out_players: nextProps.out_players,
-      mini_draft_picks: nextProps.mini_draft_picks,
-      mini_draft_picked: nextProps.mini_draft_picked,
-      unpicked_players: nextProps.unpicked_players,
-      current_mini_draft_pick: nextProps.current_mini_draft_pick,
-      current_mini_draft_pick_user: nextProps.current_mini_draft_pick_user,
-      current_user: nextProps.current_user,
-      teams: nextProps.teams,
-      positions: nextProps.positions,
-      error: nextProps.error,
-    });
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    let loaded;
+    let your_turn;
 
-    if (!isEmpty(nextProps.success)) {
-      this.alert('success', nextProps.success);
+    if (prevProps === props) {
+      return;
     }
 
-    if (!isEmpty(nextProps.error) && nextProps.error.status === 422) {
-      this.alert('error', nextProps.error.data.error.base[0]);
+    if (props.league && props.mini_draft_picks && props.positions && props.teams && props.round) {
+      loaded = true;
     }
 
-    if (!isEmpty(nextProps.league) && !isEmpty(nextProps.teams) && !isEmpty(nextProps.positions) && !isEmpty(nextProps.round)) {
-      if (
-        !isEmpty(nextProps.current_mini_draft_pick_user) &&
-        nextProps.current_user.id === nextProps.current_mini_draft_pick_user.id
-      ) {
-        this.alert('info', "It's your turn.");
+    if (
+      props.current_mini_draft_pick_user &&
+      props.current_user.id === props.current_mini_draft_pick_user.id
+    ) {
+      this.alert('info', "It's your turn.");
+      your_turn = true;
+    } else {
+      your_turn = false;
+    }
 
-        this.setState({
-          your_turn: true
-        });
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
+    if (props.error && props.error !== state.error && props.error.status === 422) {
+      const baseError = props.error.data.error.base;
+
+      if (!isEmpty(baseError)) {
+        this.alert('error', baseError[0]);
       }
-
-      this.setState({
-        loaded: true
-      });
     }
+
+    this.setState({
+      ...props,
+      loaded: loaded,
+      your_turn: your_turn,
+    });
   }
 
   alert (type, message) {
@@ -188,15 +187,15 @@ class MiniDraft extends Component {
   }
 
   clearSelectedPlayer () {
-    this.setState({ selected: '', tradePlayer: '' });
+    this.setState({ selected: '', tradeablePlayer: '' });
   }
 
-  selectTradePlayer (tradePlayer) {
-    this.setState({ tradePlayer: tradePlayer });
+  selectTradeablePlayer (tradeablePlayer) {
+    this.setState({ tradeablePlayer: tradeablePlayer });
   }
 
-  clearTradePlayer () {
-    this.setState({ tradePlayer: '' });
+  clearTradeablePlayer () {
+    this.setState({ tradeablePlayer: '' });
   }
 
   showTradePlayersTable () {
@@ -210,8 +209,8 @@ class MiniDraft extends Component {
         <span>(2) Select the player you wish to trade in.</span>
         <TradePlayersTable
           { ...this.state }
-          selectTradePlayer={ this.selectTradePlayer }
-          clearTradePlayer={ this.clearTradePlayer }
+          selectTradeablePlayer={ this.selectTradeablePlayer }
+          clearTradeablePlayer={ this.clearTradeablePlayer }
         />
         { this.completeTradeButton() }
       </div>
@@ -223,7 +222,7 @@ class MiniDraft extends Component {
       return;
     }
 
-    if (isEmpty(this.state.selected) || isEmpty(this.state.tradePlayer)) {
+    if (isEmpty(this.state.selected) || isEmpty(this.state.tradeablePlayer)) {
       return;
     }
 
@@ -234,7 +233,7 @@ class MiniDraft extends Component {
             this.props.createMiniDraftPick(
               this.state.leagueId,
               this.state.selected.list_position_id,
-              this.state.tradePlayer.id,
+              this.state.tradeablePlayer.id,
               this.state.fpl_team_list.id
             );
             this.clearSelectedPlayer();

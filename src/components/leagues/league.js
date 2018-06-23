@@ -6,8 +6,9 @@ import generatePickNumbers from  '../../actions/leagues/generate_pick_numbers';
 import updateDraftPickOrder from  '../../actions/leagues/update_draft_pick_order';
 import createDraft from  '../../actions/leagues/create_draft';
 import fetchRound from '../../actions/round/fetch_round';
-import { every, isEmpty, isNumber } from 'lodash';
+import { isEmpty } from 'lodash';
 import ErrorHandler from '../error_handler';
+import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
 import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
 import FplTeamsTable from '../leagues/fpl_teams_table';
@@ -27,34 +28,52 @@ class League extends Component {
     this.goToDraftLink = this.goToDraftLink.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.fetchLeague(this.state.leagueId);
     this.props.fetchRound();
   }
 
-  componentWillReceiveProps (nextProps) {
-    const fplTeams = nextProps.fpl_teams
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    let loaded;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    if (props.league && props.commissioner) {
+      loaded = true;
+    }
+
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
+    if (props.error && props.error !== state.error && props.error.status === 422) {
+      const baseError = props.error.data.error.base;
+
+      if (!isEmpty(baseError)) {
+        this.alert('error', baseError[0]);
+      }
+    }
 
     this.setState({
-      league: nextProps.league,
-      commissioner: nextProps.commissioner,
-      current_user: nextProps.current_user,
-      round: nextProps.round,
-      fpl_teams: fplTeams,
-      error: nextProps.error,
+      ...props,
+      loaded: loaded,
     });
+  }
 
-    if (!isEmpty(nextProps.success)) {
-      this.setState({
-        success: nextProps.success
-      });
-    }
-
-    if (!isEmpty(nextProps.league) && !isEmpty(nextProps.round)) {
-      this.setState({
-        loaded: true
-      });
-    }
+  alert (type, message) {
+    return (
+      Alert[type](
+        message, {
+          position: 'top',
+          effect: 'bouncyflip',
+          timeout: 5000,
+        }
+      )
+    )
   }
 
   generatePickNumbers () {
@@ -68,7 +87,10 @@ class League extends Component {
 
     if (this.props.current_user.id === this.props.commissioner.id) {
       return (
-        <button className='btn btn-secondary' onClick={ () => this.props.generatePickNumbers(this.state.leagueId) }>
+        <button
+          className='btn btn-secondary'
+          onClick={ () => this.props.generatePickNumbers(this.state.leagueId) }
+        >
           Generate Pick Numbers
         </button>
       );
@@ -111,6 +133,14 @@ class League extends Component {
     }
   }
 
+  editLeagueButton () {
+    if (this.state.commissioner.id === this.state.current_user.id) {
+      return (
+        <Link to={ `/leagues/${this.state.leagueId}/edit` } className='btn btn-secondary'>Edit</Link>
+      );
+    }
+  }
+
   updateDraftPickOrder (fplTeamId, pickNumber) {
     this.props.updateDraftPickOrder(this.state.leagueId, fplTeamId, pickNumber)
   }
@@ -127,7 +157,7 @@ class League extends Component {
         <div className='container-fluid'>
           { showSuccessAlert(this.state.success) }
           { showBaseErrorAlert(this.state.error) }
-          <h3>{ this.state.league.name }</h3>
+          <h3>{ this.state.league.name }  { this.editLeagueButton() }</h3>
           <p>Commisioner: { this.state.commissioner.username }</p>
           <FplTeamsTable { ...this.state } updateDraftPickOrder={ this.updateDraftPickOrder } />
           { this.generatePickNumbers() }
