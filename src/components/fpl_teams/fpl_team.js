@@ -112,7 +112,7 @@ class FplTeam extends Component {
       loaded: loaded,
       editable: props.editable === 'true',
       show_score: props.show_score === 'true',
-    })
+    });
   }
 
   alert (type, message) {

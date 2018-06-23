@@ -29,11 +29,18 @@ export default class InTradeGroupTable extends Component {
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+
+    if (prevProps === props) {
+      return;
+    }
+
     this.setState({
-      tradeGroup: nextProps.tradeGroup,
-      out_players: nextProps.tradeGroup.out_players_tradeable,
-      in_players: nextProps.tradeGroup.in_players_tradeable,
+      tradeGroup: props.tradeGroup,
+      out_players: props.tradeGroup.out_players_tradeable,
+      in_players: props.tradeGroup.in_players_tradeable,
     });
   }
 

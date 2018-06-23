@@ -12,27 +12,26 @@ import $ from 'jquery';
 export default class InPlayersTable extends Component {
   constructor (props) {
     super(props);
-    this.selectTradePlayer = this.selectTradePlayer.bind(this);
+    this.selectTradeablePlayer = this.selectTradeablePlayer.bind(this);
   }
 
   componentDidMount () {
     $('[data-toggle="tooltip"]').tooltip()
   }
 
-  selectTradePlayer (row, isSelect) {
+  selectTradeablePlayer (row, isSelect) {
     if (!this.props.user_owns_fpl_team) {
       return;
     }
 
     if (isEmpty(this.props.selected)) {
       return;
-    } else if (isEmpty(this.props.tradePlayer)) {
-      this.props.selectTradePlayer(row);
-    } else if (this.props.tradePlayer.id === row.id) {
-      this.props.clearTradePlayer();
+    } else if (isEmpty(this.props.tradeablePlayer)) {
+      this.props.selectTradeablePlayer(row);
+    } else if (this.props.tradeablePlayer.id === row.id) {
+      this.props.clearTradeablePlayer();
     }
   }
-
 
   render () {
     const teams = this.props.teams;
@@ -150,7 +149,7 @@ export default class InPlayersTable extends Component {
       mode: 'radio',
       clickToSelect: true,
       hideSelectColumn: true,
-      onSelect: this.selectTradePlayer
+      onSelect: this.selectTradeablePlayer
     };
 
     const rowClasses = (row, rowIndex) => {
@@ -160,11 +159,11 @@ export default class InPlayersTable extends Component {
         return;
       }
 
-      if (isEmpty(this.props.tradePlayer)) {
+      if (isEmpty(this.props.tradeablePlayer)) {
         return
       }
 
-      if (this.props.tradePlayer.id === row.id) {
+      if (this.props.tradeablePlayer.id === row.id) {
         classes='select-option';
       }
 

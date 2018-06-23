@@ -31,19 +31,26 @@ export default class OutTradeGroupTable extends Component {
 
     this.selectPlayer = this.selectPlayer.bind(this);
     this.clearSelectedPlayer = this.clearSelectedPlayer.bind(this);
-    this.selectTradePlayer = this.selectTradePlayer.bind(this);
-    this.clearTradePlayer = this.clearTradePlayer.bind(this);
+    this.selectTradeablePlayer = this.selectTradeablePlayer.bind(this);
+    this.clearTradeablePlayer = this.clearTradeablePlayer.bind(this);
   }
 
   componentDidMount () {
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+
+    if (prevProps === props) {
+      return;
+    }
+
     this.setState({
-      tradeGroup: nextProps.tradeGroup,
-      out_players: nextProps.tradeGroup.out_players_tradeable,
-      in_players: nextProps.tradeGroup.in_players_tradeable,
+      ...props,
+      out_players: props.tradeGroup.out_players_tradeable,
+      in_players: props.tradeGroup.in_players_tradeable,
     });
   }
 
@@ -57,7 +64,7 @@ export default class OutTradeGroupTable extends Component {
       axios({
         url: `${API_ROOT}/fpl_team_lists/${this.state.fplTeamListId}/tradeable_players.json`,
         method: 'GET',
-        params: { inter_team_trade_group_id: this.state.tradeGroup.id },
+        params: { inter_team_trade_group_id: this.props.tradeGroup.id },
       }).then(res => {
         this.setState({
           out_players: res.data.out_players,
@@ -78,9 +85,9 @@ export default class OutTradeGroupTable extends Component {
     $button.removeClass('btn-danger').addClass('btn-primary').text('Add');
 
     this.props.updateTrade({
-      inter_team_trade_group_id: this.state.tradeGroup.id,
+      inter_team_trade_group_id: this.props.tradeGroup.id,
       out_list_position_id: this.state.selected.list_position_id,
-      in_list_position_id: this.state.tradePlayer.list_position_id,
+      in_list_position_id: this.state.tradeablePlayer.list_position_id,
       trade_action: 'Add',
     });
 
@@ -89,7 +96,7 @@ export default class OutTradeGroupTable extends Component {
 
   deleteTrade (row) {
     this.props.updateTrade({
-      inter_team_trade_group_id: this.state.tradeGroup.id,
+      inter_team_trade_group_id: this.props.tradeGroup.id,
       inter_team_trade_id: row.id,
       trade_action: 'RemoveFromTradeGroup',
     });
@@ -100,19 +107,18 @@ export default class OutTradeGroupTable extends Component {
 
     if (window.confirm(confirmText)) {
       this.props.updateTrade({
-        inter_team_trade_group_id: this.state.tradeGroup.id,
+        inter_team_trade_group_id: this.props.tradeGroup.id,
         trade_action: action,
       })
     }
   }
 
-
   completeTradeButtons () {
-    if (!this.state.user_owns_fpl_team) {
+    if (!this.props.user_owns_fpl_team) {
       return;
     }
 
-    if (isEmpty(this.state.selected) || isEmpty(this.state.tradePlayer)) {
+    if (isEmpty(this.state.selected) || isEmpty(this.state.tradeablePlayer)) {
       return;
     }
 
@@ -172,15 +178,15 @@ export default class OutTradeGroupTable extends Component {
   }
 
   clearSelectedPlayer () {
-    this.setState({ selected: '', tradePlayer: '' });
+    this.setState({ selected: '', tradeablePlayer: '' });
   }
 
-  selectTradePlayer (tradePlayer) {
-    this.setState({ tradePlayer: tradePlayer });
+  selectTradeablePlayer (tradeablePlayer) {
+    this.setState({ tradeablePlayer: tradeablePlayer });
   }
 
-  clearTradePlayer () {
-    this.setState({ tradePlayer: '' });
+  clearTradeablePlayer () {
+    this.setState({ tradeablePlayer: '' });
   }
 
   showTradeTables () {
@@ -200,8 +206,8 @@ export default class OutTradeGroupTable extends Component {
         <div className='col col-md-6 col-sm-12'>
           <InPlayersTable
             { ...this.state }
-            selectTradePlayer={ this.selectTradePlayer }
-            clearTradePlayer={ this.clearTradePlayer }
+            selectTradeablePlayer={ this.selectTradeablePlayer }
+            clearTradeablePlayer={ this.clearTradeablePlayer }
           />
           { this.completeTradeButtons() }
         </div>

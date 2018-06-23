@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { every, isEmpty, isNumber } from 'lodash';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
+import Alert from 'react-s-alert';
 
 import fetchFplTeam from  '../../actions/fpl_teams/fetch_fpl_team';
 import newInterTeamTradeGroup from  '../../actions/inter_team_trades/new';
@@ -15,7 +16,7 @@ import updateInterTeamTradeGroup from '../../actions/inter_team_trades/update';
 import fetchLeagueFplTeams from '../../actions/leagues/fetch_fpl_teams';
 
 import ErrorHandler from '../error_handler';
-import { showSuccessAlert, showBaseErrorAlert, capitaliseText } from '../../utils/general';
+import { capitaliseText } from '../../utils/general';
 
 import NewTradeGroupButton from './new_trade_group_button';
 import OutPlayersTable from './out_players_table';
@@ -40,13 +41,13 @@ class InterTeamTrades extends Component {
     this.cancelInterTeamTrade = this.cancelInterTeamTrade.bind(this);
     this.selectPlayer = this.selectPlayer.bind(this);
     this.clearSelectedPlayer = this.clearSelectedPlayer.bind(this);
-    this.selectTradePlayer = this.selectTradePlayer.bind(this);
-    this.clearTradePlayer = this.clearTradePlayer.bind(this);
+    this.selectTradeablePlayer = this.selectTradeablePlayer.bind(this);
+    this.clearTradeablePlayer = this.clearTradeablePlayer.bind(this);
     this.showTradeTables = this.showTradeTables.bind(this);
     this.updateTrade = this.updateTrade.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     const self = this;
 
     this.props.fetchFplTeam({ fpl_team_id: this.state.fplTeamId, show_waiver_picks: false, show_trade_groups: true });
@@ -66,35 +67,47 @@ class InterTeamTrades extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    let loaded;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    if (props.fpl_team && props.teams && props.positions && props.out_trade_groups) {
+      loaded = true;
+    }
+
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
+    if (props.error && props.error !== state.error && props.error.status === 422) {
+      const baseError = props.error.data.error.base;
+
+      if (!isEmpty(baseError)) {
+        this.alert('error', baseError[0]);
+      }
+    }
+
     this.setState({
-      fpl_team: nextProps.fpl_team,
-      fpl_teams: nextProps.fpl_teams,
-      fpl_team_list: nextProps.fpl_team_list,
-      out_players: nextProps.out_players,
-      in_players: nextProps.in_players,
-      out_trade_groups: nextProps.out_trade_groups,
-      in_trade_groups: nextProps.in_trade_groups,
-      status: nextProps.status,
-      teams: nextProps.teams,
-      positions: nextProps.positions,
-      current_user: nextProps.current_user,
-      user_owns_fpl_team: nextProps.user_owns_fpl_team,
-      editable: nextProps.editable,
-      error: nextProps.error,
+      ...props,
+      loaded: loaded,
     });
+  }
 
-    if (!isEmpty(nextProps.success)) {
-      this.setState({
-        success: nextProps.success
-      });
-    }
-
-    if (nextProps.fpl_team && nextProps.teams && nextProps.positions && nextProps.out_trade_groups) {
-      this.setState({
-        loaded: true
-      });
-    }
+  alert (type, message) {
+    return (
+      Alert[type](
+        message, {
+          position: 'top',
+          effect: 'bouncyflip',
+          timeout: 5000,
+        }
+      )
+    )
   }
 
   newInterTeamTrade () {
@@ -110,24 +123,24 @@ class InterTeamTrades extends Component {
   }
 
   clearSelectedPlayer () {
-    this.setState({ selected: '', tradePlayer: '' });
+    this.setState({ selected: '', tradeablePlayer: '' });
   }
 
   cancelInterTeamTrade () {
     this.setState({
       selected: '',
-      tradePlayer: '',
+      tradeablePlayer: '',
       out_players: [],
       in_players: []
     })
   }
 
-  selectTradePlayer (tradePlayer) {
-    this.setState({ tradePlayer: tradePlayer });
+  selectTradeablePlayer (tradeablePlayer) {
+    this.setState({ tradeablePlayer: tradeablePlayer });
   }
 
-  clearTradePlayer () {
-    this.setState({ tradePlayer: '' });
+  clearTradeablePlayer () {
+    this.setState({ tradeablePlayer: '' });
   }
 
   updateTrade (params) {
@@ -149,8 +162,8 @@ class InterTeamTrades extends Component {
           <div className='col col-md-6 col-sm-12'>
             <InPlayersTable
               { ...this.state }
-              selectTradePlayer={ this.selectTradePlayer }
-              clearTradePlayer={ this.clearTradePlayer }
+              selectTradeablePlayer={ this.selectTradeablePlayer }
+              clearTradeablePlayer={ this.clearTradeablePlayer }
             />
             { this.completeTradeButtons() }
           </div>
@@ -164,7 +177,7 @@ class InterTeamTrades extends Component {
       return;
     }
 
-    if (isEmpty(this.state.selected) || isEmpty(this.state.tradePlayer)) {
+    if (isEmpty(this.state.selected) || isEmpty(this.state.tradeablePlayer)) {
       return;
     }
 
@@ -175,7 +188,7 @@ class InterTeamTrades extends Component {
             this.clearSelectedPlayer();
             this.props.createInterTeamTradeGroup(
               this.state.selected.list_position_id,
-              this.state.tradePlayer.list_position_id,
+              this.state.tradeablePlayer.list_position_id,
               this.state.fpl_team_list.id
             )
           }
@@ -215,8 +228,6 @@ class InterTeamTrades extends Component {
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
-            { showSuccessAlert(this.state.success) }
-            { showBaseErrorAlert(this.state.error) }
             <h3>{ this.state.fpl_team.name } Inter Team Trades</h3>
             <NewTradeGroupButton
               { ...this.state }

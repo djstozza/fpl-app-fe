@@ -48,7 +48,7 @@ class EditFplTeam extends Component {
     this.setState({
       ...props,
       loaded: loaded,
-    })
+    });
   }
 
   alert (type, message) {
@@ -132,7 +132,6 @@ class EditFplTeam extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log(state)
   return {
     fpl_team: state.FplTeamsReducer.fpl_team,
     current_user: state.FplTeamsReducer.current_user,
