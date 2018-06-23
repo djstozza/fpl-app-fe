@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { every, isEmpty, isNumber } from 'lodash';
+import { isEmpty } from 'lodash';
 import { capitaliseText } from '../../utils/general';
 import OutTradeGroupTable from './out_trade_group_table';
 import InTradeGroupTable from './in_trade_group_table';

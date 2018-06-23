@@ -31,8 +31,14 @@ export default class Edit extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({ error: nextProps.error });
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps === this.props) {
+      return;
+    }
+
+    this.setState({
+      error: this.props.error
+    })
   }
 
   render () {

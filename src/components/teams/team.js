@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isEmpty } from 'lodash';
 
 import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchTeam from '../../actions/team/fetch_team';
@@ -36,21 +37,22 @@ class Team extends Component {
     this.props.fetchPositions();
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      teams: nextProps.teams,
-      team: nextProps.team,
-      fixtures: nextProps.fixtures,
-      players: nextProps.players,
-      positions: nextProps.positions,
-      error: nextProps.error,
-    });
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    let loaded;
 
-    if (nextProps.teams.length > 0 && nextProps.team) {
-      this.setState({
-        loaded: true
-      });
+    if (prevProps === props) {
+      return;
     }
+
+    if (props.team && !isEmpty(props.teams) && !isEmpty(props.players) && !isEmpty(props.positions)) {
+      loaded = true;
+    }
+
+    this.setState({
+      ...props,
+      loaded: loaded,
+    });
   }
 
   selectTeam (teamId) {

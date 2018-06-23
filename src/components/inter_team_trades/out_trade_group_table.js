@@ -24,7 +24,6 @@ export default class OutTradeGroupTable extends Component {
       out_players: [],
       in_players: [],
       tradeGroup: this.props.tradeGroup,
-      in_players: this.props.tradeGroup.in_players_tradeable,
       positions: this.props.positions,
       fplTeamListId: this.props.fpl_team_list.id,
     }

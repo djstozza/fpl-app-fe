@@ -14,8 +14,7 @@ import ErrorHandler from '../error_handler';
 import OutPlayersTable from '../inter_team_trades/out_players_table';
 import TradePlayersTable from '../fpl_teams/trade_players_table';
 import MiniDraftPicksTable from './mini_draft_picks_table';
-import { every, isEmpty, isNumber } from 'lodash';
-import { showSuccessAlert } from '../../utils/general';
+import { isEmpty } from 'lodash';
 
 import { CABLE_CONNECTION } from '../../api-config';
 
@@ -51,22 +50,16 @@ class MiniDraft extends Component {
 
     cable.subscriptions.create({ channel: 'MiniDraftPickChannel', room: this.state.leagueId }, {
       received: function (data) {
-        let currentUserTurn;
-        let yourTurnAlertable;
+        let your_turn;
 
         if (
           data.current_mini_draft_pick_user &&
           self.state.current_user.id === data.current_mini_draft_pick_user.id
         ) {
           self.alert('info', "It's your turn.");
-
-          self.setState({
-            your_turn: true
-          });
+          your_turn = true;
         } else {
-          self.setState({
-            your_turn: false
-          })
+          your_turn: false;
         }
 
         self.setState({
@@ -77,6 +70,7 @@ class MiniDraft extends Component {
           mini_draft_picked: data.mini_draft_picked,
           unpicked_players: data.unpicked_players,
           current_mini_draft_pick: data.current_mini_draft_pick,
+          your_turn: your_turn,
         });
 
         if (data.info) {

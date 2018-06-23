@@ -7,12 +7,6 @@ class Signup extends Component {
   constructor (props) {
     super(props);
 
-    this.state = {
-      email: '',
-      username: '',
-      password: '',
-    }
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.showError = this.showError.bind(this);
@@ -35,8 +29,16 @@ class Signup extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({ error: nextProps.error });
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    this.setState({
+      ...props,
+    });
   }
 
   render () {

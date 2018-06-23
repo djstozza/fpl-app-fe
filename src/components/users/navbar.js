@@ -43,12 +43,18 @@ class Navbar extends Component {
     this.props.logout();
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.setState({ loggedIn: !isEmpty(localStorage.getItem('access-token')) })
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({ loggedIn: !isEmpty(localStorage.getItem('access-token')) });
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps === this.props) {
+      return;
+    }
+
+    this.setState({
+      loggedIn: !isEmpty(localStorage.getItem('access-token'))
+    });
   }
 
   render () {

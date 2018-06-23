@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import login from '../../actions/users/login';
-import { isEmpty } from 'lodash';
+import { isString, isEmpty } from 'lodash';
 import Alert from 'react-s-alert';
-import { showErrorAlert, showSuccessAlert } from '../../utils/general';
 
 class LogInForm extends Component {
   constructor (props) {
@@ -35,15 +34,47 @@ class LogInForm extends Component {
     this.props.login(this.state);
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({ error: nextProps.error, current_user: nextProps.current_user, success: nextProps.success });
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    const error = props.error;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
+    if (error && error !== state.error) {
+      const errorMessage = isString(error) ? error : error.data.errors[0];
+
+      if (!isEmpty(errorMessage)) {
+        this.alert('error', errorMessage);
+      }
+    }
+
+    this.setState({
+      ...props,
+    });
+  }
+
+  alert (type, message) {
+    return (
+      Alert[type](
+        message, {
+          position: 'top',
+          effect: 'bouncyflip',
+          timeout: 5000,
+        }
+      )
+    );
   }
 
   render () {
     return (
       <div>
-        { showSuccessAlert(this.state.success) }
-        { showErrorAlert(this.state.error) }
         <div className='container-fluid'>
           <div className='row'>
             <div className='col col-sm-12 offset-md-3 col-md-6 mb-auto mt-auto'>

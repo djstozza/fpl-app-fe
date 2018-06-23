@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import profile from '../../actions/users/profile';
-import { showErrorAlert, showSuccessAlert } from '../../utils/general';
 import update from '../../actions/users/update';
 import changePassword from '../../actions/users/change_password';
+import Alert from 'react-s-alert';
 
 import ChangePassword from './change_password';
 import Edit from './edit';
@@ -22,27 +22,43 @@ class Profile extends Component {
     this.changePassword = this.changePassword.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.profile(this.state);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    let loaded;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
+    if (props.current_user) {
+      loaded = true;
+    }
+
     this.setState({
-      current_user: nextProps.current_user,
-      error: nextProps.error
+      ...props,
+      loaded: loaded,
     });
+  }
 
-    if (!isEmpty(nextProps.success)) {
-      this.setState({
-        success: nextProps.success
-      })
-    }
-
-    if (!isEmpty(nextProps.current_user )) {
-      this.setState({
-        loaded: true
-      })
-    }
+  alert (type, message) {
+    return (
+      Alert[type](
+        message, {
+          position: 'top',
+          effect: 'bouncyflip',
+          timeout: 5000,
+        }
+      )
+    );
   }
 
   update(params) {
@@ -53,13 +69,11 @@ class Profile extends Component {
     this.props.changePassword({ current_user: this.props.current_user, ...params});
   }
 
-
   render () {
     if (this.state.loaded) {
       const current_user = this.state.current_user
       return (
         <div>
-          { showSuccessAlert(this.state.success, this.state.error) }
           <div className='row'>
             <div className='col col-md-10 offset-md-1'>
               <div className='container-fluid'>
