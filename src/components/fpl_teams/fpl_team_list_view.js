@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { every, isEmpty, isNumber } from 'lodash';
+import { isEmpty } from 'lodash';
 import { Link } from 'react-router-dom';
 import { capitaliseText } from '../../utils/general';
 
@@ -164,7 +164,7 @@ export default class FplTeamListView extends Component {
       return;
     }
 
-    if (isEmpty(this.props.selected) || isEmpty(this.props.tradePlayer)) {
+    if (isEmpty(this.props.selected) || isEmpty(this.props.tradeablePlayer)) {
       return;
     }
 

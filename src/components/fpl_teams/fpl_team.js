@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { every, isEmpty, isNumber } from 'lodash';
+import { isEmpty } from 'lodash';
 import { Link } from 'react-router-dom';
+import Alert from 'react-s-alert';
 
 import fetchFplTeam from  '../../actions/fpl_teams/fetch_fpl_team';
 import fetchFplTeamList from  '../../actions/fpl_team_lists/fetch_fpl_team_list';
@@ -17,7 +18,6 @@ import deleteWaiverPick from '../../actions/waiver_picks/delete_waiver_pick';
 import tradePlayer from '../../actions/fpl_team_lists/trade_player';
 
 import ErrorHandler from '../error_handler';
-import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
 import FplTeamListNav from './fpl_team_list_nav';
 import FplTeamListView from './fpl_team_list_view';
 
@@ -41,8 +41,8 @@ class FplTeam extends Component {
     this.clearSelectedPlayer = this.clearSelectedPlayer.bind(this);
     this.substitutePlayers = this.substitutePlayers.bind(this);
     this.initiateTrade = this.initiateTrade.bind(this);
-    this.selectTradePlayer = this.selectTradePlayer.bind(this);
-    this.clearTradePlayer = this.clearTradePlayer.bind(this);
+    this.selectTradeablePlayer = this.selectTradeablePlayer.bind(this);
+    this.clearTradeablePlayer = this.clearTradeablePlayer.bind(this);
     this.completeTradeAction = this.completeTradeAction.bind(this);
     this.updateWaiverPickOrder = this.updateWaiverPickOrder.bind(this);
     this.deleteWaiverPick = this.deleteWaiverPick.bind(this);
@@ -50,11 +50,10 @@ class FplTeam extends Component {
     this.selectFplTeamList = this.selectFplTeamList.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     const self = this;
 
     this.props.fetchFplTeam({ fpl_team_id: this.state.fplTeamId, show_waiver_picks: true, show_list_positions: true });
-    // this.props.fetchFplTeamList(this.state.fplTeamId);
     this.props.fetchTeams();
     this.props.fetchPositions();
 
@@ -77,43 +76,55 @@ class FplTeam extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      fpl_team: nextProps.fpl_team,
-      fpl_team_list: nextProps.fpl_team_list,
-      fpl_team_lists: nextProps.fpl_team_lists,
-      list_positions: nextProps.list_positions,
-      league: nextProps.league,
-      editable: nextProps.editable === 'true',
-      show_score: nextProps.show_score === 'true',
-      status: nextProps.status,
-      league_status: nextProps.league_status,
-      grouped_list_positions: nextProps.grouped_list_positions,
-      teams: nextProps.teams,
-      positions: nextProps.positions,
-      unpicked_players: nextProps.unpicked_players,
-      substitute_options: nextProps.substitute_options,
-      waiver_picks: nextProps.waiver_picks,
-      current_user: nextProps.current_user,
-      user_owns_fpl_team: nextProps.user_owns_fpl_team,
-      error: nextProps.error,
-    });
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    let loaded;
 
-    if (!isEmpty(nextProps.success)) {
-      this.setState({
-        success: nextProps.success
-      });
+    if (prevProps === props) {
+      return;
     }
 
     if (
-      (!isEmpty(nextProps.fpl_team) && (!isEmpty(nextProps.fpl_team_list) || nextProps.league_status !== 'active')) &&
-      !isEmpty(nextProps.teams) &&
-      !isEmpty(nextProps.positions)
+      props.fpl_team &&
+      (props.fpl_team_list || props.league_status !== 'active') &&
+      props.league &&
+      props.teams &&
+      props.positions
     ) {
-      this.setState({
-        loaded: true
-      });
+      loaded = true;
     }
+
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
+    if (props.error && props.error !== state.error && props.error.status === 422) {
+      const baseError = props.error.data.error.base;
+
+      if (!isEmpty(baseError)) {
+        this.alert('error', baseError[0]);
+      }
+    }
+
+    this.setState({
+      ...props,
+      loaded: loaded,
+      editable: props.editable === 'true',
+      show_score: props.show_score === 'true',
+    })
+  }
+
+  alert (type, message) {
+    return (
+      Alert[type](
+        message, {
+          position: 'top',
+          effect: 'bouncyflip',
+          timeout: 5000,
+        }
+      )
+    )
   }
 
   editFplTeamButton () {
@@ -136,7 +147,7 @@ class FplTeam extends Component {
   }
 
   clearSelectedPlayer () {
-    this.setState({ selected: '', substitute_options: [], tradePlayer: '' });
+    this.setState({ selected: '', substitute_options: [], tradeeablePlayer: '' });
   }
 
   substitutePlayers (substituteListPosition) {
@@ -152,30 +163,30 @@ class FplTeam extends Component {
     });
   }
 
-  selectTradePlayer (tradePlayer) {
-    this.setState({ tradePlayer: tradePlayer });
+  selectTradeablePlayer (tradeablePlayer) {
+    this.setState({ tradeablePlayer: tradeablePlayer });
   }
 
-  clearTradePlayer () {
-    this.setState({ tradePlayer: '' });
+  clearTradeablePlayer () {
+    this.setState({ tradeeablePlayer: '' });
   }
 
   completeTradeAction () {
     if (this.state.action === 'waiver') {
-      this.props.createWaiverPick(this.state.fpl_team_list.id, this.state.selected.id, this.state.tradePlayer.id);
+      this.props.createWaiverPick(this.state.fpl_team_list.id, this.state.selected.id, this.state.tradeablePlayer.id);
     } else if (this.state.action === 'trade') {
       const outPlayer = `${this.state.selected.first_name} ${this.state.selected.last_name}`;
-      const inPlayer = `${this.state.tradePlayer.first_name} ${this.state.tradePlayer.last_name}`
+      const inPlayer = `${this.state.tradeablePlayer.first_name} ${this.state.tradeablePlayer.last_name}`
       const confirmText = `Are you sure you want to trade out ${outPlayer} for ${inPlayer}?`;
 
       if (window.confirm(confirmText)) {
-        this.props.tradePlayer(this.state.selected.id, this.state.tradePlayer.id);
+        this.props.tradePlayer(this.state.selected.id, this.state.tradeablePlayer.id);
       }
     }
 
     this.setState({
       selected: '',
-      tradePlayer: '',
+      tradeablePlayer: '',
     })
   }
 
@@ -231,8 +242,8 @@ class FplTeam extends Component {
           selectListPosition={ this.selectListPosition }
           substitutePlayers={ this.substitutePlayers }
           clearSelectedPlayer={ this.clearSelectedPlayer }
-          selectTradePlayer={ this.selectTradePlayer }
-          clearTradePlayer={ this.clearTradePlayer }
+          selectTradeablePlayer={ this.selectTradeablePlayer }
+          clearTradeablePlayer={ this.clearTradeablePlayer }
           updateWaiverPickOrder={ this.updateWaiverPickOrder }
           deleteWaiverPick={ this.deleteWaiverPick }
           resetSelection={ this.resetSelection }
@@ -252,8 +263,6 @@ class FplTeam extends Component {
       return (
         <div className='container-fluid'>
           <div className='col col-sm-12'>
-            { showSuccessAlert(this.state.success) }
-            { showBaseErrorAlert(this.state.error) }
             <h3>{ this.state.fpl_team.name } { this.editFplTeamButton() }</h3>
             <p>League: <Link to={ `/leagues/${this.state.league.id}` }> { this.state.league.name }</Link></p>
             { this.showFplTeamListNav() }
@@ -270,37 +279,69 @@ class FplTeam extends Component {
 }
 
 function mapStateToProps (state) {
+  let fpl_team;
+  let fpl_team_list;
+  let list_positions;
+  let grouped_list_positions;
+  let waiver_picks;
+  let status;
+  let editable;
+  let show_score;
+
+  const FplTeamListsReducer = state.FplTeamListsReducer;
+  const FplTeamsReducer = state.FplTeamsReducer;
+  const WaiverPicksReducer = state.WaiverPicksReducer;
+
+  if (FplTeamsReducer.fpl_team) {
+    fpl_team = FplTeamsReducer.fpl_team;
+  }
+
+  if (FplTeamListsReducer.fpl_team_list && fpl_team && FplTeamListsReducer.fpl_team_list.fpl_team_id === fpl_team.id) {
+    fpl_team_list = FplTeamListsReducer.fpl_team_list;
+    list_positions = FplTeamListsReducer.list_positions;
+    grouped_list_positions = FplTeamListsReducer.grouped_list_positions;
+    waiver_picks = FplTeamListsReducer.waiver_picks;
+    status = FplTeamListsReducer.status;
+    editable = FplTeamListsReducer.editable;
+    show_score = FplTeamListsReducer.show_score;
+  } else {
+    fpl_team_list = FplTeamsReducer.fpl_team_list;
+    list_positions = FplTeamsReducer.list_positions;
+    grouped_list_positions = FplTeamsReducer.grouped_list_positions;
+    waiver_picks = FplTeamsReducer.waiver_picks;
+    status = FplTeamsReducer.status;
+    editable = FplTeamsReducer.editable;
+    show_score = FplTeamsReducer.show_score;
+  }
+
+  if (WaiverPicksReducer.fpl_team_list && fpl_team_list && WaiverPicksReducer.fpl_team_list.id === fpl_team_list.id) {
+    waiver_picks = WaiverPicksReducer.waiver_picks;
+  }
+
   return {
-    fpl_team: state.FplTeamsReducer.fpl_team,
-    league_status: state.FplTeamsReducer.league_status,
-    fpl_team_list: state.FplTeamListsReducer.fpl_team_list || state.FplTeamsReducer.fpl_team_list,
-    fpl_team_lists: state.FplTeamsReducer.fpl_team_lists,
-    league: state.FplTeamsReducer.league,
-    list_positions: state.FplTeamListsReducer.list_positions || state.FplTeamsReducer.list_positions,
-    status: state.FplTeamListsReducer.status || state.FplTeamsReducer.status,
-    grouped_list_positions: (
-      state.FplTeamListsReducer.grouped_list_positions ||
-      state.FplTeamsReducer.grouped_list_positions
-    ),
-    editable: state.FplTeamListsReducer.editable || state.FplTeamsReducer.editable,
-    show_score: state.FplTeamListsReducer.show_score || state.FplTeamsReducer.show_score,
-    current_user: state.FplTeamsReducer.current_user,
-    user_owns_fpl_team: state.FplTeamsReducer.user_owns_fpl_team,
+    fpl_team: FplTeamsReducer.fpl_team,
+    league_status: FplTeamsReducer.league_status,
+    fpl_team_list: fpl_team_list,
+    fpl_team_lists: FplTeamsReducer.fpl_team_lists,
+    league: FplTeamsReducer.league,
+    list_positions: list_positions,
+    status: status,
+    grouped_list_positions: grouped_list_positions,
+    editable: editable,
+    show_score: show_score,
+    current_user: FplTeamsReducer.current_user,
+    user_owns_fpl_team: FplTeamsReducer.user_owns_fpl_team,
     substitute_options: state.ListPositionsReducer.substitute_options,
     unpicked_players: state.LeaguesReducer.unpicked_players,
-    waiver_picks: (
-      state.WaiverPicksReducer.waiver_picks ||
-      state.FplTeamListsReducer.waiver_picks ||
-      state.FplTeamsReducer.waiver_picks
-    ),
+    waiver_picks: waiver_picks,
     teams: state.TeamsReducer,
     positions: state.PositionsReducer,
-    success: state.FplTeamsReducer.success || state.FplTeamListsReducer.success || state.WaiverPicksReducer.success,
+    success: FplTeamsReducer.success || FplTeamListsReducer.success || WaiverPicksReducer.success,
     error: (
-      state.FplTeamsReducer.error ||
-      state.FplTeamListsReducer.error ||
+      FplTeamsReducer.error ||
+      FplTeamListsReducer.error ||
       state.ListPositionsReducer.error ||
-      state.WaiverPicksReducer.error
+      WaiverPicksReducer.error
     ),
   }
 }

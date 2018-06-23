@@ -50,8 +50,7 @@ class League extends Component {
       });
     }
 
-
-    if (!isEmpty(nextProps.league)) {
+    if (!isEmpty(nextProps.league) && !isEmpty(nextProps.round)) {
       this.setState({
         loaded: true
       });
