@@ -7,6 +7,7 @@ import { every, isEmpty, isNumber } from 'lodash';
 import ErrorHandler from '../error_handler';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
+import Alert from 'react-s-alert';
 import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
 
 class EditFplTeam extends Component {
@@ -23,28 +24,43 @@ class EditFplTeam extends Component {
     this.showError = this.showError.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.fetchFplTeam({ fpl_team_id: this.state.fplTeamId });
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps, prevState) {
+    const props = this.props;
+    const state = this.state;
+    let loaded;
+
+    if (prevProps === props) {
+      return;
+    }
+
+    if (props.fpl_team) {
+      loaded = true;
+    }
+
+    if (props.success && props.success !== state.success) {
+      this.alert('success', props.success);
+    }
+
     this.setState({
-      fpl_team: nextProps.fpl_team,
-      current_user: nextProps.current_user,
-      error: nextProps.error,
-    });
+      ...props,
+      loaded: loaded,
+    })
+  }
 
-    if (!isEmpty(nextProps.success)) {
-      this.setState({
-        success: nextProps.success
-      });
-    }
-
-    if (!isEmpty(nextProps.fpl_team)) {
-      this.setState({
-        loaded: true
-      });
-    }
+  alert (type, message) {
+    return (
+      Alert[type](
+        message, {
+          position: 'top',
+          effect: 'bouncyflip',
+          timeout: 5000,
+        }
+      )
+    )
   }
 
   handleChange(event) {
@@ -77,7 +93,7 @@ class EditFplTeam extends Component {
       }
 
       return (
-        <div>
+        <div className='container-fluid'>
           { showSuccessAlert(this.state.success) }
           { showBaseErrorAlert(this.state.error) }
           <h3>Edit { this.state.fpl_team.name }</h3>
@@ -116,6 +132,7 @@ class EditFplTeam extends Component {
 }
 
 function mapStateToProps (state) {
+  console.log(state)
   return {
     fpl_team: state.FplTeamsReducer.fpl_team,
     current_user: state.FplTeamsReducer.current_user,
