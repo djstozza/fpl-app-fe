@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function generatePickNumbers (leagueId) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/leagues/${leagueId}/generate_pick_numbers.json`,
+      url: `${API_ROOT}/leagues/${leagueId}/generate_fpl_team_draft_pick_numbers.json`,
       method: 'PUT',
       ...getLocalStorageHeader(),
     }).then(res => {
