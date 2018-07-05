@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isEmpty } from 'lodash';
 
 import fetchRounds from '../../actions/rounds/fetch_rounds';
 import fetchRound from '../../actions/round/fetch_round';
@@ -50,7 +51,7 @@ class Rounds extends Component {
       return;
     }
 
-    if (props.rounds && props.round && props.teams) {
+    if (!isEmpty(props.rounds) && !isEmpty(props.round) && !isEmpty(props.teams)) {
       loaded = true;
 
       cable.subscriptions.create({ channel: 'RoundChannel', room: props.round.id }, {
