@@ -118,6 +118,10 @@ ul.scroll-nav {
   margin: auto;
 }
 
+.diff-h-4 {
+  background-color: #0039e6;
+}
+
 .diff-h-3 {
   background-color: #3366ff;
 }
@@ -139,11 +143,15 @@ ul.scroll-nav {
 }
 
 .diff-a-2 {
-  background-color: #ffd24d;
+  background-color: #ffd24d !important;
 }
 
-.diff-a-3, .select-option, .declined {
-  background-color: #ff4d4d !important;
+.diff-a-3 {
+  background-color: #ff4000 !important;
+}
+
+.diff-a-4, .select-option, .declined {
+  background-color: #ff0000 !important;
 }
 
 .transparent-text {
