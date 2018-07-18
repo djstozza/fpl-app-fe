@@ -19,7 +19,6 @@ export default function updateDraftPick (leagueId, draftPickId, playerId, miniDr
       const errorResponse = error.response;
       const errorData = errorResponse.data;
       setLocalStorageHeader(error.response);
-
       dispatch({
         type: SHOW_DRAFT_PICK_ERRORS,
         payload: {
@@ -29,8 +28,11 @@ export default function updateDraftPick (leagueId, draftPickId, playerId, miniDr
           mini_draft_picked: errorData.mini_draft_picked,
           all_players_picked: errorData.all_players_picked,
           current_draft_pick: errorData.current_draft_pick,
+          current_draft_pick_user: errorData.current_draft_pick_user,
           unpicked_players: errorData.unpicked_players,
           fpl_teams: errorData.fpl_teams,
+          current_user: errorData.current_user,
+          league: errorData.league,
         }
       });
     });
