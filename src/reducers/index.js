@@ -17,6 +17,7 @@ import TradeablePlayersReducer from './reducer_tradeable_players';
 import InPlayersReducer from './reducer_in_players';
 import InterTeamTradesReducer from './reducer_inter_team_trades';
 import MiniDraftPicksReducer from './reducer_mini_draft_picks';
+import CurrentRoundReducer from './reducer_current_round';
 
 const rootReducer = combineReducers({
   RoundsReducer: RoundsReducer,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   InPlayersReducer: InPlayersReducer,
   InterTeamTradesReducer: InterTeamTradesReducer,
   MiniDraftPicksReducer: MiniDraftPicksReducer,
+  CurrentRoundReducer: CurrentRoundReducer,
   router: routerReducer
 });
 

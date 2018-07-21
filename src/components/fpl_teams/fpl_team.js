@@ -162,7 +162,7 @@ class FplTeam extends Component {
   initiateTrade () {
     this.props.fetchUnpickedPlayers(this.state.fpl_team.league_id);
     this.setState({
-      action: this.state.status,
+      action: this.state.round_status,
       selected: '',
     });
   }
@@ -238,7 +238,6 @@ class FplTeam extends Component {
 
     return (
       <div>
-
         <FplTeamListView
           { ...this.state }
           initiateTrade={ this.initiateTrade }
@@ -288,7 +287,7 @@ function mapStateToProps (state) {
   let list_positions;
   let grouped_list_positions;
   let waiver_picks;
-  let status;
+  let round_status;
   let editable;
   let show_score;
 
@@ -305,7 +304,7 @@ function mapStateToProps (state) {
     list_positions = FplTeamListsReducer.list_positions;
     grouped_list_positions = FplTeamListsReducer.grouped_list_positions;
     waiver_picks = FplTeamListsReducer.waiver_picks;
-    status = FplTeamListsReducer.status;
+    round_status = FplTeamListsReducer.round_status;
     editable = FplTeamListsReducer.editable;
     show_score = FplTeamListsReducer.show_score;
   } else {
@@ -313,7 +312,7 @@ function mapStateToProps (state) {
     list_positions = FplTeamsReducer.list_positions;
     grouped_list_positions = FplTeamsReducer.grouped_list_positions;
     waiver_picks = FplTeamsReducer.waiver_picks;
-    status = FplTeamsReducer.status;
+    round_status = FplTeamsReducer.round_status;
     editable = FplTeamsReducer.editable;
     show_score = FplTeamsReducer.show_score;
   }
@@ -329,7 +328,7 @@ function mapStateToProps (state) {
     fpl_team_lists: FplTeamsReducer.fpl_team_lists,
     league: FplTeamsReducer.league,
     list_positions: list_positions,
-    status: status,
+    round_status: round_status,
     grouped_list_positions: grouped_list_positions,
     editable: editable,
     show_score: show_score,

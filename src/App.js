@@ -31,6 +31,7 @@ import FplTeam from './components/fpl_teams/fpl_team';
 import EditFplTeam from './components/fpl_teams/edit_fpl_team';
 import InterTeamTrades from './components/inter_team_trades/inter_team_trades';
 import MiniDraft from './components/mini_drafts/mini_draft';
+import RoundCountdown from './components/rounds/round_countdown';
 import ErrorHandler from './components/error_handler';
 
 import Navbar from './components/users/navbar';
@@ -69,6 +70,7 @@ export default class App extends Component {
       <Route {...rest} render={(props) => (
         <div>
           <Navbar {...props} />
+          <RoundCountdown {...props} />
           <Component {...props} tz={tz} />
         </div>
       )} />
@@ -77,7 +79,7 @@ export default class App extends Component {
     const PrivateRoute = ({ component: Component, ...rest }) => (
       <Route {...rest} render={(props) => (
         !isEmpty(localStorage.getItem('access-token'))
-          ? <div><Navbar { ...props } /><Component {...props } tz={tz} /></div>
+          ? <div><Navbar { ...props } /><RoundCountdown {...props} /><Component {...props } tz={tz} /></div>
           : <Redirect to={{
               pathname: '/login',
               state: { referrer: props.location, error: 'You must be signed in to continue' }

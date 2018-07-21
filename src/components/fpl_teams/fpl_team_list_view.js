@@ -31,7 +31,7 @@ export default class FplTeamListView extends Component {
   }
 
   listPositionSelectButton () {
-    if (this.props.status === 'mini_draft') {
+    if (this.props.round_status === 'mini_draft') {
       return;
     }
 
@@ -41,7 +41,7 @@ export default class FplTeamListView extends Component {
           className='btn btn-secondary btn-lg'
           onClick={ () => this.props.initiateTrade() }
         >
-          { capitaliseText(this.props.status) }
+          { capitaliseText(this.props.round_status) }
         </button>
       )
     } else {
@@ -58,7 +58,7 @@ export default class FplTeamListView extends Component {
   }
 
   goToMiniDraftLink () {
-    if (this.props.status === 'mini_draft') {
+    if (this.props.round_status === 'mini_draft') {
       return (
         <Link to={ `/leagues/${this.props.fpl_team.league_id}/mini_draft` } className='btn btn-lg btn-secondary'>
           Go to mini draft
@@ -70,7 +70,10 @@ export default class FplTeamListView extends Component {
   colClass () {
     let classes;
 
-    if (this.props.action === 'substitute' || (this.props.status !== 'waiver' && this.props.status !== 'trade')) {
+    if (
+      this.props.action === 'substitute' ||
+      (this.props.round_status !== 'waiver' && this.props.round_status !== 'trade')
+    ) {
       classes = 'col-lg-12';
     } else {
       classes = 'col-lg-6';

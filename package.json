@@ -23,6 +23,7 @@
     "react-bootstrap-table2-filter": "^0.1.7",
     "react-bootstrap-table2-overlay": "^0.1.2",
     "react-bootstrap-table2-paginator": "^0.1.6",
+    "react-countdown-now": "^1.3.0",
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",
     "react-form": "^3.5.6",

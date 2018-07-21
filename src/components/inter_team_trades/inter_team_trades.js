@@ -258,7 +258,7 @@ function mapStateToProps (state) {
     out_trade_groups: state.InterTeamTradesReducer.out_trade_groups || state.FplTeamsReducer.out_trade_groups,
     in_trade_groups: state.InterTeamTradesReducer.in_trade_groups || state.FplTeamsReducer.in_trade_groups,
     editable: state.FplTeamsReducer.editable,
-    status: state.FplTeamsReducer.status,
+    round_status: state.FplTeamsReducer.round_status,
     current_user: state.FplTeamsReducer.current_user,
     teams: state.TeamsReducer,
     positions: state.PositionsReducer,
