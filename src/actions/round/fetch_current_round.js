@@ -5,7 +5,6 @@ import { API_ROOT } from './../../api-config';
 export default function fetchCurrentRound () {
   return dispatch => {
     axios.get(`${API_ROOT}/current_round.json`).then(res => {
-      console.log(res.data)
       dispatch(fetchRoundAsync(res.data));
     });
   }

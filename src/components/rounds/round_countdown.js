@@ -37,7 +37,6 @@ export class RoundCountdown extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    console.log(nextProps.current_round_status, nextState.current_round_status)
     if (!this.state.loaded) {
       return true
     } else if (nextProps.current_round_status === nextState.current_round_status) {
@@ -86,7 +85,6 @@ export class RoundCountdown extends Component {
   }
 
   completed () {
-    this.props.fetchCurrentRound();
     if (this.state.current_round_status === 'waiver' || this.state.current_round_status === 'mini-draft') {
       return (
         <div className="alert alert-primary mb-0" role="alert">
@@ -103,7 +101,10 @@ export class RoundCountdown extends Component {
   }
 
   restartCounter () {
-    console.log('foo')
+    if (new Date () > new Date(this.state.current_round.deadline_time) && !this.state.current_round.data_checked) {
+      return;
+    }
+
     this.props.fetchCurrentRound();
   }
 
@@ -111,7 +112,8 @@ export class RoundCountdown extends Component {
     if (this.state.loaded) {
       const renderer = ({ days, hours, minutes, seconds, completed }) => {
         if (completed) {
-          return this.completed()
+          this.restartCounter();
+          return this.completed();
         } else {
           return (
             <div className="alert alert-primary mb-0" role="alert">
@@ -126,7 +128,6 @@ export class RoundCountdown extends Component {
         <Countdown
           date={ new Date(this.state.current_round_deadline_time) }
           renderer={ renderer }
-          onComplete={ this.props.fetchCurrentRound() }
         />
       )
     } else {
