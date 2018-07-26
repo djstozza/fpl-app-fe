@@ -70,13 +70,17 @@ class Team extends Component {
     }
 
     if (this.state.loaded) {
+      const teamImg = require(`../../images/shields/${this.state.team.short_name.toLowerCase()}.png`);
       return (
         <div>
           <TeamsNav teams={ this.state.teams } team={ this.state.team } selectTeam={ this.selectTeam } />
           <div className='container-fluid'>
             <div className="row">
               <div className="col col-md-10 offset-md-1">
-                <h4>{ this.state.team.name }</h4>
+
+                <h4>
+                  <img className='image-crest' src={ teamImg } alt={ this.state.team.name } /> { this.state.team.name }
+                </h4>
                 <TeamAccordion { ...this.state } selectTeam={ this.selectTeam } />
               </div>
             </div>
