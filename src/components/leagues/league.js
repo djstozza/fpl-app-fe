@@ -7,6 +7,8 @@ import updateDraftPickOrder from  '../../actions/leagues/update_draft_pick_order
 import createDraft from  '../../actions/leagues/create_draft';
 import fetchRound from '../../actions/round/fetch_round';
 import { isEmpty } from 'lodash';
+
+import Spinner from '../spinner';
 import ErrorHandler from '../error_handler';
 import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
@@ -167,9 +169,7 @@ class League extends Component {
         </div>
       );
     } else {
-      return (
-        <p>Loading...</p>
-      );
+      return <Spinner />;
     }
   }
 }

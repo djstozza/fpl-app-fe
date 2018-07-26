@@ -10,6 +10,7 @@ import createMiniDraftPick from '../../actions/mini_draft_picks/create';
 import passMiniDraftPick from '../../actions/mini_draft_picks/pass';
 import fetchRound from '../../actions/round/fetch_round';
 
+import Spinner from '../spinner';
 import ErrorHandler from '../error_handler';
 import OutPlayersTable from '../inter_team_trades/out_players_table';
 import TradePlayersTable from '../fpl_teams/trade_players_table';
@@ -292,9 +293,7 @@ class MiniDraft extends Component {
         </div>
       );
     } else {
-      return (
-        <p>Loading...</p>
-      );
+      return <Spinner />;
     }
   }
 }

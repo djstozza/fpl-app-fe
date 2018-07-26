@@ -6,8 +6,9 @@ import fetchTeam from '../../actions/team/fetch_team';
 import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchPlayer from '../../actions/players/fetch_player';
 import fetchPositions from '../../actions/positions/fetch_positions';
-import ErrorHandler from '../error_handler';
 
+import Spinner from '../spinner';
+import ErrorHandler from '../error_handler';
 import PlayerHeader from './player_header';
 import PlayerAccordion from './player_accordion';
 
@@ -62,7 +63,7 @@ class Player extends Component {
         </div>
       )
     } else {
-      return <p>Loading...</p>;
+      return <Spinner />;
     }
   }
 }

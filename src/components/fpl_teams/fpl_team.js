@@ -17,6 +17,7 @@ import updateWaiverPickOrder from '../../actions/waiver_picks/update_waiver_pick
 import deleteWaiverPick from '../../actions/waiver_picks/delete_waiver_pick';
 import tradePlayer from '../../actions/fpl_team_lists/trade_player';
 
+import Spinner from '../spinner';
 import ErrorHandler from '../error_handler';
 import FplTeamListNav from './fpl_team_list_nav';
 import FplTeamListView from './fpl_team_list_view';
@@ -274,9 +275,7 @@ class FplTeam extends Component {
         </div>
       );
     } else {
-      return (
-        <p>Loading...</p>
-      );
+      return <Spinner />;
     }
   }
 }

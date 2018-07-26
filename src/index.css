@@ -147,3 +147,9 @@ ul.scroll-nav {
   color: white; }
   .field .selected {
     color: black; }
+
+.spinner-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }

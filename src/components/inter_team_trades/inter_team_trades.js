@@ -15,6 +15,7 @@ import fetchIntrTeamTradeGroups from '../../actions/inter_team_trades/fetch';
 import updateInterTeamTradeGroup from '../../actions/inter_team_trades/update';
 import fetchLeagueFplTeams from '../../actions/leagues/fetch_fpl_teams';
 
+import Spinner from '../spinner';
 import ErrorHandler from '../error_handler';
 import { capitaliseText } from '../../utils/general';
 
@@ -240,9 +241,7 @@ class InterTeamTrades extends Component {
         </div>
       );
     } else {
-      return (
-        <p>Loading...</p>
-      );
+      return <Spinner />;
     }
   }
 }

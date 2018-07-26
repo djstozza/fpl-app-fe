@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isEmpty } from 'lodash';
 
+import Spinner from '../spinner';
 import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchTeam from '../../actions/team/fetch_team';
 import fetchPositions from '../../actions/positions/fetch_positions';
@@ -83,7 +84,7 @@ class Team extends Component {
         </div>
       );
     } else {
-      return <p>Loading...</p>
+      return <Spinner />;
     }
   }
 }

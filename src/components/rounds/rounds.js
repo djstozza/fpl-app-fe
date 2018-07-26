@@ -9,9 +9,8 @@ import fetchTeams from '../../actions/teams/fetch_teams';
 
 import Round from './round';
 import RoundsNav from './rounds_nav';
-
 import TeamLadder from '../teams/team_ladder';
-
+import Spinner from '../spinner';
 import ErrorHandler from '../error_handler';
 
 import { store } from '../../App';
@@ -101,7 +100,7 @@ class Rounds extends Component {
         </div>
       );
     } else {
-      return <p>Loading...</p>
+      return <Spinner />;
     }
   }
 }

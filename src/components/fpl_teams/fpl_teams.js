@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchFplTeams from '../../actions/fpl_teams/fetch_fpl_teams';
+
+import Spinner from '../spinner';
 import FplTeamsTable from './fpl_teams_table';
 import { isEmpty } from 'lodash'
 import { Link } from 'react-router-dom';
@@ -71,9 +73,7 @@ class FplTeams extends Component {
         </div>
       );
     } else {
-      return (
-        <p>Loading...</p>
-      );
+      return <Spinner />;
     }
   }
 }

@@ -8,6 +8,7 @@ import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchPositions from '../../actions/positions/fetch_positions';
 import updateDraftPick from '../../actions/draft_picks/update_draft_pick';
 
+import Spinner from '../spinner';
 import ErrorHandler from '../error_handler';
 import DraftPlayersTable from './draft_players_table';
 import DraftPicksTable from './draft_picks_table';
@@ -203,9 +204,7 @@ class Draft extends Component {
         </div>
       );
     } else {
-      return (
-        <p>Loading...</p>
-      );
+      return <Spinner />;
     }
   }
 }
