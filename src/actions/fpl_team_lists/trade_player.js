@@ -14,9 +14,11 @@ export default function tradePlayer (listPositionId, inPlayerId) {
       }
     }).then(res => {
       setLocalStorageHeader(res);
+      res.data.action = 'substitute'
       dispatch(tradePlayerAsync(res.data));
     }).catch(error => {
       const data = error.response.data;
+
       setLocalStorageHeader(error.response);
       dispatch({
         type: SHOW_FPL_TEAM_LIST_ERRORS,
@@ -25,7 +27,9 @@ export default function tradePlayer (listPositionId, inPlayerId) {
           fpl_team_list: data.fpl_team_list,
           grouped_list_positions: data.grouped_list_positions,
           list_positions: data.list_positions,
-          status: data.status,
+          round_status: data.round_status,
+          unpicked_players: data.unpicked_players,
+          editable: data.editable,
         }
       });
     });

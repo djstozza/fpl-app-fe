@@ -152,7 +152,7 @@ class FplTeam extends Component {
   }
 
   clearSelectedPlayer () {
-    this.setState({ selected: '', substitute_options: [], tradeeablePlayer: '' });
+    this.setState({ selected: '', substitute_options: [], tradeablePlayer: '' });
   }
 
   substitutePlayers (substituteListPosition) {
@@ -173,7 +173,7 @@ class FplTeam extends Component {
   }
 
   clearTradeablePlayer () {
-    this.setState({ tradeeablePlayer: '' });
+    this.setState({ tradeablePlayer: '' });
   }
 
   completeTradeAction () {
@@ -289,6 +289,7 @@ function mapStateToProps (state) {
   let round_status;
   let editable;
   let show_score;
+  let unpicked_players;
 
   const FplTeamListsReducer = state.FplTeamListsReducer;
   const FplTeamsReducer = state.FplTeamsReducer;
@@ -306,6 +307,7 @@ function mapStateToProps (state) {
     round_status = FplTeamListsReducer.round_status;
     editable = FplTeamListsReducer.editable;
     show_score = FplTeamListsReducer.show_score;
+    unpicked_players = FplTeamListsReducer.unpicked_players;
   } else {
     fpl_team_list = FplTeamsReducer.fpl_team_list;
     list_positions = FplTeamsReducer.list_positions;
@@ -334,7 +336,7 @@ function mapStateToProps (state) {
     current_user: FplTeamsReducer.current_user,
     user_owns_fpl_team: FplTeamsReducer.user_owns_fpl_team,
     substitute_options: state.ListPositionsReducer.substitute_options,
-    unpicked_players: state.LeaguesReducer.unpicked_players,
+    unpicked_players: unpicked_players || state.LeaguesReducer.unpicked_players,
     waiver_picks: waiver_picks,
     teams: state.TeamsReducer,
     positions: state.PositionsReducer,
