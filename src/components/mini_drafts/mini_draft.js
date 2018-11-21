@@ -60,7 +60,7 @@ class MiniDraft extends Component {
           self.alert('info', "It's your turn.");
           your_turn = true;
         } else {
-          your_turn: false;
+          your_turn = false;
         }
 
         self.setState({

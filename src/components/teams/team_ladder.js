@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Link } from 'react-router-dom';
-import sortBy from 'lodash/sortBy';
+import { sortBy, every } from 'lodash';
 import { centerItVariableWidth } from '../../utils/nav_tab';
 import $ from 'jquery';
 import { tooltipHeader } from '../../utils/data_table';
@@ -28,7 +28,8 @@ export default class TeamLadder extends Component {
         sort: true,
         align: 'center',
         headerAlign: 'center',
-        headerFormatter: tooltipHeader
+        headerFormatter: tooltipHeader,
+        hidden: every(this.props.teams, ['position', null])
       },
       {
         dataField: 'short_name',

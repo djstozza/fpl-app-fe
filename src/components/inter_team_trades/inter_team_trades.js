@@ -145,7 +145,7 @@ class InterTeamTrades extends Component {
   }
 
   updateTrade (params) {
-    params['fpl_team_list_id'] = this.state.fpl_team_list.id,
+    params['fpl_team_list_id'] = this.state.fpl_team_list.id;
     this.props.updateInterTeamTradeGroup(params);
   }
 

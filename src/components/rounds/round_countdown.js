@@ -69,7 +69,7 @@ export class RoundCountdown extends Component {
   minutes (minutes) {
     if (minutes === '00') {
       return;
-    } else if (minutes == '01') {
+    } else if (minutes === '01') {
       return `${minutes} minute`;
     } else {
       return `${minutes} minutes`;

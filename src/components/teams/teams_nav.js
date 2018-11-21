@@ -18,7 +18,7 @@ export default class TeamsNav extends Component {
           key={ team.id }
           className='nav-item'
         >
-          <a
+          <div
             className={ `nav-link ${team.id === parseInt(teamId, 10) ? 'active' : ''} ${teamTabClass}` }
             role="tab"
             onClick={ () => {
@@ -28,7 +28,7 @@ export default class TeamsNav extends Component {
           >
             <img className='nav-img' src={ teamImg } alt={ team.name } />
             <span>&nbsp;{ team.short_name }</span>
-          </a>
+          </div>
         </li>
       );
     });

@@ -10,9 +10,17 @@ The React/Redux front-end for [Fpl App Api](https://fpl-app-api.herokuapp.com/ap
 ### Prerequisites
 
 ```
-NPM: 6.2.0
-React: 16.4.1
-Redux: 3.7.2
+NPM: 6.4.1
+```
+
+### Setup
+
+Ensure that you have `Fpl App Api` set up and running a server on port 3001 by following the instructions set out [here](https://github.com/djstozza/fpl_app_api/blob/master/README.md).
+
+#### Install packages with npm and run server
+```
+npm install
+npm start
 ```
 
 ## Author

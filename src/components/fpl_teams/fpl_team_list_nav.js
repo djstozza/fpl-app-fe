@@ -15,7 +15,7 @@ export default class FplTeamListNav extends Component {
       const tabClass = `fpl-team-list-tab-${fplTeamList.round_id}`
       return (
         <li key={ fplTeamList.round_id } className='nav-item'>
-          <a
+          <div
             className={ `nav-link ${fplTeamList.round_id === parseInt(roundId, 10) ? 'active' : ''} ${tabClass}` }
             role="tab"
             onClick={ () => {
@@ -24,7 +24,7 @@ export default class FplTeamListNav extends Component {
             }
           >
             Gameweek { fplTeamList.round_id }
-          </a>
+          </div>
         </li>
       );
     });

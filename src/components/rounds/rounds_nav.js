@@ -14,7 +14,7 @@ export default class RoundsNav extends Component {
       const roundTabClass = `round-tab-${round.id}`
       return (
         <li key={ round.id } className='nav-item'>
-          <a
+          <div
             className={ `nav-link ${round.id === parseInt(roundId, 10) ? 'active' : ''} ${roundTabClass}` }
             role="tab"
             onClick={ () => {
@@ -23,7 +23,7 @@ export default class RoundsNav extends Component {
             }
           >
             { round.name }
-          </a>
+          </div>
         </li>
       );
     });

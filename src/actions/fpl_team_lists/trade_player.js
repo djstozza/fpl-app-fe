@@ -14,7 +14,6 @@ export default function tradePlayer (listPositionId, inPlayerId) {
       }
     }).then(res => {
       setLocalStorageHeader(res);
-      res.data.action = 'substitute'
       dispatch(tradePlayerAsync(res.data));
     }).catch(error => {
       const data = error.response.data;

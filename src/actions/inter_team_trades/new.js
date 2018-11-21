@@ -1,6 +1,6 @@
-import { NEW_INTER_TEAM_TRADE_GROUP, SHOW_INTER_TEAM_TRADE_GROUP_ERRORS } from '../types';
+import { NEW_INTER_TEAM_TRADE_GROUP } from '../types';
 import axios from 'axios';
-import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../api-config';
+import { API_ROOT } from './../../api-config';
 
 export default function newInterTeamTradeGroup (params) {
   return dispatch => {
