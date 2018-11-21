@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { Link } from 'react-router-dom';
-import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import $ from 'jquery'
 import { tooltipHeader } from '../../utils/data_table';
 import { mappedObj } from '../../utils/lodash';
@@ -39,12 +39,6 @@ export default class PlayersTable extends Component {
     const data = sortBy(unpicked_players, (player) => { return player.total_points }).reverse();
     const positionOptions = mappedObj(positions, 'singular_name_short', 'singular_name_short');
     const teamOptions = mappedObj(teams, 'id', 'short_name');
-
-    const defaultSorted = [{ dataField: 'attributes.total_points', order: 'desc' }];
-
-    const paginationOptions = {
-      hidePageListOnlyOnePage: true
-    }
 
     const columns = [
       {

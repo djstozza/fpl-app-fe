@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { every, isEmpty, isNumber } from 'lodash';
-import { Link } from 'react-router-dom';
+import { isEmpty } from 'lodash';
 import { Redirect } from 'react-router';
 import Alert from 'react-s-alert';
 
@@ -17,7 +16,6 @@ import fetchLeagueFplTeams from '../../actions/leagues/fetch_fpl_teams';
 
 import Spinner from '../spinner';
 import ErrorHandler from '../error_handler';
-import { capitaliseText } from '../../utils/general';
 
 import NewTradeGroupButton from './new_trade_group_button';
 import OutPlayersTable from './out_players_table';

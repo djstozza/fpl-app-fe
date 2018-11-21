@@ -9,7 +9,6 @@ import Alert from 'react-s-alert';
 import Spinner from '../spinner';
 import ChangePassword from './change_password';
 import Edit from './edit';
-import isEmpty from 'lodash/isEmpty';
 
 class Profile extends Component {
   constructor (props) {

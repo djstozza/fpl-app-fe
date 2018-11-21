@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import cellEditFactory from 'react-bootstrap-table2-editor';
 import { tooltipHeader } from '../../utils/data_table';
-import { mappedObj } from '../../utils/lodash';
-import { isEmpty, isNumber } from 'lodash';
+import { isEmpty } from 'lodash';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
 

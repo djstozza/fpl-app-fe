@@ -20,14 +20,9 @@ export default class DraftPicksTable extends Component {
 
     const data = sortBy(draftPicks, (draftPick) => { return draftPick.pick_number });
 
-
     const positionOptions = mappedObj(positions, 'singular_name_short', 'singular_name_short');
     const teamOptions = mappedObj(teams, 'short_name', 'short_name');
     const fplTeamOptions = mappedObj(fplTeams, 'name', 'name');
-
-    const paginationOptions = {
-      hidePageListOnlyOnePage: true
-    }
 
     const columns = [
       {

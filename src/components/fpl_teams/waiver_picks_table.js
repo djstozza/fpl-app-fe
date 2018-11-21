@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
-import { Link } from 'react-router-dom';
 import { tooltipHeader } from '../../utils/data_table';
 import { capitaliseText } from '../../utils/general';
 import { map } from 'lodash';

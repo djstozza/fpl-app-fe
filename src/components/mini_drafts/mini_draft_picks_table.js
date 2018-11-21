@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
-import { Link } from 'react-router-dom';
+import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
 import { tooltipHeader } from '../../utils/data_table';
 import { mappedObj } from '../../utils/lodash';
-import { map } from 'lodash';
 import $ from 'jquery'
 
 export default class MiniDraftPicksTable extends Component {
@@ -17,10 +14,6 @@ export default class MiniDraftPicksTable extends Component {
     const data = this.props.mini_draft_picks;
     const fplTeams = this.props.fpl_teams;
     const fplTeamOptions = mappedObj(fplTeams, 'name', 'name');
-
-    const options = {
-      'team 1': 'team 1'
-    }
 
     const columns = [
       {

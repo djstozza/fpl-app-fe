@@ -4,11 +4,6 @@ import { bindActionCreators } from 'redux';
 import fetchCurrentRound from '../../actions/round/fetch_current_round';
 import Countdown from 'react-countdown-now';
 
-import { CABLE_CONNECTION } from '../../api-config';
-
-const ActionCable = require('actioncable');
-const cable = ActionCable.createConsumer(CABLE_CONNECTION);
-
 export class RoundCountdown extends Component {
   constructor (props) {
     super(props);

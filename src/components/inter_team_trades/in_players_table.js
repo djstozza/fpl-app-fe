@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import cellEditFactory from 'react-bootstrap-table2-editor';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import { tooltipHeader } from '../../utils/data_table';
 import { mappedObj } from '../../utils/lodash';
-import { isEmpty, isNumber, sortBy } from 'lodash';
+import { isEmpty } from 'lodash';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
 
@@ -43,9 +42,6 @@ export default class InPlayersTable extends Component {
     const fplTeamOptions = mappedObj(fplTeams, 'name', 'name');
 
     const data = this.props.in_players;
-
-    let selectOptions;
-
 
     const columns = [
       {
@@ -103,13 +99,11 @@ export default class InPlayersTable extends Component {
           getFilter: (filter) => {
             console.log(filter)
 
-            selectOptions = filter
             // qualityFilter was assigned once the component has been mounted.
 
           },
           placeholder: ' ',
           withoutEmptyOption: !isEmpty(this.props.selected),
-          placeholder: ' ',
         }),
       }, {
         text: 'Status',

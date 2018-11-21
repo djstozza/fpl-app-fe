@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, { textFilter, numberFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
-import { Link } from 'react-router-dom';
 import { tooltipHeader } from '../../utils/data_table';
-import { capitaliseText } from '../../utils/general';
-import { map } from 'lodash';
-import $ from 'jquery'
-import { isEmpty } from 'lodash';
-
-import OutPlayersTable from './out_players_table';
-import InPlayersTable from './in_players_table';
+import $ from 'jquery';
 
 export default class InTradeGroupTable extends Component {
   constructor (props) {
@@ -31,7 +22,6 @@ export default class InTradeGroupTable extends Component {
 
   componentDidUpdate (prevProps, prevState) {
     const props = this.props;
-    const state = this.state;
 
     if (prevProps === props) {
       return;
@@ -57,10 +47,8 @@ export default class InTradeGroupTable extends Component {
 
   tradeGroupButtons () {
     const tradeGroup = this.props.tradeGroup;
-    const selectorId = `trade-group-${tradeGroup.id}-add`;
-    const buttonId = `${selectorId}-button`;
 
-    if (tradeGroup.status == 'submitted') {
+    if (tradeGroup.status === 'submitted') {
       return [
         <button
           className='btn btn-success'

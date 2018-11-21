@@ -22,12 +22,6 @@ export default class DraftPlayersTable extends Component {
     const positionOptions = mappedObj(positions, 'id', 'singular_name_short');
     const teamOptions = mappedObj(teams, 'id', 'short_name');
 
-    const defaultSorted = [{ dataField: 'attributes.total_points', order: 'desc' }];
-
-    const paginationOptions = {
-      hidePageListOnlyOnePage: true
-    }
-
     const columns = [
       {
         text: 'Last Name',
