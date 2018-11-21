@@ -51,7 +51,7 @@ ul.scroll-nav {
     display: none; }
   ul.scroll-nav li {
     float: none; }
-    ul.scroll-nav li a.nav-link {
+    ul.scroll-nav li .nav-link {
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 2px 2px 0 rgba(0, 0, 0, 0.12); }
       ul.scroll-nav li .nav-link.active {
         color: #ee6e73; }
