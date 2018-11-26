@@ -9,7 +9,7 @@ import fetchPositions from '../../actions/positions/fetch_positions';
 import updateDraftPick from '../../actions/draft_picks/update_draft_pick';
 
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 import DraftPlayersTable from './draft_players_table';
 import DraftPicksTable from './draft_picks_table';
 import { isEmpty } from 'lodash';

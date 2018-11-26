@@ -11,7 +11,7 @@ import Round from './round';
 import RoundsNav from './rounds_nav';
 import TeamLadder from '../teams/team_ladder';
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 
 import { store } from '../../App';
 import { push } from 'react-router-redux';

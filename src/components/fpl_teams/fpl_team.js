@@ -18,7 +18,7 @@ import deleteWaiverPick from '../../actions/waiver_picks/delete_waiver_pick';
 import tradePlayer from '../../actions/fpl_team_lists/trade_player';
 
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 import FplTeamListNav from './fpl_team_list_nav';
 import FplTeamListView from './fpl_team_list_view';
 

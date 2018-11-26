@@ -32,7 +32,7 @@ import EditFplTeam from './components/fpl_teams/edit_fpl_team';
 import InterTeamTrades from './components/inter_team_trades/inter_team_trades';
 import MiniDraft from './components/mini_drafts/mini_draft';
 import RoundCountdown from './components/rounds/round_countdown';
-import ErrorHandler from './components/error_handler';
+import ErrorHandler from './components/errorHandler';
 
 import Navbar from './components/users/navbar';
 

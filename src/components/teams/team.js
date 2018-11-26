@@ -10,7 +10,7 @@ import fetchPositions from '../../actions/positions/fetch_positions';
 
 import TeamsNav from './teams_nav';
 import TeamAccordion from './team_accordion';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 
 import { store } from '../../App';
 import { push } from 'react-router-redux';

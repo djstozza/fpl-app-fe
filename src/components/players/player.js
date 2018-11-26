@@ -8,7 +8,7 @@ import fetchPlayer from '../../actions/players/fetch_player';
 import fetchPositions from '../../actions/positions/fetch_positions';
 
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 import PlayerHeader from './player_header';
 import PlayerAccordion from './player_accordion';
 

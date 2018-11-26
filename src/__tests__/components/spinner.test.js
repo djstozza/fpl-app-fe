@@ -1,8 +1,6 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
-import toJson from 'enzyme-to-json';
+import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import configureStore from 'redux-mock-store';
 
 import Spinner from '../../components/spinner';
 

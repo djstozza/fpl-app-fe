@@ -11,7 +11,7 @@ import passMiniDraftPick from '../../actions/mini_draft_picks/pass';
 import fetchRound from '../../actions/round/fetch_round';
 
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 import OutPlayersTable from '../inter_team_trades/out_players_table';
 import TradePlayersTable from '../fpl_teams/trade_players_table';
 import MiniDraftPicksTable from './mini_draft_picks_table';

@@ -5,7 +5,7 @@ import fetchFplTeam from  '../../actions/fpl_teams/fetch_fpl_team';
 import updateFplTeam from  '../../actions/fpl_teams/update_fpl_team';
 
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import Alert from 'react-s-alert';

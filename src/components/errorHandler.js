@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 
 export default class ErrorHandler extends Component {
   render () {
@@ -17,6 +18,13 @@ export default class ErrorHandler extends Component {
               <p>The page you were looking for does not exist.</p>
               <p>You may have mistyped the address or the page may have moved.</p>
           </div>
+      );
+    } else if (this.props.error.status === 500) {
+      header = (<h2>Something went wrong</h2>);
+      text = (
+        <div>
+          <p>Oops... Looks like there's a problem on this page.</p>
+        </div>
       )
     }
 
@@ -30,4 +38,9 @@ export default class ErrorHandler extends Component {
         </div>
     );
   }
+}
+
+ErrorHandler.propTypes = {
+  error: PropTypes.object,
+  'error.status': PropTypes.number
 }

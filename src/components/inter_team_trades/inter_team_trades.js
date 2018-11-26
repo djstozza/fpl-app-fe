@@ -15,7 +15,7 @@ import updateInterTeamTradeGroup from '../../actions/inter_team_trades/update';
 import fetchLeagueFplTeams from '../../actions/leagues/fetch_fpl_teams';
 
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 
 import NewTradeGroupButton from './new_trade_group_button';
 import OutPlayersTable from './out_players_table';

@@ -5,7 +5,7 @@ import editLeague from  '../../actions/leagues/edit_league';
 import updateLeague from '../../actions/leagues/update_league';
 
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 import { showBaseErrorAlert } from '../../utils/general';
 
 class EditLeague extends Component {

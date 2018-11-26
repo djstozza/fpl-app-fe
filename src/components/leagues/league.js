@@ -9,7 +9,7 @@ import fetchRound from '../../actions/round/fetch_round';
 import { isEmpty } from 'lodash';
 
 import Spinner from '../spinner';
-import ErrorHandler from '../error_handler';
+import ErrorHandler from '../errorHandler';
 import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
 import { showSuccessAlert, showBaseErrorAlert } from '../../utils/general';
