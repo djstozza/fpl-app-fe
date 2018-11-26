@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader } from './../../api-config';
 export default function createDraft (leagueId) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/leagues/${leagueId}/create_draft.json`,
+      url: `${ API_ROOT }/leagues/${ leagueId }/create_draft.json`,
       method: 'POST',
       ...getLocalStorageHeader(),
     }).then(res => {

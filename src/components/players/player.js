@@ -48,19 +48,19 @@ class Player extends Component {
   render () {
     if (this.state.error) {
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       );
     }
 
     if (this.state.loaded) {
       return (
-        <div className="container-fluid">
-          <div className="col col-md-10 offset-md-1">
-            <PlayerHeader { ...this.state } />
-            <PlayerAccordion { ...this.state } />
-            <br/>
+          <div className="container-fluid">
+              <div className="col col-md-10 offset-md-1">
+                  <PlayerHeader { ...this.state } />
+                  <PlayerAccordion { ...this.state } />
+                  <br/>
+              </div>
           </div>
-        </div>
       )
     } else {
       return <Spinner />;

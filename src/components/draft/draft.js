@@ -106,7 +106,7 @@ class Draft extends Component {
       const baseError = props.error.data.error.base;
 
       if (!isEmpty(baseError)) {
-        this.alert('error', baseError[0]);
+        this.alert('error', baseError[ 0 ]);
       }
     }
 
@@ -119,7 +119,7 @@ class Draft extends Component {
 
   alert (type, message) {
     return (
-      Alert[type](
+      Alert[ type ](
         message, {
           position: 'top',
           effect: 'bouncyflip',
@@ -150,7 +150,7 @@ class Draft extends Component {
     const miniDraftStr = 'Select your pick number for the mini draft.'
 
     return (
-      <div className='alert alert-primary' role='alert'>{ allPlayersPicked ? miniDraftStr : draftPlayerStr }</div>
+        <div className='alert alert-primary' role='alert'>{ allPlayersPicked ? miniDraftStr : draftPlayerStr }</div>
     );
   }
 
@@ -164,12 +164,12 @@ class Draft extends Component {
     }
 
     return (
-      <button
+        <button
         className='btn btn-secondary btn-lg'
         onClick={ () => { this.updateDraft(null, true) } }
       >
         Mini Draft
-      </button>
+        </button>
     )
   }
 
@@ -180,28 +180,28 @@ class Draft extends Component {
   render () {
     if (this.state.error && this.state.error.status !== 422) {
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       );
     }
 
     if (this.state.loaded) {
       return (
-        <div className='container-fluid'>
-          <h3>League { this.state.leagueId } Draft</h3>
-          { this.draftDescription() }
-          <div className='row'>
-            <div className='col col-12'>
-              <DraftPlayersTable {...this.state } updateDraft={ this.updateDraft } />
-              { this.miniDraftPickButton() }
-            </div>
+          <div className='container-fluid'>
+              <h3>League { this.state.leagueId } Draft</h3>
+              { this.draftDescription() }
+              <div className='row'>
+                  <div className='col col-12'>
+                      <DraftPlayersTable { ...this.state } updateDraft={ this.updateDraft } />
+                      { this.miniDraftPickButton() }
+                  </div>
+              </div>
+              <div className='row'>
+                  <div className='col col-12'>
+                      <h4>All Draft Picks</h4>
+                      <DraftPicksTable { ...this.state } />
+                  </div>
+              </div>
           </div>
-          <div className='row'>
-            <div className='col col-12'>
-              <h4>All Draft Picks</h4>
-              <DraftPicksTable { ...this.state } />
-            </div>
-          </div>
-        </div>
       );
     } else {
       return <Spinner />;

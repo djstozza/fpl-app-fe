@@ -26,7 +26,7 @@ class EditLeague extends Component {
   handleChange(event) {
     const target = event.target;
 
-    this.setState({ [target.name]: target.value });
+    this.setState({ [ target.name ]: target.value });
   }
 
   handleSubmit(event) {
@@ -35,8 +35,8 @@ class EditLeague extends Component {
   }
 
   showError(type) {
-    if (this.state && this.state.error && this.state.error.data.error[type]) {
-      return this.state.error.data.error[type][0];
+    if (this.state && this.state.error && this.state.error.data.error[ type ]) {
+      return this.state.error.data.error[ type ][ 0 ];
     }
   }
 
@@ -73,64 +73,63 @@ class EditLeague extends Component {
     if (this.state.error && this.state.error.status !== 422) {
 
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       )
     }
 
     if (this.state.loaded) {
       return (
-        <div className='container-fluid'>
-          { showBaseErrorAlert(this.state.error) }
-          <h3>Edit { this.state.league.name }</h3>
+          <div className='container-fluid'>
+              { showBaseErrorAlert(this.state.error) }
+              <h3>Edit { this.state.league.name }</h3>
 
-
-          <form onSubmit={ this.handleSubmit } >
-            <div className="form-row">
-              <div className="form-group col-md-12">
-                <label htmlFor="name">Leage Name</label>
-                  <input
+              <form onSubmit={ this.handleSubmit } >
+                  <div className="form-row">
+                      <div className="form-group col-md-12">
+                          <label htmlFor="name">Leage Name</label>
+                          <input
                     type="text"
                     name="name"
-                    className={ `form-control ${this.showError('name') ? 'is-invalid' : ''}` }
+                    className={ `form-control ${ this.showError('name') ? 'is-invalid' : '' }` }
                     id="name"
                     value={ this.state.name || this.state.league.name }
                     onChange={ this.handleChange }
                   />
-                  <div className="invalid-feedback">
-                    { this.showError('name') }
+                          <div className="invalid-feedback">
+                              { this.showError('name') }
+                          </div>
+                      </div>
                   </div>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group col-md-12 mb-0">
-                <label htmlFor="code">Code</label>
-                <input
+                  <div className="form-row">
+                      <div className="form-group col-md-12 mb-0">
+                          <label htmlFor="code">Code</label>
+                          <input
                   type="text"
                   name="code"
                   disabled="true"
-                  className={ `form-control ${this.showError('code') ? 'is-invalid' : ''}` }
+                  className={ `form-control ${ this.showError('code') ? 'is-invalid' : '' }` }
                   id="code"
                   value={ this.state.code || this.state.league.code }
                 />
-                <div className="invalid-feedback">
-                  { this.showError('code') }
-                </div>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group col-md-12 mb-2">
-                <button type="button" className="btn btn-secondary" onClick={ (e) => this.generateCode(e) } >
+                          <div className="invalid-feedback">
+                              { this.showError('code') }
+                          </div>
+                      </div>
+                  </div>
+                  <div className="form-row">
+                      <div className="form-group col-md-12 mb-2">
+                          <button type="button" className="btn btn-secondary" onClick={ (e) => this.generateCode(e) } >
                   Generate Code
-                </button>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group col-md-12">
-                <button type="submit" className="btn btn-primary">Submit</button>
-              </div>
-            </div>
-          </form>
-        </div>
+                          </button>
+                      </div>
+                  </div>
+                  <div className="form-row">
+                      <div className="form-group col-md-12">
+                          <button type="submit" className="btn btn-primary">Submit</button>
+                      </div>
+                  </div>
+              </form>
+          </div>
       );
     } else {
       return <Spinner />;

@@ -17,7 +17,7 @@ export default class TeamLadder extends Component {
     const selectTeam = (id) => {
       if (self.props.selectTeam) {
         self.props.selectTeam(id);
-        centerItVariableWidth( `team-tab-${id}`, "nav-tabs", false);
+        centerItVariableWidth( `team-tab-${ id }`, 'nav-tabs', false);
       }
     }
 
@@ -29,7 +29,7 @@ export default class TeamLadder extends Component {
         align: 'center',
         headerAlign: 'center',
         headerFormatter: tooltipHeader,
-        hidden: every(this.props.teams, ['position', null])
+        hidden: every(this.props.teams, [ 'position', null ])
       },
       {
         dataField: 'short_name',
@@ -39,9 +39,9 @@ export default class TeamLadder extends Component {
         headerAlign: 'center',
         formatter: (cell, row) => {
           return (
-            <Link to={ `/teams/${row.id}` } onClick={ () => selectTeam(row.id) } >
-              { cell }
-            </Link>
+              <Link to={ `/teams/${ row.id }` } onClick={ () => selectTeam(row.id) } >
+                  { cell }
+              </Link>
           );
         },
         headerFormatter: tooltipHeader
@@ -102,7 +102,7 @@ export default class TeamLadder extends Component {
       }
     ]
 
-    const defaultSorted = [{ dataField: 'attributes.position', order: 'asc' }];
+    const defaultSorted = [ { dataField: 'attributes.position', order: 'asc' } ];
 
     const rowClasses = (row, rowIndex) => {
       let classes;
@@ -114,8 +114,8 @@ export default class TeamLadder extends Component {
     };
 
     return (
-      <div className='bs-xxs-scroll-table'>
-        <BootstrapTable
+        <div className='bs-xxs-scroll-table'>
+            <BootstrapTable
           keyField='name'
           data={ data }
           columns={ columns }
@@ -124,7 +124,7 @@ export default class TeamLadder extends Component {
           defaultSorted={ defaultSorted }
           rowClasses={ rowClasses }
         />
-      </div>
+        </div>
     );
   }
 }

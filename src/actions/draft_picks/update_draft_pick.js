@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function updateDraftPick (leagueId, draftPickId, playerId, miniDraft) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/leagues/${leagueId}/draft_picks/${draftPickId}.json`,
+      url: `${ API_ROOT }/leagues/${ leagueId }/draft_picks/${ draftPickId }.json`,
       method: 'PUT',
       data: {
         player_id: playerId,

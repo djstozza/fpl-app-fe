@@ -72,32 +72,32 @@ class Rounds extends Component {
 
   selectRound (roundId) {
     this.props.fetchRound(roundId);
-    store.dispatch(push(`/rounds/${roundId}`))
+    store.dispatch(push(`/rounds/${ roundId }`))
   }
 
   render () {
     if (this.state.error && this.state.error.status !== 422) {
 
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       )
     }
 
     if (this.state.loaded) {
       return (
-        <div>
-          <RoundsNav { ...this.state } selectRound={ this.selectRound }/>
-          <div className='container-fluid'>
-            <div className="row">
-              <div className="col col-md-10 offset-md-1">
-                <Round {...this.state } />
-                <br/>
-                <h4>Team Ladder</h4>
-                <TeamLadder teams={ this.state.teams } />
+          <div>
+              <RoundsNav { ...this.state } selectRound={ this.selectRound }/>
+              <div className='container-fluid'>
+                  <div className="row">
+                      <div className="col col-md-10 offset-md-1">
+                          <Round { ...this.state } />
+                          <br/>
+                          <h4>Team Ladder</h4>
+                          <TeamLadder teams={ this.state.teams } />
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
       );
     } else {
       return <Spinner />;

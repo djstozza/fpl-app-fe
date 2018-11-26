@@ -4,7 +4,7 @@ import { API_ROOT } from './../../api-config';
 
 export default function fetchPositions () {
   return dispatch => {
-    axios.get(`${API_ROOT}/positions.json`).then(res => {
+    axios.get(`${ API_ROOT }/positions.json`).then(res => {
       dispatch(fetchPositionsAsync(res.data));
     });
   }

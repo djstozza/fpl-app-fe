@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function updateListPosition (listPositionId, substituteListPositionId) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/list_positions/${listPositionId}.json`,
+      url: `${ API_ROOT }/list_positions/${ listPositionId }.json`,
       method: 'PUT',
       ...getLocalStorageHeader(),
       data: {

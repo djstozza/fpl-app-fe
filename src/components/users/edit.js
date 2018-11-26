@@ -17,17 +17,17 @@ export default class Edit extends Component {
   handleChange(event) {
     const target = event.target;
 
-    this.setState({ [target.name]: target.value });
+    this.setState({ [ target.name ]: target.value });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.update({...this.state});
+    this.props.update({ ...this.state });
   }
 
   showError(type) {
-    if (this.state && this.state.error && this.state.error.data.errors[type]) {
-      return this.state.error.data.errors[type][0];
+    if (this.state && this.state.error && this.state.error.data.errors[ type ]) {
+      return this.state.error.data.errors[ type ][ 0 ];
     }
   }
 
@@ -43,44 +43,44 @@ export default class Edit extends Component {
 
   render () {
     return (
-      <form onSubmit={ this.handleSubmit } >
-        <div className="form-row">
-          <div className="form-group col-md-12">
-            <label htmlFor="email">Email</label>
-            <input
+        <form onSubmit={ this.handleSubmit } >
+            <div className="form-row">
+                <div className="form-group col-md-12">
+                    <label htmlFor="email">Email</label>
+                    <input
               type="email"
               name="email"
-              className={ `form-control ${this.showError('email') ? 'is-invalid' : ''}` }
+              className={ `form-control ${ this.showError('email') ? 'is-invalid' : '' }` }
               id="email"
               placeholder="Email"
               value={ this.state.email }
               onChange={ this.handleChange }
             />
-            <div className="invalid-feedback">
-              { this.showError('email') }
+                    <div className="invalid-feedback">
+                        { this.showError('email') }
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-12">
-            <label htmlFor="username">Username</label>
-            <input
+            <div className="form-row">
+                <div className="form-group col-md-12">
+                    <label htmlFor="username">Username</label>
+                    <input
               type="text"
               name="username"
-              className={ `form-control ${this.showError('username') ? 'is-invalid' : ''}` }
+              className={ `form-control ${ this.showError('username') ? 'is-invalid' : '' }` }
               id="username"
               placeholder="Username"
               value={ this.state.username }
               onChange={ this.handleChange }
             />
-            <div className="invalid-feedback">
-              { this.showError('username') }
-            </div>
-          </div>
+                    <div className="invalid-feedback">
+                        { this.showError('username') }
+                    </div>
+                </div>
 
-          <button type="submit" className="btn btn-primary">Edit</button>
-        </div>
-      </form>
+                <button type="submit" className="btn btn-primary">Edit</button>
+            </div>
+        </form>
     )
   }
 }

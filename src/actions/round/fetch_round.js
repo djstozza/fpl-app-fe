@@ -4,7 +4,7 @@ import { API_ROOT } from './../../api-config';
 
 export default function fetchRound (roundId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/round.json`, { params: { round_id: roundId } }).then(res => {
+    axios.get(`${ API_ROOT }/round.json`, { params: { round_id: roundId } }).then(res => {
       dispatch(fetchRoundAsync(res.data));
     }).catch(error => {
       dispatch({ type: SHOW_ROUND_ERRORS, payload: { error: error.response } });

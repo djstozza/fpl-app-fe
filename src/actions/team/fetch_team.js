@@ -4,7 +4,7 @@ import { API_ROOT } from './../../api-config';
 
 export default function fetchTeam (teamId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/teams/${teamId}.json`).then(res => {
+    axios.get(`${ API_ROOT }/teams/${ teamId }.json`).then(res => {
       dispatch(fetchTeamAsync(res.data));
     }).catch(error => {
       dispatch({ type: SHOW_TEAM_ERRORS, payload: { error: error.response } });

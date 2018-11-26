@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function tradePlayer (listPositionId, inPlayerId) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/trades.json`,
+      url: `${ API_ROOT }/trades.json`,
       method: 'POST',
       ...getLocalStorageHeader(),
       data: {

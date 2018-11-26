@@ -4,7 +4,7 @@ import { API_ROOT } from './../../api-config';
 
 export default function fetchRounds () {
   return dispatch => {
-    axios.get(`${API_ROOT}/rounds.json`).then(res => {
+    axios.get(`${ API_ROOT }/rounds.json`).then(res => {
       dispatch(fetchRoundsAsync(res.data));
     });
   }

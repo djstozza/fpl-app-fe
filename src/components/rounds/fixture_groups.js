@@ -18,16 +18,16 @@ export default class FixtureGroups extends React.Component {
     const fixtureGroupsEntries = Object.entries(fixtureGroups);
 
     return (
-      <div>
-        {
+        <div>
+            {
           fixtureGroupsEntries.map((fixtureGroup, key) => {
             return [
-              <b key={`game-day-${key}`}>{ fixtureGroup[0] }</b>,
-              <Matches { ...this.props } key={`matches-${key}`} matches={ fixtureGroup[1] } />
+                <b key={ `game-day-${ key }` }>{ fixtureGroup[ 0 ] }</b>,
+                <Matches { ...this.props } key={ `matches-${ key }` } matches={ fixtureGroup[ 1 ] } />
             ]
           })
         }
-      </div>
+        </div>
     );
   }
 }

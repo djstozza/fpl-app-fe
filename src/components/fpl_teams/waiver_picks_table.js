@@ -16,7 +16,7 @@ export default class WaiverPicksTable extends Component {
     const pickNumberOptions = map(data, (waiverPick) => {
       const pickNumber = waiverPick.pick_number
       return (
-        <option key={ pickNumber } value={ pickNumber }>{ pickNumber }</option>
+          <option key={ pickNumber } value={ pickNumber }>{ pickNumber }</option>
       )
     });
 
@@ -34,12 +34,12 @@ export default class WaiverPicksTable extends Component {
         formatter: (cell, row) => {
           if (this.props.status === 'waiver') {
             return (
-              <select
+                <select
                 defaultValue={ cell }
                 onChange={ (e) => this.props.updateWaiverPickOrder(row.id, e.target.value) }
               >
-                { pickNumberOptions }
-              </select>
+                    { pickNumberOptions }
+                </select>
             )
           } else {
             return cell
@@ -52,7 +52,7 @@ export default class WaiverPicksTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-         return `${cell} (${row.out_team_short_name})`;
+         return `${ cell } (${ row.out_team_short_name })`;
         },
         headerFormatter: tooltipHeader,
       }, {
@@ -62,7 +62,7 @@ export default class WaiverPicksTable extends Component {
         headerAlign: 'center',
         headerFormatter: tooltipHeader,
         formatter: (cell, row) => {
-         return `${cell} (${row.in_team_short_name})`;
+         return `${ cell } (${ row.in_team_short_name })`;
         },
       }, {
         text: 'Position',
@@ -92,15 +92,15 @@ export default class WaiverPicksTable extends Component {
     ];
 
     return (
-      <div>
-        <BootstrapTable
+        <div>
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
           striped
           hover
         />
-      </div>
+        </div>
     );
   }
 }

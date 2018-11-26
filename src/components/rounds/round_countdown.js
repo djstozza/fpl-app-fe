@@ -45,9 +45,9 @@ export class RoundCountdown extends Component {
     if (days === 0) {
       return;
     } else if (days === '1') {
-      return `${days} day`;
+      return `${ days } day`;
     } else {
-      return `${days} days`;
+      return `${ days } days`;
     }
   }
 
@@ -55,9 +55,9 @@ export class RoundCountdown extends Component {
     if (hours === '00') {
       return;
     } else if (hours === '01') {
-      return `${hours.substr(1)} hour`;
+      return `${ hours.substr(1) } hour`;
     } else {
-      return `${hours} hours`;
+      return `${ hours } hours`;
     }
   }
 
@@ -65,32 +65,32 @@ export class RoundCountdown extends Component {
     if (minutes === '00') {
       return;
     } else if (minutes === '01') {
-      return `${minutes} minute`;
+      return `${ minutes } minute`;
     } else {
-      return `${minutes} minutes`;
+      return `${ minutes } minutes`;
     }
   }
 
   seconds (seconds) {
     if (seconds === '01') {
-      return `${seconds} second`;
+      return `${ seconds } second`;
     } else {
-      return `${seconds} seconds`;
+      return `${ seconds } seconds`;
     }
   }
 
   completed () {
     if (this.state.current_round_status === 'waiver' || this.state.current_round_status === 'mini-draft') {
       return (
-        <div className="alert alert-primary mb-0" role="alert">
+          <div className="alert alert-primary mb-0" role="alert">
           The { this.state.status } window for Round { this.state.current_round.id } has passed.
-        </div>
+          </div>
       );
     } else {
       return (
-        <div className="alert alert-primary mb-0" role="alert">
+          <div className="alert alert-primary mb-0" role="alert">
           Round { this.state.current_round.id } is now active.
-        </div>
+          </div>
       );
     }
   }
@@ -111,16 +111,16 @@ export class RoundCountdown extends Component {
           return this.completed();
         } else {
           return (
-            <div className="alert alert-primary mb-0" role="alert">
+              <div className="alert alert-primary mb-0" role="alert">
               Round { this.state.current_round.id } { this.state.status } window closes
                 in { this.days(days) } { this.hours(hours) } { this.minutes(minutes) } { this.seconds(seconds) }.
-            </div>
+              </div>
           );
         }
       }
 
       return (
-        <Countdown
+          <Countdown
           date={ new Date(this.state.current_round_deadline_time) }
           renderer={ renderer }
         />

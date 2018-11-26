@@ -16,7 +16,7 @@ export default class FplTeamsTable extends Component {
     const pickNumberOptions = map(sortedFplTeamsByPickNumber, (fplTeam) => {
       const pickNumber = fplTeam.draft_pick_number
       return (
-        <option key={ pickNumber } value={ pickNumber }>{ pickNumber }</option>
+          <option key={ pickNumber } value={ pickNumber }>{ pickNumber }</option>
       )
     });
     const status = this.props.league.status
@@ -33,7 +33,7 @@ export default class FplTeamsTable extends Component {
         headerAlign: 'center',
         sort: true,
         formatter: (cell, row) => {
-          return <Link to={ `/fpl_teams/${row.fpl_team_id}` }>{ cell }</Link>;
+          return <Link to={ `/fpl_teams/${ row.fpl_team_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -43,7 +43,7 @@ export default class FplTeamsTable extends Component {
         headerAlign: 'center',
         sort: true,
         formatter: (cell, row) => {
-          return <Link to={ `/users/${row.user_id}` }>{ cell }</Link>;
+          return <Link to={ `/users/${ row.user_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -55,12 +55,12 @@ export default class FplTeamsTable extends Component {
         formatter: (cell, row) => {
           if (status === 'create_draft') {
             return (
-              <select
+                <select
                 defaultValue={ cell }
                 onChange={ (e) => this.props.updateDraftPickOrder(row.fpl_team_id, e.target.value, false) }
               >
-                { pickNumberOptions }
-              </select>
+                    { pickNumberOptions }
+                </select>
             )
           } else {
             return cell
@@ -96,15 +96,15 @@ export default class FplTeamsTable extends Component {
     ]
 
     return (
-      <div>
-        <BootstrapTable
+        <div>
+            <BootstrapTable
           keyField='fpl_team_id'
           data={ status === 'create_draft' ? sortedFplTeamsByPickNumber : data }
           columns={ columns }
           striped
           hover
         />
-      </div>
+        </div>
     )
   }
 }

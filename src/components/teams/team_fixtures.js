@@ -30,7 +30,7 @@ export default class TeamFixtures extends Component {
     const selectTeam = (id) => {
       if (self.props.selectTeam) {
         self.props.selectTeam(id);
-        centerItVariableWidth( `team-tab-${id}`, "nav-tabs", false);
+        centerItVariableWidth( `team-tab-${ id }`, 'nav-tabs', false);
       }
     }
 
@@ -48,7 +48,7 @@ export default class TeamFixtures extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <Link to={ `/rounds/${cell}` }>{ cell }</Link>;
+          return <Link to={ `/rounds/${ cell }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -72,9 +72,9 @@ export default class TeamFixtures extends Component {
         }),
         formatter: (cell, row) => {
           return (
-            <Link to={ `/teams/${row.opponent_id}` } onClick={ () => selectTeam(row.opponent_id) } >
-              { cell }
-            </Link>
+              <Link to={ `/teams/${ row.opponent_id }` } onClick={ () => selectTeam(row.opponent_id) } >
+                  { cell }
+              </Link>
           );
         },
         headerFormatter: tooltipHeader
@@ -115,21 +115,21 @@ export default class TeamFixtures extends Component {
         classes: (cell, row, rowIndex, colIndex) => {
           let adv;
           if (cell > 0) {
-            adv = `diff-h-${cell}`;
+            adv = `diff-h-${ cell }`;
           } else if (cell < 0) {
-            adv = `diff-a-${Math.abs(cell)}`;
+            adv = `diff-a-${ Math.abs(cell) }`;
           } else {
-            adv = `diff-e`
+            adv = 'diff-e'
           }
 
-          return `${adv} transparent-text`;
+          return `${ adv } transparent-text`;
         },
       }
     ]
 
     return (
-      <div className='bs-xs-scroll-table'>
-        <BootstrapTable
+        <div className='bs-xs-scroll-table'>
+            <BootstrapTable
           keyField='fixture_id'
           data={ data }
           columns={ columns }
@@ -137,7 +137,7 @@ export default class TeamFixtures extends Component {
           striped
           hover
         />
-      </div>
+        </div>
     );
   }
 }

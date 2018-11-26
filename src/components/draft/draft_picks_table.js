@@ -54,7 +54,7 @@ export default class DraftPicksTable extends Component {
           if (row.mini_draft) {
             return 'Mini Draft Pick'
           } else {
-            return <Link to={ `/players/${row.player_id}` }>{ cell }</Link>;
+            return <Link to={ `/players/${ row.player_id }` }>{ cell }</Link>;
           }
         },
         headerFormatter: tooltipHeader
@@ -64,7 +64,7 @@ export default class DraftPicksTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return teamOptions[cell];
+          return teamOptions[ cell ];
         },
         headerFormatter: tooltipHeader,
         filter: selectFilter({
@@ -85,7 +85,7 @@ export default class DraftPicksTable extends Component {
     ]
 
     return (
-      <BootstrapTable
+        <BootstrapTable
         keyField='pick_number'
         data={ data }
         columns={ columns }

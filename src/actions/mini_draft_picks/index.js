@@ -4,7 +4,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 
 export default function fetchMiniDraftPicks (leagueId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/leagues/${leagueId}/mini_draft_picks.json`, getLocalStorageHeader()).then(res => {
+    axios.get(`${ API_ROOT }/leagues/${ leagueId }/mini_draft_picks.json`, getLocalStorageHeader()).then(res => {
       setLocalStorageHeader(res);
       dispatch(fetchMiniDraftPicksAsync(res.data));
     }).catch(error => {

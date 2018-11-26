@@ -8,7 +8,6 @@ import FieldView from './field_view';
 import TradePlayersTable from './trade_players_table';
 import WaiverPicksTable from './waiver_picks_table';
 
-
 export default class FplTeamListView extends Component {
   showButtons () {
     if (!this.props.user_owns_fpl_team) {
@@ -20,13 +19,13 @@ export default class FplTeamListView extends Component {
     }
 
     return (
-      <div>
-        { this.listPositionSelectButton() }
-        <Link to={ `/fpl_teams/${this.props.fplTeamId}/inter_team_trades` } className='btn btn-secondary btn-lg'>
+        <div>
+            { this.listPositionSelectButton() }
+            <Link to={ `/fpl_teams/${ this.props.fplTeamId }/inter_team_trades` } className='btn btn-secondary btn-lg'>
           Inter team trades
-        </Link>
-        { this.goToMiniDraftLink() }
-      </div>
+            </Link>
+            { this.goToMiniDraftLink() }
+        </div>
     )
   }
 
@@ -37,22 +36,22 @@ export default class FplTeamListView extends Component {
 
     if (this.props.action === 'substitute') {
       return (
-        <button
+          <button
           className='btn btn-secondary btn-lg'
           onClick={ () => this.props.initiateTrade() }
         >
-          { capitaliseText(this.props.round_status) }
-        </button>
+              { capitaliseText(this.props.round_status) }
+          </button>
       )
     } else {
       return (
-        <button
+          <button
           key='substitute'
           className='btn btn-secondary btn-lg'
           onClick={ () => this.props.resetSelection() }
         >
           Change line up
-        </button>
+          </button>
       )
     }
   }
@@ -60,9 +59,9 @@ export default class FplTeamListView extends Component {
   goToMiniDraftLink () {
     if (this.props.round_status === 'mini_draft') {
       return (
-        <Link to={ `/leagues/${this.props.fpl_team.league_id}/mini_draft` } className='btn btn-lg btn-secondary'>
+          <Link to={ `/leagues/${ this.props.fpl_team.league_id }/mini_draft` } className='btn btn-lg btn-secondary'>
           Go to mini draft
-        </Link>
+          </Link>
       )
     }
   }
@@ -83,11 +82,11 @@ export default class FplTeamListView extends Component {
 
   showFplTeamListTable () {
     return (
-      <div>
-        { this.descriptionText() }
-        <FplTeamListTable { ...this.props } />
-        <FieldView { ...this.props } />
-      </div>
+        <div>
+            { this.descriptionText() }
+            <FplTeamListTable { ...this.props } />
+            <FieldView { ...this.props } />
+        </div>
     );
   }
 
@@ -105,7 +104,7 @@ export default class FplTeamListView extends Component {
     if (this.props.action === 'substitute') {
       title = 'Starting Lineup';
     } else {
-      title = `${capitaliseText(this.props.action)} Out`;
+      title = `${ capitaliseText(this.props.action) } Out`;
     }
 
     return <h5 className='mb-0'>{ title }</h5>
@@ -127,15 +126,15 @@ export default class FplTeamListView extends Component {
       title = 'Starting Lineup';
       text= 'Select your starting lineup';
     } else {
-      title = `${capitaliseText(this.props.action)} Out`;
+      title = `${ capitaliseText(this.props.action) } Out`;
       text= `(1) Select the player you wish to ${ this.props.action } out`
     }
 
     return (
-      <div>
-        <h5 className='mb-0'>{ title }</h5>
-        <span>{ text }</span>
-      </div>
+        <div>
+            <h5 className='mb-0'>{ title }</h5>
+            <span>{ text }</span>
+        </div>
     )
   }
 
@@ -153,12 +152,12 @@ export default class FplTeamListView extends Component {
     }
 
     return (
-      <div>
-        <h5 className='mb-0'>{ capitaliseText(this.props.action) } In</h5>
-        <span>(2) Select the player you wish to { this.props.action } in</span>
-        <TradePlayersTable { ...this.props } />
-        { this.completeTradeButtons() }
-      </div>
+        <div>
+            <h5 className='mb-0'>{ capitaliseText(this.props.action) } In</h5>
+            <span>(2) Select the player you wish to { this.props.action } in</span>
+            <TradePlayersTable { ...this.props } />
+            { this.completeTradeButtons() }
+        </div>
     )
   }
 
@@ -172,12 +171,12 @@ export default class FplTeamListView extends Component {
     }
 
     return (
-      <button
+        <button
         className='btn btn-secondary'
         onClick={ () => this.props.completeTradeAction() }
       >
        Complete { capitaliseText(this.props.action) }
-      </button>
+        </button>
     );
   }
 
@@ -191,19 +190,19 @@ export default class FplTeamListView extends Component {
     }
 
     return (
-      <div>
-        <h5 className='mt-3 mb-0'>Waiver Picks</h5>
-        <WaiverPicksTable { ...this.props } />
-      </div>
+        <div>
+            <h5 className='mt-3 mb-0'>Waiver Picks</h5>
+            <WaiverPicksTable { ...this.props } />
+        </div>
     );
   }
 
   goToDraftLink () {
     if (this.props.league_status === 'draft') {
       return (
-        <Link to={ `/leagues/${this.props.fpl_team.league_id}/draft` } className='btn btn-primary'>
+          <Link to={ `/leagues/${ this.props.fpl_team.league_id }/draft` } className='btn btn-primary'>
           Go to Draft
-        </Link>
+          </Link>
       )
     }
   }
@@ -214,33 +213,33 @@ export default class FplTeamListView extends Component {
     }
 
     return (
-      <h5>Score: { this.props.fpl_team_list.total_score }</h5>
+        <h5>Score: { this.props.fpl_team_list.total_score }</h5>
     );
   }
 
   render () {
     if (this.props.league_status !== 'active') {
       return (
-        <div>
-          <p>You will be able to view your players once the draft has been completed</p>
-          { this.goToDraftLink() }
-        </div>
+          <div>
+              <p>You will be able to view your players once the draft has been completed</p>
+              { this.goToDraftLink() }
+          </div>
       )
     } else {
       return (
-        <div>
-          { this.showScore() }
-          { this.showButtons() }
-          <div className='row'>
-            <div className={`col col-12 col-md-12 ${this.colClass()}`}>
-              { this.showFplTeamListTable() }
-            </div>
-            <div className='col col-12 col-md-12 col-lg-6'>
-              { this.showTradePlayersTable() }
-            </div>
+          <div>
+              { this.showScore() }
+              { this.showButtons() }
+              <div className='row'>
+                  <div className={ `col col-12 col-md-12 ${ this.colClass() }` }>
+                      { this.showFplTeamListTable() }
+                  </div>
+                  <div className='col col-12 col-md-12 col-lg-6'>
+                      { this.showTradePlayersTable() }
+                  </div>
+              </div>
+              { this.showWaiverPicksTable() }
           </div>
-          { this.showWaiverPicksTable() }
-        </div>
       );
     }
   }

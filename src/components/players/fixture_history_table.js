@@ -29,7 +29,7 @@ export default class FixtureHistoriesTable extends Component {
        align: 'center',
        headerAlign: 'center',
        formatter: (cell, row) => {
-         return <Link to={ `/rounds/${cell}` }>{ cell }</Link>;
+         return <Link to={ `/rounds/${ cell }` }>{ cell }</Link>;
        },
        headerFormatter: tooltipHeader
      }, {
@@ -46,7 +46,7 @@ export default class FixtureHistoriesTable extends Component {
        align: 'center',
        headerAlign: 'center',
        formatter: (cell, row) => {
-         return <Link to={ `/teams/${cell}` }>{ teamOptions[cell] }</Link>;
+         return <Link to={ `/teams/${ cell }` }>{ teamOptions[ cell ] }</Link>;
        },
        headerFormatter: tooltipHeader
      }, {
@@ -145,15 +145,15 @@ export default class FixtureHistoriesTable extends Component {
     ]
 
     return (
-      <div className='bs-xs-scroll-table'>
-        <BootstrapTable
+        <div className='bs-xs-scroll-table'>
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
           striped
           hover
         />
-      </div>
+        </div>
     )
   }
 }

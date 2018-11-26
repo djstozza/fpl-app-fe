@@ -113,7 +113,7 @@ class MiniDraft extends Component {
       const baseError = props.error.data.error.base;
 
       if (!isEmpty(baseError)) {
-        this.alert('error', baseError[0]);
+        this.alert('error', baseError[ 0 ]);
       }
     }
 
@@ -126,7 +126,7 @@ class MiniDraft extends Component {
 
   alert (type, message) {
     return (
-      Alert[type](
+      Alert[ type ](
         message, {
           position: 'top',
           effect: 'bouncyflip',
@@ -136,17 +136,16 @@ class MiniDraft extends Component {
     )
   }
 
-
   outDescriptionText () {
     if (!this.state.your_turn) {
       return;
     }
 
     return (
-      <div>
-        <h4 className='mb-0'>Trade out</h4>
-        <span>(1) Select the player you wish to trade out.</span>
-      </div>
+        <div>
+            <h4 className='mb-0'>Trade out</h4>
+            <span>(1) Select the player you wish to trade out.</span>
+        </div>
     );
   }
 
@@ -160,12 +159,12 @@ class MiniDraft extends Component {
     }
 
     return (
-      <button
+        <button
         className='btn btn-danger btn-lg'
         onClick={ () => { this.pass(null, true) } }
       >
         Pass
-      </button>
+        </button>
     )
   }
 
@@ -199,16 +198,16 @@ class MiniDraft extends Component {
     }
 
     return (
-      <div className='col col-md-6 col-sm-12'>
-        <h4 className='mb-0'>Trade in</h4>
-        <span>(2) Select the player you wish to trade in.</span>
-        <TradePlayersTable
+        <div className='col col-md-6 col-sm-12'>
+            <h4 className='mb-0'>Trade in</h4>
+            <span>(2) Select the player you wish to trade in.</span>
+            <TradePlayersTable
           { ...this.state }
           selectTradeablePlayer={ this.selectTradeablePlayer }
           clearTradeablePlayer={ this.clearTradeablePlayer }
         />
-        { this.completeTradeButton() }
-      </div>
+            { this.completeTradeButton() }
+        </div>
     )
   }
 
@@ -222,7 +221,7 @@ class MiniDraft extends Component {
     }
 
     return (
-      <button
+        <button
         className='btn btn-secondary'
         onClick={ () => {
             this.props.createMiniDraftPick(
@@ -236,17 +235,17 @@ class MiniDraft extends Component {
         }
       >
         Submit
-      </button>
+        </button>
     );
   }
 
   showMiniDraftPicksTable () {
     if (!isEmpty(this.state.mini_draft_picks)) {
       return (
-        <div>
-          <h4>Mini draft picks</h4>
-          <MiniDraftPicksTable { ... this.state } />
-        </div>
+          <div>
+              <h4>Mini draft picks</h4>
+              <MiniDraftPicksTable { ... this.state } />
+          </div>
       )
     }
   }
@@ -254,9 +253,9 @@ class MiniDraft extends Component {
   showDraftCompletedAlert () {
     if (isEmpty(this.state.current_mini_draft_pick_user)) {
       return (
-        <div className='alert alert-danger alert-dismissible fade show' role="alert">
+          <div className='alert alert-danger alert-dismissible fade show' role="alert">
           The mini draft has been completed
-        </div>
+          </div>
       )
     }
   }
@@ -264,33 +263,33 @@ class MiniDraft extends Component {
   render () {
     if (this.state.error && this.state.error.status !== 422) {
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       );
     }
 
     if (this.state.loaded) {
       return (
-        <div className='container-fluid'>
-          <h3>League { this.state.leagueId } Mini Draft</h3>
-          { this.showDraftCompletedAlert() }
-          { this.passMiniDraftPickButton() }
-          <div className='row'>
-            <div className={ `col col-sm-12 ${this.state.your_turn ? 'col-md-6' : ''}` }>
-              { this.outDescriptionText() }
-              <OutPlayersTable
+          <div className='container-fluid'>
+              <h3>League { this.state.leagueId } Mini Draft</h3>
+              { this.showDraftCompletedAlert() }
+              { this.passMiniDraftPickButton() }
+              <div className='row'>
+                  <div className={ `col col-sm-12 ${ this.state.your_turn ? 'col-md-6' : '' }` }>
+                      { this.outDescriptionText() }
+                      <OutPlayersTable
                 { ...this.state }
                 selectPlayer={ this.selectPlayer }
                 clearSelectedPlayer={ this.clearSelectedPlayer }
               />
-            </div>
-            { this.showTradePlayersTable() }
+                  </div>
+                  { this.showTradePlayersTable() }
+              </div>
+              <div className='row'>
+                  <div className='col col-sm-12'>
+                      { this.showMiniDraftPicksTable() }
+                  </div>
+              </div>
           </div>
-          <div className='row'>
-            <div className='col col-sm-12'>
-              { this.showMiniDraftPicksTable() }
-            </div>
-          </div>
-        </div>
       );
     } else {
       return <Spinner />;

@@ -5,7 +5,7 @@ import { API_ROOT, setLocalStorageHeader } from './../../api-config';
 
 export default function login (params) {
   return dispatch => {
-    axios.post(`${API_ROOT}/auth/sign_in.json`, params).then(res => {
+    axios.post(`${ API_ROOT }/auth/sign_in.json`, params).then(res => {
       setLocalStorageHeader(res);
       const referrer = params.referrer || '/profile';
 
@@ -20,6 +20,6 @@ export default function login (params) {
 function loginAsync (data) {
   return {
     type: LOG_IN,
-    payload: { current_user: data.data, success: `Welcome back, ${data.data.username}!` }
+    payload: { current_user: data.data, success: `Welcome back, ${ data.data.username }!` }
   };
 }

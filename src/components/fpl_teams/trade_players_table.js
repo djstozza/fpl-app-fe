@@ -55,7 +55,7 @@ export default class PlayersTable extends Component {
           placeholder: ' '
         }),
         formatter: (cell, row) => {
-          return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
+          return <Link to={ `/players/${ row.id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -64,7 +64,7 @@ export default class PlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return teamOptions[cell];
+          return teamOptions[ cell ];
         },
         headerFormatter: tooltipHeader,
         filter: selectFilter({
@@ -80,7 +80,7 @@ export default class PlayersTable extends Component {
         headerFormatter: tooltipHeader,
         filter: selectFilter({
           options: isEmpty(this.props.selected) ? positionOptions :
-                    { [this.props.selected.singular_name_short]: this.props.selected.singular_name_short },
+                    { [ this.props.selected.singular_name_short ]: this.props.selected.singular_name_short },
           placeholder: ' ',
           withoutEmptyOption: !isEmpty(this.props.selected),
         })
@@ -92,13 +92,13 @@ export default class PlayersTable extends Component {
         headerFormatter: tooltipHeader,
         formatter: (cell, row) => {
           return (
-            <span
+              <span
               data-toggle="tooltip"
               data-placement="top"
               title={ row.news }
             >
-              <i className={ `${cell} fa-lg` } ></i>
-            </span>
+                  <i className={ `${ cell } fa-lg` } ></i>
+              </span>
           );
         }
       }, {
@@ -144,8 +144,8 @@ export default class PlayersTable extends Component {
     }
 
     return (
-      <div className='bs-xxs-scroll-table'>
-        <BootstrapTable
+        <div className='bs-xxs-scroll-table'>
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
@@ -156,7 +156,7 @@ export default class PlayersTable extends Component {
           striped
           hover
         />
-      </div>
+        </div>
     )
   }
 }

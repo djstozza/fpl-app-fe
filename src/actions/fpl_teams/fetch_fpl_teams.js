@@ -4,7 +4,7 @@ import { API_ROOT,  getLocalStorageHeader, setLocalStorageHeader } from './../..
 
 export default function fetchFplTeams () {
   return dispatch => {
-    axios.get(`${API_ROOT}/fpl_teams.json`, getLocalStorageHeader()).then(res => {
+    axios.get(`${ API_ROOT }/fpl_teams.json`, getLocalStorageHeader()).then(res => {
       setLocalStorageHeader(res);
       dispatch(fetchFplTeamsAsync(res.data));
     });

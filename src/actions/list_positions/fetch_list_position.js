@@ -4,7 +4,7 @@ import { API_ROOT } from './../../api-config';
 
 export default function fetchListPosition (listPositionId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/list_positions/${listPositionId}.json`).then(res => {
+    axios.get(`${ API_ROOT }/list_positions/${ listPositionId }.json`).then(res => {
       dispatch(fetchListPositionAsync(res.data));
     }).catch(error => {
       dispatch({ type: SHOW_LIST_POSITION_ERRORS, payload: { error: error.response } });

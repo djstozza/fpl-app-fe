@@ -43,7 +43,7 @@ export default class MiniDraftPicksTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-         return `${cell} (${row.out_team_short_name})`;
+         return `${ cell } (${ row.out_team_short_name })`;
         },
         headerFormatter: tooltipHeader,
       }, {
@@ -53,7 +53,7 @@ export default class MiniDraftPicksTable extends Component {
         headerAlign: 'center',
         headerFormatter: tooltipHeader,
         formatter: (cell, row) => {
-         return `${cell} (${row.in_team_short_name})`;
+         return `${ cell } (${ row.in_team_short_name })`;
         },
       }, {
         text: 'Position',
@@ -65,8 +65,8 @@ export default class MiniDraftPicksTable extends Component {
     ];
 
     return (
-      <div>
-        <BootstrapTable
+        <div>
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
@@ -74,7 +74,7 @@ export default class MiniDraftPicksTable extends Component {
           filter={ filterFactory() }
           hover
         />
-      </div>
+        </div>
     );
   }
 }

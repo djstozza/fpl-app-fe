@@ -33,7 +33,7 @@ export default class DraftPlayersTable extends Component {
           placeholder: ' '
         }),
         formatter: (cell, row) => {
-          return <Link to={ `/players/${row.player_id}` }>{ cell }</Link>;
+          return <Link to={ `/players/${ row.player_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -42,7 +42,7 @@ export default class DraftPlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return teamOptions[cell];
+          return teamOptions[ cell ];
         },
         headerFormatter: tooltipHeader,
         filter: selectFilter({
@@ -55,7 +55,7 @@ export default class DraftPlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return positionOptions[cell];
+          return positionOptions[ cell ];
         },
         headerFormatter: tooltipHeader,
         filter: selectFilter({
@@ -69,7 +69,7 @@ export default class DraftPlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <i className={ `${cell} fa-lg` } />
+          return <i className={ `${ cell } fa-lg` } />
         },
         headerFormatter: tooltipHeader
       }, {
@@ -87,12 +87,12 @@ export default class DraftPlayersTable extends Component {
         hidden: !this.props.your_turn || (this.props.your_turn && this.props.all_players_picked),
         formatter: (cell, row) => {
           return (
-            <button
-              className={ `btn btn-primary ${window.innerWidth > 320 ? '' : 'btn-sm' }` }
+              <button
+              className={ `btn btn-primary ${ window.innerWidth > 320 ? '' : 'btn-sm' }` }
               onClick={ () => this.props.updateDraft(cell) }
             >
               Draft
-            </button>
+              </button>
           );
         },
         headerFormatter: tooltipHeader,
@@ -100,7 +100,7 @@ export default class DraftPlayersTable extends Component {
     ]
 
     return (
-      <BootstrapTable
+        <BootstrapTable
         keyField='id'
         data={ data }
         columns={ columns }

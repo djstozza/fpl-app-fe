@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function passMiniDraftPick (leagueId, fplTeamListId) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/leagues/${leagueId}/pass_mini_draft_picks.json`,
+      url: `${ API_ROOT }/leagues/${ leagueId }/pass_mini_draft_picks.json`,
       method: 'POST',
       ...getLocalStorageHeader(),
       data: {

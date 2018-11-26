@@ -108,7 +108,7 @@ class FplTeam extends Component {
       const baseError = props.error.data.error.base;
 
       if (!isEmpty(baseError)) {
-        this.alert('error', baseError[0]);
+        this.alert('error', baseError[ 0 ]);
       }
     }
 
@@ -122,7 +122,7 @@ class FplTeam extends Component {
 
   alert (type, message) {
     return (
-      Alert[type](
+      Alert[ type ](
         message, {
           position: 'top',
           effect: 'bouncyflip',
@@ -135,7 +135,7 @@ class FplTeam extends Component {
   editFplTeamButton () {
     if (this.state.user_owns_fpl_team) {
       return (
-        <Link to={ `/fpl_teams/${this.state.fplTeamId}/edit` } className='btn btn-secondary'>Edit</Link>
+          <Link to={ `/fpl_teams/${ this.state.fplTeamId }/edit` } className='btn btn-secondary'>Edit</Link>
       );
     }
   }
@@ -180,9 +180,9 @@ class FplTeam extends Component {
     if (this.state.action === 'waiver') {
       this.props.createWaiverPick(this.state.fpl_team_list.id, this.state.selected.id, this.state.tradeablePlayer.id);
     } else if (this.state.action === 'trade') {
-      const outPlayer = `${this.state.selected.first_name} ${this.state.selected.last_name}`;
-      const inPlayer = `${this.state.tradeablePlayer.first_name} ${this.state.tradeablePlayer.last_name}`
-      const confirmText = `Are you sure you want to trade out ${outPlayer} for ${inPlayer}?`;
+      const outPlayer = `${ this.state.selected.first_name } ${ this.state.selected.last_name }`;
+      const inPlayer = `${ this.state.tradeablePlayer.first_name } ${ this.state.tradeablePlayer.last_name }`
+      const confirmText = `Are you sure you want to trade out ${ outPlayer } for ${ inPlayer }?`;
 
       if (window.confirm(confirmText)) {
         this.props.tradePlayer(this.state.selected.id, this.state.tradeablePlayer.id);
@@ -201,9 +201,9 @@ class FplTeam extends Component {
 
   deleteWaiverPick (waiverPick) {
     const confirmText =
-      `Are you sure you want to delete this waiver pick - Pick Number: ${waiverPick.pick_number}, ` +
-      `Out: ${waiverPick.out_first_name} ${waiverPick.out_last_name}, ` +
-      `In: ${waiverPick.in_first_name} ${waiverPick.in_last_name}?`
+      `Are you sure you want to delete this waiver pick - Pick Number: ${ waiverPick.pick_number }, ` +
+      `Out: ${ waiverPick.out_first_name } ${ waiverPick.out_last_name }, ` +
+      `In: ${ waiverPick.in_first_name } ${ waiverPick.in_last_name }?`
 
     if (window.confirm(confirmText)) {
       this.props.deleteWaiverPick(this.state.fpl_team_list.id, waiverPick.id);
@@ -228,7 +228,7 @@ class FplTeam extends Component {
     }
 
     return (
-      <FplTeamListNav { ...this.state } selectFplTeamList={ this.selectFplTeamList }/>
+        <FplTeamListNav { ...this.state } selectFplTeamList={ this.selectFplTeamList }/>
     );
   }
 
@@ -238,8 +238,8 @@ class FplTeam extends Component {
     }
 
     return (
-      <div>
-        <FplTeamListView
+        <div>
+            <FplTeamListView
           { ...this.state }
           initiateTrade={ this.initiateTrade }
           completeTradeAction={ this.completeTradeAction }
@@ -252,27 +252,27 @@ class FplTeam extends Component {
           deleteWaiverPick={ this.deleteWaiverPick }
           resetSelection={ this.resetSelection }
         />
-      </div>
+        </div>
     );
   }
 
   render () {
     if (this.state.error && this.state.error.status !== 422) {
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       )
     }
 
     if (this.state.loaded) {
       return (
-        <div className='container-fluid'>
-          <div className='col col-sm-12'>
-            <h3>{ this.state.fpl_team.name } { this.editFplTeamButton() }</h3>
-            <p>League: <Link to={ `/leagues/${this.state.league.id}` }> { this.state.league.name }</Link></p>
-            { this.showFplTeamListNav() }
-            { this.showFplTeamListView() }
+          <div className='container-fluid'>
+              <div className='col col-sm-12'>
+                  <h3>{ this.state.fpl_team.name } { this.editFplTeamButton() }</h3>
+                  <p>League: <Link to={ `/leagues/${ this.state.league.id }` }> { this.state.league.name }</Link></p>
+                  { this.showFplTeamListNav() }
+                  { this.showFplTeamListView() }
+              </div>
           </div>
-        </div>
       );
     } else {
       return <Spinner />;

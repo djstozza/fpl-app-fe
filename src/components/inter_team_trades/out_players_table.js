@@ -42,7 +42,7 @@ export default class OutPlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
+          return <Link to={ `/players/${ row.id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -51,7 +51,7 @@ export default class OutPlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <Link to={ `/teams/${row.team_id}` }>{ cell }</Link>;
+          return <Link to={ `/teams/${ row.team_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader,
       }, {
@@ -68,13 +68,13 @@ export default class OutPlayersTable extends Component {
         headerFormatter: tooltipHeader,
         formatter: (cell, row) => {
           return (
-            <span
+              <span
               data-toggle="tooltip"
               data-placement="top"
               title={ row.news }
             >
-              <i className={ `${cell} fa-lg` } ></i>
-            </span>
+                  <i className={ `${ cell } fa-lg` } ></i>
+              </span>
           );
         }
       }, {
@@ -114,8 +114,8 @@ export default class OutPlayersTable extends Component {
     }
 
     return (
-      <div>
-        <BootstrapTable
+        <div>
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
@@ -124,7 +124,7 @@ export default class OutPlayersTable extends Component {
           rowClasses={ rowClasses }
           hover
         />
-      </div>
+        </div>
     );
   }
 }

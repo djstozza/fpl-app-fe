@@ -51,7 +51,7 @@ class Profile extends Component {
 
   alert (type, message) {
     return (
-      Alert[type](
+      Alert[ type ](
         message, {
           position: 'top',
           effect: 'bouncyflip',
@@ -62,29 +62,29 @@ class Profile extends Component {
   }
 
   update(params) {
-    this.props.update({ current_user: this.props.current_user, ...params});
+    this.props.update({ current_user: this.props.current_user, ...params });
   }
 
   changePassword (params) {
-    this.props.changePassword({ current_user: this.props.current_user, ...params});
+    this.props.changePassword({ current_user: this.props.current_user, ...params });
   }
 
   render () {
     if (this.state.loaded) {
       const current_user = this.state.current_user
       return (
-        <div>
-          <div className='row'>
-            <div className='col col-md-10 offset-md-1'>
-              <div className='container-fluid'>
-                <div className='card'>
-                  <div className='card-header'>
-                    <h4>{ current_user.username }</h4>
-                  </div>
-                  <div className='card-body my-2 mx-3'>
-                    <nav>
-                      <div className="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-                        <a
+          <div>
+              <div className='row'>
+                  <div className='col col-md-10 offset-md-1'>
+                      <div className='container-fluid'>
+                          <div className='card'>
+                              <div className='card-header'>
+                                  <h4>{ current_user.username }</h4>
+                              </div>
+                              <div className='card-body my-2 mx-3'>
+                                  <nav>
+                                      <div className="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                                          <a
                           className="nav-item nav-link active"
                           id="nav-details-tab" data-toggle="tab"
                           href="#nav-details"
@@ -93,8 +93,8 @@ class Profile extends Component {
                           aria-selected="true"
                         >
                           Profile
-                        </a>
-                        <a
+                                          </a>
+                                          <a
                           className="nav-item nav-link"
                           id="nav-passwrod-tab"
                           data-toggle="tab"
@@ -104,28 +104,28 @@ class Profile extends Component {
                           aria-selected="false"
                         >
                           Password
-                        </a>
-                      </div>
-                    </nav>
-                    <div className="tab-content" id="nav-tabContent">
-                      <div
+                                          </a>
+                                      </div>
+                                  </nav>
+                                  <div className="tab-content" id="nav-tabContent">
+                                      <div
                         className="tab-pane fade show active"
                         id="nav-details"
                         role="tabpanel"
                         aria-labelledby="nav-details-tab"
                       >
-                        <Edit { ...this.state } update={ this.update }/>
+                                          <Edit { ...this.state } update={ this.update }/>
+                                      </div>
+                                      <div className="tab-pane fade" id="nav-password" role="tabpanel" aria-labelledby="nav-passwrod-tab">
+                                          <ChangePassword { ...this.state } changePassword={ this.changePassword }/>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
-                      <div className="tab-pane fade" id="nav-password" role="tabpanel" aria-labelledby="nav-passwrod-tab">
-                        <ChangePassword { ...this.state } changePassword={ this.changePassword }/>
-                      </div>
-                    </div>
                   </div>
-                </div>
               </div>
-            </div>
           </div>
-        </div>
       )
     } else {
       return <Spinner />;

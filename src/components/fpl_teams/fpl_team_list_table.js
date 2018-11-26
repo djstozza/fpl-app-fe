@@ -56,7 +56,7 @@ export default class FplTeamListTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <Link to={ `/players/${row.player_id}` }>{ cell }</Link>;
+          return <Link to={ `/players/${ row.player_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -65,7 +65,7 @@ export default class FplTeamListTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <Link to={ `/teams/${row.team_id}` }>{ cell }</Link>;
+          return <Link to={ `/teams/${ row.team_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader,
       }, {
@@ -82,13 +82,13 @@ export default class FplTeamListTable extends Component {
         headerFormatter: tooltipHeader,
         formatter: (cell, row) => {
           return (
-            <span
+              <span
               data-toggle="tooltip"
               data-placement="top"
               title={ row.news }
             >
-              <i className={ `${cell} fa-lg` } ></i>
-            </span>
+                  <i className={ `${ cell } fa-lg` } ></i>
+              </span>
           );
         }
       }, {
@@ -97,7 +97,7 @@ export default class FplTeamListTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <Link to={ `/teams/${row.opponent_id}` }>{ cell }</Link>;
+          return <Link to={ `/teams/${ row.opponent_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader,
       }, {
@@ -145,8 +145,8 @@ export default class FplTeamListTable extends Component {
     }
 
     return (
-      <div className='bs-xs-scroll-table d-sm-none'>
-        <BootstrapTable
+        <div className='bs-xs-scroll-table d-sm-none'>
+            <BootstrapTable
           keyField='i'
           data={ data }
           columns={ columns }
@@ -155,7 +155,7 @@ export default class FplTeamListTable extends Component {
           rowClasses={ rowClasses }
           hover
         />
-      </div>
+        </div>
     );
   }
 }

@@ -15,8 +15,8 @@ class LogInForm extends Component {
     }
 
     if (!isEmpty(this.props.location.state)) {
-      this.state['referrer'] = this.props.location.state.referrer.pathname;
-      this.state['error'] = this.props.location.state.error;
+      this.state[ 'referrer' ] = this.props.location.state.referrer.pathname;
+      this.state[ 'error' ] = this.props.location.state.error;
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,7 +26,7 @@ class LogInForm extends Component {
   handleChange(event) {
     const target = event.target;
 
-    this.setState({ [target.name]: target.value });
+    this.setState({ [ target.name ]: target.value });
   }
 
   handleSubmit(event) {
@@ -48,7 +48,7 @@ class LogInForm extends Component {
     }
 
     if (error && error !== state.error) {
-      const errorMessage = isString(error) ? error : error.data.errors[0];
+      const errorMessage = isString(error) ? error : error.data.errors[ 0 ];
 
       if (!isEmpty(errorMessage)) {
         this.alert('error', errorMessage);
@@ -62,7 +62,7 @@ class LogInForm extends Component {
 
   alert (type, message) {
     return (
-      Alert[type](
+      Alert[ type ](
         message, {
           position: 'top',
           effect: 'bouncyflip',
@@ -74,20 +74,20 @@ class LogInForm extends Component {
 
   render () {
     return (
-      <div>
-        <div className='container-fluid'>
-          <div className='row'>
-            <div className='col col-sm-12 offset-md-3 col-md-6 mb-auto mt-auto'>
-              <div className='card'>
-                <div className='card-header'>
-                  <h4>Login</h4>
-                </div>
-                <div className='card-body'>
-                  <form onSubmit={ this.handleSubmit } >
-                    <div className="form-row">
-                      <div className="form-group col-sm-12">
-                        <label htmlFor="email">Email</label>
-                        <input
+        <div>
+            <div className='container-fluid'>
+                <div className='row'>
+                    <div className='col col-sm-12 offset-md-3 col-md-6 mb-auto mt-auto'>
+                        <div className='card'>
+                            <div className='card-header'>
+                                <h4>Login</h4>
+                            </div>
+                            <div className='card-body'>
+                                <form onSubmit={ this.handleSubmit } >
+                                    <div className="form-row">
+                                        <div className="form-group col-sm-12">
+                                            <label htmlFor="email">Email</label>
+                                            <input
                           type="email"
                           name="email"
                           className='form-control'
@@ -95,12 +95,12 @@ class LogInForm extends Component {
                           placeholder="Email"
                           onChange={ this.handleChange }
                         />
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-sm-12">
-                        <label htmlFor="password">Password</label>
-                          <input
+                                        </div>
+                                    </div>
+                                    <div className="form-row">
+                                        <div className="form-group col-sm-12">
+                                            <label htmlFor="password">Password</label>
+                                            <input
                             type="password"
                             name="password"
                             className='form-control'
@@ -109,16 +109,16 @@ class LogInForm extends Component {
                             autoComplete="on"
                             onChange={ this.handleChange }
                           />
-                      </div>
-                      <button type="submit" className="btn btn-primary">Login</button>
+                                        </div>
+                                        <button type="submit" className="btn btn-primary">Login</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                  </form>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     )
   }
 }

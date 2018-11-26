@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function updateInterTeamTradeGroup (params) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/inter_team_trade_groups/${params['inter_team_trade_group_id']}.json`,
+      url: `${ API_ROOT }/inter_team_trade_groups/${ params[ 'inter_team_trade_group_id' ] }.json`,
       method: 'PUT',
       ...getLocalStorageHeader(),
       params: params,

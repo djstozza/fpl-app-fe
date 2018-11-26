@@ -4,7 +4,7 @@ import { API_ROOT } from './../../api-config';
 
 export default function fetchUnpickedPlayers (leagueId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/leagues/${leagueId}/unpicked_players.json`).then(res => {
+    axios.get(`${ API_ROOT }/leagues/${ leagueId }/unpicked_players.json`).then(res => {
       dispatch(clearSubstituteOptions());
       dispatch(fetchUnpickedPlayersAsync(res.data));
     }).catch(error => {

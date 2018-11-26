@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { showBaseErrorAlert } from '../../utils/general';
 import joinLeague from  '../../actions/leagues/join_league';
 
-
 class JoinLeague extends Component {
   constructor (props) {
     super(props);
@@ -23,7 +22,7 @@ class JoinLeague extends Component {
   handleChange (event) {
     const target = event.target;
 
-    this.setState({ [target.name]: target.value });
+    this.setState({ [ target.name ]: target.value });
   }
 
   handleSubmit (event) {
@@ -32,8 +31,8 @@ class JoinLeague extends Component {
   }
 
   showError (type) {
-    if (this.state.error && this.state.error.data.error[type]) {
-      return this.state.error.data.error[type][0];
+    if (this.state.error && this.state.error.data.error[ type ]) {
+      return this.state.error.data.error[ type ][ 0 ];
     }
   }
 
@@ -51,59 +50,59 @@ class JoinLeague extends Component {
 
   render () {
     return (
-      <div className='container-fluid'>
-        <h3>Join a League</h3>
-        { showBaseErrorAlert(this.state.error) }
-        <form onSubmit={ this.handleSubmit } >
+        <div className='container-fluid'>
+            <h3>Join a League</h3>
+            { showBaseErrorAlert(this.state.error) }
+            <form onSubmit={ this.handleSubmit } >
 
-          <div className="form-row">
-            <div className="form-group col-md-12">
-              <label htmlFor="name">League Name</label>
-              <input
+                <div className="form-row">
+                    <div className="form-group col-md-12">
+                        <label htmlFor="name">League Name</label>
+                        <input
                 type="text"
                 name="name"
-                className={ `form-control ${this.showError('name') ? 'is-invalid' : ''}` }
+                className={ `form-control ${ this.showError('name') ? 'is-invalid' : '' }` }
                 id="name"
                 onChange={ this.handleChange }
               />
-              <div className="invalid-feedback">
-                { this.showError('name') }
-              </div>
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-md-12">
-              <label htmlFor="code">Code</label>
-              <input
+                        <div className="invalid-feedback">
+                            { this.showError('name') }
+                        </div>
+                    </div>
+                </div>
+                <div className="form-row">
+                    <div className="form-group col-md-12">
+                        <label htmlFor="code">Code</label>
+                        <input
                 type="text"
                 name="code"
-                className={ `form-control ${this.showError('code') ? 'is-invalid' : ''}` }
+                className={ `form-control ${ this.showError('code') ? 'is-invalid' : '' }` }
                 id="code"
                 onChange={ this.handleChange }
               />
-              <div className="invalid-feedback">
-                { this.showError('code') }
-              </div>
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-md-12">
-              <label htmlFor="fpl-team-name">Fpl Team Name</label>
-                <input
+                        <div className="invalid-feedback">
+                            { this.showError('code') }
+                        </div>
+                    </div>
+                </div>
+                <div className="form-row">
+                    <div className="form-group col-md-12">
+                        <label htmlFor="fpl-team-name">Fpl Team Name</label>
+                        <input
                   type="text"
                   name="fpl_team_name"
-                  className={ `form-control ${this.showError('fpl_team_name') ? 'is-invalid' : ''}` }
+                  className={ `form-control ${ this.showError('fpl_team_name') ? 'is-invalid' : '' }` }
                   id="fpl-team-name"
                   onChange={ this.handleChange }
                 />
-                <div className="invalid-feedback">
-                  { this.showError('fpl_team_name') }
+                        <div className="invalid-feedback">
+                            { this.showError('fpl_team_name') }
+                        </div>
+                    </div>
+                    <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
-            </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
-          </div>
-        </form>
-      </div>
+            </form>
+        </div>
     )
   }
 }

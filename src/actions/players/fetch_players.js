@@ -4,7 +4,7 @@ import { API_ROOT } from './../../api-config';
 
 export default function fetchPlayers (teamId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/players.json`).then(res => {
+    axios.get(`${ API_ROOT }/players.json`).then(res => {
       dispatch(fetchPlayersAsync(res.data));
     });
   }

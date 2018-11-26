@@ -20,13 +20,13 @@ export default class NewTradeGroupButton extends Component {
     }
 
     return (
-      <button
+        <button
         id='new-trade-group-button'
-        className={ `btn ${className}` }
+        className={ `btn ${ className }` }
         onClick={ () => this.toggleNewTradeButton() }
       >
-        { buttonText }
-      </button>
+            { buttonText }
+        </button>
     );
   }
 
@@ -40,10 +40,10 @@ export default class NewTradeGroupButton extends Component {
 
   render () {
     return (
-      <div>
-        { this.newTradeGroupButton() }
-        <Link to={ `/fpl_teams/${this.props.fplTeamId}` } className='btn btn-secondary'>Back to Fpl Team</Link>
-      </div>
+        <div>
+            { this.newTradeGroupButton() }
+            <Link to={ `/fpl_teams/${ this.props.fplTeamId }` } className='btn btn-secondary'>Back to Fpl Team</Link>
+        </div>
     )
   }
 }

@@ -126,15 +126,15 @@ export default class PastHistoryTable extends Component {
      ]
 
     return (
-      <div className='bs-xs-scroll-table' >
-        <BootstrapTable
+        <div className='bs-xs-scroll-table' >
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
           striped
           hover
         />
-      </div>
+        </div>
     )
   }
 }

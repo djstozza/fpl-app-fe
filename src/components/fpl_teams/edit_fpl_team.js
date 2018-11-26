@@ -54,7 +54,7 @@ class EditFplTeam extends Component {
 
   alert (type, message) {
     return (
-      Alert[type](
+      Alert[ type ](
         message, {
           position: 'top',
           effect: 'bouncyflip',
@@ -67,7 +67,7 @@ class EditFplTeam extends Component {
   handleChange(event) {
 
     const target = event.target;
-    this.setState({ [target.name]: target.value });
+    this.setState({ [ target.name ]: target.value });
   }
 
   handleSubmit(event) {
@@ -76,15 +76,15 @@ class EditFplTeam extends Component {
   }
 
   showError(type) {
-    if (this.state && this.state.error && this.state.error.data.error[type]) {
-      return this.state.error.data.error[type][0];
+    if (this.state && this.state.error && this.state.error.data.error[ type ]) {
+      return this.state.error.data.error[ type ][ 0 ];
     }
   }
 
   render () {
     if (this.state.error && this.state.error.status !== 422) {
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       )
     }
 
@@ -94,35 +94,35 @@ class EditFplTeam extends Component {
       }
 
       return (
-        <div className='container-fluid'>
-          { showSuccessAlert(this.state.success) }
-          { showBaseErrorAlert(this.state.error) }
-          <h3>Edit { this.state.fpl_team.name }</h3>
-          <form onSubmit={ this.handleSubmit } >
-            <div className="form-row">
-              <div className="form-group col-md-12">
-                <label htmlFor="name">Fpl Team Name</label>
-                  <input
+          <div className='container-fluid'>
+              { showSuccessAlert(this.state.success) }
+              { showBaseErrorAlert(this.state.error) }
+              <h3>Edit { this.state.fpl_team.name }</h3>
+              <form onSubmit={ this.handleSubmit } >
+                  <div className="form-row">
+                      <div className="form-group col-md-12">
+                          <label htmlFor="name">Fpl Team Name</label>
+                          <input
                     type="text"
                     name="name"
-                    className={ `form-control ${this.showError('name') ? 'is-invalid' : ''}` }
+                    className={ `form-control ${ this.showError('name') ? 'is-invalid' : '' }` }
                     id="name"
                     value={ this.state.name || this.state.fpl_team.name }
                     onChange={ this.handleChange }
                   />
-                  <div className="invalid-feedback">
-                    { this.showError('name') }
+                          <div className="invalid-feedback">
+                              { this.showError('name') }
+                          </div>
+                      </div>
                   </div>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group col-md-12">
-                <button type="submit" className="btn btn-primary">Submit</button>
-                <Link to={ `/fpl_teams/${this.state.fplTeamId}` } className='btn btn-danger'>Cancel</Link>
-              </div>
-            </div>
-          </form>
-        </div>
+                  <div className="form-row">
+                      <div className="form-group col-md-12">
+                          <button type="submit" className="btn btn-primary">Submit</button>
+                          <Link to={ `/fpl_teams/${ this.state.fplTeamId }` } className='btn btn-danger'>Cancel</Link>
+                      </div>
+                  </div>
+              </form>
+          </div>
       );
     } else {
       return <Spinner />;

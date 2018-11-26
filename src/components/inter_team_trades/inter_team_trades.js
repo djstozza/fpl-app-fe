@@ -87,7 +87,7 @@ class InterTeamTrades extends Component {
       const baseError = props.error.data.error.base;
 
       if (!isEmpty(baseError)) {
-        this.alert('error', baseError[0]);
+        this.alert('error', baseError[ 0 ]);
       }
     }
 
@@ -99,7 +99,7 @@ class InterTeamTrades extends Component {
 
   alert (type, message) {
     return (
-      Alert[type](
+      Alert[ type ](
         message, {
           position: 'top',
           effect: 'bouncyflip',
@@ -143,30 +143,30 @@ class InterTeamTrades extends Component {
   }
 
   updateTrade (params) {
-    params['fpl_team_list_id'] = this.state.fpl_team_list.id;
+    params[ 'fpl_team_list_id' ] = this.state.fpl_team_list.id;
     this.props.updateInterTeamTradeGroup(params);
   }
 
   showNewInterTeamTrade () {
     if (!isEmpty(this.state.out_players)) {
       return (
-        <div className='row'>
-          <div className='col col-md-6 col-sm-12'>
-            <OutPlayersTable
-              {...this.state }
+          <div className='row'>
+              <div className='col col-md-6 col-sm-12'>
+                  <OutPlayersTable
+              { ...this.state }
               selectPlayer={ this.selectPlayer }
               clearSelectedPlayer={ this.clearSelectedPlayer }
             />
-          </div>
-          <div className='col col-md-6 col-sm-12'>
-            <InPlayersTable
+              </div>
+              <div className='col col-md-6 col-sm-12'>
+                  <InPlayersTable
               { ...this.state }
               selectTradeablePlayer={ this.selectTradeablePlayer }
               clearTradeablePlayer={ this.clearTradeablePlayer }
             />
-            { this.completeTradeButtons() }
+                  { this.completeTradeButtons() }
+              </div>
           </div>
-        </div>
       );
     }
   }
@@ -181,7 +181,7 @@ class InterTeamTrades extends Component {
     }
 
     return (
-      <button
+        <button
         className='btn btn-secondary'
         onClick={ () => {
             this.clearSelectedPlayer();
@@ -194,7 +194,7 @@ class InterTeamTrades extends Component {
         }
       >
         Submit
-      </button>
+        </button>
     );
   }
 
@@ -208,14 +208,14 @@ class InterTeamTrades extends Component {
     }
 
     return (
-      <TradeGroupAccordions { ...this.state } updateTrade={ this.updateTrade } />
+        <TradeGroupAccordions { ...this.state } updateTrade={ this.updateTrade } />
     );
   }
 
   render () {
     if (this.state.error && this.state.error.status !== 422) {
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       )
     }
 
@@ -225,18 +225,18 @@ class InterTeamTrades extends Component {
 
     if (this.state.loaded) {
       return (
-        <div className='container-fluid'>
-          <div className='col col-sm-12'>
-            <h3>{ this.state.fpl_team.name } Inter Team Trades</h3>
-            <NewTradeGroupButton
+          <div className='container-fluid'>
+              <div className='col col-sm-12'>
+                  <h3>{ this.state.fpl_team.name } Inter Team Trades</h3>
+                  <NewTradeGroupButton
               { ...this.state }
               newInterTeamTrade={ this.newInterTeamTrade }
               cancelInterTeamTrade={ this.cancelInterTeamTrade }
             />
-            { this.showNewInterTeamTrade() }
-            { this.showTradeTables() }
+                  { this.showNewInterTeamTrade() }
+                  { this.showTradeTables() }
+              </div>
           </div>
-        </div>
       );
     } else {
       return <Spinner />;

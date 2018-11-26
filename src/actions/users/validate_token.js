@@ -13,7 +13,7 @@ export default function profile () {
       'content-type': localStorage.getItem('content-type'),
     }
 
-    axios.get(`${API_ROOT}/auth/validate_token.json`, getLocalStorageHeader()).then(res => {
+    axios.get(`${ API_ROOT }/auth/validate_token.json`, getLocalStorageHeader()).then(res => {
       setLocalStorageHeader(res)
       dispatch(validateTokenAsync(res.data));
     }).catch(error => {

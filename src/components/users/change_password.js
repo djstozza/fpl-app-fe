@@ -18,7 +18,7 @@ export default class ChangePassword extends Component {
   handleChange(event) {
     const target = event.target;
 
-    this.setState({ [target.name]: target.value });
+    this.setState({ [ target.name ]: target.value });
   }
 
   handleSubmit(event) {
@@ -27,8 +27,8 @@ export default class ChangePassword extends Component {
   }
 
   showError(type) {
-    if (this.state && this.state.error && this.state.error.data.errors[type]) {
-      return this.state.error.data.errors[type][0];
+    if (this.state && this.state.error && this.state.error.data.errors[ type ]) {
+      return this.state.error.data.errors[ type ][ 0 ];
     }
   }
 
@@ -42,55 +42,55 @@ export default class ChangePassword extends Component {
 
   render () {
     return (
-      <form onSubmit={ this.handleSubmit } >
-        <div className="form-row">
-          <div className="form-group col-md-12">
-            <label htmlFor="current_password">Current Password</label>
-              <input
+        <form onSubmit={ this.handleSubmit } >
+            <div className="form-row">
+                <div className="form-group col-md-12">
+                    <label htmlFor="current_password">Current Password</label>
+                    <input
                 type="password"
                 name="current_password"
-                className={ `form-control ${this.showError('password') ? 'is-invalid' : ''}` }
+                className={ `form-control ${ this.showError('password') ? 'is-invalid' : '' }` }
                 id="current_password"
                 onChange={ this.handleChange }
               />
-              <div className="invalid-feedback">
-                { this.showError('current_password') }
-              </div>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-12">
-            <label htmlFor="password">Password</label>
-              <input
+                    <div className="invalid-feedback">
+                        { this.showError('current_password') }
+                    </div>
+                </div>
+            </div>
+            <div className="form-row">
+                <div className="form-group col-md-12">
+                    <label htmlFor="password">Password</label>
+                    <input
                 type="password"
                 name="password"
-                className={ `form-control ${this.showError('password') ? 'is-invalid' : ''}` }
+                className={ `form-control ${ this.showError('password') ? 'is-invalid' : '' }` }
                 id="password"
                 onChange={ this.handleChange }
               />
-              <div className="invalid-feedback">
-                { this.showError('password') }
-              </div>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-12">
-            <label htmlFor="password_confirmation">Confirm Password</label>
-              <input
+                    <div className="invalid-feedback">
+                        { this.showError('password') }
+                    </div>
+                </div>
+            </div>
+            <div className="form-row">
+                <div className="form-group col-md-12">
+                    <label htmlFor="password_confirmation">Confirm Password</label>
+                    <input
                 type="password"
                 name="password_confirmation"
-                className={ `form-control ${this.showError('password') ? 'is-invalid' : ''}` }
+                className={ `form-control ${ this.showError('password') ? 'is-invalid' : '' }` }
                 id="password_confirmation"
                 onChange={ this.handleChange }
               />
-              <div className="invalid-feedback">
-                { this.showError('password_confirmation') }
-              </div>
-          </div>
+                    <div className="invalid-feedback">
+                        { this.showError('password_confirmation') }
+                    </div>
+                </div>
 
-          <button type="submit" className="btn btn-primary">Change Password</button>
-        </div>
-      </form>
+                <button type="submit" className="btn btn-primary">Change Password</button>
+            </div>
+        </form>
     )
   }
 }

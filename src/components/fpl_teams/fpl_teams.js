@@ -44,7 +44,7 @@ class FplTeams extends Component {
       const baseError = props.error.data.error.base;
 
       if (!isEmpty(baseError)) {
-        this.alert('error', baseError[0]);
+        this.alert('error', baseError[ 0 ]);
       }
     }
 
@@ -65,12 +65,12 @@ class FplTeams extends Component {
   render () {
     if (this.state.loaded) {
       return (
-        <div>
-          <h3>My Fpl Teams</h3>
-          { this.fplTeamsTable() }
-          <Link to='/leagues/new' className='btn btn-primary'>Create a League</Link>
-          <Link to='/leagues/join' className='btn btn-secondary'>Join a League</Link>
-        </div>
+          <div>
+              <h3>My Fpl Teams</h3>
+              { this.fplTeamsTable() }
+              <Link to='/leagues/new' className='btn btn-primary'>Create a League</Link>
+              <Link to='/leagues/join' className='btn btn-secondary'>Join a League</Link>
+          </div>
       );
     } else {
       return <Spinner />;

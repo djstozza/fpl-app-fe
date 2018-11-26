@@ -57,7 +57,7 @@ export default class InPlayersTable extends Component {
           placeholder: ' '
         }),
         formatter: (cell, row) => {
-          return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
+          return <Link to={ `/players/${ row.id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -67,7 +67,7 @@ export default class InPlayersTable extends Component {
         headerAlign: 'center',
         hidden: !isEmpty(this.props.tradeGroup),
         formatter: (cell, row) => {
-          return <Link to={ `/fpl_teams/${row.fpl_team_id}` }>{ cell }</Link>;
+          return <Link to={ `/fpl_teams/${ row.fpl_team_id }` }>{ cell }</Link>;
         },
         filter: selectFilter({
           options: fplTeamOptions,
@@ -80,7 +80,7 @@ export default class InPlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return <Link to={ `/teams/${row.team_id}` }>{ cell }</Link>;
+          return <Link to={ `/teams/${ row.team_id }` }>{ cell }</Link>;
         },
         filter: selectFilter({
           options: teamOptions,
@@ -95,7 +95,7 @@ export default class InPlayersTable extends Component {
         headerFormatter: tooltipHeader,
         filter: selectFilter({
           options: isEmpty(this.props.selected) ? positionOptions :
-                    { [this.props.selected.singular_name_short]: this.props.selected.singular_name_short },
+                    { [ this.props.selected.singular_name_short ]: this.props.selected.singular_name_short },
           getFilter: (filter) => {
             console.log(filter)
 
@@ -113,13 +113,13 @@ export default class InPlayersTable extends Component {
         headerFormatter: tooltipHeader,
         formatter: (cell, row) => {
           return (
-            <span
+              <span
               data-toggle="tooltip"
               data-placement="top"
               title={ row.news }
             >
-              <i className={ `${cell} fa-lg` } ></i>
-            </span>
+                  <i className={ `${ cell } fa-lg` } ></i>
+              </span>
           );
         }
       }, {
@@ -165,8 +165,8 @@ export default class InPlayersTable extends Component {
     }
 
     return (
-      <div>
-        <BootstrapTable
+        <div>
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
@@ -177,7 +177,7 @@ export default class InPlayersTable extends Component {
           pagination={ paginationFactory({ hideSizePerPage: true }) }
           hover
         />
-      </div>
+        </div>
     );
   }
 }

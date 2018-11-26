@@ -56,7 +56,7 @@ class League extends Component {
       const baseError = props.error.data.error.base;
 
       if (!isEmpty(baseError)) {
-        this.alert('error', baseError[0]);
+        this.alert('error', baseError[ 0 ]);
       }
     }
 
@@ -68,7 +68,7 @@ class League extends Component {
 
   alert (type, message) {
     return (
-      Alert[type](
+      Alert[ type ](
         message, {
           position: 'top',
           effect: 'bouncyflip',
@@ -89,12 +89,12 @@ class League extends Component {
 
     if (this.props.current_user.id === this.props.commissioner.id) {
       return (
-        <button
+          <button
           className='btn btn-secondary'
           onClick={ () => this.props.generatePickNumbers(this.state.leagueId) }
         >
           Generate Pick Numbers
-        </button>
+          </button>
       );
     }
   }
@@ -106,9 +106,9 @@ class League extends Component {
 
     if (this.props.current_user.id === this.props.commissioner.id) {
       return (
-        <button className='btn btn-secondary' onClick={ () => this.props.createDraft(this.state.leagueId) }>
+          <button className='btn btn-secondary' onClick={ () => this.props.createDraft(this.state.leagueId) }>
           Create Draft
-        </button>
+          </button>
       );
     }
   }
@@ -119,18 +119,18 @@ class League extends Component {
     }
 
     return (
-      <Link to={ `/leagues/${this.state.leagueId}/draft` } className='btn btn-secondary'>
+        <Link to={ `/leagues/${ this.state.leagueId }/draft` } className='btn btn-secondary'>
         Go to draft
-      </Link>
+        </Link>
     );
   }
 
   goToMiniDraftLink () {
     if (this.state.round.mini_draft) {
       return (
-        <Link to={ `/leagues/${this.state.leagueId}/mini_draft` } className='btn btn-secondary'>
+          <Link to={ `/leagues/${ this.state.leagueId }/mini_draft` } className='btn btn-secondary'>
           Go to mini draft
-        </Link>
+          </Link>
       )
     }
   }
@@ -138,7 +138,7 @@ class League extends Component {
   editLeagueButton () {
     if (this.state.commissioner.id === this.state.current_user.id) {
       return (
-        <Link to={ `/leagues/${this.state.leagueId}/edit` } className='btn btn-secondary'>Edit</Link>
+          <Link to={ `/leagues/${ this.state.leagueId }/edit` } className='btn btn-secondary'>Edit</Link>
       );
     }
   }
@@ -150,23 +150,23 @@ class League extends Component {
   render () {
     if (this.state.error && this.state.error.status !== 422) {
       return (
-        <ErrorHandler error={ this.state.error } />
+          <ErrorHandler error={ this.state.error } />
       )
     }
 
     if (this.state.loaded) {
       return (
-        <div className='container-fluid'>
-          { showSuccessAlert(this.state.success) }
-          { showBaseErrorAlert(this.state.error) }
-          <h3>{ this.state.league.name }  { this.editLeagueButton() }</h3>
-          <p>Commisioner: { this.state.commissioner.username }</p>
-          <FplTeamsTable { ...this.state } updateDraftPickOrder={ this.updateDraftPickOrder } />
-          { this.generatePickNumbers() }
-          { this.createDraftButton() }
-          { this.goToDraftLink() }
-          { this.goToMiniDraftLink() }
-        </div>
+          <div className='container-fluid'>
+              { showSuccessAlert(this.state.success) }
+              { showBaseErrorAlert(this.state.error) }
+              <h3>{ this.state.league.name }  { this.editLeagueButton() }</h3>
+              <p>Commisioner: { this.state.commissioner.username }</p>
+              <FplTeamsTable { ...this.state } updateDraftPickOrder={ this.updateDraftPickOrder } />
+              { this.generatePickNumbers() }
+              { this.createDraftButton() }
+              { this.goToDraftLink() }
+              { this.goToMiniDraftLink() }
+          </div>
       );
     } else {
       return <Spinner />;

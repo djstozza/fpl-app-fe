@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function deleteWaiverPick (fplTeamListId, waiverPickId) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/fpl_team_lists/${fplTeamListId}/waiver_picks/${waiverPickId}.json`,
+      url: `${ API_ROOT }/fpl_team_lists/${ fplTeamListId }/waiver_picks/${ waiverPickId }.json`,
       method: 'DELETE',
       ...getLocalStorageHeader(),
     }).then(res => {

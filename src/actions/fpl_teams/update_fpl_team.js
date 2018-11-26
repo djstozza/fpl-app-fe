@@ -6,7 +6,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function updateFplTeam (params) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/fpl_teams/${params.fplTeamId}.json`,
+      url: `${ API_ROOT }/fpl_teams/${ params.fplTeamId }.json`,
       method: 'PUT',
       ...getLocalStorageHeader(),
       data: {
@@ -14,7 +14,7 @@ export default function updateFplTeam (params) {
       }
     }).then(res => {
       setLocalStorageHeader(res);
-      dispatch(push(`/fpl_teams/${res.data.fpl_team.id}`));
+      dispatch(push(`/fpl_teams/${ res.data.fpl_team.id }`));
       dispatch(updateFplTeamAsync(res.data));
     }).catch(error => {
       const data = error.response.data;

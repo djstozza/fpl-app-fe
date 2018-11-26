@@ -25,7 +25,7 @@ export default class TradeGroupAccordions extends Component {
     }
 
     const components = { out: OutTradeGroupTable, in: InTradeGroupTable };
-    const Component = components[type];
+    const Component = components[ type ];
 
     let headerText;
     if (type === 'out') {
@@ -35,61 +35,61 @@ export default class TradeGroupAccordions extends Component {
     }
 
     return (
-      <div>
-        <h4>{ headerText } Trades</h4>
-        <div id={ `${type}-trades-accordion` }>
-          {
+        <div>
+            <h4>{ headerText } Trades</h4>
+            <div id={ `${ type }-trades-accordion` }>
+                {
             Object.keys(tradeGroups).map( (tradeStatus, key) => {
-              const tradeStatusKey = `${type}-${tradeStatus}-${key}`
+              const tradeStatusKey = `${ type }-${ tradeStatus }-${ key }`
 
               return (
-                <div className="card" key={ tradeStatusKey }>
-                  <div
-                    className={ `card-header accordion-header ${this.statusClass(tradeStatus)}` }
-                    id={key}
+                  <div className="card" key={ tradeStatusKey }>
+                      <div
+                    className={ `card-header accordion-header ${ this.statusClass(tradeStatus) }` }
+                    id={ key }
                     data-toggle="collapse"
-                    data-target={ `#${tradeStatusKey}-body` }
+                    data-target={ `#${ tradeStatusKey }-body` }
                     aria-expanded="false"
                   >
-                    <div className="mb-0">
-                      { capitaliseText(tradeStatus) }
-                    </div>
-                  </div>
-                  <div
-                    id={ `${tradeStatusKey}-body` }
+                          <div className="mb-0">
+                              { capitaliseText(tradeStatus) }
+                          </div>
+                      </div>
+                      <div
+                    id={ `${ tradeStatusKey }-body` }
                     className="collapse"
                     aria-labelledby={ tradeStatusKey }
-                    data-parent={ `#${type}-trades-accordion` }
+                    data-parent={ `#${ type }-trades-accordion` }
                   >
-                    <div className="card-body">
-                      {
-                        tradeGroups[tradeStatus].map( (tradeGroup, i) => {
+                          <div className="card-body">
+                              {
+                        tradeGroups[ tradeStatus ].map( (tradeGroup, i) => {
                           return (
-                            <Component
+                              <Component
                               { ...this.props }
                               tradeGroup={ tradeGroup }
-                              key={ `${tradeGroup.id}` }
+                              key={ `${ tradeGroup.id }` }
                             />
                           )
                         })
                       }
-                    </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
               )
             })
           }
+            </div>
         </div>
-      </div>
     )
   }
 
   render () {
     return (
-      <div>
-        { this.tradeGroupLoop(this.props.out_trade_groups, 'out') }
-        { this.tradeGroupLoop(this.props.in_trade_groups, 'in') }
-      </div>
+        <div>
+            { this.tradeGroupLoop(this.props.out_trade_groups, 'out') }
+            { this.tradeGroupLoop(this.props.in_trade_groups, 'in') }
+        </div>
     )
   }
 }

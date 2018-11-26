@@ -25,7 +25,7 @@ export default class FplTeamsTable extends Component {
         headerAlign: 'center',
         sort: true,
         formatter: (cell, row) => {
-          return <Link to={ `/fpl_teams/${row.fpl_team_id}` }>{ cell }</Link>;
+          return <Link to={ `/fpl_teams/${ row.fpl_team_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -35,7 +35,7 @@ export default class FplTeamsTable extends Component {
         headerAlign: 'center',
         sort: true,
         formatter: (cell, row) => {
-          return <Link to={ `/leagues/${row.league_id}` }>{ cell }</Link>;
+          return <Link to={ `/leagues/${ row.league_id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -56,15 +56,15 @@ export default class FplTeamsTable extends Component {
     ]
 
     return (
-      <div>
-        <BootstrapTable
+        <div>
+            <BootstrapTable
           keyField='fpl_team_id'
           data={ data }
           columns={ columns }
           striped
           hover
         />
-      </div>
+        </div>
     )
   }
 }

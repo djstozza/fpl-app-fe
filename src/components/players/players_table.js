@@ -38,7 +38,7 @@ export default class PlayersTable extends Component {
           placeholder: ' '
         }),
         formatter: (cell, row) => {
-          return <Link to={ `/players/${row.id}` }>{ cell }</Link>;
+          return <Link to={ `/players/${ row.id }` }>{ cell }</Link>;
         },
         headerFormatter: tooltipHeader
       }, {
@@ -47,7 +47,7 @@ export default class PlayersTable extends Component {
         align: 'center',
         headerAlign: 'center',
         formatter: (cell, row) => {
-          return positionOptions[cell];
+          return positionOptions[ cell ];
         },
         headerFormatter: tooltipHeader,
         filter: selectFilter({
@@ -61,7 +61,7 @@ export default class PlayersTable extends Component {
         headerAlign: 'center',
         hidden: team !== undefined,
         formatter: (cell, row) => {
-          return teamOptions[cell];
+          return teamOptions[ cell ];
         },
         headerFormatter: tooltipHeader,
         filter: selectFilter({
@@ -152,8 +152,8 @@ export default class PlayersTable extends Component {
     ]
 
     return (
-      <div className='bs-md-scroll-table'>
-        <BootstrapTable
+        <div className='bs-md-scroll-table'>
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
@@ -162,7 +162,7 @@ export default class PlayersTable extends Component {
           striped
           hover
         />
-      </div>
+        </div>
     )
   }
 }

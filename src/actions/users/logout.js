@@ -4,17 +4,16 @@ import { push } from 'react-router-redux';
 import { API_ROOT, getLocalStorageHeader } from './../../api-config';
 import isEmpty from 'lodash/isEmpty';
 
-
 export default function logout (params) {
   return dispatch => {
-    axios.delete(`${API_ROOT}/auth/sign_out.json`, getLocalStorageHeader()).then(res => {
+    axios.delete(`${ API_ROOT }/auth/sign_out.json`, getLocalStorageHeader()).then(res => {
       localStorage.removeItem('access-token');
       localStorage.removeItem('client');
       localStorage.removeItem('token-type');
       localStorage.removeItem('expiry');
       localStorage.removeItem('uid');
       localStorage.removeItem('content-type');
-      dispatch(push(`/login`));
+      dispatch(push('/login'));
       dispatch(logoutAsync(res.data));
     }).catch(error => {
       dispatch({ type: SHOW_USER_ERRORS, payload: { error: error.response } });

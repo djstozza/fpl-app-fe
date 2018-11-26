@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function edit (params) {
   return dispatch => {
     axios({
-      url:`${API_ROOT}/auth.json`,
+      url:`${ API_ROOT }/auth.json`,
       method: 'PUT',
       data: { user: { email: params.email, username: params.username } },
       ...getLocalStorageHeader()

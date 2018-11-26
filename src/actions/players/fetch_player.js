@@ -4,7 +4,7 @@ import { API_ROOT } from './../../api-config';
 
 export default function fetchPlayers (playerId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/players/${playerId}.json`).then(res => {
+    axios.get(`${ API_ROOT }/players/${ playerId }.json`).then(res => {
       dispatch(fetchPlayersAsync(res.data));
     }).catch(error => {
       dispatch({ type: SHOW_PLAYER_ERRORS, payload: { error: error.response } });

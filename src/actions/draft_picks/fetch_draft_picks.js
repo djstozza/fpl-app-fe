@@ -4,7 +4,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 
 export default function fetchDraftPicks (leagueId) {
   return dispatch => {
-    axios.get(`${API_ROOT}/leagues/${leagueId}/draft_picks.json`, getLocalStorageHeader()).then(res => {
+    axios.get(`${ API_ROOT }/leagues/${ leagueId }/draft_picks.json`, getLocalStorageHeader()).then(res => {
       setLocalStorageHeader(res);
       dispatch(fetchDraftPicksAsync(res.data));
     }).catch(error => {

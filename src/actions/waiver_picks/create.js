@@ -5,7 +5,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function createWaiverPick (fplTeamListId, listPositionId, inPlayerId) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/fpl_team_lists/${fplTeamListId}/waiver_picks.json`,
+      url: `${ API_ROOT }/fpl_team_lists/${ fplTeamListId }/waiver_picks.json`,
       method: 'POST',
       ...getLocalStorageHeader(),
       data: {

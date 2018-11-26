@@ -46,16 +46,16 @@ class Players extends Component {
   render () {
     if (this.state.loaded) {
       return (
-        <div className="container-fluid">
-          <div className="col col-md-12">
-            <h4>Players</h4>
-            <PlayersTable
+          <div className="container-fluid">
+              <div className="col col-md-12">
+                  <h4>Players</h4>
+                  <PlayersTable
               players={ this.state.players }
               teams={ this.state.teams }
               positions={ this.state.positions }
             />
+              </div>
           </div>
-        </div>
       );
     } else {
       return <Spinner />;

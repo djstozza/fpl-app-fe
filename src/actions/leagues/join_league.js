@@ -6,7 +6,7 @@ import { API_ROOT, getLocalStorageHeader, setLocalStorageHeader } from './../../
 export default function createLeague (params) {
   return dispatch => {
     axios({
-      url: `${API_ROOT}/leagues/join.json`,
+      url: `${ API_ROOT }/leagues/join.json`,
       method: 'POST',
       ...getLocalStorageHeader(),
       data: {
@@ -18,7 +18,7 @@ export default function createLeague (params) {
       }
     }).then(res => {
       setLocalStorageHeader(res);
-      dispatch(push(`/leagues/${res.data.league.id}`));
+      dispatch(push(`/leagues/${ res.data.league.id }`));
       dispatch(createLeagueAsync(res.data));
     }).catch(error => {
       setLocalStorageHeader(error.response);

@@ -35,7 +35,7 @@ export default class InTradeGroupTable extends Component {
   }
 
   confirmTradeAction (action) {
-    const confirmText = `Are you sure you want to ${action} this trade?`
+    const confirmText = `Are you sure you want to ${ action } this trade?`
 
     if (window.confirm(confirmText)) {
       this.props.updateTrade({
@@ -50,18 +50,18 @@ export default class InTradeGroupTable extends Component {
 
     if (tradeGroup.status === 'submitted') {
       return [
-        <button
+          <button
           className='btn btn-success'
-          key={ `trade-group-${tradeGroup.id}-approve` }
+          key={ `trade-group-${ tradeGroup.id }-approve` }
           onClick={ () => this.confirmTradeAction('approve') } >
           Approve
-        </button>,
-        <button
+          </button>,
+          <button
           className='btn btn-danger'
-          key={ `trade-group-${tradeGroup.id}-decline` }
+          key={ `trade-group-${ tradeGroup.id }-decline` }
           onClick={ () => this.confirmTradeAction('decline') } >
           Decline
-        </button>
+          </button>
       ]
     }
   }
@@ -97,23 +97,23 @@ export default class InTradeGroupTable extends Component {
     ];
 
     return (
-      <div>
-        <table className='table table-bordered mb-0 text-center'>
-          <thead>
-            <tr>
-              <th className='align-middle'>Trade with: { this.props.tradeGroup.out_fpl_team.name }</th>
-              <th>{ this.tradeGroupButtons() }</th>
-            </tr>
-          </thead>
-        </table>
-        <BootstrapTable
+        <div>
+            <table className='table table-bordered mb-0 text-center'>
+                <thead>
+                    <tr>
+                        <th className='align-middle'>Trade with: { this.props.tradeGroup.out_fpl_team.name }</th>
+                        <th>{ this.tradeGroupButtons() }</th>
+                    </tr>
+                </thead>
+            </table>
+            <BootstrapTable
           keyField='id'
           data={ data }
           columns={ columns }
           striped
           hover
         />
-      </div>
+        </div>
     );
   }
 }
