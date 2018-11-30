@@ -22,9 +22,9 @@ export default class ErrorHandler extends Component {
     } else if (this.props.error.status === 500) {
       header = (<h2>Something went wrong</h2>);
       text = (
-        <div>
-          <p>Oops... Looks like there's a problem on this page.</p>
-        </div>
+          <div>
+              <p>Oops... Looks like there's a problem on this page.</p>
+          </div>
       )
     }
 

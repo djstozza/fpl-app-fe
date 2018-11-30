@@ -37,7 +37,7 @@ const error401 = {
 describe('<Error />', () => {
   describe('render()', () => {
     test('renders the component if the status is 404', () => {
-      const wrapper = shallow(<ErrorHandler error={error404} />);
+      const wrapper = shallow(<ErrorHandler error={ error404 } />);
 
       expect(wrapper.find('.message-container h2').text()).to.equal('Page Not Found');
       expect(wrapper.find('.message-container').text()).to.include('The page you were looking for does not exist.');
@@ -46,9 +46,8 @@ describe('<Error />', () => {
       );
     });
 
-
     test('renders the component if the status is 500', () => {
-      const wrapper = shallow(<ErrorHandler error={error500} />);
+      const wrapper = shallow(<ErrorHandler error={ error500 } />);
 
       expect(wrapper.find('.message-container h2').text()).to.equal('Something went wrong');
       expect(wrapper.find('.message-container p').text()).to.equal(
@@ -57,7 +56,7 @@ describe('<Error />', () => {
     });
 
     test('redirects to the home page if the status is 401', () => {
-      const wrapper = shallow(<ErrorHandler error={error401} />);
+      const wrapper = shallow(<ErrorHandler error={ error401 } />);
       const redirectProps = wrapper.find(Redirect).props()
 
       expect(redirectProps.to).to.equal('/login');
