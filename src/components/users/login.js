@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import login from '../../actions/users/login';
@@ -14,11 +15,7 @@ class LogInForm extends Component {
       password: '',
     }
 
-    if (!isEmpty(this.props.location.state)) {
-      this.state[ 'referrer' ] = this.props.location.state.referrer.pathname;
-      this.state[ 'error' ] = this.props.location.state.error;
-    }
-
+    this.alert = this.alert.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -32,6 +29,13 @@ class LogInForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.login(this.state);
+  }
+
+  componentDidMount () {
+    if (!isEmpty(this.props.location.state)) {
+      this.alert('error', this.props.location.state.error);
+      this.setState({ referrer: this.props.location.state.referrer.pathname });
+    }
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -137,6 +141,15 @@ function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     login: login,
   }, dispatch);
+}
+
+LogInForm.propTypes = {
+  location: PropTypes.object,
+  'location.state': PropTypes.object,
+  'loction.state.referrer': PropTypes.object,
+  'location.state.referrer.pathname': PropTypes.string,
+  'location.state.error': PropTypes.string,
+  login: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogInForm);

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import signUp from '../../actions/users/sign_up';
+import PropTypes from 'prop-types';
 
 class Signup extends Component {
   constructor (props) {
@@ -53,7 +54,7 @@ class Signup extends Component {
                         <div className='card-body'>
                             <form onSubmit={ this.handleSubmit } >
                                 <div className="form-row">
-                                    <div className="form-group col-md-12">
+                                    <div className="form-group email col-md-12">
                                         <label htmlFor="email">Email</label>
                                         <input
                         type="email"
@@ -69,7 +70,7 @@ class Signup extends Component {
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-md-12">
+                                    <div className="form-group username col-md-12">
                                         <label htmlFor="username">Username</label>
                                         <input
                         type="text"
@@ -85,7 +86,7 @@ class Signup extends Component {
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-md-12">
+                                    <div className="form-group password col-md-12">
                                         <label htmlFor="password">Password</label>
                                         <input
                           type="password"
@@ -127,3 +128,10 @@ function mapDispatchToProps (dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+
+Signup.propTypes = {
+  email: PropTypes.string,
+  username: PropTypes.string,
+  password: PropTypes.string,
+  signUp: PropTypes.func.isRequired
+}
