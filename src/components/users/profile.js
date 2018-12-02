@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import profile from '../../actions/users/profile';
 import update from '../../actions/users/update';
-import changePassword from '../../actions/users/change_password';
+import changePassword from '../../actions/users/changePassword';
 import Alert from 'react-s-alert';
 
 import Spinner from '../spinner';
-import ChangePassword from './change_password';
+import ChangePassword from './changePassword';
 import Edit from './edit';
 
 class Profile extends Component {
@@ -96,7 +96,7 @@ class Profile extends Component {
                                           </a>
                                           <a
                           className="nav-item nav-link"
-                          id="nav-passwrod-tab"
+                          id="nav-password-tab"
                           data-toggle="tab"
                           href="#nav-password"
                           role="tab"
@@ -116,7 +116,7 @@ class Profile extends Component {
                       >
                                           <Edit { ...this.state } update={ this.update }/>
                                       </div>
-                                      <div className="tab-pane fade" id="nav-password" role="tabpanel" aria-labelledby="nav-passwrod-tab">
+                                      <div className="tab-pane fade" id="nav-password" role="tabpanel" aria-labelledby="nav-password-tab">
                                           <ChangePassword { ...this.state } changePassword={ this.changePassword }/>
                                       </div>
                                   </div>

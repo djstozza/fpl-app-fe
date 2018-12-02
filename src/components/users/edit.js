@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Edit extends Component {
   constructor (props) {
@@ -45,7 +46,7 @@ export default class Edit extends Component {
     return (
         <form onSubmit={ this.handleSubmit } >
             <div className="form-row">
-                <div className="form-group col-md-12">
+                <div className="form-group email col-md-12">
                     <label htmlFor="email">Email</label>
                     <input
               type="email"
@@ -62,7 +63,7 @@ export default class Edit extends Component {
                 </div>
             </div>
             <div className="form-row">
-                <div className="form-group col-md-12">
+                <div className="form-group username col-md-12">
                     <label htmlFor="username">Username</label>
                     <input
               type="text"
@@ -83,4 +84,12 @@ export default class Edit extends Component {
         </form>
     )
   }
+}
+
+Edit.propTypes = {
+  current_user: PropTypes.object.isRequired,
+  'current_user.email': PropTypes.string,
+  'current_user.username': PropTypes.string,
+  update: PropTypes.func.isRequired,
+  error: PropTypes.object
 }

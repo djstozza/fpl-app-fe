@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class ChangePassword extends Component {
   constructor (props) {
@@ -38,19 +39,25 @@ export default class ChangePassword extends Component {
     }
 
     this.setState({ error: this.props.error });
+
+    if (this.props.success) {
+      this.setState({
+        success: null
+      });
+    }
   }
 
   render () {
     return (
         <form onSubmit={ this.handleSubmit } >
             <div className="form-row">
-                <div className="form-group col-md-12">
-                    <label htmlFor="current_password">Current Password</label>
+                <div className="form-group current-password col-md-12">
+                    <label htmlFor="current-password">Current Password</label>
                     <input
                 type="password"
                 name="current_password"
-                className={ `form-control ${ this.showError('password') ? 'is-invalid' : '' }` }
-                id="current_password"
+                className={ `form-control ${ this.showError('current_password') ? 'is-invalid' : '' }` }
+                id="current-password"
                 onChange={ this.handleChange }
               />
                     <div className="invalid-feedback">
@@ -59,7 +66,7 @@ export default class ChangePassword extends Component {
                 </div>
             </div>
             <div className="form-row">
-                <div className="form-group col-md-12">
+                <div className="form-group password col-md-12">
                     <label htmlFor="password">Password</label>
                     <input
                 type="password"
@@ -74,13 +81,13 @@ export default class ChangePassword extends Component {
                 </div>
             </div>
             <div className="form-row">
-                <div className="form-group col-md-12">
-                    <label htmlFor="password_confirmation">Confirm Password</label>
+                <div className="form-group password-confirmation col-md-12">
+                    <label htmlFor="password-confirmation">Confirm Password</label>
                     <input
                 type="password"
                 name="password_confirmation"
-                className={ `form-control ${ this.showError('password') ? 'is-invalid' : '' }` }
-                id="password_confirmation"
+                className={ `form-control ${ this.showError('password_confirmation') ? 'is-invalid' : '' }` }
+                id="password-confirmation"
                 onChange={ this.handleChange }
               />
                     <div className="invalid-feedback">
@@ -93,4 +100,9 @@ export default class ChangePassword extends Component {
         </form>
     )
   }
+}
+
+ChangePassword.propTypes = {
+  changePassword: PropTypes.func.isRequired,
+  error: PropTypes.object
 }
