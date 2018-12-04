@@ -172,7 +172,7 @@ export default class FplTeamListView extends Component {
 
     return (
         <button
-        className='btn btn-secondary'
+        className='btn btn-secondary submit-button'
         onClick={ () => this.props.completeTradeAction() }
       >
        Complete { capitaliseText(this.props.action) }

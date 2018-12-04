@@ -237,3 +237,10 @@ ul.scroll-nav {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@include media-breakpoint-up(sm) {
+  .submit-button {
+    position: absolute;
+    bottom: 16px;
+  }
+}
