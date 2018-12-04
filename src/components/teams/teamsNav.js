@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { centerItVariableWidth } from '../../utils/nav_tab';
 
 export default class TeamsNav extends Component {
@@ -9,6 +10,7 @@ export default class TeamsNav extends Component {
   render () {
     const self = this;
     const teamId = this.props.team.id;
+
     const teamList = this.props.teams.map(function (team) {
       const teamTabClass = `team-tab-${ team.id }`
       const teamImg = require(`../../images/shields/${ team.short_name.toLowerCase() }.png`);
@@ -40,4 +42,11 @@ export default class TeamsNav extends Component {
         </ul>
     );
   }
+}
+
+TeamsNav.propTypes = {
+  team: PropTypes.object,
+  'team.id': PropTypes.number,
+  teams: PropTypes.array,
+  'teams.map': PropTypes.func,
 }

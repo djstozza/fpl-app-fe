@@ -15,7 +15,7 @@ NPM: 6.4.1
 
 ### Setup
 
-Ensure that you have `Fpl App Api` set up and running a server on port 3001 by following the instructions set out [here](https://github.com/djstozza/fpl_app_api/blob/master/README.md).
+Make sure that you have `Fpl App Api` set up and running a server on port `3001` by following the instructions set out [here](https://github.com/djstozza/fpl_app_api/blob/master/README.md).
 
 #### Install packages with npm and run server
 ```

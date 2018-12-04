@@ -7,6 +7,7 @@ import Profile from '../../../components/users/profile';
 import Edit from '../../../components/users/edit';
 import ChangePassword from '../../../components/users/changePassword';
 import UsersReducer from '../../../reducers/reducer_users';
+import Spinner from '../../../components/spinner';
 
 import * as changePassword from '../../../actions/users/changePassword';
 import * as update from '../../../actions/users/update';
@@ -33,17 +34,24 @@ const currentUser = {
 const wrapper = shallow(<Profile store={store} />);
 const component = wrapper.dive();
 
-component.setProps({
-  current_user: currentUser
-});
-
-
 describe('<Profile />', () => {
+  test('shows spinner if state not loaded', () => {
+    expect(component.find(Spinner)).toHaveLength(1)
+  });
+
   test('shows the username as a header', () => {
+    component.setProps({
+      current_user: currentUser
+    });
+
     expect(component.find('.card-header h4').text()).toEqual(currentUser.username);
   });
 
   test('submits the edit form data', () => {
+    component.setProps({
+      current_user: currentUser
+    });
+
     const edit = component.find(Edit);
 
     expect(edit).toHaveLength(1);
@@ -85,6 +93,10 @@ describe('<Profile />', () => {
 
 
   test('submits the change password form data', () => {
+    component.setProps({
+      current_user: currentUser
+    });
+
     const changePassword = component.find(ChangePassword);
 
     expect(changePassword).toHaveLength(1);

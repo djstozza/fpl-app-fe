@@ -42,9 +42,6 @@ export default class FplTeamsTable extends Component {
         align: 'center',
         headerAlign: 'center',
         sort: true,
-        formatter: (cell, row) => {
-          return <Link to={ `/users/${ row.user_id }` }>{ cell }</Link>;
-        },
         headerFormatter: tooltipHeader
       }, {
         text: 'Pick Number',

@@ -8,7 +8,7 @@ import fetchTeams from '../../actions/teams/fetch_teams';
 import fetchTeam from '../../actions/team/fetch_team';
 import fetchPositions from '../../actions/positions/fetch_positions';
 
-import TeamsNav from './teams_nav';
+import TeamsNav from './teamsNav';
 import TeamAccordion from './team_accordion';
 import ErrorHandler from '../errorHandler';
 
