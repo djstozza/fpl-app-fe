@@ -9,7 +9,7 @@ import fetchTeam from '../../actions/team/fetch_team';
 import fetchPositions from '../../actions/positions/fetch_positions';
 
 import TeamsNav from './teamsNav';
-import TeamAccordion from './team_accordion';
+import TeamAccordion from './teamAccordion';
 import ErrorHandler from '../errorHandler';
 
 import { store } from '../../App';
@@ -33,6 +33,7 @@ class Team extends Component {
   }
 
   componentDidMount () {
+    console.log('foo')
     this.props.fetchTeam(this.props.match.params.id);
     this.props.fetchTeams();
     this.props.fetchPositions();
@@ -93,6 +94,7 @@ class Team extends Component {
 }
 
 function mapStateToProps (state) {
+  console.log(state)
   return {
     teams: state.TeamsReducer,
     team: state.TeamReducer.team,
