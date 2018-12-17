@@ -11,16 +11,24 @@ The React/Redux front-end for [Fpl App Api](https://fpl-app-api.herokuapp.com/ap
 
 ```
 NPM: 6.4.1
+Node: 11.2.0
 ```
 
 ### Setup
 
 Make sure that you have `Fpl App Api` set up and running a server on port `3001` by following the instructions set out [here](https://github.com/djstozza/fpl_app_api/blob/master/README.md).
 
-#### Install packages with npm and run server
+#### Install packages with npm and run server (on port 3000)
 ```
 npm install
 npm start
+```
+
+#### To create an optimised build and serve it locally
+```
+npm run build
+npm install -g serve
+serve -s build -p 3000
 ```
 
 ## Author

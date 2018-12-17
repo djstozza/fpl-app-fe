@@ -33,7 +33,6 @@ class Team extends Component {
   }
 
   componentDidMount () {
-    console.log('foo')
     this.props.fetchTeam(this.props.match.params.id);
     this.props.fetchTeams();
     this.props.fetchPositions();
@@ -94,7 +93,6 @@ class Team extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log(state)
   return {
     teams: state.TeamsReducer,
     team: state.TeamReducer.team,
