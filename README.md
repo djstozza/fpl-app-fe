@@ -31,6 +31,10 @@ npm install -g serve
 serve -s build -p 3000
 ```
 
+#### To run tests
+```
+npm run test
+```
 ## Author
 
 * [Daniel Sztolcman](https://github.com/djstozza)
