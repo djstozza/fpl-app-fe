@@ -1,26 +1,28 @@
 import * as actions from './actions'
 import { success, failure } from 'utilities/actions'
 
-import type { Action, RoundSummary } from 'types'
+import type { Action, Round } from 'types'
 
 export type State = {
-  data: RoundSummary[],
+  data?: Round,
   errors: Object[]
 }
 
 export const initialState = {
-  data: [],
+  data: undefined,
   errors: []
 }
 
 const reducer = (state: State = initialState, action: Action) => {
   if (state === undefined) { state = initialState }
   switch (action.type) {
-    case success(actions.API_ROUNDS_INDEX):
-      const { data = [] } = action
+    case success(actions.API_ROUNDS_SHOW):
+      const { data } = action
 
-      return { ...state, data }
-    case failure(actions.API_ROUNDS_INDEX):
+      if (data) return { ...state, data }
+
+      return state
+    case failure(actions.API_ROUNDS_SHOW):
       const { errors } = action
 
       return { ...state, errors }

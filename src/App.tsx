@@ -13,7 +13,7 @@ function App() {
       <header className="App-header">
         {(<LoadingBar showFastActions />)}
         <Switch>
-          <Route path={ROUNDS_PAGE_URL} render={(props) => <RoundsPage {...props} />} />
+          <Route path={ROUNDS_PAGE_URL + '/:roundId?'} render={(props) => <RoundsPage {...props} />} />
         </Switch>
       </header>
     </div>

@@ -1,39 +1,60 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
 
+import { roundActions } from 'state/round'
 import { roundsActions } from 'state/rounds'
 
-import type { Round } from 'types'
+
+import type { Round, RoundSummary } from 'types'
 
 type Props = {
-  data: Round[],
-  fetchRounds: Function
+  round: Round,
+  rounds: RoundSummary[],
+  fetchRounds: Function,
+  fetchRound: Function,
+  match: { params: { roundId?: string } }
 }
 
 const RoundsPage = (props: Props) => {
   const {
-    data: rounds,
-    fetchRounds
+    round,
+    rounds,
+    fetchRound,
+    fetchRounds,
+    match: { params: { roundId } }
   } = props
 
-  console.log(rounds)
+  const currentRoundId = rounds.find(({ isCurrent }) => isCurrent)?.id
+  const lastRoundId = rounds[rounds.length - 1]?.id
+
+  const selectedRoundId = roundId || currentRoundId || lastRoundId
 
   useEffect(
     () => {
       fetchRounds()
     }, [fetchRounds]
   )
+
+  useEffect(
+    () => {
+      if (!selectedRoundId) return
+
+      fetchRound(selectedRoundId)
+    }, [selectedRoundId, fetchRound]
+  )
+
   return null
 }
 
 const mapStateToProps = (state) => {
 
 return {
-
-  data: state?.rounds?.data
+  round: state.round?.data,
+  rounds: state.rounds.data
 }}
 
 const matchDispatchToProps = {
+  fetchRound: roundActions.fetchRound,
   fetchRounds: roundsActions.fetchRounds
 }
 

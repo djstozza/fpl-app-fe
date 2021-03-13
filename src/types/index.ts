@@ -8,7 +8,40 @@ export type Action = {
   data?: any
 }
 
-export type Round = {
+export type PlayerSummary = {
+  name: string,
+  id: string
+}
+
+export type PlayerStatElement = {
+  value: number,
+  playr: PlayerSummary
+}
+
+export type StatsElement = {
+  identifier: string,
+  home: PlayerStatElement[],
+  away: PlayerStatElement[]
+}
+
+export type TeamSummary = {
+  name: string,
+  id: string
+}
+
+export type Fixture = {
+  awayTeam: TeamSummary,
+  awayTeamScore: number,
+  finished: boolean,
+  homeTeam: TeamSummary,
+  homeTeamScore: number,
+  kickoffTime: string,
+  minutes: number,
+  started: boolean,
+  stats: StatsElement[]
+}
+
+export type RoundSummary = {
   id: string,
   name: string,
   finsihed: boolean,
@@ -19,3 +52,5 @@ export type Round = {
   dataChecked: boolean,
   deadlineTime: string
 }
+
+export type Round = { fixtures: Fixture[] } & RoundSummary
