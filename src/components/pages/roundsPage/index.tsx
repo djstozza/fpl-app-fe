@@ -1,9 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useMemo, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { roundActions } from 'state/round'
 import { roundsActions } from 'state/rounds'
+import history from 'state/history'
 
+import TabPanel from './tabPanel'
+import RoundDetails from './roundDetails'
 
 import type { Round, RoundSummary } from 'types'
 
@@ -27,7 +30,13 @@ const RoundsPage = (props: Props) => {
   const currentRoundId = rounds.find(({ isCurrent }) => isCurrent)?.id
   const lastRoundId = rounds[rounds.length - 1]?.id
 
-  const selectedRoundId = roundId || currentRoundId || lastRoundId
+  const getSelectedRoundId = () => roundId || currentRoundId || lastRoundId
+
+  const [selectedRoundId, setSelectedRoundId] = useState(getSelectedRoundId())
+
+  const handleChange = (newRoundId) => {
+    fetchRound(newRoundId)
+  }
 
   useEffect(
     () => {
@@ -35,23 +44,36 @@ const RoundsPage = (props: Props) => {
     }, [fetchRounds]
   )
 
-  useEffect(
-    () => {
-      if (!selectedRoundId) return
+  // useEffect(
+  //   () => {
+  //     if (!selectedRoundId) return
+  //
+  //     fetchRound(selectedRoundId)
+  //   }, [fetchRound, selectedRoundId]
+  // )
 
-      fetchRound(selectedRoundId)
-    }, [selectedRoundId, fetchRound]
+  if (rounds.length === 0) return null
+
+  return (
+    <Fragment>
+      <TabPanel
+        rounds={rounds}
+        roundId={getSelectedRoundId()}
+        onChange={handleChange}
+      />
+      <RoundDetails
+        roundId={getSelectedRoundId()}
+        round={round}
+        fetchRound={fetchRound}
+      />
+    </Fragment>
   )
-
-  return null
 }
 
-const mapStateToProps = (state) => {
-
-return {
+const mapStateToProps = (state) => ({
   round: state.round?.data,
   rounds: state.rounds.data
-}}
+})
 
 const matchDispatchToProps = {
   fetchRound: roundActions.fetchRound,
