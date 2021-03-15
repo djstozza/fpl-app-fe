@@ -1,9 +1,8 @@
-import { useEffect, useState, useMemo, Fragment } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { roundActions } from 'state/round'
 import { roundsActions } from 'state/rounds'
-import history from 'state/history'
 
 import TabPanel from './tabPanel'
 import RoundDetails from './roundDetails'
@@ -32,8 +31,6 @@ const RoundsPage = (props: Props) => {
 
   const getSelectedRoundId = () => roundId || currentRoundId || lastRoundId
 
-  const [selectedRoundId, setSelectedRoundId] = useState(getSelectedRoundId())
-
   const handleChange = (newRoundId) => {
     fetchRound(newRoundId)
   }
@@ -43,14 +40,6 @@ const RoundsPage = (props: Props) => {
       fetchRounds()
     }, [fetchRounds]
   )
-
-  // useEffect(
-  //   () => {
-  //     if (!selectedRoundId) return
-  //
-  //     fetchRound(selectedRoundId)
-  //   }, [fetchRound, selectedRoundId]
-  // )
 
   if (rounds.length === 0) return null
 

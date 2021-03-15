@@ -15,11 +15,12 @@ export type PlayerSummary = {
 
 export type PlayerStatElement = {
   value: number,
-  playr: PlayerSummary
+  player: PlayerSummary
 }
 
 export type StatsElement = {
   identifier: string,
+  displayOrder: number,
   home: PlayerStatElement[],
   away: PlayerStatElement[]
 }
@@ -31,10 +32,10 @@ export type TeamSummary = {
 
 export type Fixture = {
   awayTeam: TeamSummary,
-  awayTeamScore: number,
+  awayTeamScore?: number,
   finished: boolean,
   homeTeam: TeamSummary,
-  homeTeamScore: number,
+  homeTeamScore?: number,
   kickoffTime: string,
   minutes: number,
   started: boolean,
