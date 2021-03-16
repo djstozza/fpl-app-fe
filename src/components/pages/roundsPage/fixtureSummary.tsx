@@ -10,6 +10,8 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+import { teamCrestPathLoader } from 'utilities/helpers'
+
 import type { Fixture } from 'types'
 
 type Props = {
@@ -49,8 +51,8 @@ const FixtureSummary = (props: Props) => {
   } = props
 
   const classes = useStyles()
-  const homeTeamImg = require(`../../../images/crests/${homeTeamName.toLowerCase()}.png`).default
-  const awayTeamImg = require(`../../../images/crests/${awayTeamName.toLowerCase()}.png`).default
+  const homeTeamImg = teamCrestPathLoader(homeTeamName)
+  const awayTeamImg = teamCrestPathLoader(awayTeamName)
 
   return (
     <AccordionSummary
