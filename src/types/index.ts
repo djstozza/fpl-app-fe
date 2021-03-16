@@ -26,7 +26,7 @@ export type StatsElement = {
 }
 
 export type TeamSummary = {
-  name: string,
+  shortName: string,
   id: string
 }
 

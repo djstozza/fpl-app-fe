@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     disabled: {
       paddingRight: theme.spacing(6)
+    },
+    crest: {
+      maxWidth: theme.spacing(6),
+      maxHeight: theme.spacing(6)
     }
   })
 )
@@ -33,8 +37,8 @@ const FixtureSummary = (props: Props) => {
   const {
     fixture: {
       kickoffTime,
-      homeTeam: { id: homeTeamId, name: homeTeamName },
-      awayTeam: { id: awayTeamId, name: awayTeamName },
+      homeTeam: { id: homeTeamId, shortName: homeTeamName },
+      awayTeam: { id: awayTeamId, shortName: awayTeamName },
       homeTeamScore,
       awayTeamScore,
       started,
@@ -45,6 +49,8 @@ const FixtureSummary = (props: Props) => {
   } = props
 
   const classes = useStyles()
+  const homeTeamImg = require(`../../../images/crests/${homeTeamName.toLowerCase()}.png`).default
+  const awayTeamImg = require(`../../../images/crests/${awayTeamName.toLowerCase()}.png`).default
 
   return (
     <AccordionSummary
@@ -54,6 +60,7 @@ const FixtureSummary = (props: Props) => {
     >
       <Grid container spacing={1} alignItems='center'>
         <Grid item xs={4} md={4} lg={4}>
+          <img src={homeTeamImg} className={classes.crest} />
           <Typography>
             {homeTeamName}
           </Typography>
@@ -76,6 +83,7 @@ const FixtureSummary = (props: Props) => {
           }
         </Grid>
         <Grid item xs={4} md={4} lg={4}>
+          <img src={awayTeamImg} className={classes.crest} />
           <Typography>
             {awayTeamName}
           </Typography>
