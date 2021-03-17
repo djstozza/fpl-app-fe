@@ -1,13 +1,13 @@
 import { put, takeLatest, takeEvery, all, fork, select } from 'redux-saga/effects'
 
-import { API_URL } from 'utilities/constants'
+import { API_URL, ROUNDS_URL } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
 
 function * fetchRound (action) : Generator<any, any, any> {
   const { roundId } = action
-  const url = `${API_URL}/rounds/${roundId}`
+  const url = `${API_URL}${ROUNDS_URL}/${roundId}`
 
   yield put({
     type: requestActions.UNAUTHED_REQUEST,

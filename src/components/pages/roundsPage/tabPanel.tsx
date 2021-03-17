@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import history from 'state/history'
-import { ROUNDS_PAGE_URL } from 'utilities/constants'
+import { ROUNDS_URL } from 'utilities/constants'
 
 import type { RoundSummary } from 'types'
 
@@ -37,7 +37,7 @@ export default function ScrollableTabsButtonAuto(props: Props) {
   const handleChange = (newId) => {
     onChange(newId)
 
-    history.push(`${ROUNDS_PAGE_URL}/${newId}`)
+    history.push(`${ROUNDS_URL}/${newId}`)
   }
 
   return (

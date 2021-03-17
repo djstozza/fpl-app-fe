@@ -1,5 +1,6 @@
 export const API_URL = process.env.REACT_APP_API_URL
-export const ROUNDS_PAGE_URL = '/rounds'
+export const ROUNDS_URL = '/rounds'
+export const TEAMS_URL = '/teams'
 
 export const APPLICATION_ERRORS = {
   '403': {

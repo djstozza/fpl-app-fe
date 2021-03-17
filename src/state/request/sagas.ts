@@ -1,6 +1,6 @@
 import { call, put, takeEvery, all, fork, select } from 'redux-saga/effects'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
-import humps from 'lodash-humps'
+import { camelizeKeys } from 'humps'
 
 import * as actions from './actions'
 import { getData } from '../../api'
@@ -23,10 +23,11 @@ function * sendRequest (needsAuth, action) : Generator<any, any, any> {
     if (!ok || result.errors) {
       yield put({ type: actions.REQUEST_FAIL, failureAction, url, response })
     } else {
-      yield put({ type: successAction, ...humps(result), redirect, notification })
+      yield put({ type: successAction, ...camelizeKeys(result), redirect, notification })
     }
   } catch (e) {
-    yield put({ type: failureAction, errors: [humps(e)] })
+    console.log(e)
+    yield put({ type: failureAction, errors: [camelizeKeys(e)] })
     yield put({ type: actions.ADD_REQUEST_ERROR, error: { url, status: 'failed_to_fetch' } })
   } finally {
     yield put({ type: actions.REQUEST_DONE })
@@ -39,7 +40,7 @@ function * requestFail (action: any): Generator<any, any, any> {
     failureAction,
     response: { status, statusText, body }
   } = action
-  const errors = humps(body.errors || [])
+  const errors = camelizeKeys(body.errors || [])
 
   yield put({ type: failureAction, status, errors })
   yield put({ type: actions.ADD_REQUEST_ERROR, error: { url, status, statusText, errors } })

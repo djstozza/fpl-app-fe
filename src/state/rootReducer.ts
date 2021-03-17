@@ -1,14 +1,16 @@
 import { combineReducers } from 'redux'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
+import request from './request'
 import round from './round'
 import rounds from './rounds'
-import request from './request'
+import teams from './teams'
 
 const rootReducer = combineReducers({
+  request,
   round,
   rounds,
-  request,
+  teams,
   loadingBar: loadingBarReducer
 })
 
