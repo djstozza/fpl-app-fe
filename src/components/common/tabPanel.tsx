@@ -1,16 +1,20 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
+import {
+  AppBar,
+  Tabs,
+  Tab,
+  Theme,
+  makeStyles
+} from '@material-ui/core'
 import history from 'state/history'
-import { ROUNDS_URL } from 'utilities/constants'
 
-import type { RoundSummary } from 'types'
+import type { RoundSummary, TeamSummary } from 'types'
 
 type Props = {
-  rounds: RoundSummary[],
-  roundId: string,
+  collection: RoundSummary[] | TeamSummary[],
+  collectionId: string,
   onChange: Function
+  labelRenderer: Function,
+  url: string
 }
 
 const scrollProps = (index: number) => {
@@ -26,18 +30,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper
   },
+  wrapper: {
+    flexDirection: 'row',
+    display: 'flex'
+  }
 }))
 
 export default function ScrollableTabsButtonAuto(props: Props) {
-  const { rounds, roundId, onChange } = props
+  const { collection, collectionId, onChange, labelRenderer, url } = props
   const classes = useStyles()
 
-  const index = rounds.findIndex(({ id }) => id === roundId)
+  const index = collection.findIndex(({ id }) => id === collectionId)
 
   const handleChange = (newId) => {
     onChange(newId)
 
-    history.push(`${ROUNDS_URL}/${newId}`)
+    history.push(`${url}/${newId}`)
   }
 
   return (
@@ -52,11 +60,12 @@ export default function ScrollableTabsButtonAuto(props: Props) {
           aria-label='scrollable auto tabs example'
         >
           {
-            rounds.map(({ name, id }, key) => (
+            collection.map((item, key) => (
               <Tab
-                key={id}
-                label={name}
-                onClick={() => handleChange(id)}
+                classes={{ wrapper: classes.wrapper }}
+                key={item['id']}
+                label={labelRenderer(item)}
+                onClick={() => handleChange(item['id'])}
                 {...scrollProps(key)}
               />
             ))

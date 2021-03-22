@@ -1,10 +1,11 @@
-import { useEffect, useState, Fragment } from 'react'
+import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { roundActions } from 'state/round'
 import { roundsActions } from 'state/rounds'
+import { ROUNDS_URL } from 'utilities/constants'
 
-import TabPanel from './tabPanel'
+import TabPanel from 'components/common/tabPanel'
 import RoundDetails from './roundDetails'
 
 import type { Round, RoundSummary } from 'types'
@@ -35,6 +36,8 @@ const RoundsPage = (props: Props) => {
     fetchRound(newRoundId)
   }
 
+  const labelRenderer = (roundSummary: RoundSummary) => roundSummary.name
+
   useEffect(
     () => {
       fetchRounds()
@@ -46,9 +49,11 @@ const RoundsPage = (props: Props) => {
   return (
     <Fragment>
       <TabPanel
-        rounds={rounds}
-        roundId={getSelectedRoundId()}
+        collection={rounds}
+        collectionId={getSelectedRoundId()}
+        labelRenderer={labelRenderer}
         onChange={handleChange}
+        url={ROUNDS_URL}
       />
       <RoundDetails
         roundId={getSelectedRoundId()}

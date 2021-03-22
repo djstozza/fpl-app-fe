@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import classnames from 'classnames'
-import { map, startCase, orderBy } from 'lodash'
+import { startCase, orderBy } from 'lodash'
 import {
   AccordionDetails,
   Typography,

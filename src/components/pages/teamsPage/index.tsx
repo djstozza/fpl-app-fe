@@ -99,7 +99,7 @@ const TeamsPage = (props: Props) => {
 
   useEffect(
     () => {
-      fetchTeams({ sort: { ...sortParams } })
+      fetchTeams({ sort: { ...sortParams }, updateUrl: true })
     }, [fetchTeams]
   )
 

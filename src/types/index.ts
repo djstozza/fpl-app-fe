@@ -8,14 +8,14 @@ export type Action = {
   data?: any
 }
 
-export type PlayerSummary = {
+export type PlayerBase = {
   name: string,
   id: string
 }
 
 export type PlayerStatElement = {
   value: number,
-  player: PlayerSummary
+  player: PlayerBase
 }
 
 export type StatsElement = {
@@ -25,26 +25,33 @@ export type StatsElement = {
   away: PlayerStatElement[]
 }
 
-export type TeamFixtureSummary = {
+export type TeamBase = {
   shortName: string,
   id: string
 }
 
-export type Fixture = {
-  awayTeam: TeamFixtureSummary,
-  awayTeamScore?: number,
+type FixtureBase = {
   finished: boolean,
-  homeTeam: TeamFixtureSummary,
+  awayTeamScore?: number,
   homeTeamScore?: number,
   kickoffTime: string,
   minutes: number,
-  started: boolean,
+  started: boolean
+}
+
+export type Fixture = {
+  awayTeam: TeamBase,
+  homeTeam: TeamBase,
+  homeTeamScore?: number,
   stats: StatsElement[]
+} & FixtureBase
+
+type RoundBase = {
+  id: string,
+  name: string
 }
 
 export type RoundSummary = {
-  id: string,
-  name: string,
   finsihed: boolean,
   isCurrent: boolean,
   isNext: boolean,
@@ -52,7 +59,7 @@ export type RoundSummary = {
   finished: boolean,
   dataChecked: boolean,
   deadlineTime: string
-}
+} & RoundBase
 
 export type Round = { fixtures: Fixture[] } & RoundSummary
 
@@ -69,4 +76,17 @@ export type TeamSummary = {
   currentForm: string[],
   cleanSheets: number,
   played: number
-} & TeamFixtureSummary
+} & TeamBase
+
+export type TeamFixture = {
+  round: RoundBase,
+  opponent: TeamBase,
+  leg: string,
+  result: string,
+  strength: number
+} & FixtureBase
+
+export type Team = {
+  fixtures: TeamFixture[]
+  players: PlayerBase[]
+} & TeamSummary

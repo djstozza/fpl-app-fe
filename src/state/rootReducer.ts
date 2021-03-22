@@ -5,12 +5,14 @@ import request from './request'
 import round from './round'
 import rounds from './rounds'
 import teams from './teams'
+import team from './team'
 
 const rootReducer = combineReducers({
   request,
   round,
   rounds,
   teams,
+  team,
   loadingBar: loadingBarReducer
 })
 

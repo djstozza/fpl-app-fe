@@ -13,13 +13,14 @@ const defaultSortQuery = {
 }
 
 function * fetchTeams (action) : Generator<any, any, any> {
-  const sortQuery = Object.keys(action.sort).length > 0 ? action.sort : defaultSortQuery
+  const { sort, updateUrl } = action
+  const sortQuery = Object.keys(action.sort).length > 0 ? sort : defaultSortQuery
 
   const query = {
     sort: sortQuery
   }
 
-  history.push(`${TEAMS_URL}?${qs.stringify(query)}`)
+  if (updateUrl) history.push(`${TEAMS_URL}?${qs.stringify(query)}`)
 
   const url = `${API_URL}${TEAMS_URL}?${qs.stringify(decamelizeKeys(query))}`
 
