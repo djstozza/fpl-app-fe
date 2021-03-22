@@ -13,9 +13,8 @@ const defaultSortQuery = {
 }
 
 function * fetchTeams (action) : Generator<any, any, any> {
-  console.log(action.sort)
   const sortQuery = Object.keys(action.sort).length > 0 ? action.sort : defaultSortQuery
-  
+
   const query = {
     sort: sortQuery
   }

@@ -1,6 +1,7 @@
-import { useEffect, useState, Fragment, MouseEvent } from 'react'
+import { useEffect, useState, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import qs from 'qs'
+import classnames from 'classnames'
 
 import { teamsActions } from 'state/teams'
 import { teamCrestPathLoader } from 'utilities/helpers'
@@ -28,28 +29,42 @@ type Props = {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    container: {
+      height: '100vh',
+      overflow: 'auto'
+    },
     table: {
       maxWidth: theme.spacing(100),
       margin: '0 auto'
     },
     nameContainer: {
       display: 'flex',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      alignItems: 'center'
     },
     crest: {
       marginRight: theme.spacing(0.5),
       maxHeight: theme.spacing(3)
+    },
+    mainHeaderCell: {
+      zIndex: 3
+    },
+    mainCell: {
+      position: 'sticky',
+      left: 0,
+      backgroundColor: '#ffffff',
+      zIndex: 2
     }
   })
 )
 
 const TEAMS_TABLE_CELLS = [
-  { cellId: 'position', label: 'R', toolTipLabel: 'Rank', sort: true },
   {
     cellId: 'shortName',
     label: 'N',
     toolTipLabel: 'Name',
     sort: true,
+    sticky: true,
     customRender: (shortName, classes) => (
       <div className={classes.nameContainer}>
         <img src={teamCrestPathLoader(shortName)} className={classes.crest} />
@@ -59,6 +74,7 @@ const TEAMS_TABLE_CELLS = [
       </div>
     )
   },
+  { cellId: 'position', label: 'R', toolTipLabel: 'Rank', sort: true },
   { cellId: 'played', label: 'MP', toolTipLabel: 'Matches Played', sort: true },
   { cellId: 'wins', label: 'W', toolTipLabel: 'Wins', sort: true },
   { cellId: 'losses', label: 'L', toolTipLabel: 'Losses', sort: true },
@@ -80,7 +96,6 @@ const TeamsPage = (props: Props) => {
   const { sort: sortParams } = qs.parse(window.location.search.substring(1))
 
   const classes = useStyles()
-  console.log(sortParams)
 
   useEffect(
     () => {
@@ -102,7 +117,7 @@ const TeamsPage = (props: Props) => {
   if (teams.length === 0) return null
 
   return (
-    <Fragment>
+    <div className={classes.container}>
       <Table
         size='small'
         className={classes.table}
@@ -111,8 +126,12 @@ const TeamsPage = (props: Props) => {
         <TableHead>
           <TableRow>
             {
-              TEAMS_TABLE_CELLS.map(({ cellId, label, toolTipLabel, sort }, key) => (
-                <TableCell align='center' key={key}>
+              TEAMS_TABLE_CELLS.map(({ cellId, label, toolTipLabel, sort, sticky }, key) => (
+                <TableCell
+                  align='center'
+                  key={key}
+                  className={classnames({ [classes.mainHeaderCell]: sticky })}
+                >
                   <Tooltip title={toolTipLabel}>
                     <TableSortLabel
                       hideSortIcon={!sort}
@@ -133,8 +152,11 @@ const TeamsPage = (props: Props) => {
             teams.map((team, rowKey) => (
               <TableRow key={rowKey}>
                 {
-                  TEAMS_TABLE_CELLS.map(({ cellId, customRender }, cellKey) => (
-                    <TableCell key={cellKey}>
+                  TEAMS_TABLE_CELLS.map(({ cellId, customRender, sticky }, cellKey) => (
+                    <TableCell
+                      key={cellKey}
+                      className={classnames({ [classes.mainCell]: sticky })}
+                    >
                       { customRender ? customRender(team[cellId], classes) : team[cellId] }
                     </TableCell>
                   ))
@@ -144,7 +166,7 @@ const TeamsPage = (props: Props) => {
           }
         </TableBody>
       </Table>
-    </Fragment>
+    </div>
   )
 }
 
