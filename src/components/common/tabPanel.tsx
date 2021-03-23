@@ -12,7 +12,6 @@ import type { RoundSummary, TeamSummary } from 'types'
 type Props = {
   collection: RoundSummary[] | TeamSummary[],
   collectionId: string,
-  onChange: Function
   labelRenderer: Function,
   url: string
 }
@@ -37,16 +36,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 export default function ScrollableTabsButtonAuto(props: Props) {
-  const { collection, collectionId, onChange, labelRenderer, url } = props
+  const { collection, collectionId, labelRenderer, url } = props
   const classes = useStyles()
 
   const index = collection.findIndex(({ id }) => id === collectionId)
 
-  const handleChange = (newId) => {
-    onChange(newId)
-
-    history.push(`${url}/${newId}`)
-  }
+  const handleChange = (newId) => history.push(`${url}/${newId}`)
 
   return (
     <div className={classes.root}>

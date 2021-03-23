@@ -2,9 +2,11 @@ import { useEffect, useState, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import qs from 'qs'
 import classnames from 'classnames'
+import { Link } from 'react-router-dom'
 
 import { teamsActions } from 'state/teams'
 import { teamCrestPathLoader } from 'utilities/helpers'
+import { TEAMS_URL } from 'utilities/constants'
 
 import {
   Table,
@@ -37,10 +39,12 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: theme.spacing(100),
       margin: '0 auto'
     },
-    nameContainer: {
+    nameLink: {
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      textDecoration: 'none',
+      color: '#0645AD'
     },
     crest: {
       marginRight: theme.spacing(0.5),
@@ -65,13 +69,13 @@ const TEAMS_TABLE_CELLS = [
     toolTipLabel: 'Name',
     sort: true,
     sticky: true,
-    customRender: (shortName, classes) => (
-      <div className={classes.nameContainer}>
+    customRender: (shortName, id, classes) => (
+      <Link to={`${TEAMS_URL}/${id}`} className={classes.nameLink}>
         <img src={teamCrestPathLoader(shortName)} className={classes.crest} />
         <div>
           {shortName}
         </div>
-      </div>
+      </Link>
     )
   },
   { cellId: 'position', label: 'R', toolTipLabel: 'Rank', sort: true },
@@ -111,7 +115,7 @@ const TeamsPage = (props: Props) => {
       [id]: newDirection
     }
 
-    fetchTeams({ sort: newSortParams })
+    fetchTeams({ sort: newSortParams, updateUrl: true })
   }
 
   if (teams.length === 0) return null
@@ -157,7 +161,7 @@ const TeamsPage = (props: Props) => {
                       key={cellKey}
                       className={classnames({ [classes.mainCell]: sticky })}
                     >
-                      { customRender ? customRender(team[cellId], classes) : team[cellId] }
+                      { customRender ? customRender(team[cellId], team.id, classes) : team[cellId] }
                     </TableCell>
                   ))
                 }

@@ -12,6 +12,7 @@ import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'
 
 import TabPanel from 'components/common/tabPanel'
+import TeamDetails from './teamDetails'
 
 import type { Team, TeamSummary } from 'types'
 
@@ -45,16 +46,15 @@ const TeamPage = (props: Props) => {
 
   const classes = useStyles()
 
-  const handleChange = (newRoundId) => {
-    // fetchRound(newRoundId)
+  const labelRenderer = (teamSummary: TeamSummary) => {
+    const { shortName } = teamSummary
+    return (
+      <Fragment>
+        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
+        <Typography>{shortName}</Typography>
+      </Fragment>
+    )
   }
-
-  const labelRenderer = (teamSummary: TeamSummary) => (
-    <Fragment>
-      <img src={teamCrestPathLoader(teamSummary.shortName)} className={classes.crest} />
-      <Typography>{teamSummary.shortName}</Typography>
-    </Fragment>
-  )
 
   useEffect(
     () => {
@@ -63,19 +63,25 @@ const TeamPage = (props: Props) => {
   )
 
   return (
-    <TabPanel
-      collection={teams}
-      collectionId={teamId}
-      labelRenderer={labelRenderer}
-      onChange={handleChange}
-      url={TEAMS_URL}
-    />
+    <Fragment>
+      <TabPanel
+        collection={teams}
+        collectionId={teamId}
+        labelRenderer={labelRenderer}
+        url={TEAMS_URL}
+      />
+      <TeamDetails
+        team={team}
+        teamId={teamId}
+        fetchTeam={fetchTeam}
+      />
+    </Fragment>
   )
 }
 
 const mapStateToProps = (state) => ({
   teams: state.teams.data,
-  team: state.team.data
+  team: state.team?.data
 })
 
 const matchDispatchToProps = {

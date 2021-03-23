@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(3),
       textAlign: 'center'
     },
-    foo: {
+    title: {
       marginTop: theme.spacing(1.5)
     }
   })
@@ -53,7 +53,7 @@ const FixtureDetails = (props: Props) => {
               return (
                 <Fragment key={key}>
                   <Grid item xs={12} md={12}>
-                    <Typography variant='body1' className={classnames({ [classes.foo]: displayOrder === 1 })}>
+                    <Typography variant='body1' className={classnames({ [classes.title]: displayOrder === 1 })}>
                       {startCase(identifier)}
                     </Typography>
                   </Grid>

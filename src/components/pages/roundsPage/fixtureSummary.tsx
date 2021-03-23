@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import {
   AccordionSummary,
@@ -11,6 +12,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
+import { TEAMS_URL } from 'utilities/constants'
 
 import type { Fixture } from 'types'
 
@@ -26,11 +28,19 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '0.5px solid #e0e0e0'
     },
     disabled: {
-      paddingRight: theme.spacing(6)
+      paddingRight: theme.spacing(6),
+      pointerEvents: 'none',
+      '& a': {
+        pointerEvents: 'all'
+      }
     },
     crest: {
       maxWidth: theme.spacing(6),
       maxHeight: theme.spacing(6)
+    },
+    teamLink: {
+      textDecoration: 'none',
+      color: '#0645AD'
     }
   })
 )
@@ -51,22 +61,25 @@ const FixtureSummary = (props: Props) => {
   } = props
 
   const classes = useStyles()
-  const homeTeamImg = teamCrestPathLoader(homeTeamName)
-  const awayTeamImg = teamCrestPathLoader(awayTeamName)
+
+  const teamDetailsGrid = (teamId, shortName) => (
+    <Grid item xs={4} md={4} lg={4}>
+      <Link to={`${TEAMS_URL}/${teamId}`} className={classes.teamLink}>
+        <img src={teamCrestPathLoader(shortName)} className={classes.crest} alt={shortName} />
+        <Typography>
+          {shortName}
+        </Typography>
+      </Link>
+    </Grid>
+  )
 
   return (
     <AccordionSummary
       className={classnames(classes.summary, { [classes.disabled]: !started })}
       expandIcon={stats.length > 0 ? <ExpandMoreIcon /> : ''}
-      disabled={!started}
     >
       <Grid container spacing={1} alignItems='center'>
-        <Grid item xs={4} md={4} lg={4}>
-          <img src={homeTeamImg} className={classes.crest} />
-          <Typography>
-            {homeTeamName}
-          </Typography>
-        </Grid>
+        {teamDetailsGrid(homeTeamId, homeTeamName)}
         <Grid item xs={4} md={4} lg={4}>
           <Typography>
             {moment(kickoffTime).format('HH:mm')}
@@ -84,12 +97,7 @@ const FixtureSummary = (props: Props) => {
             </Typography>
           }
         </Grid>
-        <Grid item xs={4} md={4} lg={4}>
-          <img src={awayTeamImg} className={classes.crest} />
-          <Typography>
-            {awayTeamName}
-          </Typography>
-        </Grid>
+        {teamDetailsGrid(awayTeamId, awayTeamName)}
       </Grid>
     </AccordionSummary>
   )

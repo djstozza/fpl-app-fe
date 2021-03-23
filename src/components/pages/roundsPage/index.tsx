@@ -32,10 +32,6 @@ const RoundsPage = (props: Props) => {
 
   const getSelectedRoundId = () => roundId || currentRoundId || lastRoundId
 
-  const handleChange = (newRoundId) => {
-    fetchRound(newRoundId)
-  }
-
   const labelRenderer = (roundSummary: RoundSummary) => roundSummary.name
 
   useEffect(
@@ -52,7 +48,6 @@ const RoundsPage = (props: Props) => {
         collection={rounds}
         collectionId={getSelectedRoundId()}
         labelRenderer={labelRenderer}
-        onChange={handleChange}
         url={ROUNDS_URL}
       />
       <RoundDetails

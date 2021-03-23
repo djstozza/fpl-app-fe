@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
     },
     title: {
+      paddingTop: theme.spacing(1),
       paddingLeft: theme.spacing(1)
     },
     summary: {
