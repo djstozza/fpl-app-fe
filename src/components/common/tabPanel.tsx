@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export default function ScrollableTabsButtonAuto(props: Props) {
+const TabPanel = (props: Props) => {
   const { collection, collectionId, labelRenderer, url } = props
   const classes = useStyles()
 
@@ -70,3 +70,5 @@ export default function ScrollableTabsButtonAuto(props: Props) {
     </div>
   )
 }
+
+export default TabPanel

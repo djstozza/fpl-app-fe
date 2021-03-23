@@ -1,15 +1,17 @@
-import { useEffect } from 'react'
+import { useEffect, Fragment } from 'react'
 import {
-  Paper,
   Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Typography,
   Theme,
   makeStyles,
   createStyles
 } from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+import FixturesTable from './fixturesTable'
 import { teamCrestPathLoader } from 'utilities/helpers'
-
 
 import { Team } from 'types'
 
@@ -21,16 +23,28 @@ type Props = {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    crest: {
-      marginRight: theme.spacing(0.5),
-      maxHeight: theme.spacing(6)
-    },
     wrapper: {
-      paddingTop: theme.spacing(1),
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
       paddingLeft: theme.spacing(1),
       flexDirection: 'row',
       display: 'flex',
       alignItems: 'center'
+    },
+    crest: {
+      marginRight: theme.spacing(0.5),
+      maxHeight: theme.spacing(6)
+    },
+    summary: {
+      textAlign: 'center',
+      backgroundColor: '#eeeeee',
+      border: '0.5px solid #e0e0e0'
+    },
+    container: {
+      height: '100vh',
+      overflowX: 'auto',
+      padding: 0,
+      margin: 'auto'
     }
   })
 )
@@ -48,15 +62,28 @@ const TeamDetails = (props: Props) => {
 
   if (!team) return null
 
-  const { name, shortName } = team
+  const { name, shortName, fixtures } = team
 
   return (
-    <div className={classes.wrapper}>
-      <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
-      <Typography variant='h4'>
-        {name}
-      </Typography>
-    </div>
+    <Fragment>
+      <div className={classes.wrapper}>
+        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
+        <Typography variant='h4'>
+          {name}
+        </Typography>
+      </div>
+      <Accordion>
+        <AccordionSummary
+          className={classes.summary}
+          expandIcon={<ExpandMoreIcon />}
+        >
+          Fixtures
+        </AccordionSummary>
+        <AccordionDetails className={classes.container}>
+          <FixturesTable fixtures={fixtures} />
+        </AccordionDetails>
+      </Accordion>
+    </Fragment>
   )
 }
 
