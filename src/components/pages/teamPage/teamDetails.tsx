@@ -11,6 +11,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import FixturesTable from './fixturesTable'
+import PlayersTable from './playersTable'
 import { teamCrestPathLoader } from 'utilities/helpers'
 
 import { Team } from 'types'
@@ -62,7 +63,7 @@ const TeamDetails = (props: Props) => {
 
   if (!team) return null
 
-  const { name, shortName, fixtures } = team
+  const { name, shortName, fixtures, players } = team
 
   return (
     <Fragment>
@@ -81,6 +82,17 @@ const TeamDetails = (props: Props) => {
         </AccordionSummary>
         <AccordionDetails className={classes.container}>
           <FixturesTable fixtures={fixtures} />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          className={classes.summary}
+          expandIcon={<ExpandMoreIcon />}
+        >
+          Players
+        </AccordionSummary>
+        <AccordionDetails className={classes.container}>
+          <PlayersTable players={players} />
         </AccordionDetails>
       </Accordion>
     </Fragment>

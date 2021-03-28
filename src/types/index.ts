@@ -9,7 +9,7 @@ export type Action = {
 }
 
 export type PlayerBase = {
-  name: string,
+  lastName: string,
   id: string
 }
 
@@ -86,7 +86,22 @@ export type TeamFixture = {
   strength: number
 } & FixtureBase
 
+export type PlayerSummary = {
+  fistName: string,
+  position: string,
+  goalsScored: number,
+  assists: number,
+  cleanSheets: number,
+  saves: number,
+  yellowCards: number,
+  redCards: number,
+  totalPoints: number,
+  penaltiesSaved: number,
+  penaltiesMissed: number,
+  ownGoals: number
+} & PlayerBase
+
 export type Team = {
   fixtures: TeamFixture[]
-  players: PlayerBase[]
+  players: PlayerSummary[]
 } & TeamSummary
