@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from 'react'
+import { Fragment } from 'react'
 import {
   Accordion,
   AccordionDetails,
@@ -14,12 +14,16 @@ import FixturesTable from './fixturesTable'
 import PlayersTable from './playersTable'
 import { teamCrestPathLoader } from 'utilities/helpers'
 
-import { Team } from 'types'
+import { Team, PlayerSummary } from 'types'
 
 type Props = {
   team?: Team,
   teamId: string,
-  fetchTeam: Function
+  fetchTeamPlayers: Function,
+  players: PlayerSummary[],
+  sort: {
+    players: Object
+  }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -51,19 +55,13 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const TeamDetails = (props: Props) => {
-  const { team, teamId, fetchTeam } = props
+  const { team, teamId, players, fetchTeamPlayers, sort } = props
 
   const classes = useStyles()
 
-  useEffect(
-    () => {
-      fetchTeam(teamId)
-    }, [fetchTeam, teamId]
-  )
-
   if (!team) return null
 
-  const { name, shortName, fixtures, players } = team
+  const { name, shortName, fixtures } = team
 
   return (
     <Fragment>
@@ -92,7 +90,7 @@ const TeamDetails = (props: Props) => {
           Players
         </AccordionSummary>
         <AccordionDetails className={classes.container}>
-          <PlayersTable players={players} />
+          <PlayersTable players={players} fetchTeamPlayers={fetchTeamPlayers} sort={sort} teamId={teamId} />
         </AccordionDetails>
       </Accordion>
     </Fragment>

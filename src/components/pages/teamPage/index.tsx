@@ -1,5 +1,6 @@
-import { useEffect, useState, MouseEvent, Fragment } from 'react'
+import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
+import qs from 'qs'
 import {
   Typography,
   Theme,
@@ -14,14 +15,19 @@ import { TEAMS_URL } from 'utilities/constants'
 import TabPanel from 'components/common/tabPanel'
 import TeamDetails from './teamDetails'
 
-import type { Team, TeamSummary } from 'types'
+import type { Team, TeamSummary, PlayerSummary } from 'types'
 
 type Props = {
   team?: Team,
   teams: TeamSummary[],
   fetchTeam: Function,
   fetchTeams: Function,
-  match: { params: { teamId } }
+  fetchTeamPlayers: Function,
+  players: PlayerSummary[],
+  match: { params: { teamId } },
+  sort: {
+    players: Object
+  }
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -41,8 +47,14 @@ const TeamPage = (props: Props) => {
     teams,
     fetchTeam,
     fetchTeams,
+    fetchTeamPlayers,
+    players,
+    sort,
     match: { params: { teamId } }
   } = props
+
+  const searchQuery = qs.parse(window.location.search.substring(1))
+  const sortQuery = searchQuery.sort || sort
 
   const classes = useStyles()
 
@@ -62,6 +74,18 @@ const TeamPage = (props: Props) => {
     }, [fetchTeams]
   )
 
+  useEffect(
+    () => {
+      fetchTeam(teamId)
+    }, [fetchTeam, teamId]
+  )
+
+  useEffect(
+    () => {
+      fetchTeamPlayers(teamId, sortQuery)
+    }, [fetchTeamPlayers, teamId]
+  )
+
   return (
     <Fragment>
       <TabPanel
@@ -73,20 +97,33 @@ const TeamPage = (props: Props) => {
       <TeamDetails
         team={team}
         teamId={teamId}
-        fetchTeam={fetchTeam}
+        players={players}
+        fetchTeamPlayers={fetchTeamPlayers}
+        sort={sortQuery}
       />
     </Fragment>
   )
 }
 
-const mapStateToProps = (state) => ({
-  teams: state.teams.data,
-  team: state.team?.data
-})
+const mapStateToProps = (state) => {
+  const {
+    teams: { data: teams },
+    team: { data: team, sort },
+    players: { data: players }
+  } = state
+
+  return {
+    teams,
+    team,
+    sort,
+    players
+  }
+}
 
 const matchDispatchToProps = {
   fetchTeams: teamsActions.fetchTeams,
-  fetchTeam: teamActions.fetchTeam
+  fetchTeam: teamActions.fetchTeam,
+  fetchTeamPlayers: teamActions.fetchTeamPlayers
 }
 
 

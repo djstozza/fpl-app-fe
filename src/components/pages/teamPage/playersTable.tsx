@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom'
-import moment from 'moment'
+import { MouseEvent } from 'react'
 import classnames from 'classnames'
 import {
   Table,
@@ -9,17 +8,20 @@ import {
   TableHead,
   Theme,
   Tooltip,
+  TableSortLabel,
   makeStyles,
   createStyles
 } from '@material-ui/core'
 
 import type { PlayerSummary } from 'types'
 
-import { teamCrestPathLoader } from 'utilities/helpers'
-import { ROUNDS_URL, TEAMS_URL } from 'utilities/constants'
-
 type Props = {
-  players: PlayerSummary[]
+  players: PlayerSummary[],
+  fetchTeamPlayers: Function,
+  sort: {
+    players: Object
+  },
+  teamId: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -56,27 +58,43 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const PLAYERS_TABLE_CELLS = [
-  { cellId: 'lastName', label: 'LN', toolTipLabel: 'Last Name', sticky: true },
-  { cellId: 'firstName', label: 'FN', toolTipLabel: 'First Name' },
-  { cellId: 'position', label: 'P', toolTipLabel: 'Position' },
-  { cellId: 'totalPoints', label: 'TP', toolTipLabel: 'Total Points' },
-  { cellId: 'goalsScored', label: 'GS', toolTipLabel: 'Goals Scored' },
-  { cellId: 'assists', label: 'A', toolTipLabel: 'Assists' },
-  { cellId: 'cleanSheets', label: 'CS', toolTipLabel: 'Clean Sheets' },
-  { cellId: 'yellowCards', label: 'YC', toolTipLabel: 'Yellow Cards' },
-  { cellId: 'redCards', label: 'RC', toolTipLabel: 'Red Cards' },
-  { cellId: 'bonus', label: 'BP', toolTipLabel: 'Bonus Points' },
-  { cellId: 'cleanSheets', label: 'CS', toolTipLabel: 'Clean Sheets' },
-  { cellId: 'saves', label: 'S', toolTipLabel: 'Saves' },
-  { cellId: 'penaltiesSaved', label: 'PS', toolTipLabel: 'Penalties Saved' },
-  { cellId: 'penaltiesMissed', label: 'PM', toolTipLabel: 'Penalties Missed' },
-  { cellId: 'ownGoals', label: 'OG', toolTipLabel: 'Own Goals' }
+  { cellId: 'lastName', label: 'LN', toolTipLabel: 'Last Name', sticky: true, sort: true },
+  { cellId: 'firstName', label: 'FN', toolTipLabel: 'First Name', sort: true },
+  {
+    cellId: 'positionId',
+    label: 'P',
+    toolTipLabel: 'Position',
+    sort: true,
+    customRender: ({ position: { singularNameShort }}: PlayerSummary) => singularNameShort
+  },
+  { cellId: 'totalPoints', label: 'TP', toolTipLabel: 'Total Points', sort: true },
+  { cellId: 'goalsScored', label: 'GS', toolTipLabel: 'Goals Scored', sort: true },
+  { cellId: 'assists', label: 'A', toolTipLabel: 'Assists', sort: true },
+  { cellId: 'yellowCards', label: 'YC', toolTipLabel: 'Yellow Cards', sort: true },
+  { cellId: 'redCards', label: 'RC', toolTipLabel: 'Red Cards', sort: true },
+  { cellId: 'bonus', label: 'BP', toolTipLabel: 'Bonus Points', sort: true },
+  { cellId: 'cleanSheets', label: 'CS', toolTipLabel: 'Clean Sheets', sort: true },
+  { cellId: 'saves', label: 'S', toolTipLabel: 'Saves', sort: true },
+  { cellId: 'penaltiesSaved', label: 'PS', toolTipLabel: 'Penalties Saved', sort: true },
+  { cellId: 'penaltiesMissed', label: 'PM', toolTipLabel: 'Penalties Missed', sort: true },
+  { cellId: 'ownGoals', label: 'OG', toolTipLabel: 'Own Goals', sort: true }
 ]
 
 const FixturesTable = (props: Props) => {
-  const { players } = props
+  const { teamId, players, fetchTeamPlayers, sort: { players: sortParams } } = props
 
   const classes = useStyles()
+
+  const handleSort = (sort, id, direction) => (event: MouseEvent<unknown>) => {
+    if (!sort) return
+
+    const newDirection = direction === 'asc' ? 'desc' : 'asc'
+    const newSortParams = {
+      [id]: newDirection
+    }
+
+    fetchTeamPlayers(teamId, { ...sort, players: { ...newSortParams } })
+  }
 
   return (
     <Table
@@ -87,16 +105,23 @@ const FixturesTable = (props: Props) => {
       <TableHead>
         <TableRow>
           {
-            PLAYERS_TABLE_CELLS.map(({ cellId, label, toolTipLabel, sticky }, key) => (
+            PLAYERS_TABLE_CELLS.map(({ cellId, label, toolTipLabel, sort, sticky }, key) => (
               <TableCell
                 align='center'
                 key={key}
                 className={classnames({ [classes.mainHeaderCell]: sticky })}
               >
                 <Tooltip title={toolTipLabel}>
-                  <div>
+                  <TableSortLabel
+                    hideSortIcon={!sort}
+                    onClick={
+                      handleSort(sort, cellId, sortParams[cellId])
+                    }
+                    active={Boolean(sortParams[cellId])}
+                    direction={sortParams[cellId]}
+                  >
                     {label}
-                  </div>
+                  </TableSortLabel>
                 </Tooltip>
               </TableCell>
             ))
@@ -108,13 +133,12 @@ const FixturesTable = (props: Props) => {
           players.map((player, rowKey) => (
             <TableRow key={rowKey}>
               {
-                PLAYERS_TABLE_CELLS.map(({ cellId, sticky }, cellKey) => (
+                PLAYERS_TABLE_CELLS.map(({ cellId, sticky, customRender }, cellKey) => (
                   <TableCell
                     key={cellKey}
-                    align='center'
                     className={classnames({ [classes.mainCell]: sticky })}
                   >
-                    {  player[cellId] }
+                    {customRender ? customRender(player) : player[cellId]}
                   </TableCell>
                 ))
               }

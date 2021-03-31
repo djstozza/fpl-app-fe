@@ -1,4 +1,4 @@
-import { useEffect, useState, MouseEvent } from 'react'
+import { useEffect, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import qs from 'qs'
 import classnames from 'classnames'
@@ -16,7 +16,6 @@ import {
   TableHead,
   TableSortLabel,
   Theme,
-  Typography,
   Tooltip,
   makeStyles,
   createStyles
@@ -71,7 +70,7 @@ const TEAMS_TABLE_CELLS = [
     sticky: true,
     customRender: (shortName, id, classes) => (
       <Link to={`${TEAMS_URL}/${id}`} className={classes.nameLink}>
-        <img src={teamCrestPathLoader(shortName)} className={classes.crest} />
+        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
         <div>
           {shortName}
         </div>

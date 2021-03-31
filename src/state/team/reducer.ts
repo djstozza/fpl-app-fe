@@ -5,14 +5,24 @@ import type { Action, Team } from 'types'
 
 export type State = {
   data?: Team,
-  errors: Object[]
+  errors: Object[],
+  sort: Object
 }
 
+type TeamAction = {
+  sort: Object
+} & Action
+
 export const initialState = {
+  sort: {
+    players: {
+      totalPoints: 'desc'
+    }
+  },
   errors: []
 }
 
-const reducer = (state: State = initialState, action: Action) => {
+const reducer = (state: State = initialState, action: TeamAction) => {
   if (state === undefined) { state = initialState }
   switch (action.type) {
     case success(actions.API_TEAMS_SHOW):
@@ -20,6 +30,10 @@ const reducer = (state: State = initialState, action: Action) => {
       if (data) return { ...state, data }
 
       return state
+    case actions.FETCH_TEAM_PLAYERS:
+      const { sort } = action
+
+      return { ...state, sort }
     case failure(actions.API_TEAMS_SHOW):
       const { errors } = action
 

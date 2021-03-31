@@ -18,6 +18,12 @@ export type PlayerStatElement = {
   player: PlayerBase
 }
 
+export type PositionSummary = {
+  id: string,
+  singularNameShort: string,
+  singularName: string
+}
+
 export type StatsElement = {
   identifier: string,
   displayOrder: number,
@@ -88,7 +94,6 @@ export type TeamFixture = {
 
 export type PlayerSummary = {
   fistName: string,
-  position: string,
   goalsScored: number,
   assists: number,
   cleanSheets: number,
@@ -98,7 +103,8 @@ export type PlayerSummary = {
   totalPoints: number,
   penaltiesSaved: number,
   penaltiesMissed: number,
-  ownGoals: number
+  ownGoals: number,
+  position: PositionSummary
 } & PlayerBase
 
 export type Team = {
