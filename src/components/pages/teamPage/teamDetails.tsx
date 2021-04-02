@@ -14,15 +14,22 @@ import FixturesTable from './fixturesTable'
 import PlayersTable from './playersTable'
 import { teamCrestPathLoader } from 'utilities/helpers'
 
-import { Team, PlayerSummary } from 'types'
+import { TeamState } from 'state/team'
+import { PlayerSummary } from 'types'
 
 type Props = {
-  team?: Team,
+  team: TeamState,
   teamId: string,
   fetchTeamPlayers: Function,
   players: PlayerSummary[],
+  fetchTeamFixtures: Function,
   sort: {
-    players: Object
+    players: {
+      [key: string]: string
+    },
+    fixtures: {
+      [key: string]: string
+    }
   }
 }
 
@@ -55,13 +62,20 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const TeamDetails = (props: Props) => {
-  const { team, teamId, players, fetchTeamPlayers, sort } = props
+  const {
+    team: { data: team, fixtures },
+    teamId,
+    players,
+    fetchTeamPlayers,
+    fetchTeamFixtures,
+    sort
+  } = props
 
   const classes = useStyles()
 
   if (!team) return null
 
-  const { name, shortName, fixtures } = team
+  const { name, shortName } = team
 
   return (
     <Fragment>
@@ -79,7 +93,7 @@ const TeamDetails = (props: Props) => {
           Fixtures
         </AccordionSummary>
         <AccordionDetails className={classes.container}>
-          <FixturesTable fixtures={fixtures} />
+          <FixturesTable teamId={teamId} fixtures={fixtures} fetchTeamFixtures={fetchTeamFixtures} sort={sort} />
         </AccordionDetails>
       </Accordion>
       <Accordion>

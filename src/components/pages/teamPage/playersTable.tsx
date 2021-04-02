@@ -19,7 +19,8 @@ type Props = {
   players: PlayerSummary[],
   fetchTeamPlayers: Function,
   sort: {
-    players: Object
+    players: Object,
+    fixtures: Object
   },
   teamId: string
 }
@@ -80,8 +81,9 @@ const PLAYERS_TABLE_CELLS = [
   { cellId: 'ownGoals', label: 'OG', toolTipLabel: 'Own Goals', sort: true }
 ]
 
-const FixturesTable = (props: Props) => {
-  const { teamId, players, fetchTeamPlayers, sort: { players: sortParams } } = props
+const PlayersTable = (props: Props) => {
+  const { teamId, players = [], fetchTeamPlayers, sort } = props
+  const { players: sortParams } = sort
 
   const classes = useStyles()
 
@@ -93,7 +95,7 @@ const FixturesTable = (props: Props) => {
       [id]: newDirection
     }
 
-    fetchTeamPlayers(teamId, { ...sort, players: { ...newSortParams } })
+    fetchTeamPlayers(teamId, newSortParams)
   }
 
   return (
@@ -150,4 +152,4 @@ const FixturesTable = (props: Props) => {
   )
 }
 
-export default FixturesTable
+export default PlayersTable

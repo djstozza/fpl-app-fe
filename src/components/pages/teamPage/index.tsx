@@ -15,19 +15,18 @@ import { TEAMS_URL } from 'utilities/constants'
 import TabPanel from 'components/common/tabPanel'
 import TeamDetails from './teamDetails'
 
-import type { Team, TeamSummary, PlayerSummary } from 'types'
+import type { TeamState } from 'state/team'
+import type { TeamSummary, PlayerSummary } from 'types'
 
 type Props = {
-  team?: Team,
+  team: TeamState,
+  players: PlayerSummary[],
   teams: TeamSummary[],
   fetchTeam: Function,
   fetchTeams: Function,
   fetchTeamPlayers: Function,
-  players: PlayerSummary[],
+  fetchTeamFixtures: Function,
   match: { params: { teamId } },
-  sort: {
-    players: Object
-  }
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -49,9 +48,12 @@ const TeamPage = (props: Props) => {
     fetchTeams,
     fetchTeamPlayers,
     players,
-    sort,
+    fetchTeamFixtures,
     match: { params: { teamId } }
   } = props
+
+  const { sort } = team
+
 
   const searchQuery = qs.parse(window.location.search.substring(1))
   const sortQuery = searchQuery.sort || sort
@@ -82,8 +84,14 @@ const TeamPage = (props: Props) => {
 
   useEffect(
     () => {
-      fetchTeamPlayers(teamId, sortQuery)
+      fetchTeamPlayers(teamId, sortQuery.players)
     }, [fetchTeamPlayers, teamId]
+  )
+
+  useEffect(
+    () => {
+      fetchTeamFixtures(teamId, sortQuery.fixtures)
+    }, [fetchTeamFixtures, teamId]
   )
 
   return (
@@ -99,6 +107,7 @@ const TeamPage = (props: Props) => {
         teamId={teamId}
         players={players}
         fetchTeamPlayers={fetchTeamPlayers}
+        fetchTeamFixtures={fetchTeamFixtures}
         sort={sortQuery}
       />
     </Fragment>
@@ -108,14 +117,13 @@ const TeamPage = (props: Props) => {
 const mapStateToProps = (state) => {
   const {
     teams: { data: teams },
-    team: { data: team, sort },
-    players: { data: players }
+    team,
+    players: { data: players = [] }
   } = state
 
   return {
     teams,
     team,
-    sort,
     players
   }
 }
@@ -123,7 +131,8 @@ const mapStateToProps = (state) => {
 const matchDispatchToProps = {
   fetchTeams: teamsActions.fetchTeams,
   fetchTeam: teamActions.fetchTeam,
-  fetchTeamPlayers: teamActions.fetchTeamPlayers
+  fetchTeamPlayers: teamActions.fetchTeamPlayers,
+  fetchTeamFixtures: teamActions.fetchTeamFixtures
 }
 
 

@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import classnames from 'classnames'
@@ -7,6 +8,7 @@ import {
   TableCell,
   TableRow,
   TableHead,
+  TableSortLabel,
   Theme,
   Tooltip,
   makeStyles,
@@ -19,7 +21,13 @@ import { teamCrestPathLoader } from 'utilities/helpers'
 import { ROUNDS_URL, TEAMS_URL } from 'utilities/constants'
 
 type Props = {
-  fixtures: TeamFixture[]
+  teamId: string,
+  fixtures: TeamFixture[],
+  fetchTeamFixtures: Function,
+  sort: {
+    players: Object,
+    fixtures: Object
+  }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -57,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const FIXTURES_TABLE_CELLS = [
   {
-    cellId: 'round',
+    cellId: 'rounds.deadlineTime',
     label: 'R',
     toolTipLabel: 'Round',
     sticky: true,
@@ -65,10 +73,11 @@ const FIXTURES_TABLE_CELLS = [
       <Link to={`${ROUNDS_URL}/${id}`} className={classnames(classes.link, classes.noWrap)}>
         {name}
       </Link>
-    )
+    ),
+    sort: true
   },
   {
-    cellId: 'opponent',
+    cellId: 'oppositionTeam.shortName',
     label: 'O',
     toolTipLabel: 'Opponent',
     customRender: ({ opponent: { shortName, id } }: TeamFixture, classes) => (
@@ -78,9 +87,10 @@ const FIXTURES_TABLE_CELLS = [
           {shortName}
         </div>
       </Link>
-    )
+    ),
+    sort: true
   },
-  { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false },
+  { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false, sort: true },
   {
     cellId: 'kickoffTime',
     label: 'K',
@@ -89,7 +99,8 @@ const FIXTURES_TABLE_CELLS = [
       <div className={classes.noWrap}>
         {moment(kickoffTime).format('DD/MM/YY HH:mm')}
       </div>
-    )
+    ),
+    sort: true
   },
   {
     cellId: 'minutes',
@@ -115,14 +126,26 @@ const FIXTURES_TABLE_CELLS = [
       )
     }
   },
-  { cellId: 'result', label: 'R', toolTipLabel: 'Result' },
-  { cellId: 'strength', label: 'Str', toolTipLabel: 'Strength' }
+  { cellId: 'result', label: 'R', toolTipLabel: 'Result', sort: true },
+  { cellId: 'strength', label: 'Str', toolTipLabel: 'Strength', sort: true }
 ]
 
 const FixturesTable = (props: Props) => {
-  const { fixtures } = props
+  const { fixtures, teamId, sort, fetchTeamFixtures } = props
+  const { fixtures: sortParams } = sort
 
   const classes = useStyles()
+
+  const handleSort = (sort, id, direction) => (event: MouseEvent<unknown>) => {
+    if (!sort) return
+
+    const newDirection = direction === 'asc' ? 'desc' : 'asc'
+    const newSortParams = {
+      [id]: newDirection
+    }
+
+    fetchTeamFixtures(teamId, newSortParams)
+  }
 
   return (
     <Table
@@ -133,16 +156,23 @@ const FixturesTable = (props: Props) => {
       <TableHead>
         <TableRow>
           {
-            FIXTURES_TABLE_CELLS.map(({ cellId, label, toolTipLabel, sticky }, key) => (
+            FIXTURES_TABLE_CELLS.map(({ cellId, label, sort, toolTipLabel, sticky }, key) => (
               <TableCell
                 align='center'
                 key={key}
                 className={classnames({ [classes.mainHeaderCell]: sticky })}
               >
                 <Tooltip title={toolTipLabel}>
-                  <div>
+                  <TableSortLabel
+                    hideSortIcon={!sort}
+                    onClick={
+                      handleSort(sort, cellId, sortParams[cellId])
+                    }
+                    active={Boolean(sortParams[cellId])}
+                    direction={sortParams[cellId]}
+                  >
                     {label}
-                  </div>
+                  </TableSortLabel>
                 </Tooltip>
               </TableCell>
             ))
