@@ -15,10 +15,10 @@ import {
 
 import { GetElHeight } from 'utilities/helpers'
 
-import type { PlayerSummary, TeamFixture, Cell } from 'types'
+import type { TeamSummary, PlayerSummary, TeamFixture, Cell } from 'types'
 
 type Props = {
-  collection: PlayerSummary[] | TeamFixture[],
+  collection: TeamSummary[] | PlayerSummary[] | TeamFixture[],
   handleSortChange: Function,
   sort: Object,
   recordName: string,
@@ -71,8 +71,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const SortTable = (props: Props) => {
-  const { collection = [], handleSortChange, sort, recordName, cells, tab } = props
-  const sortAttr = sort[recordName]
+  const { collection = [], handleSortChange, sort: sortHash, recordName, cells, tab } = props
+
 
   const componentRef = useRef(null)
   const { height } = GetElHeight(componentRef)
@@ -84,8 +84,6 @@ const SortTable = (props: Props) => {
   const classes = useStyles({ height })
 
   const handleSort = (sort, id, direction) => (event: MouseEvent<unknown>) => {
-    console.log(sort, id, direction)
-
     const newDirection = direction === 'asc' ? 'desc' : 'asc'
     const newSort = {
       [id]: newDirection
@@ -115,10 +113,10 @@ const SortTable = (props: Props) => {
                       ?  <TableSortLabel
                           hideSortIcon={!sort}
                           onClick={
-                            handleSort(sort, cellId, sortAttr[cellId])
+                            handleSort(sort, cellId, sortHash[cellId])
                           }
-                          active={Boolean(sortAttr[cellId])}
-                          direction={sortAttr[cellId]}
+                          active={Boolean(sortHash[cellId])}
+                          direction={sortHash[cellId]}
                         >
                           {label}
                         </TableSortLabel>

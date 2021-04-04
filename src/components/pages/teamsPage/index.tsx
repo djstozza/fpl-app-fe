@@ -1,4 +1,4 @@
-import { useEffect, MouseEvent } from 'react'
+import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import qs from 'qs'
 import classnames from 'classnames'
@@ -7,16 +7,11 @@ import { Link } from 'react-router-dom'
 import { teamsActions } from 'state/teams'
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'
+import SortTable from 'components/common/sortTable'
 
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  TableHead,
-  TableSortLabel,
   Theme,
-  Tooltip,
+  Typography,
   makeStyles,
   createStyles
 } from '@material-ui/core'
@@ -30,33 +25,8 @@ type Props = {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    container: {
-      height: '100vh',
-      overflow: 'auto'
-    },
-    table: {
-      maxWidth: theme.spacing(100),
-      margin: '0 auto'
-    },
-    nameLink: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      textDecoration: 'none',
-      color: '#0645AD'
-    },
-    crest: {
-      marginRight: theme.spacing(0.5),
-      maxHeight: theme.spacing(3)
-    },
-    mainHeaderCell: {
-      zIndex: 3
-    },
-    mainCell: {
-      position: 'sticky',
-      left: 0,
-      backgroundColor: '#ffffff',
-      zIndex: 2
+    title: {
+      padding: theme.spacing(1)
     }
   })
 )
@@ -68,8 +38,8 @@ const TEAMS_TABLE_CELLS = [
     toolTipLabel: 'Name',
     sort: true,
     sticky: true,
-    customRender: (shortName, id, classes) => (
-      <Link to={`${TEAMS_URL}/${id}`} className={classes.nameLink}>
+    customRender: ({ shortName, id }: TeamSummary, classes) => (
+      <Link to={`${TEAMS_URL}/${id}`} className={classnames(classes.imageContainer, classes.link)}>
         <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
         <div>
           {shortName}
@@ -96,80 +66,31 @@ const TeamsPage = (props: Props) => {
     fetchTeams
   } = props
 
-  const { sort: sortParams } = qs.parse(window.location.search.substring(1))
-
   const classes = useStyles()
+
+  const { sort } = qs.parse(window.location.search.substring(1))
 
   useEffect(
     () => {
-      fetchTeams({ sort: { ...sortParams }, updateUrl: true })
+      fetchTeams({ sort, updateUrl: true })
     }, [fetchTeams]
   )
-
-  const handleSort = (sort, id, direction) => (event: MouseEvent<unknown>) => {
-    if (!sort) return
-
-    const newDirection = direction === 'asc' ? 'desc' : 'asc'
-    const newSortParams = {
-      [id]: newDirection
-    }
-
-    fetchTeams({ sort: newSortParams, updateUrl: true })
-  }
 
   if (teams.length === 0) return null
 
   return (
-    <div className={classes.container}>
-      <Table
-        size='small'
-        className={classes.table}
-        stickyHeader
-      >
-        <TableHead>
-          <TableRow>
-            {
-              TEAMS_TABLE_CELLS.map(({ cellId, label, toolTipLabel, sort, sticky }, key) => (
-                <TableCell
-                  align='center'
-                  key={key}
-                  className={classnames({ [classes.mainHeaderCell]: sticky })}
-                >
-                  <Tooltip title={toolTipLabel}>
-                    <TableSortLabel
-                      hideSortIcon={!sort}
-                      onClick={handleSort(sort, cellId, sortParams[cellId])}
-                      active={Boolean(sortParams[cellId])}
-                      direction={sortParams[cellId]}
-                    >
-                      {label}
-                    </TableSortLabel>
-                  </Tooltip>
-                </TableCell>
-              ))
-            }
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {
-            teams.map((team, rowKey) => (
-              <TableRow key={rowKey}>
-                {
-                  TEAMS_TABLE_CELLS.map(({ cellId, customRender, sticky }, cellKey) => (
-                    <TableCell
-                      key={cellKey}
-                      className={classnames({ [classes.mainCell]: sticky })}
-                    >
-                      { customRender ? customRender(team[cellId], team.id, classes) : team[cellId] }
-                    </TableCell>
-                  ))
-                }
-              </TableRow>
-            ))
-          }
-        </TableBody>
-      </Table>
-    </div>
+    <Fragment>
+      <Typography variant='h4' className={classes.title}>
+        Team Ladder
+      </Typography>
+      <SortTable
+        collection={teams}
+        recordName='fixtures'
+        handleSortChange={(newSort) => fetchTeams({ sort: newSort, updateUrl: true })}
+        sort={sort}
+        cells={TEAMS_TABLE_CELLS}
+      />
+    </Fragment>
   )
 }
 

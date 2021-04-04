@@ -100,8 +100,8 @@ const FixturesTable = (props: Props) => {
     <SortTable
       collection={fixtures}
       recordName='fixtures'
-      handleSortChange={(newSort) => fetchTeamFixtures(teamId, tab, newSort)}
-      sort={sort}
+      handleSortChange={(newSort) => fetchTeamFixtures(teamId, tab, newSort, 'push')}
+      sort={sort.fixtures}
       cells={FIXTURES_TABLE_CELLS}
       tab={tab}
 

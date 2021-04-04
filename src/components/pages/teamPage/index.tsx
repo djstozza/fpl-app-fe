@@ -98,7 +98,6 @@ const TeamPage = (props: Props) => {
 
   useEffect(
     () => {
-      console.log(sortQuery)
       fetchTeam(teamId, tab, sortQuery)
     }, [fetchTeam, teamId]
   )

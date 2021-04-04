@@ -14,10 +14,10 @@ const defaultSortQuery = {
 
 function * fetchTeams (action) : Generator<any, any, any> {
   const { sort, updateUrl } = action
-  const sortQuery = Object.keys(action.sort).length > 0 ? sort : defaultSortQuery
+  // const sortQuery = Object.keys(action.sort).length > 0 ? sort : defaultSortQuery
 
   const query = {
-    sort: sortQuery
+    sort: (sort || defaultSortQuery)
   }
 
   if (updateUrl) history.push(`${TEAMS_URL}?${qs.stringify(query)}`)

@@ -51,8 +51,8 @@ const PlayersTable = (props: Props) => {
     <SortTable
       collection={players}
       recordName='players'
-      handleSortChange={(newSort) => fetchTeamPlayers(teamId, tab, newSort)}
-      sort={sort}
+      handleSortChange={(newSort) => fetchTeamPlayers(teamId, tab,  newSort, 'push')}
+      sort={sort.players}
       cells={PLAYERS_TABLE_CELLS}
     />
   )
