@@ -1,17 +1,6 @@
-import { MouseEvent } from 'react'
-import classnames from 'classnames'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  TableHead,
-  Theme,
-  Tooltip,
-  TableSortLabel,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+import { useEffect } from 'react'
+
+import SortTable from 'components/common/sortTable'
 
 import type { PlayerSummary } from 'types'
 
@@ -22,41 +11,9 @@ type Props = {
     players: Object,
     fixtures: Object
   },
-  teamId: string
+  teamId: string,
+  tab: string
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    table: {
-      maxWidth: theme.spacing(100),
-      margin: '0 auto'
-    },
-    imageContainer: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    },
-    link: {
-      textDecoration: 'none',
-      color: '#0645AD'
-    },
-    noWrap: {
-      whiteSpace: 'nowrap'
-    },
-    crest: {
-      maxHeight: theme.spacing(3)
-    },
-    mainHeaderCell: {
-      zIndex: 3
-    },
-    mainCell: {
-      position: 'sticky',
-      left: 0,
-      backgroundColor: '#ffffff',
-      zIndex: 2
-    }
-  })
-)
 
 const PLAYERS_TABLE_CELLS = [
   { cellId: 'lastName', label: 'LN', toolTipLabel: 'Last Name', sticky: true, sort: true },
@@ -82,73 +39,22 @@ const PLAYERS_TABLE_CELLS = [
 ]
 
 const PlayersTable = (props: Props) => {
-  const { teamId, players = [], fetchTeamPlayers, sort } = props
-  const { players: sortParams } = sort
+  const { teamId, players = [], tab, fetchTeamPlayers, sort } = props
 
-  const classes = useStyles()
-
-  const handleSort = (sort, id, direction) => (event: MouseEvent<unknown>) => {
-    if (!sort) return
-
-    const newDirection = direction === 'asc' ? 'desc' : 'asc'
-    const newSortParams = {
-      [id]: newDirection
-    }
-
-    fetchTeamPlayers(teamId, newSortParams)
-  }
+  useEffect(
+    () => {
+      fetchTeamPlayers(teamId, tab, sort.players)
+    }, [fetchTeamPlayers, teamId]
+  )
 
   return (
-    <Table
-      size='small'
-      className={classes.table}
-      stickyHeader
-    >
-      <TableHead>
-        <TableRow>
-          {
-            PLAYERS_TABLE_CELLS.map(({ cellId, label, toolTipLabel, sort, sticky }, key) => (
-              <TableCell
-                align='center'
-                key={key}
-                className={classnames({ [classes.mainHeaderCell]: sticky })}
-              >
-                <Tooltip title={toolTipLabel}>
-                  <TableSortLabel
-                    hideSortIcon={!sort}
-                    onClick={
-                      handleSort(sort, cellId, sortParams[cellId])
-                    }
-                    active={Boolean(sortParams[cellId])}
-                    direction={sortParams[cellId]}
-                  >
-                    {label}
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-            ))
-          }
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {
-          players.map((player, rowKey) => (
-            <TableRow key={rowKey}>
-              {
-                PLAYERS_TABLE_CELLS.map(({ cellId, sticky, customRender }, cellKey) => (
-                  <TableCell
-                    key={cellKey}
-                    className={classnames({ [classes.mainCell]: sticky })}
-                  >
-                    {customRender ? customRender(player) : player[cellId]}
-                  </TableCell>
-                ))
-              }
-            </TableRow>
-          ))
-        }
-      </TableBody>
-    </Table>
+    <SortTable
+      collection={players}
+      recordName='players'
+      handleSortChange={(newSort) => fetchTeamPlayers(teamId, tab, newSort)}
+      sort={sort}
+      cells={PLAYERS_TABLE_CELLS}
+    />
   )
 }
 

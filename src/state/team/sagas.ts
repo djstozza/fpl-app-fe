@@ -10,7 +10,7 @@ import { decamelizeKeys } from 'humps'
 import history from 'state/history'
 
 function * updateSort (action): Generator<any, any, any> {
-  const { teamId, newSort } = action
+  const { teamId, tab, newSort = {} } = action
   const { sort: oldSort } =  yield select((state) => (state.team))
 
   const sort = {
@@ -22,22 +22,22 @@ function * updateSort (action): Generator<any, any, any> {
     sort
   }
 
-  history.push(`${TEAMS_URL}/${teamId}?${qs.stringify(query)}`)
+  history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
 
   yield put({ type: actions.UPDATE_SORT, sort })
 }
 
 function * fetchTeamPlayers (action) : Generator<any, any, any> {
-  const { teamId, playersSortParams } = action
+  const { teamId, tab, playersSortParams } = action
 
   yield all([
     yield put(fetchPlayers({ filter: { teamId }, sort: playersSortParams })),
-    yield updateSort({ teamId, newSort: { players: playersSortParams } })
+    yield updateSort({ teamId, tab, newSort: { players: playersSortParams } })
   ])
 }
 
 function * fetchTeamFixtures (action) : Generator<any, any, any> {
-  const { teamId, fixturesSortParams } = action
+  const { teamId, tab, fixturesSortParams } = action
 
   const { sort } = yield select((state) => (state.team))
 
@@ -58,24 +58,27 @@ function * fetchTeamFixtures (action) : Generator<any, any, any> {
       successAction: success(actions.API_TEAMS_FIXTURES_INDEX),
       failureAction: failure(actions.API_TEAMS_FIXTURES_INDEX)
     }),
-    yield updateSort({ teamId, newSort: { fixtures: fixturesSortParams } })
+    yield updateSort({ teamId, tab, newSort: { fixtures: fixturesSortParams } })
   ])
 
 }
 
 function * fetchTeam (action) : Generator<any, any, any> {
-  const { teamId } = action
+  const { teamId, tab, sort } = action
   const url = `${API_URL}${TEAMS_URL}/${teamId}`
 
-  history.push(`${TEAMS_URL}/${teamId}`)
+  history.push(`${TEAMS_URL}/${teamId}/${tab}`)
 
-  yield put({
-    type: requestActions.UNAUTHED_REQUEST,
-    method: 'GET',
-    url,
-    successAction: success(actions.API_TEAMS_SHOW),
-    failureAction: failure(actions.API_TEAMS_SHOW)
-  })
+  yield all([
+    yield put({
+      type: requestActions.UNAUTHED_REQUEST,
+      method: 'GET',
+      url,
+      successAction: success(actions.API_TEAMS_SHOW),
+      failureAction: failure(actions.API_TEAMS_SHOW)
+    }),
+    yield updateSort({ teamId, tab, newSort: sort })
+  ])
 }
 
 export default function * teamSagas () : Generator<any, any, any> {

@@ -111,3 +111,12 @@ export type Team = {
   fixtures: TeamFixture[]
   players: PlayerSummary[]
 } & TeamSummary
+
+export type Cell = {
+  cellId: string,
+  label: string,
+  toolTipLabel: string,
+  sticky?: boolean,
+  sort?: boolean,
+  customRender?: Function
+}

@@ -13,7 +13,8 @@ type Props = {
   collection: RoundSummary[] | TeamSummary[],
   collectionId: string,
   labelRenderer: Function,
-  url: string
+  url: string,
+  tab?: string
 }
 
 const scrollProps = (index: number) => {
@@ -36,12 +37,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 const TabPanel = (props: Props) => {
-  const { collection, collectionId, labelRenderer, url } = props
+  const { collection, collectionId, labelRenderer, url, tab } = props
   const classes = useStyles()
 
   const index = collection.findIndex(({ id }) => id === collectionId)
 
-  const handleChange = (newId) => history.push(`${url}/${newId}`)
+  const handleChange = (newId) => history.push(`${url}/${newId}/${tab ? tab : ''}`)
 
   return (
     <div className={classes.root}>

@@ -1,114 +1,48 @@
-import { Fragment } from 'react'
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-  Theme,
-  makeStyles,
-  createStyles
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
 } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import FixturesTable from './fixturesTable'
-import PlayersTable from './playersTable'
-import { teamCrestPathLoader } from 'utilities/helpers'
-
-import { TeamState } from 'state/team'
-import { PlayerSummary } from 'types'
+import { Team } from 'types'
 
 type Props = {
-  team: TeamState,
-  teamId: string,
-  fetchTeamPlayers: Function,
-  players: PlayerSummary[],
-  fetchTeamFixtures: Function,
-  sort: {
-    players: {
-      [key: string]: string
-    },
-    fixtures: {
-      [key: string]: string
-    }
-  }
+  team: Team
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    wrapper: {
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
-      paddingLeft: theme.spacing(1),
-      flexDirection: 'row',
-      display: 'flex',
-      alignItems: 'center'
-    },
-    crest: {
-      marginRight: theme.spacing(0.5),
-      maxHeight: theme.spacing(6)
-    },
-    summary: {
-      textAlign: 'center',
-      backgroundColor: '#eeeeee',
-      border: '0.5px solid #e0e0e0'
-    },
-    container: {
-      height: '100vh',
-      overflowX: 'auto',
-      padding: 0,
-      margin: 'auto'
-    }
-  })
+const TEAM_DETAILS_ROWS = [
+  { rowId: 'position', label: 'Rank' },
+  { rowId: 'played', label: 'Matches Played' },
+  { rowId: 'wins', label: 'Wins' },
+  { rowId: 'losses', label: 'Losses' },
+  { rowId: 'draws', label: 'Draws' },
+  { rowId: 'goalsFor', label: 'Goals For' },
+  { rowId: 'goalsAgainst', label: 'Goals Against' },
+  { rowId: 'goalDifference', label: 'Goal Difference' },
+  { rowId: 'cleanSheets', label: 'Clean Sheets' },
+  { rowId: 'points', label: 'Points' },
+  { rowId: 'currentForm', label: 'Last 5' }
+]
+
+const TeamDetails = ({ team }: Props) => (
+  <Table size='small'>
+    <TableBody>
+      {
+        TEAM_DETAILS_ROWS.map(({ rowId, label }) => (
+          <TableRow key={rowId}>
+            <TableCell align='center'>
+              {label}
+            </TableCell>
+            <TableCell align='center'>
+              {team[rowId]}
+            </TableCell>
+          </TableRow>
+        ))
+      }
+    </TableBody>
+  </Table>
 )
 
-const TeamDetails = (props: Props) => {
-  const {
-    team: { data: team, fixtures },
-    teamId,
-    players,
-    fetchTeamPlayers,
-    fetchTeamFixtures,
-    sort
-  } = props
-
-  const classes = useStyles()
-
-  if (!team) return null
-
-  const { name, shortName } = team
-
-  return (
-    <Fragment>
-      <div className={classes.wrapper}>
-        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
-        <Typography variant='h4'>
-          {name}
-        </Typography>
-      </div>
-      <Accordion>
-        <AccordionSummary
-          className={classes.summary}
-          expandIcon={<ExpandMoreIcon />}
-        >
-          Fixtures
-        </AccordionSummary>
-        <AccordionDetails className={classes.container}>
-          <FixturesTable teamId={teamId} fixtures={fixtures} fetchTeamFixtures={fetchTeamFixtures} sort={sort} />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          className={classes.summary}
-          expandIcon={<ExpandMoreIcon />}
-        >
-          Players
-        </AccordionSummary>
-        <AccordionDetails className={classes.container}>
-          <PlayersTable players={players} fetchTeamPlayers={fetchTeamPlayers} sort={sort} teamId={teamId} />
-        </AccordionDetails>
-      </Accordion>
-    </Fragment>
-  )
-}
 
 export default TeamDetails

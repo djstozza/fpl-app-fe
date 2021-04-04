@@ -1,5 +1,6 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
+import { Route, Switch } from 'react-router-dom'
 import qs from 'qs'
 import {
   Typography,
@@ -13,7 +14,10 @@ import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'
 
 import TabPanel from 'components/common/tabPanel'
+import TeamTabs from './teamTabs'
 import TeamDetails from './teamDetails'
+import FixturesTable from './fixturesTable'
+import PlayersTable from './playersTable'
 
 import type { TeamState } from 'state/team'
 import type { TeamSummary, PlayerSummary } from 'types'
@@ -26,7 +30,7 @@ type Props = {
   fetchTeams: Function,
   fetchTeamPlayers: Function,
   fetchTeamFixtures: Function,
-  match: { params: { teamId } },
+  match: { params: { teamId: string, tab: string } },
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -37,7 +41,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
     flexDirection: 'row',
     display: 'flex'
-  }
+  },
+  titleWrapper: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    flexDirection: 'row',
+    display: 'flex',
+    alignItems: 'center'
+  },
+  titleCrest: {
+    marginRight: theme.spacing(0.5),
+    maxHeight: theme.spacing(6)
+  },
 }))
 
 const TeamPage = (props: Props) => {
@@ -49,10 +65,14 @@ const TeamPage = (props: Props) => {
     fetchTeamPlayers,
     players,
     fetchTeamFixtures,
-    match: { params: { teamId } }
+    match: { params: { teamId, tab = 'details' } }
   } = props
 
-  const { sort } = team
+  const {
+    data,
+    sort,
+    fixtures
+  } = team
 
 
   const searchQuery = qs.parse(window.location.search.substring(1))
@@ -78,21 +98,14 @@ const TeamPage = (props: Props) => {
 
   useEffect(
     () => {
-      fetchTeam(teamId)
+      console.log(sortQuery)
+      fetchTeam(teamId, tab, sortQuery)
     }, [fetchTeam, teamId]
   )
 
-  useEffect(
-    () => {
-      fetchTeamPlayers(teamId, sortQuery.players)
-    }, [fetchTeamPlayers, teamId]
-  )
+  if (!data) return null
 
-  useEffect(
-    () => {
-      fetchTeamFixtures(teamId, sortQuery.fixtures)
-    }, [fetchTeamFixtures, teamId]
-  )
+  const { name, shortName } = data
 
   return (
     <Fragment>
@@ -101,15 +114,53 @@ const TeamPage = (props: Props) => {
         collectionId={teamId}
         labelRenderer={labelRenderer}
         url={TEAMS_URL}
+        tab={tab}
       />
-      <TeamDetails
-        team={team}
+      <div className={classes.titleWrapper}>
+        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.titleCrest} />
+        <Typography variant='h4'>
+          {name}
+        </Typography>
+      </div>
+      <TeamTabs
+        currentTab={tab}
         teamId={teamId}
-        players={players}
-        fetchTeamPlayers={fetchTeamPlayers}
-        fetchTeamFixtures={fetchTeamFixtures}
-        sort={sortQuery}
       />
+      <Switch>
+        <Route
+          exact
+          path={`${TEAMS_URL}/:teamId/details`}
+          render={() => <TeamDetails team={data} />}
+        />
+        <Route
+          exact
+          path={`${TEAMS_URL}/:teamId/fixtures`}
+          render={
+            () => (
+              <FixturesTable
+                teamId={teamId}
+                fixtures={fixtures}
+                fetchTeamFixtures={fetchTeamFixtures}
+                sort={sortQuery}
+                tab={tab}
+              />
+            )
+          }
+        />
+        <Route
+          exact
+          path={`${TEAMS_URL}/:teamId/players`}
+          render={() => (
+            <PlayersTable
+              players={players}
+              fetchTeamPlayers={fetchTeamPlayers}
+              sort={sortQuery}
+              teamId={teamId}
+              tab={tab}
+            />
+          )}
+        />
+      </Switch>
     </Fragment>
   )
 }
