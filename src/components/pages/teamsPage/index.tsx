@@ -87,7 +87,7 @@ const TeamsPage = (props: Props) => {
         collection={teams}
         recordName='fixtures'
         handleSortChange={(newSort) => fetchTeams({ sort: newSort, updateUrl: true })}
-        sort={sort}
+        sort={sort || {}}
         cells={TEAMS_TABLE_CELLS}
       />
     </Fragment>

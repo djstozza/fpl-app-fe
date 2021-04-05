@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 
+export const iconLoader = (iconName: string) => (
+  require(`../images/icons/${iconName}.png`).default
+)
+
 export const teamCrestPathLoader = (shortName: string) => (
   require(`../images/crests/${shortName.toLowerCase()}.png`).default
 )

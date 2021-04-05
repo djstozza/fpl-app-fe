@@ -43,9 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex'
   },
   titleWrapper: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    paddingLeft: theme.spacing(1),
+    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
     flexDirection: 'row',
     display: 'flex',
     alignItems: 'center'

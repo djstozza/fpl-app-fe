@@ -30,8 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
     },
     title: {
-      paddingTop: theme.spacing(1),
-      paddingLeft: theme.spacing(1)
+      padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
     },
     summary: {
       textAlign: 'center',
