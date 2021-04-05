@@ -4,8 +4,12 @@ import { startCase, orderBy } from 'lodash'
 import {
   AccordionDetails,
   Typography,
-  Grid,
   Theme,
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableRow,
   makeStyles,
   createStyles
 } from '@material-ui/core'
@@ -18,13 +22,18 @@ type Props = {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    statsContainer: {
-      width: '100%',
-      marginRight: theme.spacing(3),
-      textAlign: 'center'
+    container: {
+      padding: 0
     },
-    title: {
-      marginTop: theme.spacing(1.5)
+    headerCell: {
+      backgroundColor: '#f4f5f4',
+      '&:last-child': {
+        paddingRight: theme.spacing(6.5)
+      }
+    },
+    detailsCell: {
+      width: '50%',
+      paddingRight: theme.spacing(12.5)
     }
   })
 )
@@ -35,41 +44,42 @@ const FixtureDetails = (props: Props) => {
   const classes = useStyles()
 
   const playerStatsDisplay = (statGroup) => (
-    orderBy(statGroup, ({ value }) => value, 'desc').map(({ value, player: { id, name } }, key) => (
-      <Typography variant='body1' key={key}>
-        {value} {name}
-      </Typography>
+    orderBy(statGroup, ({ value }) => value, 'desc').map(({ value, player: { id, lastName } }, key) => (
+      <div>
+        {value} {lastName}
+      </div>
     ))
   )
 
   return (
-    <AccordionDetails>
-      <div className={classes.statsContainer}>
-        <Grid container spacing={1}>
-          {
-            orderBy(stats, ({ displayOrder }) => displayOrder).map(({ displayOrder, identifier, home, away }, key) => {
-              if (home.length === 0 && away.length === 0) return null
+    <AccordionDetails className={classes.container}>
+      <Table size='small'>
+        {
+          orderBy(stats, ({ displayOrder }) => displayOrder).map(({ displayOrder, identifier, home, away }, key) => {
+            if (home.length === 0 && away.length === 0) return null
 
-              return (
-                <Fragment key={key}>
-                  <Grid item xs={12} md={12}>
-                    <Typography variant='body1' className={classnames({ [classes.title]: displayOrder === 1 })}>
+            return (
+              <Fragment key={key}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align='center' colSpan={2} className={classes.headerCell}>
                       {startCase(identifier)}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4} md={3} lg={4}>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableCell align='center' className={classes.detailsCell}>
                     {playerStatsDisplay(home)}
-                  </Grid>
-                  <Grid item xs={4} md={4} lg={4} />
-                  <Grid item xs={4} md={4} lg={4}>
-                    {playerStatsDisplay(away)}
-                  </Grid>
-                </Fragment>
-              )
-            })
-          }
-        </Grid>
-      </div>
+                  </TableCell>
+                  <TableCell  align='center' className={classes.detailsCell}>
+                     {playerStatsDisplay(away)}
+                  </TableCell>
+                </TableBody>
+              </Fragment>
+            )
+          })
+        }
+      </Table>
     </AccordionDetails>
   )
 }
