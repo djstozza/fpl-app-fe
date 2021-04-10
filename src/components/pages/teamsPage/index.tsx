@@ -36,7 +36,7 @@ const TEAMS_TABLE_CELLS = [
     cellId: 'shortName',
     label: 'N',
     toolTipLabel: 'Name',
-    sort: true,
+    sortParam: 'shortName',
     sticky: true,
     customRender: ({ shortName, id }: TeamSummary, classes) => (
       <Link to={`${TEAMS_URL}/${id}`} className={classnames(classes.imageContainer, classes.link)}>
@@ -47,17 +47,17 @@ const TEAMS_TABLE_CELLS = [
       </Link>
     )
   },
-  { cellId: 'position', label: 'R', toolTipLabel: 'Rank', sort: true },
-  { cellId: 'played', label: 'MP', toolTipLabel: 'Matches Played', sort: true },
-  { cellId: 'wins', label: 'W', toolTipLabel: 'Wins', sort: true },
-  { cellId: 'losses', label: 'L', toolTipLabel: 'Losses', sort: true },
-  { cellId: 'draws', label: 'D', toolTipLabel: 'Draws', sort: true },
-  { cellId: 'goalsFor', label: 'GF', toolTipLabel: 'Goals For', sort: true },
-  { cellId: 'goalsAgainst', label: 'GA', toolTipLabel: 'Goals Against', sort: true },
-  { cellId: 'goalDifference', label: 'GD', toolTipLabel: 'Goal Difference', sort: true },
-  { cellId: 'cleanSheets', label: 'CS', toolTipLabel: 'Clean Sheets', sort: true },
-  { cellId: 'points', label: 'Pts', toolTipLabel: 'Points', sort: true },
-  { cellId: 'currentForm', label: 'Last 5', toolTipLabel: 'Last 5', sort: false }
+  { cellId: 'position', label: 'R', toolTipLabel: 'Rank', sortParam: 'position' },
+  { cellId: 'played', label: 'MP', toolTipLabel: 'Matches Played', sortParam: 'played' },
+  { cellId: 'wins', label: 'W', toolTipLabel: 'Wins', sortParam: 'wins' },
+  { cellId: 'losses', label: 'L', toolTipLabel: 'Losses', sortParam: 'losses' },
+  { cellId: 'draws', label: 'D', toolTipLabel: 'Draws', sortParam: 'draws' },
+  { cellId: 'goalsFor', label: 'GF', toolTipLabel: 'Goals For', sortParam: 'goalsFor' },
+  { cellId: 'goalsAgainst', label: 'GA', toolTipLabel: 'Goals Against', sortParam: 'goalsAgainst' },
+  { cellId: 'goalDifference', label: 'GD', toolTipLabel: 'Goal Difference', sortParam: 'goalDifference' },
+  { cellId: 'cleanSheets', label: 'CS', toolTipLabel: 'Clean Sheets', sortParam: 'cleanSheets' },
+  { cellId: 'points', label: 'Pts', toolTipLabel: 'Points', sortParam: 'points' },
+  { cellId: 'currentForm', label: 'Last 5', toolTipLabel: 'Last 5' }
 ]
 
 const TeamsPage = (props: Props) => {
@@ -85,7 +85,6 @@ const TeamsPage = (props: Props) => {
       </Typography>
       <SortTable
         collection={teams}
-        recordName='fixtures'
         handleSortChange={(newSort) => fetchTeams({ sort: newSort, updateUrl: true })}
         sort={sort || {}}
         cells={TEAMS_TABLE_CELLS}

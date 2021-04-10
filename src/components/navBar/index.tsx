@@ -16,7 +16,7 @@ import {
 import MoreIcon from '@material-ui/icons/MoreVert'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 
-import { ROUNDS_URL, TEAMS_URL } from 'utilities/constants'
+import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
 
 import { iconLoader } from 'utilities/helpers'
 
@@ -95,6 +95,17 @@ const NavBar = () => {
         </IconButton>
         <p>Teams</p>
       </MenuItem>
+      <MenuItem
+        component={Link}
+        to={`${PLAYERS_URL}`}
+      >
+        <IconButton
+          color='inherit'
+        >
+          <img src={iconLoader('player-black')} alt='Teams' className={classes.icon} />
+        </IconButton>
+        <p>Players</p>
+      </MenuItem>
     </Menu>
   );
 
@@ -124,6 +135,15 @@ const NavBar = () => {
                 to={`${TEAMS_URL}`}
               >
                 <img src={iconLoader('team-jersey-white')} alt='Teams' className={classes.icon} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title='Players'>
+              <IconButton
+                color='inherit'
+                component={Link}
+                to={`${PLAYERS_URL}`}
+              >
+                <img src={iconLoader('player-white')} alt='Teams' className={classes.icon} />
               </IconButton>
             </Tooltip>
           </div>

@@ -20,11 +20,11 @@ import FixturesTable from './fixturesTable'
 import PlayersTable from './playersTable'
 
 import type { TeamState } from 'state/team'
-import type { TeamSummary, PlayerSummary } from 'types'
+import type { TeamSummary, TeamPlayer } from 'types'
 
 type Props = {
   team: TeamState,
-  players: PlayerSummary[],
+  players: TeamPlayer[],
   teams: TeamSummary[],
   fetchTeam: Function,
   fetchTeams: Function,
@@ -36,21 +36,21 @@ type Props = {
 const useStyles = makeStyles((theme: Theme) => ({
   crest: {
     marginRight: theme.spacing(0.5),
-    maxHeight: theme.spacing(3)
+    maxHeight: theme.spacing(4)
   },
   wrapper: {
     flexDirection: 'row',
     display: 'flex'
   },
   titleWrapper: {
-    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
     flexDirection: 'row',
     display: 'flex',
     alignItems: 'center'
   },
   titleCrest: {
     marginRight: theme.spacing(0.5),
-    maxHeight: theme.spacing(6)
+    maxHeight: theme.spacing(5)
   },
 }))
 

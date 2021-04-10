@@ -22,7 +22,7 @@ type Props = {
 
 const FIXTURES_TABLE_CELLS = [
   {
-    cellId: 'rounds.deadlineTime',
+    cellId: 'rounds',
     label: 'R',
     toolTipLabel: 'Round',
     sticky: true,
@@ -31,10 +31,10 @@ const FIXTURES_TABLE_CELLS = [
         {name}
       </Link>
     ),
-    sort: true
+    sortParam: 'rounds.deadlineTime'
   },
   {
-    cellId: 'oppositionTeam.shortName',
+    cellId: 'oppositionTeam',
     label: 'O',
     toolTipLabel: 'Opponent',
     customRender: ({ opponent: { shortName, id } }: TeamFixture, classes, tab) => (
@@ -45,9 +45,9 @@ const FIXTURES_TABLE_CELLS = [
         </div>
       </Link>
     ),
-    sort: true
+    sortParam: 'oppositionTeam.shortName',
   },
-  { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false, sort: true },
+  { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false, sortParam: 'leg' },
   {
     cellId: 'kickoffTime',
     label: 'K',
@@ -57,7 +57,7 @@ const FIXTURES_TABLE_CELLS = [
         {moment(kickoffTime).format('DD/MM/YY HH:mm')}
       </div>
     ),
-    sort: true
+    sortParam: 'kickoffTime'
   },
   {
     cellId: 'minutes',
@@ -83,8 +83,8 @@ const FIXTURES_TABLE_CELLS = [
       )
     }
   },
-  { cellId: 'result', label: 'R', toolTipLabel: 'Result', sort: true },
-  { cellId: 'strength', label: 'Str', toolTipLabel: 'Strength', sort: true }
+  { cellId: 'result', label: 'R', toolTipLabel: 'Result', sortParam: 'result' },
+  { cellId: 'strength', label: 'Str', toolTipLabel: 'Strength', sortParam: 'strength' }
 ]
 
 const FixturesTable = (props: Props) => {
@@ -99,12 +99,10 @@ const FixturesTable = (props: Props) => {
   return (
     <SortTable
       collection={fixtures}
-      recordName='fixtures'
       handleSortChange={(newSort) => fetchTeamFixtures(teamId, tab, newSort, 'push')}
       sort={sort.fixtures}
       cells={FIXTURES_TABLE_CELLS}
       tab={tab}
-
     />
   )
 }

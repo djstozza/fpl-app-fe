@@ -7,11 +7,12 @@ import {
   Typography
 } from '@material-ui/core'
 
-import { ROUNDS_URL, TEAMS_URL } from 'utilities/constants'
+import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
 import LoadingBar from 'react-redux-loading-bar'
 import RoundsPage from 'components/pages/roundsPage'
 import TeamsPage from 'components/pages/teamsPage'
 import TeamPage from 'components/pages/teamPage'
+import PlayersPage from 'components/pages/playersPage'
 import NavBar from 'components/navBar'
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route exact path={`${TEAMS_URL}/:teamId`} render={(props) => <TeamPage {...props} />} />
         <Route exact path={`${TEAMS_URL}/:teamId/:tab`} render={(props) => <TeamPage {...props} />} />
         <Route exact path={TEAMS_URL} render={(props) => <TeamsPage {...props} />} />
+        <Route exact path={PLAYERS_URL} render={(props) => <PlayersPage {...props} />} />
       </Switch>
     </Fragment>
   );

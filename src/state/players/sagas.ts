@@ -1,6 +1,6 @@
 import { put, takeLatest, takeEvery, all, fork, select } from 'redux-saga/effects'
 import qs from 'qs'
-import { decamelizeKeys } from 'humps'
+import { stringify } from 'utilities/helpers'
 
 import { API_URL, PLAYERS_URL } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
@@ -13,18 +13,18 @@ const defaultSortQuery = {
 }
 
 function * fetchPlayers (action) : Generator<any, any, any> {
-  const { filter, sort, updateUrl } = action
+  const { filter, sort, method } = action
 
-  const sortQuery = sort || defaultSortQuery
+  const sortQuery = !Object.keys(sort).length ? defaultSortQuery : sort
 
   const query = {
     filter,
     sort: sortQuery
   }
 
-  if (updateUrl) history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
+  if (method) history[method](`${PLAYERS_URL}?${qs.stringify(query)}`)
 
-  const url = `${API_URL}${PLAYERS_URL}?${qs.stringify(decamelizeKeys(query))}`
+  const url = `${API_URL}${PLAYERS_URL}?${stringify(query)}`
 
   yield put({
     type: requestActions.UNAUTHED_REQUEST,
@@ -35,14 +35,21 @@ function * fetchPlayers (action) : Generator<any, any, any> {
   })
 }
 
-function * watchFetchPlayers () : Generator<any, any, any> {
-  yield takeLatest([
-    actions.API_PLAYERS_INDEX
-  ], fetchPlayers)
+function * fetchFacets (action) : Generator<any, any, any> {
+  const url = `${API_URL}${PLAYERS_URL}/facets`
+
+  yield put({
+    type: requestActions.UNAUTHED_REQUEST,
+    method: 'GET',
+    url,
+    successAction: success(actions.API_PLAYERS_FACETS_INDEX),
+    failureAction: failure(actions.API_PLAYERS_FACETS_INDEX)
+  })
 }
 
 export default function * playersSagas () : Generator<any, any, any> {
   yield all([
-    fork(watchFetchPlayers)
+    yield takeLatest([actions.API_PLAYERS_INDEX], fetchPlayers),
+    yield takeLatest([actions.API_PLAYERS_FACETS_INDEX], fetchFacets)
   ])
 }

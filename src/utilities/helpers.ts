@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import qs from 'qs'
+import { decamelizeKeys } from 'humps'
 
 export const iconLoader = (iconName: string) => (
   require(`../images/icons/${iconName}.png`).default
@@ -23,4 +25,21 @@ export const GetElHeight = (myRef) => {
   }, [myRef])
 
   return { height }
+}
+
+const commaJoinValues = (object: Object) => {
+  const result = {}
+  Object.keys(object).forEach(key => {
+    const value = object[key]
+    result[key] = Array.isArray(value) ? value.join(',') : value
+  })
+  return result
+}
+
+export const stringify = (query) => {
+  query = decamelizeKeys(query || {})
+  return qs.stringify({
+    ...query,
+    filter: query.filter && commaJoinValues(query.filter)
+  })
 }

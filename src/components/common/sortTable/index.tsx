@@ -1,4 +1,4 @@
-import { MouseEvent, useState, useEffect, useRef } from 'react'
+import { MouseEvent, useEffect, useRef } from 'react'
 import classnames from 'classnames'
 import {
   Table,
@@ -7,33 +7,28 @@ import {
   TableRow,
   TableHead,
   Theme,
-  Tooltip,
-  TableSortLabel,
   makeStyles,
   createStyles
 } from '@material-ui/core'
+import HeaderCell from './headerCell'
 
 import { GetElHeight } from 'utilities/helpers'
 
-import type { TeamSummary, PlayerSummary, TeamFixture, Cell } from 'types'
+import type { PlayerSummary, TeamSummary, TeamPlayer, TeamFixture, Cell, Facets } from 'types'
 
 type Props = {
-  collection: TeamSummary[] | PlayerSummary[] | TeamFixture[],
+  collection: PlayerSummary[] | TeamSummary[] | TeamPlayer[] | TeamFixture[],
+  facets?: Facets,
   handleSortChange: Function,
+  handleFilterChange?: Function
   sort: Object,
-  recordName: string,
+  filter?: Object,
   cells: Cell[],
   tab?: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    noPaddingRight: {
-      paddingRight: 0,
-      '&:last-child': {
-        paddingRight: 0
-      }
-    },
     container: {
       maxWidth: '100vw',
       overflow: 'scroll',
@@ -58,21 +53,26 @@ const useStyles = makeStyles((theme: Theme) =>
       maxHeight: theme.spacing(3),
       marginRight: theme.spacing(1)
     },
-    mainHeaderCell: {
-      zIndex: 3
-    },
     mainCell: {
       position: 'sticky',
       left: 0,
       backgroundColor: '#ffffff',
       zIndex: 2
-    }
+    },
   })
 )
 
 const SortTable = (props: Props) => {
-  const { collection = [], handleSortChange, sort: sortHash, recordName, cells, tab } = props
-
+  const {
+    collection = [],
+    handleSortChange,
+    handleFilterChange,
+    sort,
+    filter = {},
+    facets,
+    cells,
+    tab
+  } = props
 
   const componentRef = useRef(null)
   const { height } = GetElHeight(componentRef)
@@ -83,7 +83,7 @@ const SortTable = (props: Props) => {
 
   const classes = useStyles({ height })
 
-  const handleSort = (sort, id, direction) => (event: MouseEvent<unknown>) => {
+  const handleSort = (id, direction) => (event: MouseEvent<unknown>) => {
     const newDirection = direction === 'asc' ? 'desc' : 'asc'
     const newSort = {
       [id]: newDirection
@@ -101,30 +101,21 @@ const SortTable = (props: Props) => {
         <TableHead>
           <TableRow>
             {
-              cells.map(({ cellId, label, toolTipLabel, sort, sticky }, key) => (
-                <TableCell
-                  align={'center'}
+              cells.map(({ cellId, label, toolTipLabel, sortParam, sticky, filterParam }, key) => (
+                <HeaderCell
+                  cellId={cellId}
+                  label={label}
+                  toolTipLabel={toolTipLabel}
+                  sortParam={sortParam}
+                  sticky={sticky}
+                  sort={sort}
+                  facets={facets}
+                  filterParam={filterParam}
+                  handleSort={handleSort}
                   key={key}
-                  className={classnames({ [classes.mainHeaderCell]: sticky, [classes.noPaddingRight]: sort })}
-                >
-                  <Tooltip title={toolTipLabel}>
-                    {
-                      sort
-                      ?  <TableSortLabel
-                          hideSortIcon={!sort}
-                          onClick={
-                            handleSort(sort, cellId, sortHash[cellId])
-                          }
-                          active={Boolean(sortHash[cellId])}
-                          direction={sortHash[cellId]}
-                        >
-                          {label}
-                        </TableSortLabel>
-                      : <div>{label}</div>
-                    }
-
-                  </Tooltip>
-                </TableCell>
+                  filter={filter}
+                  handleFilterChange={handleFilterChange}
+                />
               ))
             }
           </TableRow>

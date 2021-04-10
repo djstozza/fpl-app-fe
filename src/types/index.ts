@@ -92,7 +92,7 @@ export type TeamFixture = {
   strength: number
 } & FixtureBase
 
-export type PlayerSummary = {
+export type TeamPlayer = {
   fistName: string,
   goalsScored: number,
   assists: number,
@@ -109,14 +109,28 @@ export type PlayerSummary = {
 
 export type Team = {
   fixtures: TeamFixture[]
-  players: PlayerSummary[]
+  players: TeamPlayer[]
 } & TeamSummary
+
+export type PlayerSummary = {
+  team: TeamBase
+} & TeamPlayer
 
 export type Cell = {
   cellId: string,
   label: string,
   toolTipLabel: string,
   sticky?: boolean,
-  sort?: boolean,
-  customRender?: Function
+  sortParam?: string,
+  customRender?: Function,
+  filterParam?: string
+}
+
+export type Facet = {
+  label: string,
+  value: string | number | boolean
+}
+
+export type Facets = {
+  [key: string]: Facet[]
 }
