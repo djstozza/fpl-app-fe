@@ -13,7 +13,7 @@ const defaultSortQuery = {
 }
 
 function * fetchPlayers (action) : Generator<any, any, any> {
-  const { filter, sort, method } = action
+  const { filter, sort, updateUrl = true } = action
 
   const sortQuery = !Object.keys(sort).length ? defaultSortQuery : sort
 
@@ -22,7 +22,7 @@ function * fetchPlayers (action) : Generator<any, any, any> {
     sort: sortQuery
   }
 
-  if (method) history[method](`${PLAYERS_URL}?${qs.stringify(query)}`)
+  if (updateUrl) history.replace(`${PLAYERS_URL}?${qs.stringify(query)}`)
 
   const url = `${API_URL}${PLAYERS_URL}?${stringify(query)}`
 
@@ -47,9 +47,23 @@ function * fetchFacets (action) : Generator<any, any, any> {
   })
 }
 
+function * updateQuery (action) : Generator<any, any, any> {
+  const { filter, sort, updateUrl = true } = action
+
+  const sortQuery = !Object.keys(sort).length ? defaultSortQuery : sort
+
+  const query = {
+    filter,
+    sort: sortQuery
+  }
+
+  history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
+}
+
 export default function * playersSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest([actions.API_PLAYERS_INDEX], fetchPlayers),
-    yield takeLatest([actions.API_PLAYERS_FACETS_INDEX], fetchFacets)
+    yield takeLatest([actions.API_PLAYERS_FACETS_INDEX], fetchFacets),
+    yield takeLatest([actions.UPDATE_PLAYERS_QUERY], updateQuery)
   ])
 }

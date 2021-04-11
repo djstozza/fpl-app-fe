@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect, useState, useMemo, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import qs from 'qs'
@@ -30,6 +30,7 @@ type Props = {
   fetchTeams: Function,
   fetchTeamPlayers: Function,
   fetchTeamFixtures: Function,
+  updateTeamQuery: Function
   match: { params: { teamId: string, tab: string } },
 }
 
@@ -63,6 +64,7 @@ const TeamPage = (props: Props) => {
     fetchTeamPlayers,
     players,
     fetchTeamFixtures,
+    updateTeamQuery,
     match: { params: { teamId, tab = 'details' } }
   } = props
 
@@ -72,9 +74,8 @@ const TeamPage = (props: Props) => {
     fixtures
   } = team
 
-
-  const searchQuery = qs.parse(window.location.search.substring(1))
-  const sortQuery = searchQuery.sort || sort
+  const search = window.location.search.substring(1)
+  const sortQuery = qs.parse(search).sort || sort
 
   const classes = useStyles()
 
@@ -97,7 +98,7 @@ const TeamPage = (props: Props) => {
   useEffect(
     () => {
       fetchTeam(teamId, tab, sortQuery)
-    }, [fetchTeam, teamId]
+    }, [fetchTeam, teamId, tab]
   )
 
   if (!data) return null
@@ -139,7 +140,9 @@ const TeamPage = (props: Props) => {
                 fixtures={fixtures}
                 fetchTeamFixtures={fetchTeamFixtures}
                 sort={sortQuery}
+                search={search}
                 tab={tab}
+                updateTeamQuery={updateTeamQuery}
               />
             )
           }
@@ -152,8 +155,10 @@ const TeamPage = (props: Props) => {
               players={players}
               fetchTeamPlayers={fetchTeamPlayers}
               sort={sortQuery}
+              search={search}
               teamId={teamId}
               tab={tab}
+              updateTeamQuery={updateTeamQuery}
             />
           )}
         />
@@ -180,7 +185,8 @@ const matchDispatchToProps = {
   fetchTeams: teamsActions.fetchTeams,
   fetchTeam: teamActions.fetchTeam,
   fetchTeamPlayers: teamActions.fetchTeamPlayers,
-  fetchTeamFixtures: teamActions.fetchTeamFixtures
+  fetchTeamFixtures: teamActions.fetchTeamFixtures,
+  updateTeamQuery: teamActions.updateTeamQuery
 }
 
 

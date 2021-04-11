@@ -13,14 +13,13 @@ const defaultSortQuery = {
 }
 
 function * fetchTeams (action) : Generator<any, any, any> {
-  const { sort, updateUrl } = action
-  // const sortQuery = Object.keys(action.sort).length > 0 ? sort : defaultSortQuery
+  const { sort, method } = action
 
   const query = {
     sort: (sort || defaultSortQuery)
   }
 
-  if (updateUrl) history.push(`${TEAMS_URL}?${qs.stringify(query)}`)
+  history.replace(`${TEAMS_URL}?${qs.stringify(query)}`)
 
   const url = `${API_URL}${TEAMS_URL}?${qs.stringify(decamelizeKeys(query))}`
 
@@ -33,14 +32,19 @@ function * fetchTeams (action) : Generator<any, any, any> {
   })
 }
 
-function * watchFetchTeams () : Generator<any, any, any> {
-  yield takeLatest([
-    actions.API_TEAMS_INDEX
-  ], fetchTeams)
+function * updateQuery (action) : Generator<any, any, any> {
+  const { sort } = action
+
+  const query = {
+    sort
+  }
+
+  history.push(`${TEAMS_URL}?${qs.stringify(query)}`)
 }
 
 export default function * teamsSagas () : Generator<any, any, any> {
   yield all([
-    fork(watchFetchTeams)
+    yield takeLatest([actions.API_TEAMS_INDEX], fetchTeams),
+    yield takeLatest([actions.UPDATE_TEAMS_QUERY], updateQuery)
   ])
 }

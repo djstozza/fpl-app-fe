@@ -5,7 +5,8 @@ export type Error = {
 export type Action = {
   type: string,
   errors?: Error[],
-  data?: any
+  data?: any,
+  sort?: Object
 }
 
 export type PlayerBase = {

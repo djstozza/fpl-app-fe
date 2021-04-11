@@ -22,6 +22,7 @@ type Props = {
   players: PlayerSummary[],
   fetchPlayers: Function,
   fetchFacets: Function,
+  updateQuery: Function,
   facets: Facets
 }
 
@@ -77,12 +78,13 @@ const PlayersPage = (props: Props) => {
     players,
     fetchPlayers,
     facets = {},
-    fetchFacets
+    fetchFacets,
+    updateQuery
   } = props
 
   const classes = useStyles()
-
-  const { sort = {}, filter = {} } = qs.parse(window.location.search.substring(1))
+  const search = window.location.search.substring(1)
+  const { sort = {}, filter = {} } = qs.parse(search)
 
   useEffect(
     () => {
@@ -92,8 +94,8 @@ const PlayersPage = (props: Props) => {
 
   useEffect(
     () => {
-      fetchPlayers({ sort, filter, method: 'replace' })
-    }, [fetchPlayers]
+      fetchPlayers({ sort, filter })
+    }, [fetchPlayers, search]
   )
 
   if (players.length === 0) return null
@@ -106,8 +108,8 @@ const PlayersPage = (props: Props) => {
       <SortTable
         collection={players}
         facets={facets}
-        handleSortChange={(newSort) => fetchPlayers({ sort: newSort, filter, method: 'push' })}
-        handleFilterChange={(newFilter) => fetchPlayers({ sort, filter: newFilter, method: 'push' })}
+        handleSortChange={(newSort) => updateQuery({ sort: newSort, filter, method: 'push' })}
+        handleFilterChange={(newFilter) => updateQuery({ sort, filter: newFilter, method: 'push' })}
         sort={sort}
         filter={filter}
         cells={PLAYERS_TABLE_CELLS}
@@ -123,7 +125,8 @@ const mapStateToProps = ({ players: { data: players, facets }}) => ({
 
 const matchDispatchToProps = {
   fetchPlayers: playersActions.fetchPlayers,
-  fetchFacets: playersActions.fetchFacets
+  fetchFacets: playersActions.fetchFacets,
+  updateQuery: playersActions.updateQuery
 }
 
 

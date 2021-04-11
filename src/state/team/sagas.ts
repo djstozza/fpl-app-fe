@@ -9,8 +9,17 @@ import { fetchPlayers } from 'state/players/actions'
 import { decamelizeKeys } from 'humps'
 import history from 'state/history'
 
-function * updateSort (action): Generator<any, any, any> {
-  const { teamId, tab, newSort = {}, method = 'replace' } = action
+function * fetchTeamPlayers (action) : Generator<any, any, any> {
+  const { teamId, tab, playersSortParams, method } = action
+
+  yield all([
+    yield put(fetchPlayers({ filter: { teamId }, sort: playersSortParams, updateUrl: false }))
+  ])
+}
+
+function * updateTeamQuery (action) : Generator<any, any, any> {
+  const { teamId, tab, newSort } = action
+
   const { sort: oldSort } =  yield select((state) => (state.team))
 
   const sort = {
@@ -22,18 +31,9 @@ function * updateSort (action): Generator<any, any, any> {
     sort
   }
 
-  history[method](`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
+  history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
 
   yield put({ type: actions.UPDATE_SORT, sort })
-}
-
-function * fetchTeamPlayers (action) : Generator<any, any, any> {
-  const { teamId, tab, playersSortParams, method } = action
-
-  yield all([
-    yield put(fetchPlayers({ filter: { teamId }, sort: playersSortParams })),
-    yield updateSort({ teamId, tab, newSort: { players: playersSortParams }, method })
-  ])
 }
 
 function * fetchTeamFixtures (action) : Generator<any, any, any> {
@@ -58,12 +58,19 @@ function * fetchTeamFixtures (action) : Generator<any, any, any> {
       successAction: success(actions.API_TEAMS_FIXTURES_INDEX),
       failureAction: failure(actions.API_TEAMS_FIXTURES_INDEX)
     }),
-    yield updateSort({ teamId, tab, newSort: { fixtures: fixturesSortParams }, method })
+
   ])
 }
 
 function * fetchTeam (action) : Generator<any, any, any> {
   const { teamId, tab, sort } = action
+
+  const query = {
+    sort
+  }
+
+  history.replace(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
+
   const url = `${API_URL}${TEAMS_URL}/${teamId}`
 
   yield all([
@@ -73,8 +80,7 @@ function * fetchTeam (action) : Generator<any, any, any> {
       url,
       successAction: success(actions.API_TEAMS_SHOW),
       failureAction: failure(actions.API_TEAMS_SHOW)
-    }),
-    yield updateSort({ teamId, tab, newSort: sort })
+    })
   ])
 }
 
@@ -82,6 +88,7 @@ export default function * teamSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_TEAMS_SHOW, fetchTeam),
     yield takeLatest(actions.API_TEAMS_FIXTURES_INDEX, fetchTeamFixtures),
-    yield takeLatest(actions.FETCH_TEAM_PLAYERS, fetchTeamPlayers)
+    yield takeLatest(actions.FETCH_TEAM_PLAYERS, fetchTeamPlayers),
+    yield takeLatest(actions.UPDATE_TEAM_QUERY, updateTeamQuery)
   ])
 }

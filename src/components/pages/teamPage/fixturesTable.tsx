@@ -17,7 +17,9 @@ type Props = {
   sort: {
     players: Object,
     fixtures: Object
-  }
+  },
+  search: string,
+  updateTeamQuery: Function
 }
 
 const FIXTURES_TABLE_CELLS = [
@@ -88,18 +90,18 @@ const FIXTURES_TABLE_CELLS = [
 ]
 
 const FixturesTable = (props: Props) => {
-  const { fixtures, teamId, tab, sort, fetchTeamFixtures } = props
+  const { fixtures, teamId, tab, sort, fetchTeamFixtures, search, updateTeamQuery } = props
 
   useEffect(
     () => {
       fetchTeamFixtures(teamId, tab, sort.fixtures)
-    }, [fetchTeamFixtures, teamId]
+    }, [fetchTeamFixtures, teamId, search]
   )
 
   return (
     <SortTable
       collection={fixtures}
-      handleSortChange={(newSort) => fetchTeamFixtures(teamId, tab, newSort, 'push')}
+      handleSortChange={(newSort) => updateTeamQuery(teamId, tab, { fixtures: newSort }, 'push')}
       sort={sort.fixtures}
       cells={FIXTURES_TABLE_CELLS}
       tab={tab}

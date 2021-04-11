@@ -20,7 +20,8 @@ import type { TeamSummary } from 'types'
 
 type Props = {
   teams: TeamSummary[],
-  fetchTeams: Function
+  fetchTeams: Function,
+  updateQuery: Function
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,17 +64,18 @@ const TEAMS_TABLE_CELLS = [
 const TeamsPage = (props: Props) => {
   const {
     teams,
-    fetchTeams
+    fetchTeams,
+    updateQuery
   } = props
 
   const classes = useStyles()
-
-  const { sort } = qs.parse(window.location.search.substring(1))
+  const search = window.location.search.substring(1)
+  const { sort } = qs.parse(search)
 
   useEffect(
     () => {
-      fetchTeams({ sort, updateUrl: true })
-    }, [fetchTeams]
+      fetchTeams({ sort, method: 'replace' })
+    }, [fetchTeams, search]
   )
 
   if (teams.length === 0) return null
@@ -85,7 +87,7 @@ const TeamsPage = (props: Props) => {
       </Typography>
       <SortTable
         collection={teams}
-        handleSortChange={(newSort) => fetchTeams({ sort: newSort, updateUrl: true })}
+        handleSortChange={(newSort) => updateQuery(newSort)}
         sort={sort || {}}
         cells={TEAMS_TABLE_CELLS}
       />
@@ -98,7 +100,8 @@ const mapStateToProps = (state) => ({
 })
 
 const matchDispatchToProps = {
-  fetchTeams: teamsActions.fetchTeams
+  fetchTeams: teamsActions.fetchTeams,
+  updateQuery: teamsActions.updateQuery
 }
 
 
