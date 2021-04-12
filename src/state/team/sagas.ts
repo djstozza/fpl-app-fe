@@ -29,14 +29,14 @@ function * updateTeamQuery (action) : Generator<any, any, any> {
 }
 
 function * fetchTeamPlayers (action) : Generator<any, any, any> {
-  const { teamId, tab, playersSortParams, method } = action
+  const { teamId, tab, playersSortParams } = action
 
   yield put(fetchPlayers({ filter: { teamId }, sort: playersSortParams, updateUrl: false }))
   yield updateTeamQuery({ newSort: { players: playersSortParams }, tab, method: 'replace' })
 }
 
 function * fetchTeamFixtures (action) : Generator<any, any, any> {
-  const { teamId, tab, fixturesSortParams, method } = action
+  const { teamId, tab, fixturesSortParams } = action
 
   const url = `${API_URL}${TEAMS_URL}/${teamId}/fixtures?${stringify({ sort: fixturesSortParams })}`
 

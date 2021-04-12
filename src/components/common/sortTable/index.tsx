@@ -94,6 +94,7 @@ const SortTable = (props: Props) => {
   useEffect(
     () => {
       fetchAction({ id, sort: sortQuery, tab, filter: filterQuery })
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchAction, id, tab, search]
   )
 

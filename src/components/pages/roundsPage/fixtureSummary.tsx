@@ -41,6 +41,12 @@ const useStyles = makeStyles((theme: Theme) =>
     teamLink: {
       textDecoration: 'none',
       color: '#0645AD'
+    },
+    inProgressTeamLink: {
+      color: '#FFFFFF'
+    },
+    inProgress: {
+      backgroundColor: theme.palette.secondary.main
     }
   })
 )
@@ -64,7 +70,17 @@ const FixtureSummary = (props: Props) => {
 
   const teamDetailsGrid = (teamId, shortName) => (
     <Grid item xs={4} md={4} lg={4}>
-      <Link to={`${TEAMS_URL}/${teamId}`} className={classes.teamLink}>
+      <Link
+        to={`${TEAMS_URL}/${teamId}`}
+        className={
+          classnames(
+            classes.teamLink,
+            {
+              [classes.inProgressTeamLink]: started && !finished
+            }
+          )
+        }
+      >
         <img src={teamCrestPathLoader(shortName)} className={classes.crest} alt={shortName} />
         <Typography>
           {shortName}
@@ -75,7 +91,15 @@ const FixtureSummary = (props: Props) => {
 
   return (
     <AccordionSummary
-      className={classnames(classes.summary, { [classes.disabled]: !started })}
+      className={
+        classnames(
+          classes.summary,
+          {
+            [classes.disabled]: !started,
+            [classes.inProgress]: started && !finished,
+          }
+        )
+      }
       expandIcon={stats.length > 0 ? <ExpandMoreIcon /> : ''}
     >
       <Grid container spacing={1} alignItems='center'>

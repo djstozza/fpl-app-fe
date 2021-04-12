@@ -31,12 +31,6 @@ const useStyles = makeStyles((theme: Theme) =>
     icon: {
       width: theme.spacing(4)
     },
-    title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-    },
     sectionDesktop: {
       display: 'none',
       [theme.breakpoints.up('md')]: {
@@ -54,20 +48,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavBar = () => {
   const classes = useStyles()
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null)
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
   const handleMobileMenuClose = () => setMobileMoreAnchorEl(null)
   const handleMobileMenuOpen = ({ currentTarget }: MouseEvent<HTMLElement>) => setMobileMoreAnchorEl(currentTarget)
 
-  const menuId = 'primary-search-account-menu';
-
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -75,6 +65,7 @@ const NavBar = () => {
       <MenuItem
         component={Link}
         to={`${ROUNDS_URL}`}
+        onClick={handleMobileMenuClose}
       >
         <IconButton
           color='inherit'
@@ -87,9 +78,11 @@ const NavBar = () => {
       <MenuItem
         component={Link}
         to={`${TEAMS_URL}`}
+        onClick={handleMobileMenuClose}
       >
         <IconButton
           color='inherit'
+          aria-label='Teams'
         >
           <img src={iconLoader('team-jersey-black')} alt='Teams' className={classes.icon} />
         </IconButton>
@@ -98,9 +91,11 @@ const NavBar = () => {
       <MenuItem
         component={Link}
         to={`${PLAYERS_URL}`}
+        onClick={handleMobileMenuClose}
       >
         <IconButton
           color='inherit'
+          aria-label='Players'
         >
           <img src={iconLoader('player-black')} alt='Teams' className={classes.icon} />
         </IconButton>
@@ -113,7 +108,7 @@ const NavBar = () => {
     <div className={classes.grow}>
       <AppBar position='static'>
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography variant='h6' noWrap>
             Fpl App
           </Typography>
           <div className={classes.grow} />

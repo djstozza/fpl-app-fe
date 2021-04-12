@@ -1,9 +1,7 @@
 import { Fragment } from 'react'
-import classnames from 'classnames'
 import { startCase, orderBy } from 'lodash'
 import {
   AccordionDetails,
-  Typography,
   Theme,
   Table,
   TableHead,
@@ -45,7 +43,7 @@ const FixtureDetails = (props: Props) => {
 
   const playerStatsDisplay = (statGroup) => (
     orderBy(statGroup, ({ value }) => value, 'desc').map(({ value, player: { id, lastName } }, key) => (
-      <div>
+      <div key={key}>
         {value} {lastName}
       </div>
     ))
@@ -68,12 +66,14 @@ const FixtureDetails = (props: Props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableCell align='center' className={classes.detailsCell}>
-                    {playerStatsDisplay(home)}
-                  </TableCell>
-                  <TableCell  align='center' className={classes.detailsCell}>
-                     {playerStatsDisplay(away)}
-                  </TableCell>
+                  <TableRow>
+                    <TableCell align='center' className={classes.detailsCell}>
+                      {playerStatsDisplay(home)}
+                    </TableCell>
+                    <TableCell  align='center' className={classes.detailsCell}>
+                       {playerStatsDisplay(away)}
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Fragment>
             )

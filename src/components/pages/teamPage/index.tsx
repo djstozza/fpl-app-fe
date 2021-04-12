@@ -98,6 +98,7 @@ const TeamPage = (props: Props) => {
   useEffect(
     () => {
       fetchTeam(teamId, tab, sortQuery)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchTeam, teamId]
   )
 

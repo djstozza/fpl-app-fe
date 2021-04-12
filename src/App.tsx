@@ -1,11 +1,5 @@
 import { Fragment } from 'react'
 import { Redirect, Route, Switch, Link } from 'react-router-dom'
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  Typography
-} from '@material-ui/core'
 
 import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
 import LoadingBar from 'react-redux-loading-bar'
