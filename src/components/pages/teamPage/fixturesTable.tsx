@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import classnames from 'classnames'
@@ -18,7 +17,6 @@ type Props = {
     players: Object,
     fixtures: Object
   },
-  search: string,
   updateTeamQuery: Function
 }
 
@@ -90,21 +88,17 @@ const FIXTURES_TABLE_CELLS = [
 ]
 
 const FixturesTable = (props: Props) => {
-  const { fixtures, teamId, tab, sort, fetchTeamFixtures, search, updateTeamQuery } = props
-
-  useEffect(
-    () => {
-      fetchTeamFixtures(teamId, tab, sort.fixtures)
-    }, [fetchTeamFixtures, teamId, search]
-  )
+  const { fixtures, teamId, tab, sort, fetchTeamFixtures, updateTeamQuery } = props
 
   return (
     <SortTable
       collection={fixtures}
       handleSortChange={(newSort) => updateTeamQuery(teamId, tab, { fixtures: newSort }, 'push')}
-      sort={sort.fixtures}
+      sort={sort}
       cells={FIXTURES_TABLE_CELLS}
       tab={tab}
+      fetchAction={fetchTeamFixtures}
+      id={teamId}
     />
   )
 }

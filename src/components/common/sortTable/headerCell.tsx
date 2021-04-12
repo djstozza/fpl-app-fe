@@ -20,7 +20,7 @@ type Props = {
   facets?: Facets,
   sortParam?: string,
   sort: Object,
-  filter: Object,
+  filter?: Object,
   sticky?: boolean,
   toolTipLabel: string,
   handleSort: Function,
@@ -61,7 +61,7 @@ const HeaderCell = (props: Props) => {
     facets = {},
     sortParam = '',
     sort,
-    filter,
+    filter = {},
     toolTipLabel,
     handleSort,
     handleFilterChange

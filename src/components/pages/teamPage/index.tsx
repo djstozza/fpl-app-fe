@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, Fragment } from 'react'
+import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import qs from 'qs'
@@ -98,7 +98,7 @@ const TeamPage = (props: Props) => {
   useEffect(
     () => {
       fetchTeam(teamId, tab, sortQuery)
-    }, [fetchTeam, teamId, tab]
+    }, [fetchTeam, teamId]
   )
 
   if (!data) return null
@@ -140,7 +140,6 @@ const TeamPage = (props: Props) => {
                 fixtures={fixtures}
                 fetchTeamFixtures={fetchTeamFixtures}
                 sort={sortQuery}
-                search={search}
                 tab={tab}
                 updateTeamQuery={updateTeamQuery}
               />
@@ -155,7 +154,6 @@ const TeamPage = (props: Props) => {
               players={players}
               fetchTeamPlayers={fetchTeamPlayers}
               sort={sortQuery}
-              search={search}
               teamId={teamId}
               tab={tab}
               updateTeamQuery={updateTeamQuery}

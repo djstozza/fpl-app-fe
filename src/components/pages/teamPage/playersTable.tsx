@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import SortTable from 'components/common/sortTable'
 
 import type { TeamPlayer } from 'types'
@@ -13,7 +11,6 @@ type Props = {
   },
   teamId: string,
   tab: string,
-  search: string,
   updateTeamQuery: Function
 }
 
@@ -41,20 +38,17 @@ const PLAYERS_TABLE_CELLS = [
 ]
 
 const PlayersTable = (props: Props) => {
-  const { teamId, players = [], tab, fetchTeamPlayers, sort, search, updateTeamQuery } = props
-
-  useEffect(
-    () => {
-      fetchTeamPlayers(teamId, tab, sort.players)
-    }, [fetchTeamPlayers, teamId, search]
-  )
+  const { teamId, players = [], tab, fetchTeamPlayers, sort, updateTeamQuery } = props
 
   return (
     <SortTable
       collection={players}
       handleSortChange={(newSort) => updateTeamQuery(teamId, tab, {  players: { ...newSort } })}
-      sort={sort.players}
+      sort={sort}
       cells={PLAYERS_TABLE_CELLS}
+      fetchAction={fetchTeamPlayers}
+      id={teamId}
+      tab={tab}
     />
   )
 }

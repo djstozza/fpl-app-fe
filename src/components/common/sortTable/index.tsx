@@ -1,4 +1,5 @@
 import { MouseEvent, useEffect, useRef } from 'react'
+import qs from 'qs'
 import classnames from 'classnames'
 import {
   Table,
@@ -22,9 +23,10 @@ type Props = {
   handleSortChange: Function,
   handleFilterChange?: Function
   sort: Object,
-  filter?: Object,
   cells: Cell[],
-  tab?: string
+  tab?: string,
+  fetchAction: Function,
+  id?: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,14 +70,20 @@ const SortTable = (props: Props) => {
     handleSortChange,
     handleFilterChange,
     sort,
-    filter = {},
     facets,
     cells,
-    tab
+    tab,
+    fetchAction,
+    id
   } = props
 
   const componentRef = useRef(null)
   const { height } = GetElHeight(componentRef)
+
+  const search = window.location.search.substring(1)
+  const query = qs.parse(search) || {}
+  const sortQuery = tab ? (query.sort || {})[tab] || sort[tab] : query.sort || sort
+  const filterQuery = tab ? (query.filter || {})[tab] : query.filter
 
   useEffect(() => {
     if (!height) window.dispatchEvent(new Event('resize'))
@@ -83,10 +91,16 @@ const SortTable = (props: Props) => {
 
   const classes = useStyles({ height })
 
-  const handleSort = (id, direction) => (event: MouseEvent<unknown>) => {
+  useEffect(
+    () => {
+      fetchAction({ id, sort: sortQuery, tab, filter: filterQuery })
+    }, [fetchAction, id, tab, search]
+  )
+
+  const handleSort = (name, direction) => (event: MouseEvent<unknown>) => {
     const newDirection = direction === 'asc' ? 'desc' : 'asc'
     const newSort = {
-      [id]: newDirection
+      [name]: newDirection
     }
 
     handleSortChange(newSort)
@@ -108,12 +122,12 @@ const SortTable = (props: Props) => {
                   toolTipLabel={toolTipLabel}
                   sortParam={sortParam}
                   sticky={sticky}
-                  sort={sort}
+                  sort={sortQuery}
                   facets={facets}
                   filterParam={filterParam}
                   handleSort={handleSort}
                   key={key}
-                  filter={filter}
+                  filter={filterQuery}
                   handleFilterChange={handleFilterChange}
                 />
               ))

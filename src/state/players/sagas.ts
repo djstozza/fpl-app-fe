@@ -8,18 +8,12 @@ import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
 import history from 'state/history'
 
-const defaultSortQuery = {
-  totalPoints: 'desc'
-}
-
 function * fetchPlayers (action) : Generator<any, any, any> {
-  const { filter, sort, updateUrl = true } = action
-
-  const sortQuery = !Object.keys(sort).length ? defaultSortQuery : sort
+  const { filter = {}, sort, updateUrl = true } = action
 
   const query = {
     filter,
-    sort: sortQuery
+    sort
   }
 
   if (updateUrl) history.replace(`${PLAYERS_URL}?${qs.stringify(query)}`)
@@ -50,14 +44,14 @@ function * fetchFacets (action) : Generator<any, any, any> {
 function * updateQuery (action) : Generator<any, any, any> {
   const { filter, sort, updateUrl = true } = action
 
-  const sortQuery = !Object.keys(sort).length ? defaultSortQuery : sort
-
   const query = {
     filter,
-    sort: sortQuery
+    sort
   }
 
-  history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
+  if (updateUrl) history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
+
+  yield put({ type: actions.SET_PLAYERS_PARAMS, sort, filter })
 }
 
 export default function * playersSagas () : Generator<any, any, any> {

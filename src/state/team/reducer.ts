@@ -1,11 +1,12 @@
 import * as actions from './actions'
 import { success, failure } from 'utilities/actions'
 
-import type { Action, Team, TeamFixture } from 'types'
+import type { Action, Team, TeamFixture, TeamPlayer } from 'types'
 
 export type State = {
   data?: Team,
   fixtures: TeamFixture[],
+  players: TeamPlayer[],
   errors: Object[],
   sort: Object
 }
@@ -31,6 +32,7 @@ export const initialState = {
     }
   },
   fixtures: [],
+  players: [],
   errors: []
 }
 

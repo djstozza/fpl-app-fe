@@ -1,6 +1,5 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import qs from 'qs'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -16,14 +15,14 @@ import {
   createStyles
 } from '@material-ui/core'
 
-import type { PlayerSummary, Facets } from 'types'
+import type { PlayersState } from 'state/players'
+import type { PlayerSummary } from 'types'
 
 type Props = {
-  players: PlayerSummary[],
+  players: PlayersState,
   fetchPlayers: Function,
   fetchFacets: Function,
-  updateQuery: Function,
-  facets: Facets
+  updateQuery: Function
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -75,30 +74,19 @@ const PLAYERS_TABLE_CELLS = [
 
 const PlayersPage = (props: Props) => {
   const {
-    players,
+    players: { data: players, facets = {}, filter, sort },
     fetchPlayers,
-    facets = {},
     fetchFacets,
     updateQuery
   } = props
 
   const classes = useStyles()
-  const search = window.location.search.substring(1)
-  const { sort = {}, filter = {} } = qs.parse(search)
 
   useEffect(
     () => {
       fetchFacets()
     }, [fetchFacets]
   )
-
-  useEffect(
-    () => {
-      fetchPlayers({ sort, filter })
-    }, [fetchPlayers, search]
-  )
-
-  if (players.length === 0) return null
 
   return (
     <Fragment>
@@ -111,16 +99,15 @@ const PlayersPage = (props: Props) => {
         handleSortChange={(newSort) => updateQuery({ sort: newSort, filter, method: 'push' })}
         handleFilterChange={(newFilter) => updateQuery({ sort, filter: newFilter, method: 'push' })}
         sort={sort}
-        filter={filter}
         cells={PLAYERS_TABLE_CELLS}
+        fetchAction={fetchPlayers}
       />
     </Fragment>
   )
 }
 
-const mapStateToProps = ({ players: { data: players, facets }}) => ({
-  players,
-  facets
+const mapStateToProps = ({ players }) => ({
+  players
 })
 
 const matchDispatchToProps = {

@@ -6,7 +6,8 @@ export type Action = {
   type: string,
   errors?: Error[],
   data?: any,
-  sort?: Object
+  sort?: Object,
+  filter?: Object
 }
 
 export type PlayerBase = {

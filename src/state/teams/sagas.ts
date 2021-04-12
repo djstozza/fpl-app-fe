@@ -8,15 +8,11 @@ import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
 import history from 'state/history'
 
-const defaultSortQuery = {
-  position: 'asc'
-}
-
 function * fetchTeams (action) : Generator<any, any, any> {
   const { sort, method } = action
 
   const query = {
-    sort: (sort || defaultSortQuery)
+    sort
   }
 
   history.replace(`${TEAMS_URL}?${qs.stringify(query)}`)

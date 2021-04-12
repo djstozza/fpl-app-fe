@@ -1,6 +1,5 @@
-import { useEffect, Fragment } from 'react'
+import { Fragment } from 'react'
 import { connect } from 'react-redux'
-import qs from 'qs'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -16,10 +15,11 @@ import {
   createStyles
 } from '@material-ui/core'
 
+import type { TeamsState } from 'state/teams'
 import type { TeamSummary } from 'types'
 
 type Props = {
-  teams: TeamSummary[],
+  teams: TeamsState,
   fetchTeams: Function,
   updateQuery: Function
 }
@@ -63,22 +63,12 @@ const TEAMS_TABLE_CELLS = [
 
 const TeamsPage = (props: Props) => {
   const {
-    teams,
+    teams: { data: teams, sort },
     fetchTeams,
     updateQuery
   } = props
 
   const classes = useStyles()
-  const search = window.location.search.substring(1)
-  const { sort } = qs.parse(search)
-
-  useEffect(
-    () => {
-      fetchTeams({ sort, method: 'replace' })
-    }, [fetchTeams, search]
-  )
-
-  if (teams.length === 0) return null
 
   return (
     <Fragment>
@@ -88,15 +78,16 @@ const TeamsPage = (props: Props) => {
       <SortTable
         collection={teams}
         handleSortChange={(newSort) => updateQuery(newSort)}
-        sort={sort || {}}
+        sort={sort}
         cells={TEAMS_TABLE_CELLS}
+        fetchAction={fetchTeams}
       />
     </Fragment>
   )
 }
 
-const mapStateToProps = (state) => ({
-  teams: state.teams.data
+const mapStateToProps = ({ teams }) => ({
+  teams
 })
 
 const matchDispatchToProps = {
