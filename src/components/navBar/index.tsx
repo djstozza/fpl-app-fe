@@ -1,5 +1,6 @@
 import { MouseEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import classnames from 'classnames'
 import {
   AppBar,
   Toolbar,
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     icon: {
-      width: theme.spacing(4)
+      width: theme.spacing(3.5)
     },
     sectionDesktop: {
       display: 'none',
@@ -43,6 +44,9 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
+    active: {
+      backgroundColor: theme.palette.secondary.main
+    }
   }),
 );
 
@@ -53,6 +57,8 @@ const NavBar = () => {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
   const handleMobileMenuClose = () => setMobileMoreAnchorEl(null)
   const handleMobileMenuOpen = ({ currentTarget }: MouseEvent<HTMLElement>) => setMobileMoreAnchorEl(currentTarget)
+
+  const { pathname } = useLocation()
 
   const renderMobileMenu = (
     <Menu
@@ -66,6 +72,7 @@ const NavBar = () => {
         component={Link}
         to={`${ROUNDS_URL}`}
         onClick={handleMobileMenuClose}
+        className={classnames({ [classes.active]: pathname === ROUNDS_URL })}
       >
         <IconButton
           color='inherit'
@@ -79,6 +86,7 @@ const NavBar = () => {
         component={Link}
         to={`${TEAMS_URL}`}
         onClick={handleMobileMenuClose}
+        className={classnames({ [classes.active]: pathname === TEAMS_URL })}
       >
         <IconButton
           color='inherit'
@@ -92,6 +100,7 @@ const NavBar = () => {
         component={Link}
         to={`${PLAYERS_URL}`}
         onClick={handleMobileMenuClose}
+        className={classnames({ [classes.active]: pathname === PLAYERS_URL })}
       >
         <IconButton
           color='inherit'
@@ -102,7 +111,7 @@ const NavBar = () => {
         <p>Players</p>
       </MenuItem>
     </Menu>
-  );
+  )
 
   return (
     <div className={classes.grow}>
@@ -119,8 +128,9 @@ const NavBar = () => {
                 aria-label='Rounds'
                 component={Link}
                 to={`${ROUNDS_URL}`}
+                className={classnames({ [classes.active]: pathname.includes(ROUNDS_URL) })}
               >
-                <FormatListNumberedIcon />
+                <FormatListNumberedIcon className={classes.icon} />
               </IconButton>
             </Tooltip>
             <Tooltip title='Teams'>
@@ -128,6 +138,7 @@ const NavBar = () => {
                 color='inherit'
                 component={Link}
                 to={`${TEAMS_URL}`}
+                className={classnames({ [classes.active]: pathname.includes(TEAMS_URL) })}
               >
                 <img src={iconLoader('team-jersey-white')} alt='Teams' className={classes.icon} />
               </IconButton>
@@ -137,6 +148,7 @@ const NavBar = () => {
                 color='inherit'
                 component={Link}
                 to={`${PLAYERS_URL}`}
+                className={classnames({ [classes.active]: pathname.includes(PLAYERS_URL) })}
               >
                 <img src={iconLoader('player-white')} alt='Teams' className={classes.icon} />
               </IconButton>
