@@ -7,6 +7,8 @@ import { playersActions } from 'state/players'
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'
 import SortTable from 'components/common/sortTable'
+import { initialFilterState } from 'state/players/reducer'
+import SearchListener from 'components/common/searchListener'
 
 import {
   Theme,
@@ -22,7 +24,9 @@ type Props = {
   players: PlayersState,
   fetchPlayers: Function,
   fetchFacets: Function,
-  updateQuery: Function
+  updateFilter: Function,
+  updateSort: Function,
+  updatePage: Function
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -74,10 +78,12 @@ const PLAYERS_TABLE_CELLS = [
 
 const PlayersPage = (props: Props) => {
   const {
-    players: { data: players, facets = {}, filter, sort },
+    players: { data: players, facets = {}, filter, sort, page, meta: { total } },
     fetchPlayers,
     fetchFacets,
-    updateQuery
+    updateFilter,
+    updateSort,
+    updatePage
   } = props
 
   const classes = useStyles()
@@ -93,15 +99,20 @@ const PlayersPage = (props: Props) => {
       <Typography variant='h4' className={classes.title}>
         Players
       </Typography>
-      <SortTable
-        collection={players}
-        facets={facets}
-        handleSortChange={(newSort) => updateQuery({ sort: newSort, filter, method: 'push' })}
-        handleFilterChange={(newFilter) => updateQuery({ sort, filter: newFilter, method: 'push' })}
-        sort={sort}
-        cells={PLAYERS_TABLE_CELLS}
-        fetchAction={fetchPlayers}
-      />
+      <SearchListener fetchAction={fetchPlayers} initialFilterState={initialFilterState}>
+        <SortTable
+          collection={players}
+          facets={facets}
+          filter={filter}
+          handleSortChange={(newSort) => updateSort(newSort)}
+          handleFilterChange={(newFilter) => updateFilter(newFilter)}
+          handleChangePage={(newOffset) => updatePage(newOffset)}
+          sort={sort}
+          cells={PLAYERS_TABLE_CELLS}
+          page={page}
+          total={total}
+        />
+      </SearchListener>
     </Fragment>
   )
 }
@@ -113,7 +124,9 @@ const mapStateToProps = ({ players }) => ({
 const matchDispatchToProps = {
   fetchPlayers: playersActions.fetchPlayers,
   fetchFacets: playersActions.fetchFacets,
-  updateQuery: playersActions.updateQuery
+  updateFilter: playersActions.updateFilter,
+  updateSort: playersActions.updateSort,
+  updatePage: playersActions.updatePage
 }
 
 

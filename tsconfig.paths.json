@@ -5,7 +5,8 @@
       "types": ["./src/types"],
       "state/*": ["./src/state/*"],
       "utilities/*": ["./src/utilities/*"],
-      "components/*": ["./src/components/*"]
+      "components/*": ["./src/components/*"],
+      "contexts/*": ["./src/contexts/*"]
     }
   }
 }

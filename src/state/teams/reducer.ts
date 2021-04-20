@@ -6,15 +6,21 @@ import type { Action, TeamSummary } from 'types'
 export type State = {
   data: TeamSummary[],
   errors: Object[],
+  page: Object,
   sort: Object
+}
+
+export const initialFilterState = {
+  page: { offset: 0, limit: 50 },
+  sort: {
+    position: 'asc'
+  }
 }
 
 export const initialState = {
   data: [],
   errors: [],
-  sort: {
-    position: 'asc'
-  }
+  ...initialFilterState
 }
 
 const reducer = (state: State = initialState, action: Action) => {

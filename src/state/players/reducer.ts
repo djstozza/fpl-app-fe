@@ -8,43 +8,47 @@ export type State = {
   facets: Facets,
   errors: Object[],
   filter: Object,
-  sort: Object
+  sort: Object,
+  meta: {
+    total?: number
+  },
+  page: {
+    offset: number,
+    limit: number
+  }
 }
 
-export const initialState = {
-  data: [],
-  errors: [],
-  facets: {},
+export const initialFilterState = {
+  page: { offset: 0, limit: 50 },
   filter: {},
   sort: {
     totalPoints: 'desc'
   }
 }
 
+export const initialState = {
+  data: [],
+  errors: [],
+  facets: {},
+  meta: {},
+  ...initialFilterState
+}
+
 const reducer = (state: State = initialState, action: Action) => {
   if (state === undefined) { state = initialState }
 
+  const { data = [], meta, filter = {}, sort = {}, page = {}, errors } = action
+
   switch (action.type) {
-    case actions.API_PLAYERS_INDEX:
-
-      return { ...state, sort: action.sort, filter: action.filter }
     case success(actions.API_PLAYERS_INDEX):
-      const { data = [] } = action
-
-      return { ...state, data }
+      return { ...state, data, meta }
     case success(actions.API_PLAYERS_FACETS_INDEX):
-
-      const { data: facets } = action
-      return { ...state, facets }
-    case actions.SET_PLAYERS_PARAMS:
-
-      return { ...state, sort: action.sort, filter: action.filter }
+      return { ...state, facets: action.data }
+    case actions.API_PLAYERS_INDEX:
+      return { ...state, filter, sort, page }
     case failure(actions.API_PLAYERS_INDEX):
     case failure(actions.API_PLAYERS_FACETS_INDEX):
-      const { errors } = action
-
       return { ...state, errors }
-
     default:
       return state
   }

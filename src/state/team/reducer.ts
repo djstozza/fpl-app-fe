@@ -8,7 +8,8 @@ export type State = {
   fixtures: TeamFixture[],
   players: TeamPlayer[],
   errors: Object[],
-  sort: Object
+  sort: Object,
+  page: Object
 }
 
 type TeamAction = {
@@ -22,7 +23,8 @@ type TeamAction = {
   }
 } & Action
 
-export const initialState = {
+export const initialFilterState = {
+  page: { offset: 0, limit: 50 },
   sort: {
     players: {
       totalPoints: 'desc'
@@ -30,26 +32,31 @@ export const initialState = {
     fixtures: {
       kickoffTime: 'asc'
     }
-  },
+  }
+}
+
+export const initialState = {
   fixtures: [],
   players: [],
-  errors: []
+  errors: [],
+  ...initialFilterState
 }
 
 const reducer = (state: any = initialState, action: TeamAction) => {
   if (state === undefined) { state = initialState }
+  const { data, sort } = action
   switch (action.type) {
     case success(actions.API_TEAMS_SHOW):
-      const { data } = action
       if (data) return { ...state, data }
 
       return state
     case success(actions.API_TEAMS_FIXTURES_INDEX):
       const { data: fixtures } = action
       return { ...state, fixtures }
-    case actions.UPDATE_SORT:
-      const { sort } = action
-      return { ...state, sort }
+    case actions.UPDATE_TEAM_FIXTURES_SORT:
+      return { ...state, sort: { ...state.sort, fixtures: sort } }
+    case actions.UPDATE_TEAM_PLAYERS_SORT:
+      return { ...state, sort: { ...state.sort, players: sort } }
     case failure(actions.API_TEAMS_SHOW):
     case failure(actions.API_TEAMS_FIXTURES_INDEX):
       const { errors } = action

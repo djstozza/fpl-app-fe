@@ -7,6 +7,8 @@ import { teamsActions } from 'state/teams'
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'
 import SortTable from 'components/common/sortTable'
+import SearchListener from 'components/common/searchListener'
+import { initialFilterState } from 'state/teams/reducer'
 
 import {
   Theme,
@@ -21,7 +23,7 @@ import type { TeamSummary } from 'types'
 type Props = {
   teams: TeamsState,
   fetchTeams: Function,
-  updateQuery: Function
+  updateSort: Function
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -65,7 +67,7 @@ const TeamsPage = (props: Props) => {
   const {
     teams: { data: teams, sort },
     fetchTeams,
-    updateQuery
+    updateSort
   } = props
 
   const classes = useStyles()
@@ -75,13 +77,14 @@ const TeamsPage = (props: Props) => {
       <Typography variant='h4' className={classes.title}>
         Team Ladder
       </Typography>
-      <SortTable
-        collection={teams}
-        handleSortChange={(newSort) => updateQuery(newSort)}
-        sort={sort}
-        cells={TEAMS_TABLE_CELLS}
-        fetchAction={fetchTeams}
-      />
+      <SearchListener fetchAction={fetchTeams} initialFilterState={initialFilterState}>
+        <SortTable
+          collection={teams}
+          handleSortChange={(newSort) => updateSort(newSort)}
+          sort={sort}
+          cells={TEAMS_TABLE_CELLS}
+        />
+      </SearchListener>
     </Fragment>
   )
 }
@@ -92,7 +95,7 @@ const mapStateToProps = ({ teams }) => ({
 
 const matchDispatchToProps = {
   fetchTeams: teamsActions.fetchTeams,
-  updateQuery: teamsActions.updateQuery
+  updateSort: teamsActions.updateSort
 }
 
 

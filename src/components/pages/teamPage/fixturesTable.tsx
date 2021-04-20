@@ -3,7 +3,9 @@ import moment from 'moment'
 import classnames from 'classnames'
 
 import SortTable from 'components/common/sortTable'
+import SearchListener from 'components/common/searchListener'
 import { teamCrestPathLoader } from 'utilities/helpers'
+import { initialFilterState } from 'state/team/reducer'
 import { ROUNDS_URL, TEAMS_URL } from 'utilities/constants'
 
 import type { TeamFixture } from 'types'
@@ -17,7 +19,7 @@ type Props = {
     players: Object,
     fixtures: Object
   },
-  updateTeamQuery: Function
+  updateTeamFixturesSort: Function
 }
 
 const FIXTURES_TABLE_CELLS = [
@@ -88,18 +90,18 @@ const FIXTURES_TABLE_CELLS = [
 ]
 
 const FixturesTable = (props: Props) => {
-  const { fixtures, teamId, tab, sort, fetchTeamFixtures, updateTeamQuery } = props
+  const { fixtures, teamId, tab, sort, fetchTeamFixtures, updateTeamFixturesSort } = props
 
   return (
-    <SortTable
-      collection={fixtures}
-      handleSortChange={(newSort) => updateTeamQuery(teamId, tab, { fixtures: newSort }, 'push')}
-      sort={sort}
-      cells={FIXTURES_TABLE_CELLS}
-      tab={tab}
-      fetchAction={fetchTeamFixtures}
-      id={teamId}
-    />
+    <SearchListener id={teamId} fetchAction={fetchTeamFixtures} initialFilterState={initialFilterState}>
+      <SortTable
+        collection={fixtures}
+        handleSortChange={(newSort) => updateTeamFixturesSort({ tab, sort: newSort })}
+        sort={sort.fixtures}
+        cells={FIXTURES_TABLE_CELLS}
+        tab={tab}
+      />
+    </SearchListener>
   )
 }
 

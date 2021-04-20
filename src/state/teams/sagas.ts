@@ -9,13 +9,11 @@ import * as requestActions from 'state/request/actions'
 import history from 'state/history'
 
 function * fetchTeams (action) : Generator<any, any, any> {
-  const { sort, method } = action
+  const { sort } = action
 
   const query = {
     sort
   }
-
-  history.replace(`${TEAMS_URL}?${qs.stringify(query)}`)
 
   const url = `${API_URL}${TEAMS_URL}?${qs.stringify(decamelizeKeys(query))}`
 
@@ -28,19 +26,19 @@ function * fetchTeams (action) : Generator<any, any, any> {
   })
 }
 
-function * updateQuery (action) : Generator<any, any, any> {
+function * updateSort (action) : Generator<any, any, any> {
   const { sort } = action
 
   const query = {
     sort
   }
 
-  history.push(`${TEAMS_URL}?${qs.stringify(query)}`)
+  yield history.push(`${TEAMS_URL}?${qs.stringify(query)}`)
 }
 
 export default function * teamsSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest([actions.API_TEAMS_INDEX], fetchTeams),
-    yield takeLatest([actions.UPDATE_TEAMS_QUERY], updateQuery)
+    yield takeLatest([actions.UPDATE_TEAMS_SORT], updateSort)
   ])
 }

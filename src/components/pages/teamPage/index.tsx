@@ -30,7 +30,8 @@ type Props = {
   fetchTeams: Function,
   fetchTeamPlayers: Function,
   fetchTeamFixtures: Function,
-  updateTeamQuery: Function
+  updateTeamFixturesSort: Function,
+  updateTeamPlayersSort: Function,
   match: { params: { teamId: string, tab: string } },
 }
 
@@ -64,7 +65,8 @@ const TeamPage = (props: Props) => {
     fetchTeamPlayers,
     players,
     fetchTeamFixtures,
-    updateTeamQuery,
+    updateTeamPlayersSort,
+    updateTeamFixturesSort,
     match: { params: { teamId, tab = 'details' } }
   } = props
 
@@ -142,7 +144,7 @@ const TeamPage = (props: Props) => {
                 fetchTeamFixtures={fetchTeamFixtures}
                 sort={sortQuery}
                 tab={tab}
-                updateTeamQuery={updateTeamQuery}
+                updateTeamFixturesSort={updateTeamFixturesSort}
               />
             )
           }
@@ -157,7 +159,7 @@ const TeamPage = (props: Props) => {
               sort={sortQuery}
               teamId={teamId}
               tab={tab}
-              updateTeamQuery={updateTeamQuery}
+              updateTeamPlayersSort={updateTeamPlayersSort}
             />
           )}
         />
@@ -185,7 +187,8 @@ const matchDispatchToProps = {
   fetchTeam: teamActions.fetchTeam,
   fetchTeamPlayers: teamActions.fetchTeamPlayers,
   fetchTeamFixtures: teamActions.fetchTeamFixtures,
-  updateTeamQuery: teamActions.updateTeamQuery
+  updateTeamFixturesSort: teamActions.updateTeamFixturesSort,
+  updateTeamPlayersSort: teamActions.updateTeamPlayersSort
 }
 
 

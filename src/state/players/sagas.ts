@@ -1,4 +1,4 @@
-import { put, takeLatest, takeEvery, all, fork, select } from 'redux-saga/effects'
+import { put, takeLatest, all, select } from 'redux-saga/effects'
 import qs from 'qs'
 import { stringify } from 'utilities/helpers'
 
@@ -9,16 +9,9 @@ import * as requestActions from 'state/request/actions'
 import history from 'state/history'
 
 function * fetchPlayers (action) : Generator<any, any, any> {
-  const { filter = {}, sort, updateUrl = true } = action
+  const { sort, filter, page } = action
 
-  const query = {
-    filter,
-    sort
-  }
-
-  if (updateUrl) history.replace(`${PLAYERS_URL}?${qs.stringify(query)}`)
-
-  const url = `${API_URL}${PLAYERS_URL}?${stringify(query)}`
+  const url = `${API_URL}${PLAYERS_URL}?${stringify({ sort, filter, page })}`
 
   yield put({
     type: requestActions.UNAUTHED_REQUEST,
@@ -41,23 +34,56 @@ function * fetchFacets (action) : Generator<any, any, any> {
   })
 }
 
-function * updateQuery (action) : Generator<any, any, any> {
-  const { filter, sort, updateUrl = true } = action
+function * updateFilter (action) : Generator<any, any, any> {
+  const { filter } = action
+  const { filter: defaultFilter, sort, page } = yield select(state => state.players)
+
+  const query = {
+    filter: {
+      ...defaultFilter,
+      ...filter
+    },
+    sort,
+    page: {
+      ...page,
+      offset: 0
+    }
+  }
+
+  yield history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
+}
+
+function * updateSort (action) : Generator<any, any, any> {
+  const { sort } = action
+  const { filter, page } = yield select(state => state.players)
+
+  const query = { filter, sort, page }
+
+  yield history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
+}
+
+function * updatePage (action) : Generator<any, any, any> {
+  const { offset } = action
+  const { filter, sort, page } = yield select(state => state.players)
 
   const query = {
     filter,
-    sort
+    sort,
+    page: {
+      ...page,
+      offset
+    }
   }
 
-  if (updateUrl) history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
-
-  yield put({ type: actions.SET_PLAYERS_PARAMS, sort, filter })
+  yield history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
 }
 
 export default function * playersSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest([actions.API_PLAYERS_INDEX], fetchPlayers),
     yield takeLatest([actions.API_PLAYERS_FACETS_INDEX], fetchFacets),
-    yield takeLatest([actions.UPDATE_PLAYERS_QUERY], updateQuery)
+    yield takeLatest([actions.UPDATE_PLAYERS_FILTER], updateFilter),
+    yield takeLatest([actions.UPDATE_PLAYERS_SORT], updateSort),
+    yield takeLatest([actions.UPDATE_PLAYERS_PAGE], updatePage)
   ])
 }

@@ -9,36 +9,16 @@ import { fetchPlayers } from 'state/players/actions'
 import history from 'state/history'
 import { stringify } from 'utilities/helpers'
 
-function * updateTeamQuery (action) : Generator<any, any, any> {
-  const { tab, newSort, method = 'push' } = action
-
-  const { sort: oldSort, data: { id: teamId } } =  yield select((state) => (state.team))
-
-  const sort = {
-    ...oldSort,
-    ...newSort
-  }
-
-  const query = {
-    sort
-  }
-
-  history[method](`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
-
-  yield put({ type: actions.UPDATE_SORT, sort })
-}
-
 function * fetchTeamPlayers (action) : Generator<any, any, any> {
-  const { teamId, tab, playersSortParams } = action
+  const { teamId, sort: { players } } = action
 
-  yield put(fetchPlayers({ filter: { teamId }, sort: playersSortParams, updateUrl: false }))
-  yield updateTeamQuery({ newSort: { players: playersSortParams }, tab, method: 'replace' })
+  yield put(fetchPlayers({ filter: { teamId }, sort: players }))
 }
 
 function * fetchTeamFixtures (action) : Generator<any, any, any> {
-  const { teamId, tab, fixturesSortParams } = action
+  const { teamId, sort: { fixtures } } = action
 
-  const url = `${API_URL}${TEAMS_URL}/${teamId}/fixtures?${stringify({ sort: fixturesSortParams })}`
+  const url = `${API_URL}${TEAMS_URL}/${teamId}/fixtures?${stringify({ sort: fixtures })}`
 
   yield put({
     type: requestActions.UNAUTHED_REQUEST,
@@ -47,7 +27,34 @@ function * fetchTeamFixtures (action) : Generator<any, any, any> {
     successAction: success(actions.API_TEAMS_FIXTURES_INDEX),
     failureAction: failure(actions.API_TEAMS_FIXTURES_INDEX)
   })
-  yield updateTeamQuery({ newSort: { fixtures: fixturesSortParams }, tab, method: 'replace' })
+}
+
+function * updateTeamPlayersSort (action) : Generator<any, any, any> {
+  const { tab, sort } = action
+  const { sort: defaultSort, data: { id: teamId } } = yield select(state => state.team)
+
+  const query = {
+    sort: {
+      ...defaultSort,
+      players: sort
+    }
+  }
+
+  yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
+}
+
+function * updateTeamFixturesSort (action) : Generator<any, any, any> {
+  const { tab, sort } = action
+  const { sort: defaultSort, data: { id: teamId } } = yield select(state => state.team)
+
+  const query = {
+    sort: {
+      ...defaultSort,
+      fixtures: sort
+    }
+  }
+
+  yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
 }
 
 function * fetchTeam (action) : Generator<any, any, any> {
@@ -73,6 +80,7 @@ export default function * teamSagas () : Generator<any, any, any> {
     yield takeLatest(actions.API_TEAMS_SHOW, fetchTeam),
     yield takeLatest(actions.API_TEAMS_FIXTURES_INDEX, fetchTeamFixtures),
     yield takeLatest(actions.FETCH_TEAM_PLAYERS, fetchTeamPlayers),
-    yield takeLatest(actions.UPDATE_TEAM_QUERY, updateTeamQuery)
+    yield takeLatest(actions.UPDATE_TEAM_PLAYERS_SORT, updateTeamPlayersSort),
+    yield takeLatest(actions.UPDATE_TEAM_FIXTURES_SORT, updateTeamFixturesSort)
   ])
 }

@@ -7,7 +7,15 @@ export type Action = {
   errors?: Error[],
   data?: any,
   sort?: Object,
-  filter?: Object
+  filter?: Object,
+  meta: {
+    total?: number
+  },
+  page?: {
+    limit: number,
+    offset: number
+  },
+  searchQuery?: Object
 }
 
 export type PlayerBase = {
