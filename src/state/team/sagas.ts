@@ -62,8 +62,6 @@ function * fetchTeam (action) : Generator<any, any, any> {
 
   const query = { sort }
 
-  history.replace(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
-
   const url = `${API_URL}${TEAMS_URL}/${teamId}`
 
   yield put({

@@ -39,10 +39,7 @@ function * updateFilter (action) : Generator<any, any, any> {
   const { filter: defaultFilter, sort, page } = yield select(state => state.players)
 
   const query = {
-    filter: {
-      ...defaultFilter,
-      ...filter
-    },
+    filter,
     sort,
     page: {
       ...page,

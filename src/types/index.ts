@@ -144,3 +144,36 @@ export type Facet = {
 export type Facets = {
   [key: string]: Facet[]
 }
+
+export type HistoryPast = {
+  seasonName: string,
+  goalsScored: number,
+  assists: number,
+  cleanSheets: number,
+  saves: number,
+  yellowCards: number,
+  redCards: number,
+  totalPoints: number,
+  penaltiesSaved: number,
+  penaltiesMissed: number,
+  ownGoals: number,
+}
+
+export type Player = {
+  historyPast: HistoryPast[]
+} & PlayerSummary
+
+export type History = {
+  round: RoundBase,
+  opponent: TeamBase,
+  goalsScored: number,
+  assists: number,
+  cleanSheets: number,
+  saves: number,
+  yellowCards: number,
+  redCards: number,
+  totalPoints: number,
+  penaltiesSaved: number,
+  penaltiesMissed: number,
+  ownGoals: number
+}

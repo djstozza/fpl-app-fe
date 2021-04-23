@@ -130,6 +130,11 @@ const TeamPage = (props: Props) => {
       <Switch>
         <Route
           exact
+          path={`${TEAMS_URL}/:teamId`}
+          render={() => <TeamDetails team={data} />}
+        />
+        <Route
+          exact
           path={`${TEAMS_URL}/:teamId/details`}
           render={() => <TeamDetails team={data} />}
         />

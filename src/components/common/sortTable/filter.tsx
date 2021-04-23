@@ -97,7 +97,10 @@ const Filter = (props: Props) => {
           <Button disabled={!selected.length} onClick={() => setSelected([])}>
             Clear all
           </Button>
-          <Button onClick={() => applyFilter(filterParam, selected)}>
+          <Button
+            color='secondary'
+            onClick={() => applyFilter(filterParam, selected)}
+          >
             Apply
           </Button>
         </li>
