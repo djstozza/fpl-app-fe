@@ -144,6 +144,7 @@ const TeamPage = (props: Props) => {
           render={
             () => (
               <FixturesTable
+                key={teamId}
                 teamId={teamId}
                 fixtures={fixtures}
                 fetchTeamFixtures={fetchTeamFixtures}
@@ -159,6 +160,7 @@ const TeamPage = (props: Props) => {
           path={`${TEAMS_URL}/:teamId/players`}
           render={() => (
             <PlayersTable
+              key={teamId}
               players={players}
               fetchTeamPlayers={fetchTeamPlayers}
               sort={sortQuery}
