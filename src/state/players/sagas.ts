@@ -36,7 +36,7 @@ function * fetchFacets (action) : Generator<any, any, any> {
 
 function * updateFilter (action) : Generator<any, any, any> {
   const { filter } = action
-  const { filter: defaultFilter, sort, page } = yield select(state => state.players)
+  const { sort, page } = yield select(state => state.players)
 
   const query = {
     filter,

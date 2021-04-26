@@ -1,4 +1,5 @@
 import { fork, all, takeLatest, put } from 'redux-saga/effects'
+import { playerSagas } from './player'
 import { playersSagas } from './players'
 import { roundSagas } from './round'
 import { roundsSagas } from './rounds'
@@ -9,6 +10,7 @@ import { teamSagas } from './team'
 
 export default function * rootSaga () : Generator<any, any, any> {
   yield all([
+    fork(playerSagas),
     fork(playersSagas),
     fork(requestSagas),
     fork(roundSagas),

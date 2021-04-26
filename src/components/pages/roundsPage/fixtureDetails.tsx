@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+
 import { startCase, orderBy } from 'lodash'
 import {
   AccordionDetails,
@@ -11,6 +12,9 @@ import {
   makeStyles,
   createStyles
 } from '@material-ui/core'
+
+import Link from 'components/common/link'
+import { PLAYERS_URL } from 'utilities/constants'
 
 import type { Fixture } from 'types'
 
@@ -44,7 +48,7 @@ const FixtureDetails = (props: Props) => {
   const playerStatsDisplay = (statGroup) => (
     orderBy(statGroup, ({ value }) => value, 'desc').map(({ value, player: { id, lastName } }, key) => (
       <div key={key}>
-        {value} {lastName}
+        {value} <Link to={`${PLAYERS_URL}/${id}`}>{lastName}</Link>
       </div>
     ))
   )

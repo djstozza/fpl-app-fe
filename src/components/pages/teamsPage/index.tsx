@@ -1,14 +1,11 @@
 import { Fragment } from 'react'
 import { connect } from 'react-redux'
-import classnames from 'classnames'
-import { Link } from 'react-router-dom'
 
 import { teamsActions } from 'state/teams'
-import { teamCrestPathLoader } from 'utilities/helpers'
-import { TEAMS_URL } from 'utilities/constants'
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/teams/reducer'
+import TeamCrestLink from 'components/common/teamCrestLink'
 
 import {
   Theme,
@@ -41,14 +38,7 @@ const TEAMS_TABLE_CELLS = [
     toolTipLabel: 'Name',
     sortParam: 'shortName',
     sticky: true,
-    customRender: ({ shortName, id }: TeamSummary, classes) => (
-      <Link to={`${TEAMS_URL}/${id}`} className={classnames(classes.imageContainer, classes.link)}>
-        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
-        <div>
-          {shortName}
-        </div>
-      </Link>
-    )
+    customRender: (team: TeamSummary, classes) => <TeamCrestLink team={team} />
   },
   { cellId: 'position', label: 'R', toolTipLabel: 'Rank', sortParam: 'position' },
   { cellId: 'played', label: 'MP', toolTipLabel: 'Matches Played', sortParam: 'played' },

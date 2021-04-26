@@ -54,3 +54,7 @@ export const stringify = (query) => {
     filter: query.filter && commaJoinValues(query.filter)
   })
 }
+
+export const playerImage = (code: number) => (
+  `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`
+)

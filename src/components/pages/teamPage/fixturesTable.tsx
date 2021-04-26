@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import moment from 'moment'
 import classnames from 'classnames'
 
@@ -7,6 +6,8 @@ import SearchListener from 'components/common/searchListener'
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { initialFilterState } from 'state/team/reducer'
 import { ROUNDS_URL, TEAMS_URL } from 'utilities/constants'
+import Link from 'components/common/link'
+import TeamCrestLink from 'components/common/teamCrestLink'
 
 import type { TeamFixture } from 'types'
 
@@ -29,7 +30,7 @@ const FIXTURES_TABLE_CELLS = [
     toolTipLabel: 'Round',
     sticky: true,
     customRender: ({ round: { id, name } }: TeamFixture, classes, tab) => (
-      <Link to={`${ROUNDS_URL}/${id}`} className={classnames(classes.link, classes.noWrap)}>
+      <Link to={`${ROUNDS_URL}/${id}`} noWrap>
         {name}
       </Link>
     ),
@@ -39,14 +40,7 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'oppositionTeam',
     label: 'O',
     toolTipLabel: 'Opponent',
-    customRender: ({ opponent: { shortName, id } }: TeamFixture, classes, tab) => (
-      <Link to={`${TEAMS_URL}/${id}/${tab}`} className={classnames(classes.imageContainer, classes.link)}>
-        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
-        <div>
-          {shortName}
-        </div>
-      </Link>
-    ),
+    customRender: ({ opponent }: TeamFixture, classes, tab) => <TeamCrestLink team={opponent} />,
     sortParam: 'oppositionTeam.shortName',
   },
   { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false, sortParam: 'leg' },

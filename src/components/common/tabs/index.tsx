@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import {
-  Tabs,
+  Tabs as MuiTabs,
   Tab,
   Theme,
   createStyles,
@@ -8,18 +8,17 @@ import {
 } from '@material-ui/core'
 import { findIndex } from 'lodash'
 
-import { TEAMS_URL } from 'utilities/constants'
+type TabType = {
+  label: string,
+  value: string
+}
 
 type Props = {
   currentTab: string,
-  teamId: string
+  url: string,
+  id: string,
+  tabs: TabType[]
 }
-
-const TABS = [
-  { label: 'Details', value: 'details' },
-  { label: 'Fixtures', value: 'fixtures' },
-  { label: 'Players', value: 'players' }
-]
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,31 +29,31 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const TeamTabs = ({ currentTab, teamId }: Props) => {
+const Tabs = ({ currentTab, url, id, tabs }: Props) => {
   const classes = useStyles()
 
   return (
-    <Tabs
+    <MuiTabs
       indicatorColor='primary'
       textColor='primary'
-      value={findIndex(TABS, ({ value }) => value === currentTab)}
+      value={findIndex(tabs, ({ value }) => value === currentTab)}
       variant='fullWidth'
       className={classes.tab}
     >
       {
-        TABS.map(
+        tabs.map(
           ({ label, value }) => (
             <Tab
               key={value}
               label={label}
               component={Link}
-              to={`${TEAMS_URL}/${teamId}/${value}`}
+              to={`${url}/${id}/${value}`}
             />
           )
         )
       }
-    </Tabs>
+    </MuiTabs>
   )
 }
 
-export default TeamTabs
+export default Tabs

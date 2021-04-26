@@ -34,24 +34,20 @@ type Props = {
   }
 }
 
+type HeightProps = {
+  tableHeight: number,
+  paginationHeight: number
+}
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       maxWidth: '100vw',
       overflow: 'scroll',
-      maxHeight: ({ tableHeight, paginationHeight }:{ tableHeight: number, paginationHeight: number }) => tableHeight - paginationHeight
+      maxHeight: ({ tableHeight, paginationHeight }: HeightProps) => tableHeight - paginationHeight
     },
     table: {
       margin: '0 auto'
-    },
-    imageContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    link: {
-      textDecoration: 'none',
-      color: '#0645AD'
     },
     noWrap: {
       whiteSpace: 'nowrap'

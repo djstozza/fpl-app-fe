@@ -103,7 +103,7 @@ export type TeamFixture = {
 } & FixtureBase
 
 export type TeamPlayer = {
-  fistName: string,
+  firstName: string,
   goalsScored: number,
   assists: number,
   cleanSheets: number,
@@ -160,6 +160,8 @@ export type HistoryPast = {
 }
 
 export type Player = {
+  code: number,
+  photo: string,
   historyPast: HistoryPast[]
 } & PlayerSummary
 
@@ -176,4 +178,8 @@ export type History = {
   penaltiesSaved: number,
   penaltiesMissed: number,
   ownGoals: number
+}
+
+export type Sort = {
+  [key: string]: string
 }

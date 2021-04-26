@@ -1,14 +1,14 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
-import { Link } from 'react-router-dom'
 
 import { playersActions } from 'state/players'
 import { teamCrestPathLoader } from 'utilities/helpers'
-import { TEAMS_URL } from 'utilities/constants'
+import { TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
 import SortTable from 'components/common/sortTable'
 import { initialFilterState } from 'state/players/reducer'
 import SearchListener from 'components/common/searchListener'
+import Link from 'components/common/link'
 
 import {
   Theme,
@@ -38,8 +38,29 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const PLAYERS_TABLE_CELLS = [
-  { cellId: 'lastName', label: 'LN', toolTipLabel: 'Last Name', sticky: true, sortParam: 'lastName' },
-  { cellId: 'firstName', label: 'FN', toolTipLabel: 'First Name', sortParam: 'firstName' },
+  {
+    cellId: 'lastName',
+    label: 'LN',
+    toolTipLabel: 'Last Name',
+    sticky: true,
+    sortParam: 'lastName',
+    customRender: ({ lastName, id }: PlayerSummary, classes) => (
+      <Link to={`${PLAYERS_URL}/${id}`}>
+        {lastName}
+      </Link>
+    )
+  },
+  {
+    cellId: 'firstName',
+    label: 'FN',
+    toolTipLabel: 'First Name',
+    sortParam: 'firstName',
+    customRender: ({ firstName, id }: PlayerSummary, classes) => (
+      <Link to={`${PLAYERS_URL}/${id}`}>
+        {firstName}
+      </Link>
+    )
+  },
   {
     cellId: 'teams',
     label: 'T',
@@ -47,7 +68,7 @@ const PLAYERS_TABLE_CELLS = [
     sortParam: 'teams.shortName',
     filterParam: 'teamId',
     customRender: ({ team: { shortName, id } }: PlayerSummary, classes) => (
-      <Link to={`${TEAMS_URL}/${id}`} className={classnames(classes.imageContainer, classes.link)}>
+      <Link to={`${TEAMS_URL}/${id}`} image>
         <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
         <div>
           {shortName}

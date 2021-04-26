@@ -13,8 +13,8 @@ import { teamActions } from 'state/team'
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'
 
+import Tabs from 'components/common/tabs'
 import TabPanel from 'components/common/tabPanel'
-import TeamTabs from './teamTabs'
 import TeamDetails from './teamDetails'
 import FixturesTable from './fixturesTable'
 import PlayersTable from './playersTable'
@@ -55,6 +55,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxHeight: theme.spacing(5)
   },
 }))
+
+const TABS = [
+  { label: 'Details', value: 'details' },
+  { label: 'Fixtures', value: 'fixtures' },
+  { label: 'Players', value: 'players' }
+]
 
 const TeamPage = (props: Props) => {
   const {
@@ -123,9 +129,11 @@ const TeamPage = (props: Props) => {
           {name}
         </Typography>
       </div>
-      <TeamTabs
+      <Tabs
         currentTab={tab}
-        teamId={teamId}
+        tabs={TABS}
+        url={TEAMS_URL}
+        id={teamId}
       />
       <Switch>
         <Route

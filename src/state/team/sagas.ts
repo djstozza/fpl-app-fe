@@ -33,26 +33,14 @@ function * updateTeamPlayersSort (action) : Generator<any, any, any> {
   const { tab, sort } = action
   const { data: { id: teamId } } = yield select(state => state.team)
 
-  const query = {
-    sort: {
-      players: sort
-    }
-  }
-
-  yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
+  yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify({ sort: { players: sort } })}`)
 }
 
 function * updateTeamFixturesSort (action) : Generator<any, any, any> {
   const { tab, sort } = action
   const { sort: defaultSort, data: { id: teamId } } = yield select(state => state.team)
 
-  const query = {
-    sort: {
-      fixtures: sort
-    }
-  }
-
-  yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify(query)}`)
+  yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify({ sort: { fixtures: sort } })}`)
 }
 
 function * fetchTeam (action) : Generator<any, any, any> {

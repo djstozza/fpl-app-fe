@@ -1,6 +1,10 @@
+import classnames from 'classnames'
+
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/team/reducer'
+import { PLAYERS_URL } from 'utilities/constants'
+import Link from 'components/common/link'
 
 import type { TeamPlayer } from 'types'
 
@@ -17,8 +21,29 @@ type Props = {
 }
 
 const PLAYERS_TABLE_CELLS = [
-  { cellId: 'lastName', label: 'LN', toolTipLabel: 'Last Name', sticky: true, sortParam: 'lastName' },
-  { cellId: 'firstName', label: 'FN', toolTipLabel: 'First Name', sortParam: 'firstName' },
+  {
+    cellId: 'lastName',
+    label: 'LN',
+    toolTipLabel: 'Last Name',
+    sticky: true,
+    sortParam: 'lastName',
+    customRender: ({ lastName, id }: TeamPlayer, classes) => (
+      <Link to={`${PLAYERS_URL}/${id}`}>
+        {lastName}
+      </Link>
+    )
+  },
+  {
+    cellId: 'firstName',
+    label: 'FN',
+    toolTipLabel: 'First Name',
+    sortParam: 'firstName',
+    customRender: ({ firstName, id }: TeamPlayer, classes) => (
+      <Link to={`${PLAYERS_URL}/${id}`}>
+        {firstName}
+      </Link>
+    )
+  },
   {
     cellId: 'positions',
     label: 'P',

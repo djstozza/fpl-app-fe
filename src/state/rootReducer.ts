@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
+import player from './player'
 import players from './players'
 import request from './request'
 import round from './round'
@@ -9,6 +10,7 @@ import teams from './teams'
 import team from './team'
 
 const rootReducer = combineReducers({
+  player,
   players,
   request,
   round,
