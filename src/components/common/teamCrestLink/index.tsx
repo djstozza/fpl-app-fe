@@ -12,6 +12,7 @@ import type { TeamBase } from 'types'
 
 type Props = {
   team: TeamBase
+  tab?: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -25,13 +26,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const TeamCrestLink = (props: Props) => {
   const {
-    team: { id, shortName }
+    team: { id, shortName },
+    tab
   } = props
 
   const classes = useStyles()
 
   return (
-    <Link to={`${TEAMS_URL}/${id}`} image>
+    <Link to={`${TEAMS_URL}/${id}/${tab ? tab : ''}`} image>
       <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
       <div>
         {shortName}

@@ -1,4 +1,4 @@
-import { MouseEvent, Fragment, useEffect, useRef } from 'react'
+import { MouseEvent, Fragment, useEffect, useRef, useContext } from 'react'
 import classnames from 'classnames'
 import {
   Table,
@@ -13,18 +13,27 @@ import {
 } from '@material-ui/core'
 import HeaderCell from './headerCell'
 
+import { SearchContext } from 'components/common/searchListener'
+
 import { SetElHeight, GetElHeight } from 'utilities/helpers'
 
-import type { PlayerSummary, TeamSummary, TeamPlayer, TeamFixture, Cell, Facets } from 'types'
+import type {
+  PlayerSummary,
+  TeamSummary,
+  TeamPlayer,
+  TeamFixture,
+  History,
+  HistoryPast,
+  Cell,
+  Facets
+} from 'types'
 
 type Props = {
-  collection: PlayerSummary[] | TeamSummary[] | TeamPlayer[] | TeamFixture[],
+  collection: PlayerSummary[] | TeamSummary[] | TeamPlayer[] | TeamFixture[] | History[] | HistoryPast[],
   facets?: Facets,
-  handleSortChange: Function,
+  handleSortChange?: Function,
   handleFilterChange?: Function,
   handleChangePage?: Function,
-  sort: Object,
-  filter?: Object,
   cells: Cell[],
   tab?: string,
   total?: number,
@@ -71,14 +80,18 @@ const SortTable = (props: Props) => {
     handleSortChange,
     handleFilterChange,
     handleChangePage,
-    sort,
-    filter,
     facets,
     cells,
     tab,
-    total,
-    page: { offset = 0, limit = 50 } = {}
+    total
   } = props
+  const {
+    search: {
+      sort = {},
+      filter = {},
+      page: { offset = 0, limit = 50 } = {}
+    } = {}
+  } = useContext(SearchContext)
 
   const paginationRef = useRef(null)
   const tableRef = useRef(null)
@@ -100,10 +113,10 @@ const SortTable = (props: Props) => {
       [name]: newDirection
     }
 
-    handleSortChange(newSort)
+    handleSortChange && handleSortChange(newSort)
   }
 
-  const changePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const changePage = (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     handleChangePage && handleChangePage(newPage * limit)
   }
 
@@ -124,7 +137,7 @@ const SortTable = (props: Props) => {
                     toolTipLabel={toolTipLabel}
                     sortParam={sortParam}
                     sticky={sticky}
-                    sort={sort}
+                    sort={tab ? sort[tab] : sort}
                     facets={facets}
                     filterParam={filterParam}
                     handleSort={handleSort}
@@ -157,7 +170,8 @@ const SortTable = (props: Props) => {
           </TableBody>
         </Table>
       </div>
-      <TablePagination ref={paginationRef}
+      <TablePagination
+        ref={paginationRef}
         component="div"
         count={total || collection.length}
         rowsPerPage={limit}

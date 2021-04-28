@@ -38,7 +38,7 @@ function * updateTeamPlayersSort (action) : Generator<any, any, any> {
 
 function * updateTeamFixturesSort (action) : Generator<any, any, any> {
   const { tab, sort } = action
-  const { sort: defaultSort, data: { id: teamId } } = yield select(state => state.team)
+  const { data: { id: teamId } } = yield select(state => state.team)
 
   yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify({ sort: { fixtures: sort } })}`)
 }

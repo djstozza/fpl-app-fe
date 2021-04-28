@@ -147,6 +147,7 @@ export type Facets = {
 
 export type HistoryPast = {
   seasonName: string,
+  minutes: number,
   goalsScored: number,
   assists: number,
   cleanSheets: number,
@@ -162,10 +163,15 @@ export type HistoryPast = {
 export type Player = {
   code: number,
   photo: string,
-  historyPast: HistoryPast[]
+  historyPast: HistoryPast[],
+  hasHistory: boolean,
+  hasHistoryPast: boolean
 } & PlayerSummary
 
 export type History = {
+  started: boolean,
+  kickoffTime: number,
+  minutes: number,
   round: RoundBase,
   opponent: TeamBase,
   goalsScored: number,
@@ -177,7 +183,8 @@ export type History = {
   totalPoints: number,
   penaltiesSaved: number,
   penaltiesMissed: number,
-  ownGoals: number
+  ownGoals: number,
+  goalsConceded: number
 }
 
 export type Sort = {

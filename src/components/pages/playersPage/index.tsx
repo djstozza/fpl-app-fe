@@ -1,6 +1,5 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import classnames from 'classnames'
 
 import { playersActions } from 'state/players'
 import { teamCrestPathLoader } from 'utilities/helpers'
@@ -99,7 +98,7 @@ const PLAYERS_TABLE_CELLS = [
 
 const PlayersPage = (props: Props) => {
   const {
-    players: { data: players, facets = {}, filter, sort, page, meta: { total } },
+    players: { data: players, facets = {}, meta: { total } },
     fetchPlayers,
     fetchFacets,
     updateFilter,
@@ -124,13 +123,10 @@ const PlayersPage = (props: Props) => {
         <SortTable
           collection={players}
           facets={facets}
-          filter={filter}
           handleSortChange={(newSort) => updateSort(newSort)}
           handleFilterChange={(newFilter) => updateFilter(newFilter)}
           handleChangePage={(newOffset) => updatePage(newOffset)}
-          sort={sort}
           cells={PLAYERS_TABLE_CELLS}
-          page={page}
           total={total}
         />
       </SearchListener>

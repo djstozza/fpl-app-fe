@@ -1,5 +1,3 @@
-import classnames from 'classnames'
-
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/team/reducer'
@@ -65,14 +63,13 @@ const PLAYERS_TABLE_CELLS = [
 ]
 
 const PlayersTable = (props: Props) => {
-  const { teamId, players = [], tab, fetchTeamPlayers, sort, updateTeamPlayersSort } = props
+  const { teamId, players = [], tab, fetchTeamPlayers, updateTeamPlayersSort } = props
 
   return (
     <SearchListener id={teamId} fetchAction={fetchTeamPlayers} initialFilterState={initialFilterState}>
       <SortTable
         collection={players}
         handleSortChange={(newSort) => updateTeamPlayersSort({ tab, sort: newSort })}
-        sort={sort.players}
         cells={PLAYERS_TABLE_CELLS}
         tab={tab}
       />

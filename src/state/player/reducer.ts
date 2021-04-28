@@ -1,11 +1,12 @@
 import * as actions from './actions'
 import { success, failure } from 'utilities/actions'
 
-import type { Action, Player, History, Sort } from 'types'
+import type { Action, Player, History, HistoryPast, Sort } from 'types'
 
 export type State = {
   data?: Player,
-  playerHistory?: History[]
+  history?: History[],
+  historyPast?: HistoryPast[],
   sort: Sort
 }
 
@@ -15,7 +16,12 @@ type PlayerAction = {
 
 export const initialFilterState = {
   sort: {
-    kickoffTime: 'asc'
+    history: {
+      kickoffTime: 'asc'
+    },
+    historyPast: {
+      seasonName: 'desc'
+    }
   }
 }
 
@@ -34,7 +40,16 @@ const reducer = (state: any = initialState, action: PlayerAction) => {
       return state
     case success(actions.API_PLAYERS_HISTORY_INDEX):
       const { data: history } = action
+
       return { ...state, history }
+    case success(actions.API_PLAYERS_HISTORY_PAST_INDEX):
+      const { data: historyPast } = action
+
+      return { ...state, historyPast }
+    case actions.UPDATE_PLAYER_HISTORY:
+      return { ...state, sort: { ...state.sort, history: sort } }
+    case actions.UPDATE_PLAYER_HISTORY_PAST:
+      return { ...state, sort: { ...state.sort, historyPast: sort } }
     case failure(actions.API_PLAYERS_SHOW):
     case failure(actions.API_PLAYERS_HISTORY_INDEX):
       const { errors } = action

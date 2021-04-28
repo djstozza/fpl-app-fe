@@ -1,11 +1,9 @@
 import moment from 'moment'
-import classnames from 'classnames'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
-import { teamCrestPathLoader } from 'utilities/helpers'
 import { initialFilterState } from 'state/team/reducer'
-import { ROUNDS_URL, TEAMS_URL } from 'utilities/constants'
+import { ROUNDS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
 import TeamCrestLink from 'components/common/teamCrestLink'
 
@@ -40,7 +38,7 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'oppositionTeam',
     label: 'O',
     toolTipLabel: 'Opponent',
-    customRender: ({ opponent }: TeamFixture, classes, tab) => <TeamCrestLink team={opponent} />,
+    customRender: ({ opponent }: TeamFixture, classes, tab) => <TeamCrestLink team={opponent} tab={tab} />,
     sortParam: 'oppositionTeam.shortName',
   },
   { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false, sortParam: 'leg' },
@@ -84,14 +82,13 @@ const FIXTURES_TABLE_CELLS = [
 ]
 
 const FixturesTable = (props: Props) => {
-  const { fixtures, teamId, tab, sort, fetchTeamFixtures, updateTeamFixturesSort } = props
+  const { fixtures, teamId, tab, fetchTeamFixtures, updateTeamFixturesSort } = props
 
   return (
     <SearchListener id={teamId} fetchAction={fetchTeamFixtures} initialFilterState={initialFilterState}>
       <SortTable
         collection={fixtures}
         handleSortChange={(newSort) => updateTeamFixturesSort({ tab, sort: newSort })}
-        sort={sort.fixtures}
         cells={FIXTURES_TABLE_CELLS}
         tab={tab}
       />

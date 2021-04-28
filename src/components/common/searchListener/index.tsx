@@ -1,4 +1,4 @@
-import { useRef, useEffect, Fragment } from 'react'
+import { useRef, useEffect, createContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import qs from 'qs'
 
@@ -8,6 +8,8 @@ type Props = {
   initialFilterState: Object,
   fetchAction: Function
 }
+
+export const SearchContext = createContext<any>({})
 
 const SearchListener = (props: Props) => {
   const {
@@ -28,9 +30,13 @@ const SearchListener = (props: Props) => {
   }, [search])
 
   return (
-    <Fragment>
+    <SearchContext.Provider
+      value={{
+        search: { ...initialFilterState, ...searchQuery.current }
+      }}
+    >
       {props.children}
-    </Fragment>
+    </SearchContext.Provider>
   )
 }
 

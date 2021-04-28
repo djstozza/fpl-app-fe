@@ -10,22 +10,34 @@ import {
 import { playerActions } from 'state/player'
 import Tabs from 'components/common/tabs'
 import PlayerDetails from './playerDetails'
+import HistoryTable from './historyTable'
+import HistoryPastTable from './historyPastTable'
 import { PLAYERS_URL } from 'utilities/constants'
 
-import type { Player, History } from 'types'
+
+import type { PlayerState } from 'state/player'
 
 type Props = {
-  player: Player,
-  playerHistory: History[],
+  player: PlayerState,
   fetchPlayer: Function,
+  fetchPlayerHistory: Function,
+  fetchPlayerHistoryPast: Function,
+  updatePlayerHistory: Function,
+  updatePlayerHistoryPast: Function,
   match: { params: { playerId: string, tab: string } }
 }
 
-const TABS = [
-  { label: 'Details', value: 'details' },
-  { label: 'History', value: 'history' },
-  { label: 'Past Seasons', value: 'historyPast' }
-]
+interface TabsInterface {
+  details: Object,
+  history?: Object,
+  historyPast?: Object
+}
+
+const TABS: TabsInterface = {
+  details: { label: 'Details', value: 'details' },
+  history: { label: 'History', value: 'history' },
+  historyPast: { label: 'Past Seasons', value: 'historyPast' }
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -35,11 +47,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const PlayerPage = (props: Props) => {
   const {
-    player,
+    player: { data: player, history = [], historyPast = []},
     fetchPlayer,
+    fetchPlayerHistory,
+    fetchPlayerHistoryPast,
+    updatePlayerHistory,
+    updatePlayerHistoryPast,
     match: { params: { playerId, tab = 'details' } }
   } = props
   const classes = useStyles()
+
 
   useEffect(
     () => {
@@ -49,7 +66,9 @@ const PlayerPage = (props: Props) => {
 
   if (!player) return null
 
-  const { firstName, lastName } = player
+  const { firstName, lastName, hasHistory, hasHistoryPast } = player
+  if (!hasHistory) delete TABS['history']
+  if (!hasHistoryPast) delete TABS['historyPast']
 
   return (
     <Fragment>
@@ -58,7 +77,7 @@ const PlayerPage = (props: Props) => {
       </Typography>
       <Tabs
         currentTab={tab}
-        tabs={TABS}
+        tabs={Object.values(TABS)}
         url={PLAYERS_URL}
         id={playerId}
       />
@@ -73,41 +92,40 @@ const PlayerPage = (props: Props) => {
           path={`${PLAYERS_URL}/:playerId/details`}
           render={() => <PlayerDetails player={player} />}
         />
-        {
-          // <Route
-          //   exact
-          //   path={`${PLAYERS_URL}/:playerId/fixtures`}
-          //   render={
-          //     () => (
-          //       <FixturesTable
-          //         key={playerId}
-          //         playerId={playerId}
-          //         fixtures={fixtures}
-          //         fetchTeamFixtures={fetchTeamFixtures}
-          //         sort={sortQuery}
-          //         tab={tab}
-          //         updateTeamFixturesSort={updateTeamFixturesSort}
-          //       />
-          //     )
-          //   }
-          // />
-          // <Route
-          //   exact
-          //   path={`${PLAYERS_URL}/:playerId/players`}
-          //   render={() => (
-          //     <PlayersTable
-          //       key={playerId}
-          //       players={players}
-          //       fetchTeamPlayers={fetchTeamPlayers}
-          //       sort={sortQuery}
-          //       playerId={playerId}
-          //       tab={tab}
-          //       updateTeamPlayersSort={updateTeamPlayersSort}
-          //     />
-          //   )}
-          // />
-        }
-
+        <Route
+          exact
+          path={`${PLAYERS_URL}/:playerId/history`}
+          render={
+            () => (
+              <HistoryTable
+                key={playerId}
+                playerId={playerId}
+                history={history}
+                fetchPlayerHistory={fetchPlayerHistory}
+                tab={tab}
+                updatePlayerHistory={updatePlayerHistory}
+                hasHistory={hasHistory}
+              />
+            )
+          }
+        />
+        <Route
+          exact
+          path={`${PLAYERS_URL}/:playerId/historyPast`}
+          render={
+            () => (
+              <HistoryPastTable
+                key={playerId}
+                playerId={playerId}
+                historyPast={historyPast}
+                fetchPlayerHistoryPast={fetchPlayerHistoryPast}
+                updatePlayerHistoryPast={updatePlayerHistoryPast}
+                tab={tab}
+                hasHistoryPast={hasHistoryPast}
+              />
+            )
+          }
+        />
       </Switch>
     </Fragment>
   )
@@ -115,19 +133,20 @@ const PlayerPage = (props: Props) => {
 
 const mapStateToProps = (state) => {
   const {
-    player: { data: player },
-    playerHistory
+    player
   } = state
 
   return {
-    player,
-    playerHistory
+    player
   }
 }
 
 const matchDispatchToProps = {
   fetchPlayer: playerActions.fetchPlayer,
-  fetchPlayerHistory: playerActions.fetchPlayerHistory
+  fetchPlayerHistory: playerActions.fetchPlayerHistory,
+  fetchPlayerHistoryPast: playerActions.fetchPlayerHistoryPast,
+  updatePlayerHistory: playerActions.updatePlayerHistory,
+  updatePlayerHistoryPast: playerActions.updatePlayerHistoryPast
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(PlayerPage)

@@ -55,7 +55,7 @@ const TEAMS_TABLE_CELLS = [
 
 const TeamsPage = (props: Props) => {
   const {
-    teams: { data: teams, sort },
+    teams: { data: teams },
     fetchTeams,
     updateSort
   } = props
@@ -71,7 +71,6 @@ const TeamsPage = (props: Props) => {
         <SortTable
           collection={teams}
           handleSortChange={(newSort) => updateSort(newSort)}
-          sort={sort}
           cells={TEAMS_TABLE_CELLS}
         />
       </SearchListener>
