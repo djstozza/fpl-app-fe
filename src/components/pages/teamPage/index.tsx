@@ -57,9 +57,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 const TABS = [
-  { label: 'Details', value: 'details' },
-  { label: 'Fixtures', value: 'fixtures' },
-  { label: 'Players', value: 'players' }
+  { label: 'Details', value: 'details', display: true },
+  { label: 'Fixtures', value: 'fixtures', display: true },
+  { label: 'Players', value: 'players', display: true }
 ]
 
 const TeamPage = (props: Props) => {

@@ -10,7 +10,8 @@ import { findIndex } from 'lodash'
 
 type TabType = {
   label: string,
-  value: string
+  value: string,
+  display: boolean
 }
 
 type Props = {
@@ -41,7 +42,7 @@ const Tabs = ({ currentTab, url, id, tabs }: Props) => {
       className={classes.tab}
     >
       {
-        tabs.map(
+        tabs.filter(({ display }) => display).map(
           ({ label, value }) => (
             <Tab
               key={value}

@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       maxHeight: ({ tableHeight, imageHeight }: HeightProps) => tableHeight - imageHeight
     },
+    playerImageContainer: {
+      textAlign: 'center'
+    },
     playerImage: {
       [theme.breakpoints.up('sm')]: {
         maxHeight: ({ tableHeight }: HeightProps) => tableHeight
@@ -89,7 +92,7 @@ const PlayerDetails = ({ player }: Props) => {
     <Grid container >
       <Grid item md={3} sm={5} xs={12}>
       {
-        <div style={{ textAlign: 'center', height: '80%' }}>
+        <div className={classes.playerImageContainer}>
           <img
             className={classes.playerImage}
             src={playerImage(player.code)}

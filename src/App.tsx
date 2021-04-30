@@ -29,6 +29,7 @@ const App = () => {
         <LoadingBar showFastActions />
 
         <Switch>
+          <Route exact path='/' render={(props) => <RoundsPage {...props} />} />
           <Route exact path={`${ROUNDS_URL}/:roundId?`} render={(props) => <RoundsPage {...props} />} />
           <Route exact path={`${TEAMS_URL}/:teamId`} render={(props) => <TeamPage {...props} />} />
           <Route exact path={`${TEAMS_URL}/:teamId/:tab`} render={(props) => <TeamPage {...props} />} />
