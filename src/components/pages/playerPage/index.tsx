@@ -12,8 +12,7 @@ import Tabs from 'components/common/tabs'
 import PlayerDetails from './playerDetails'
 import HistoryTable from './historyTable'
 import HistoryPastTable from './historyPastTable'
-import { TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
-import { teamCrestPathLoader } from 'utilities/helpers'
+import { PLAYERS_URL } from 'utilities/constants'
 import TeamCrestLink from 'components/common/teamCrestLink'
 
 
@@ -102,12 +101,12 @@ const PlayerPage = (props: Props) => {
         <Route
           exact
           path={`${PLAYERS_URL}/:playerId`}
-          render={() => <PlayerDetails player={player} />}
+          render={() => <PlayerDetails key={playerId} player={player} />}
         />
         <Route
           exact
           path={`${PLAYERS_URL}/:playerId/details`}
-          render={() => <PlayerDetails player={player} />}
+          render={() => <PlayerDetails key={playerId} player={player} />}
         />
         <Route
           exact

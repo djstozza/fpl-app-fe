@@ -10,6 +10,10 @@ export const teamCrestPathLoader = (shortName: string) => (
   require(`../images/crests/${shortName.toLowerCase()}.png`).default
 )
 
+export const playerPlaceHolderLoader = () => (
+  require(`../images/player-placeholder.png`).default
+)
+
 export const SetElHeight = (ref) => {
   const [height, setHeight] = useState(0)
 

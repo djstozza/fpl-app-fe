@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import {
   Table,
   TableBody,
@@ -9,12 +9,9 @@ import {
   makeStyles,
   createStyles
 } from '@material-ui/core'
-import Skeleton from '@material-ui/lab/Skeleton'
 
-import { playerImage } from 'utilities/helpers'
-import TeamCrestLink from 'components/common/teamCrestLink'
-import { TEAMS_URL } from 'utilities/constants'
 import { SetElHeight } from 'utilities/helpers'
+import PlayerImage from './playerImage'
 
 import { Player } from 'types'
 
@@ -23,8 +20,7 @@ type Props = {
 }
 
 type HeightProps = {
-  tableHeight: number,
-  imageHeight: number
+  tableHeight: number
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         maxHeight: ({ tableHeight }: HeightProps) => tableHeight
       },
-      maxHeight: ({ tableHeight, imageHeight }: HeightProps) => tableHeight - imageHeight
+      maxHeight: ({ tableHeight }: HeightProps) => tableHeight
     },
     playerImageContainer: {
       textAlign: 'center'
@@ -71,7 +67,7 @@ const PLAYER_DETAILS_ROWS = [
 
 const PlayerDetails = ({ player }: Props) => {
   const tableRef = useRef(null)
-  const [imageHeight, setImageHeight] = useState(0)
+  const { code, lastName } = player
 
   const { height: tableHeight } = SetElHeight(tableRef)
 
@@ -79,29 +75,21 @@ const PlayerDetails = ({ player }: Props) => {
     if (!tableHeight) {
       window.dispatchEvent(new Event('resize'))
     }
-  }, [tableHeight, imageHeight])
+  }, [tableHeight])
 
-  const handleImageLoad = (event) => {
-    const target = event.target as HTMLInputElement
-    setImageHeight(target.offsetHeight)
-  }
-
-  const classes = useStyles({ tableHeight, imageHeight })
+  const classes = useStyles({ tableHeight })
 
   return (
     <Grid container >
       <Grid item md={3} sm={5} xs={12}>
-      {
         <div className={classes.playerImageContainer}>
-          <img
-            className={classes.playerImage}
-            src={playerImage(player.code)}
-            onLoad={handleImageLoad}
-            alt={player.lastName}
+          <PlayerImage
+            key={code}
+            code={code}
+            lastName={lastName}
+            maxHeight={tableHeight}
           />
         </div>
-      }
-
       </Grid>
       <Grid item md={9} sm={7} xs={12}>
         <div ref={tableRef} className={classes.container}>
