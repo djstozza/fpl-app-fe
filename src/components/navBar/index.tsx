@@ -16,8 +16,9 @@ import {
 
 import MoreIcon from '@material-ui/icons/MoreVert'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
 
-import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
+import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL, SIGN_UPS_URL } from 'utilities/constants'
 
 import { iconLoader } from 'utilities/helpers'
 
@@ -127,7 +128,7 @@ const NavBar = () => {
                 color='inherit'
                 aria-label='Rounds'
                 component={Link}
-                to={`${ROUNDS_URL}`}
+                to={ROUNDS_URL}
                 className={classnames({ [classes.active]: pathname.includes(ROUNDS_URL) })}
               >
                 <FormatListNumberedIcon className={classes.icon} />
@@ -137,7 +138,7 @@ const NavBar = () => {
               <IconButton
                 color='inherit'
                 component={Link}
-                to={`${TEAMS_URL}`}
+                to={TEAMS_URL}
                 className={classnames({ [classes.active]: pathname.includes(TEAMS_URL) })}
               >
                 <img src={iconLoader('team-jersey-white')} alt='Teams' className={classes.icon} />
@@ -153,8 +154,28 @@ const NavBar = () => {
                 <img src={iconLoader('player-white')} alt='Teams' className={classes.icon} />
               </IconButton>
             </Tooltip>
+            <Tooltip title='Sign Up'>
+              <IconButton
+                color='inherit'
+                component={Link}
+                to={SIGN_UPS_URL}
+                className={classnames({ [classes.active]: pathname.includes(SIGN_UPS_URL) })}
+              >
+                <PersonAddIcon className={classes.icon} />
+              </IconButton>
+            </Tooltip>
           </div>
           <div className={classes.sectionMobile}>
+          <Tooltip title='Sign Up'>
+            <IconButton
+              color='inherit'
+              component={Link}
+              to={SIGN_UPS_URL}
+              className={classnames({ [classes.active]: pathname.includes(SIGN_UPS_URL) })}
+            >
+              <PersonAddIcon className={classes.icon} />
+            </IconButton>
+          </Tooltip>
             <IconButton
               aria-label='show more'
               aria-haspopup='true'

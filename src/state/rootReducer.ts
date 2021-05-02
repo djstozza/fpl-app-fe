@@ -6,8 +6,10 @@ import players from './players'
 import request from './request'
 import round from './round'
 import rounds from './rounds'
-import teams from './teams'
+import signUp from './signUp'
 import team from './team'
+import teams from './teams'
+
 
 const rootReducer = combineReducers({
   player,
@@ -15,8 +17,9 @@ const rootReducer = combineReducers({
   request,
   round,
   rounds,
-  teams,
+  signUp,
   team,
+  teams,
   loadingBar: loadingBarReducer
 })
 
