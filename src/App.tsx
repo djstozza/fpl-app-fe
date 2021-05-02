@@ -17,7 +17,10 @@ import NavBar from 'components/navBar'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    marginTop: theme.spacing(8)
+    [theme.breakpoints.up('sm')]: {
+      marginTop: theme.spacing(8)
+    },
+    marginTop: theme.spacing(7)
   }
 }))
 

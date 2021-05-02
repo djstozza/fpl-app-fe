@@ -14,6 +14,10 @@ export const playerPlaceHolderLoader = () => (
   require(`../images/player-placeholder.png`).default
 )
 
+export const stadiumCrowdLoader = () => (
+  require(`../images/stadium-crowd.jpeg`).default
+)
+
 export const SetElHeight = (ref) => {
   const [height, setHeight] = useState(0)
 
