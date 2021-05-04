@@ -9,9 +9,11 @@ import {
   makeStyles
 } from '@material-ui/core'
 
+import Link from 'components/common/link'
 import { SetElHeight } from 'utilities/helpers'
+import { SIGN_UP_URL } from 'utilities/constants'
 
-import { sessionActions } from 'state/session'
+import { authActions } from 'state/auth'
 import { stadiumCrowdLoader } from 'utilities/helpers'
 
 import type { Error } from 'types'
@@ -20,6 +22,7 @@ type Props = {
   token?: string,
   submitting: boolean,
   logIn: Function,
+  initializeAuth: Function,
   errors: Error[]
 }
 
@@ -60,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 const LoginPage = (props: Props) => {
-  const { logIn, errors, submitting } = props
+  const { logIn, errors = [], submitting, initializeAuth } = props
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -78,6 +81,10 @@ const LoginPage = (props: Props) => {
       window.dispatchEvent(new Event('resize'))
     }
   }, [height])
+
+  useEffect(() => {
+    initializeAuth()
+  }, [initializeAuth])
 
   const classes = useStyles({ height })
 
@@ -126,20 +133,25 @@ const LoginPage = (props: Props) => {
           >
             Log in
           </Button>
+
+          <Typography>
+            Don't have an account? <Link to={SIGN_UP_URL}>Sign up</Link> now!
+          </Typography>
         </Paper>
       </form>
     </div>
   )
 }
 
-const mapStateToProps = ({ session: { errors, submitting, token } }) => ({
+const mapStateToProps = ({ auth: { errors = [], submitting, token } }) => ({
   errors,
   submitting,
   token
 })
 
 const matchDispatchToProps = {
-  logIn: sessionActions.logIn
+  initializeAuth: authActions.initializeAuth,
+  logIn: authActions.logIn
 }
 
 

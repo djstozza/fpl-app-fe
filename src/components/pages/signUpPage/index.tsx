@@ -11,8 +11,10 @@ import {
 
 import { SetElHeight } from 'utilities/helpers'
 
-import { signUpActions } from 'state/signUp'
+import { authActions } from 'state/auth'
 import { stadiumCrowdLoader } from 'utilities/helpers'
+import { LOGIN_URL } from 'utilities/constants'
+import Link from 'components/common/link'
 
 import type { Error } from 'types'
 
@@ -20,6 +22,7 @@ type Props = {
   token?: string,
   submitting: boolean,
   signUp: Function,
+  initializeAuth: Function,
   errors: Error[]
 }
 
@@ -60,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 const SignUpPage = (props: Props) => {
-  const { signUp, errors, submitting } = props
+  const { signUp, errors = [], submitting, initializeAuth } = props
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -79,6 +82,10 @@ const SignUpPage = (props: Props) => {
       window.dispatchEvent(new Event('resize'))
     }
   }, [height])
+
+  useEffect(() => {
+    initializeAuth()
+  }, [initializeAuth])
 
   const classes = useStyles({ height })
 
@@ -140,21 +147,23 @@ const SignUpPage = (props: Props) => {
           >
             Submit
           </Button>
+
+          <Typography><Link to={LOGIN_URL}>Log in</Link> if you already have an account</Typography>
         </Paper>
       </form>
     </div>
   )
 }
 
-const mapStateToProps = ({ signUp: { errors, submitting, token } }) => ({
+const mapStateToProps = ( { auth: { errors, submitting, token } }) => ({
   errors,
   submitting,
   token
 })
 
 const matchDispatchToProps = {
-  signUp: signUpActions.signUp
+  initializeAuth: authActions.initializeAuth,
+  signUp: authActions.signUp
 }
-
 
 export default connect(mapStateToProps, matchDispatchToProps)(SignUpPage)

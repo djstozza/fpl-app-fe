@@ -9,7 +9,7 @@ import {
   ROUNDS_URL,
   TEAMS_URL,
   PLAYERS_URL,
-  SIGN_UPS_URL,
+  SIGN_UP_URL,
   LOGIN_URL
 } from 'utilities/constants'
 import LoadingBar from 'react-redux-loading-bar'
@@ -48,7 +48,7 @@ const App = () => {
           <Route exact path={PLAYERS_URL} render={(props) => <PlayersPage {...props} />} />
           <Route exact path={`${PLAYERS_URL}/:playerId`} render={(props) => <PlayerPage {...props} />} />
           <Route exact path={`${PLAYERS_URL}/:playerId/:tab`} render={(props) => <PlayerPage {...props} />} />
-          <Route exact path={SIGN_UPS_URL} render={(props) => <SignUpPage {...props} />} />
+          <Route exact path={SIGN_UP_URL} render={(props) => <SignUpPage {...props} />} />
           <Route exact path={LOGIN_URL} render={(props) => <LoginPage {...props} />} />
         </Switch>
       </div>

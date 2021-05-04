@@ -2,7 +2,7 @@ export const API_URL = process.env.REACT_APP_API_URL
 export const ROUNDS_URL = '/rounds'
 export const TEAMS_URL = '/teams'
 export const PLAYERS_URL = '/players'
-export const SIGN_UPS_URL = '/sign-up'
+export const SIGN_UP_URL = '/sign-up'
 export const LOGIN_URL = '/login'
 
 export const API_REGISTRATIONS_PATH = '/registrations'

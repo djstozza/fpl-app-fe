@@ -18,15 +18,19 @@ export const initialState = {
 
 const reducer = (state: State = initialState, action: Action) => {
   if (state === undefined) { state = initialState }
+  const { data: { token } = {}, errors } = action
+
   switch (action.type) {
+    case actions.INITIALIZE_AUTH:
+      return initialState
     case actions.API_SESSIONS_CREATE:
+
       return { ...state, submitting: true }
     case success(actions.API_SESSIONS_CREATE):
-      const { data: { token } } = action
-
+    case success(actions.API_USERS_CREATE):
       return { ...state, token, submitting: false }
     case failure(actions.API_SESSIONS_CREATE):
-      const { errors } = action
+    case failure(actions.API_USERS_CREATE):
 
       return { ...state, errors, submitting: false }
     default:
