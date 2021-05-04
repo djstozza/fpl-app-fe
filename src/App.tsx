@@ -5,7 +5,13 @@ import {
   Theme
 } from '@material-ui/core'
 
-import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL, SIGN_UPS_URL } from 'utilities/constants'
+import {
+  ROUNDS_URL,
+  TEAMS_URL,
+  PLAYERS_URL,
+  SIGN_UPS_URL,
+  LOGIN_URL
+} from 'utilities/constants'
 import LoadingBar from 'react-redux-loading-bar'
 import RoundsPage from 'components/pages/roundsPage'
 import TeamsPage from 'components/pages/teamsPage'
@@ -13,6 +19,7 @@ import TeamPage from 'components/pages/teamPage'
 import PlayersPage from 'components/pages/playersPage'
 import PlayerPage from 'components/pages/playerPage'
 import SignUpPage from 'components/pages/signUpPage'
+import LoginPage from 'components/pages/loginPage'
 import NavBar from 'components/navBar'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -42,6 +49,7 @@ const App = () => {
           <Route exact path={`${PLAYERS_URL}/:playerId`} render={(props) => <PlayerPage {...props} />} />
           <Route exact path={`${PLAYERS_URL}/:playerId/:tab`} render={(props) => <PlayerPage {...props} />} />
           <Route exact path={SIGN_UPS_URL} render={(props) => <SignUpPage {...props} />} />
+          <Route exact path={LOGIN_URL} render={(props) => <LoginPage {...props} />} />
         </Switch>
       </div>
     </Fragment>

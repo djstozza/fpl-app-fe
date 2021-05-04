@@ -3,8 +3,10 @@ export const ROUNDS_URL = '/rounds'
 export const TEAMS_URL = '/teams'
 export const PLAYERS_URL = '/players'
 export const SIGN_UPS_URL = '/sign-up'
+export const LOGIN_URL = '/login'
 
 export const API_REGISTRATIONS_PATH = '/registrations'
+export const API_SESSIONS_PATH = '/sessions'
 
 export const APPLICATION_ERRORS = {
   '403': {

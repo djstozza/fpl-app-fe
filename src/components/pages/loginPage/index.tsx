@@ -11,7 +11,7 @@ import {
 
 import { SetElHeight } from 'utilities/helpers'
 
-import { signUpActions } from 'state/signUp'
+import { sessionActions } from 'state/session'
 import { stadiumCrowdLoader } from 'utilities/helpers'
 
 import type { Error } from 'types'
@@ -19,7 +19,7 @@ import type { Error } from 'types'
 type Props = {
   token?: string,
   submitting: boolean,
-  signUp: Function,
+  logIn: Function,
   errors: Error[]
 }
 
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   paper: {
     padding: theme.spacing(3),
-    [theme.breakpoints.only('sm')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '100vw'
     }
   },
@@ -59,10 +59,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const SignUpPage = (props: Props) => {
-  const { signUp, errors, submitting } = props
+const LoginPage = (props: Props) => {
+  const { logIn, errors, submitting } = props
   const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const backgroundRef = useRef(null)
@@ -71,7 +70,7 @@ const SignUpPage = (props: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    signUp({ user: { email, username, password } })
+    logIn({ user: { email, password } })
   }
 
   useEffect(() => {
@@ -87,7 +86,7 @@ const SignUpPage = (props: Props) => {
       <form onSubmit={handleSubmit} className={classes.form}>
         <Paper className={classes.paper}>
           <Typography variant='h5' className={classes.textField}>
-            Sign Up
+            Log in
           </Typography>
           <TextField
             required
@@ -99,21 +98,8 @@ const SignUpPage = (props: Props) => {
             type='email'
             onChange={({ target: { value }}) => setEmail(value)}
             value={email}
-            error={Boolean(errors.find(({ source }) => source === 'email'))}
+            error={Boolean(errors.find(({ source }) => source.includes('email')))}
             helperText={errors.find(({ source }) => source === 'email')?.detail}
-          />
-          <TextField
-            required
-            className={classes.textField}
-            fullWidth
-            variant='outlined'
-            label='Username'
-            name='username'
-            type='text'
-            onChange={({ target: { value }}) => setUsername(value)}
-            value={username}
-            error={Boolean(errors.find(({ source }) => source === 'username'))}
-            helperText={errors.find(({ source }) => source === 'username')?.detail}
           />
           <TextField
             required
@@ -128,17 +114,17 @@ const SignUpPage = (props: Props) => {
             InputProps={{
               autoComplete: 'off'
             }}
-            error={Boolean(errors.find(({ source }) => source === 'password'))}
-            helperText={errors.find(({ source }) => source === 'password')?.detail}
+            error={Boolean(errors.find(({ source }) => source.includes('password')))}
+            helperText={errors.find(({ source }) => source.includes('password'))?.detail}
           />
           <Button
             type='submit'
-            disabled={!email || !username || !password || submitting}
+            disabled={!email || !password || submitting}
             variant='contained'
             color='primary'
             className={classes.submitButton}
           >
-            Submit
+            Log in
           </Button>
         </Paper>
       </form>
@@ -146,15 +132,15 @@ const SignUpPage = (props: Props) => {
   )
 }
 
-const mapStateToProps = ({ signUp: { errors, submitting, token } }) => ({
+const mapStateToProps = ({ session: { errors, submitting, token } }) => ({
   errors,
   submitting,
   token
 })
 
 const matchDispatchToProps = {
-  signUp: signUpActions.signUp
+  logIn: sessionActions.logIn
 }
 
 
-export default connect(mapStateToProps, matchDispatchToProps)(SignUpPage)
+export default connect(mapStateToProps, matchDispatchToProps)(LoginPage)

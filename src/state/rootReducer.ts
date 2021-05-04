@@ -6,6 +6,7 @@ import players from './players'
 import request from './request'
 import round from './round'
 import rounds from './rounds'
+import session from './session'
 import signUp from './signUp'
 import team from './team'
 import teams from './teams'
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   request,
   round,
   rounds,
+  session,
   signUp,
   team,
   teams,
