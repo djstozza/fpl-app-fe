@@ -18,7 +18,7 @@ export const initialState = {
 
 const reducer = (state: State = initialState, action: Action) => {
   if (state === undefined) { state = initialState }
-  const { data: { token } = {}, errors } = action
+  const { data: { token, user } = {}, errors } = action
 
   switch (action.type) {
     case actions.INITIALIZE_AUTH:
@@ -28,7 +28,8 @@ const reducer = (state: State = initialState, action: Action) => {
       return { ...state, submitting: true }
     case success(actions.API_SESSIONS_CREATE):
     case success(actions.API_USERS_CREATE):
-      return { ...state, token, submitting: false }
+    case success(actions.API_SESSIONS_UPDATE):
+      return { ...state, token, user, submitting: false }
     case failure(actions.API_SESSIONS_CREATE):
     case failure(actions.API_USERS_CREATE):
 

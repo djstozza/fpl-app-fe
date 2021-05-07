@@ -7,8 +7,8 @@ const authKey = 'fplAppAuth'
 
 const StateLoader = {
   saveAuth: (auth) => {
-    const { token } = auth
-    localStorage.setItem(authKey, JSON.stringify({ token }))
+    const { token, user } = auth
+    localStorage.setItem(authKey, JSON.stringify({ token, user }))
   },
   getAuth: () => {
     const authKeyValue = localStorage.getItem(authKey)
@@ -17,6 +17,9 @@ const StateLoader = {
     return {
       ...auth
     }
+  },
+  deleteAuth: () => {
+    localStorage.removeItem(authKey)
   }
 }
 

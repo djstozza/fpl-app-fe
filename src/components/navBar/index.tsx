@@ -1,4 +1,5 @@
-import { MouseEvent, useState } from 'react'
+import { Fragment, MouseEvent, useState } from 'react'
+import { connect } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import classnames from 'classnames'
 import {
@@ -14,14 +15,21 @@ import {
   createStyles
 } from '@material-ui/core'
 
+import { authActions } from 'state/auth'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import PersonIcon from '@material-ui/icons/Person'
-
-import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL, SIGN_UP_URL, LOGIN_URL } from 'utilities/constants'
-
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { iconLoader } from 'utilities/helpers'
+import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL, SIGN_UP_URL, LOGIN_URL, PROFILE_URL } from 'utilities/constants'
+
+import type { User } from 'types'
+
+type Props = {
+  user: User,
+  logOut: Function
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,15 +58,26 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.secondary.main
     }
   }),
-);
+)
 
-const NavBar = () => {
+const NavBar = (props: Props) => {
+  const { user, logOut } = props
   const classes = useStyles()
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null)
 
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
   const handleMobileMenuClose = () => setMobileMoreAnchorEl(null)
   const handleMobileMenuOpen = ({ currentTarget }: MouseEvent<HTMLElement>) => setMobileMoreAnchorEl(currentTarget)
+
+  const [accountAnchorEl, setAccountAnchorEl] = useState<null | HTMLElement>(null)
+  const isAccountMenuOpen = Boolean(accountAnchorEl)
+  const handleAccountMenuClose = () => setAccountAnchorEl(null)
+  const handleAccountMenuOpen = ({ currentTarget }: MouseEvent<HTMLElement>) => setAccountAnchorEl(currentTarget)
+
+  const handleLogoutClick = () => {
+    logOut()
+    handleAccountMenuClose()
+  }
 
   const { pathname } = useLocation()
 
@@ -72,7 +91,7 @@ const NavBar = () => {
     >
       <MenuItem
         component={Link}
-        to={`${ROUNDS_URL}`}
+        to={ROUNDS_URL}
         onClick={handleMobileMenuClose}
         className={classnames({ [classes.active]: pathname === ROUNDS_URL })}
       >
@@ -86,7 +105,7 @@ const NavBar = () => {
       </MenuItem>
       <MenuItem
         component={Link}
-        to={`${TEAMS_URL}`}
+        to={TEAMS_URL}
         onClick={handleMobileMenuClose}
         className={classnames({ [classes.active]: pathname === TEAMS_URL })}
       >
@@ -100,7 +119,7 @@ const NavBar = () => {
       </MenuItem>
       <MenuItem
         component={Link}
-        to={`${PLAYERS_URL}`}
+        to={PLAYERS_URL}
         onClick={handleMobileMenuClose}
         className={classnames({ [classes.active]: pathname === PLAYERS_URL })}
       >
@@ -113,6 +132,76 @@ const NavBar = () => {
         <p>Players</p>
       </MenuItem>
     </Menu>
+  )
+
+  const renderAccountMenu = (
+    <Menu
+      anchorEl={accountAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isAccountMenuOpen}
+      onClose={handleAccountMenuClose}
+    >
+      <MenuItem
+        component={Link}
+        to={PROFILE_URL}
+        onClick={handleAccountMenuClose}
+      >
+        My profile
+      </MenuItem>
+      <MenuItem
+        onClick={handleLogoutClick}
+      >
+        Log out
+      </MenuItem>
+    </Menu>
+  )
+
+  const renderAccountSection = (
+    <Fragment>
+      {
+        !user &&
+        <Fragment>
+          <Tooltip title='Sign Up'>
+            <IconButton
+              color='inherit'
+              component={Link}
+              to={SIGN_UP_URL}
+              className={classnames({ [classes.active]: pathname.includes(SIGN_UP_URL) })}
+            >
+              <PersonAddIcon className={classes.icon} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Log In'>
+            <IconButton
+              color='inherit'
+              component={Link}
+              to={LOGIN_URL}
+              className={classnames({ [classes.active]: pathname.includes(LOGIN_URL) })}
+            >
+              <PersonIcon className={classes.icon} />
+            </IconButton>
+          </Tooltip>
+        </Fragment>
+      }
+      {
+        user &&
+        <Fragment>
+          <Tooltip title={user.username}>
+            <IconButton
+              aria-label='Account'
+              aria-haspopup='true'
+              color='inherit'
+              onClick={handleAccountMenuOpen}
+              className={classnames({ [classes.active]: pathname === PROFILE_URL })}
+            >
+              <AccountCircleIcon />
+            </IconButton>
+          </Tooltip>
+          {renderAccountMenu}
+        </Fragment>
+      }
+    </Fragment>
   )
 
   return (
@@ -155,48 +244,10 @@ const NavBar = () => {
                 <img src={iconLoader('player-white')} alt='Teams' className={classes.icon} />
               </IconButton>
             </Tooltip>
-            <Tooltip title='Sign Up'>
-              <IconButton
-                color='inherit'
-                component={Link}
-                to={SIGN_UP_URL}
-                className={classnames({ [classes.active]: pathname.includes(SIGN_UP_URL) })}
-              >
-                <PersonAddIcon className={classes.icon} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title='Log In'>
-              <IconButton
-                color='inherit'
-                component={Link}
-                to={LOGIN_URL}
-                className={classnames({ [classes.active]: pathname.includes(LOGIN_URL) })}
-              >
-                <PersonIcon className={classes.icon} />
-              </IconButton>
-            </Tooltip>
+
           </div>
+          {renderAccountSection}
           <div className={classes.sectionMobile}>
-            <Tooltip title='Sign Up'>
-              <IconButton
-                color='inherit'
-                component={Link}
-                to={SIGN_UP_URL}
-                className={classnames({ [classes.active]: pathname.includes(SIGN_UP_URL) })}
-              >
-                <PersonAddIcon className={classes.icon} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title='Log In'>
-              <IconButton
-                color='inherit'
-                component={Link}
-                to={LOGIN_URL}
-                className={classnames({ [classes.active]: pathname.includes(LOGIN_URL) })}
-              >
-                <PersonIcon className={classes.icon} />
-              </IconButton>
-            </Tooltip>
             <IconButton
               aria-label='show more'
               aria-haspopup='true'
@@ -213,4 +264,18 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+const mapStateToProps = (state) => {
+  const {
+    auth: { user }
+  } = state
+
+  return {
+    user
+  }
+}
+
+const matchDispatchToProps = {
+  logOut: authActions.logOut
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(NavBar)

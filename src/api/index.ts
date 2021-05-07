@@ -1,4 +1,4 @@
-type Options = {
+export type Options = {
   body?: Object,
   method?: string,
   token?: string

@@ -194,3 +194,9 @@ export type History = {
 export type Sort = {
   [key: string]: string
 }
+
+export type User = {
+  id: string,
+  email: string,
+  username: string
+}

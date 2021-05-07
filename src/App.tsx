@@ -10,7 +10,8 @@ import {
   TEAMS_URL,
   PLAYERS_URL,
   SIGN_UP_URL,
-  LOGIN_URL
+  LOGIN_URL,
+  PROFILE_URL
 } from 'utilities/constants'
 import LoadingBar from 'react-redux-loading-bar'
 import RoundsPage from 'components/pages/roundsPage'
@@ -20,6 +21,8 @@ import PlayersPage from 'components/pages/playersPage'
 import PlayerPage from 'components/pages/playerPage'
 import SignUpPage from 'components/pages/signUpPage'
 import LoginPage from 'components/pages/loginPage'
+import ProfilePage from 'components/pages/profilePage'
+import PrivateRoute from 'components/common/privateRoute'
 import NavBar from 'components/navBar'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -50,6 +53,11 @@ const App = () => {
           <Route exact path={`${PLAYERS_URL}/:playerId/:tab`} render={(props) => <PlayerPage {...props} />} />
           <Route exact path={SIGN_UP_URL} render={(props) => <SignUpPage {...props} />} />
           <Route exact path={LOGIN_URL} render={(props) => <LoginPage {...props} />} />
+          <PrivateRoute>
+            <Switch>
+              <Route exact path={PROFILE_URL} render={(props) => <ProfilePage {...props} />} />
+            </Switch>
+          </PrivateRoute>
         </Switch>
       </div>
     </Fragment>

@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     display: 'flex',
     alignItems: 'center',
-
     padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-between'

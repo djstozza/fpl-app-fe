@@ -4,6 +4,7 @@ export const TEAMS_URL = '/teams'
 export const PLAYERS_URL = '/players'
 export const SIGN_UP_URL = '/sign-up'
 export const LOGIN_URL = '/login'
+export const PROFILE_URL = '/profile'
 
 export const API_REGISTRATIONS_PATH = '/registrations'
 export const API_SESSIONS_PATH = '/sessions'

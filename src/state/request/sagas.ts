@@ -5,6 +5,8 @@ import { camelizeKeys } from 'humps'
 import * as actions from './actions'
 import { getData } from '../../api'
 
+import type { Options } from '../../api'
+
 function * sendRequest (needsAuth, action) : Generator<any, any, any> {
   const { method, url, successAction, failureAction, body, redirect, notification } = action
   try {
@@ -16,7 +18,13 @@ function * sendRequest (needsAuth, action) : Generator<any, any, any> {
       }
     }
 
-    const options = { method, body }
+    const options: Options = { method, body }
+
+    if (needsAuth) {
+      const token = yield select(state => state.auth.token)
+      options.token = token
+    }
+
     const response = yield call(getData, url, options)
     const { ok, body: result } = response
 
