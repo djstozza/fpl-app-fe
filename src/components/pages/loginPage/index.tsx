@@ -57,8 +57,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   textField: {
     paddingBottom: theme.spacing(2)
   },
-  submitButton: {
-    float: 'right'
+  actions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 }))
 
@@ -124,19 +126,19 @@ const LoginPage = (props: Props) => {
             error={Boolean(errors.find(({ source }) => source.includes('password')))}
             helperText={errors.find(({ source }) => source.includes('password'))?.detail}
           />
-          <Button
-            type='submit'
-            disabled={!email || !password || submitting}
-            variant='contained'
-            color='primary'
-            className={classes.submitButton}
-          >
-            Log in
-          </Button>
-
-          <Typography>
-            Don't have an account? <Link to={SIGN_UP_URL}>Sign up</Link> now!
-          </Typography>
+          <div className={classes.actions}>
+            <Typography>
+              Don't have an account? <Link to={SIGN_UP_URL}>Sign up</Link> now!
+            </Typography>
+            <Button
+              type='submit'
+              disabled={!email || !password || submitting}
+              variant='contained'
+              color='primary'
+            >
+              Log in
+            </Button>
+          </div>
         </Paper>
       </form>
     </div>

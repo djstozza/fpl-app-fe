@@ -22,18 +22,21 @@ const reducer = (state: State = initialState, action: Action) => {
 
   switch (action.type) {
     case actions.INITIALIZE_AUTH:
-      return initialState
+      return { ...state, errors: [] }
     case actions.API_SESSIONS_CREATE:
-
       return { ...state, submitting: true }
     case success(actions.API_SESSIONS_CREATE):
     case success(actions.API_USERS_CREATE):
     case success(actions.API_SESSIONS_UPDATE):
-      return { ...state, token, user, submitting: false }
+      return { ...state, token, user, errors: [], submitting: false }
+    case success(actions.API_USERS_UPDATE):
+      return { ...state, user, errors: [], submitting: false }
     case failure(actions.API_SESSIONS_CREATE):
     case failure(actions.API_USERS_CREATE):
-
+    case failure(actions.API_USERS_UPDATE):
       return { ...state, errors, submitting: false }
+    case actions.LOG_OUT:
+      return initialState
     default:
       return state
   }

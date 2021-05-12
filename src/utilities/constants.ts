@@ -8,6 +8,7 @@ export const PROFILE_URL = '/profile'
 
 export const API_REGISTRATIONS_PATH = '/registrations'
 export const API_SESSIONS_PATH = '/sessions'
+export const API_USERS_PATH = '/users'
 
 export const APPLICATION_ERRORS = {
   '403': {

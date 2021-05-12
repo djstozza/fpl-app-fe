@@ -193,7 +193,7 @@ const NavBar = (props: Props) => {
               aria-haspopup='true'
               color='inherit'
               onClick={handleAccountMenuOpen}
-              className={classnames({ [classes.active]: pathname === PROFILE_URL })}
+              className={classnames({ [classes.active]: pathname.includes(PROFILE_URL) })}
             >
               <AccountCircleIcon />
             </IconButton>

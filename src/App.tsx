@@ -56,6 +56,8 @@ const App = () => {
           <PrivateRoute>
             <Switch>
               <Route exact path={PROFILE_URL} render={(props) => <ProfilePage {...props} />} />
+              <Route exact path={`${PROFILE_URL}/:tab`} render={(props) => <ProfilePage {...props} />} />
+              <Route exact path={`${PROFILE_URL}/:tab/:action`} render={(props) => <ProfilePage {...props} />} />
             </Switch>
           </PrivateRoute>
         </Switch>

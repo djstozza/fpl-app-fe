@@ -6,7 +6,8 @@ import {
   API_SESSIONS_PATH,
   API_REGISTRATIONS_PATH,
   PROFILE_URL,
-  LOGIN_URL
+  LOGIN_URL,
+  API_USERS_PATH
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 import * as actions from './actions'
@@ -22,7 +23,7 @@ function * logIn (action) : Generator<any, any, any> {
   yield put({
     type: requestActions.UNAUTHED_REQUEST,
     method: 'POST',
-    body: decamelizeKeys(user),
+    body: { user: decamelizeKeys(user) },
     url,
     successAction: success(actions.API_SESSIONS_CREATE),
     failureAction: failure(actions.API_SESSIONS_CREATE)
@@ -37,7 +38,7 @@ function * signUp (action) : Generator<any, any, any> {
   yield put({
     type: requestActions.UNAUTHED_REQUEST,
     method: 'POST',
-    body: decamelizeKeys(user),
+    body: { user: decamelizeKeys(user) },
     url,
     successAction: success(actions.API_USERS_CREATE),
     failureAction: failure(actions.API_USERS_CREATE)
@@ -66,6 +67,25 @@ function * logOut (action): Generator<any, any, any> {
   yield history.replace(LOGIN_URL)
 }
 
+function * updateUser (action) : Generator<any, any, any> {
+  const { user } = action
+
+  const url = `${API_URL}${API_USERS_PATH}`
+
+  yield put({
+    type: requestActions.AUTHED_REQUEST,
+    method: 'PUT',
+    body: { user: decamelizeKeys(user) },
+    url,
+    successAction: success(actions.API_USERS_UPDATE),
+    failureAction: failure(actions.API_USERS_UPDATE)
+  })
+}
+
+function * updateUserSuccess (action) : Generator<any, any, any> {
+  yield history.replace(PROFILE_URL)
+}
+
 export default function * teamsSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_SESSIONS_CREATE, logIn),
@@ -75,6 +95,8 @@ export default function * teamsSagas () : Generator<any, any, any> {
       success(actions.API_USERS_CREATE)
     ], onAuthed),
     yield takeLatest(actions.API_SESSIONS_UPDATE, updateSession),
-    yield takeLatest([actions.LOG_OUT, failure(actions.API_SESSIONS_UPDATE)], logOut)
+    yield takeLatest([actions.LOG_OUT, failure(actions.API_SESSIONS_UPDATE)], logOut),
+    yield takeLatest(actions.API_USERS_UPDATE, updateUser),
+    yield takeLatest(success(actions.API_USERS_UPDATE), updateUserSuccess)
   ])
 }

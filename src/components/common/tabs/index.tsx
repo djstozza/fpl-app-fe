@@ -17,7 +17,7 @@ type TabType = {
 type Props = {
   currentTab: string,
   url: string,
-  id: string,
+  id?: string,
   tabs: TabType[]
 }
 
@@ -48,7 +48,7 @@ const Tabs = ({ currentTab, url, id, tabs }: Props) => {
               key={value}
               label={label}
               component={Link}
-              to={`${url}/${id}/${value}`}
+              to={id ? `${url}/${id}/${value}` : `${url}/${value}`}
             />
           )
         )
