@@ -12,7 +12,13 @@ import { authActions } from 'state/auth'
 import Tabs from 'components/common/tabs'
 import UserDetails from './userDetails'
 import UserEditForm from './userEditForm'
-import { PROFILE_URL } from 'utilities/constants'
+import ChangePasswordForm from './changePasswordForm'
+import {
+  PROFILE_URL,
+  USER_DETAILS_URL,
+  EDIT_USER_DETIALS_URL,
+  CHANGE_PASSWORD_URL
+} from 'utilities/constants'
 
 import type { User, Error } from 'types'
 
@@ -21,6 +27,7 @@ type Props = {
   errors: Error[],
   updateUser: Function,
   initializeAuth: Function,
+  changePassword: Function,
   submitting: boolean,
   match: { params: { tab: string } }
 }
@@ -41,6 +48,7 @@ const ProfilePage = (props: Props) => {
   const {
     user,
     updateUser,
+    changePassword,
     errors = [],
     submitting,
     initializeAuth,
@@ -68,18 +76,32 @@ const ProfilePage = (props: Props) => {
         />
         <Route
           exact
-          path={`${PROFILE_URL}/details`}
+          path={USER_DETAILS_URL}
           render={() => <UserDetails user={user} />}
         />
         <Route
           exact
-          path={`${PROFILE_URL}/details/edit`}
+          path={EDIT_USER_DETIALS_URL}
           render={
             () => (
               <UserEditForm
                 user={user}
                 errors={errors}
                 updateUser={updateUser}
+                submitting={submitting}
+                initializeAuth={initializeAuth}
+              />
+            )
+          }
+        />
+        <Route
+          exact
+          path={CHANGE_PASSWORD_URL}
+          render={
+            () => (
+              <ChangePasswordForm
+                errors={errors}
+                changePassword={changePassword}
                 submitting={submitting}
                 initializeAuth={initializeAuth}
               />
@@ -109,7 +131,8 @@ const mapStateToProps = (state) => {
 
 const matchDispatchToProps = {
   initializeAuth: authActions.initializeAuth,
-  updateUser: authActions.updateUser
+  updateUser: authActions.updateUser,
+  changePassword: authActions.changePassword
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(ProfilePage)

@@ -1,0 +1,135 @@
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import {
+  Typography,
+  TextField,
+  Button,
+  Theme,
+  Paper,
+  makeStyles
+} from '@material-ui/core'
+
+import { PROFILE_URL } from 'utilities/constants'
+
+import type { Error } from 'types'
+
+type Props = {
+  errors: Error[],
+  changePassword: Function,
+  submitting: boolean,
+  initializeAuth: Function
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
+  form: {
+    marginTop: theme.spacing(2)
+  },
+  textField: {
+    paddingBottom: theme.spacing(2)
+  },
+  paper: {
+    padding: theme.spacing(3)
+  },
+  formHeader: {
+    paddingBottom: theme.spacing(2)
+  },
+  actions: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  },
+  cancelButton: {
+    marginRight: theme.spacing(1)
+  }
+}))
+
+const ChangePasswordForm = (props: Props) => {
+  const {
+     errors,
+     changePassword,
+     submitting,
+     initializeAuth
+  } = props
+
+  const classes = useStyles()
+
+  const [password, setPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+
+  useEffect(
+    () => {
+      initializeAuth()
+    }, [initializeAuth]
+  )
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    changePassword({ user: { password, newPassword } })
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className={classes.form}>
+
+      <Paper className={classes.paper}>
+        <Typography
+          variant='h5'
+          className={classes.formHeader}
+        >
+          Change password
+        </Typography>
+        <TextField
+          required
+          className={classes.textField}
+          fullWidth
+          variant='outlined'
+          label='Password'
+          name='password'
+          type='password'
+          onChange={({ target: { value }}) => setPassword(value)}
+          value={password}
+          InputProps={{
+            autoComplete: 'off'
+          }}
+          error={Boolean(errors.find(({ source }) => source === 'password'))}
+          helperText={errors.find(({ source }) => source === 'password')?.detail}
+        />
+        <TextField
+          required
+          className={classes.textField}
+          fullWidth
+          variant='outlined'
+          label='New Password'
+          name='newPassword'
+          type='password'
+          onChange={({ target: { value }}) => setNewPassword(value)}
+          value={newPassword}
+          InputProps={{
+            autoComplete: 'off'
+          }}
+          error={Boolean(errors.find(({ source }) => source === 'new_password'))}
+          helperText={errors.find(({ source }) => source === 'new_password')?.detail}
+        />
+        <div className={classes.actions}>
+          <Button
+            component={Link}
+            to={PROFILE_URL}
+            variant='contained'
+            color='default'
+            className={classes.cancelButton}
+          >
+            Cancel
+          </Button>
+          <Button
+            type='submit'
+            disabled={!password || !newPassword || submitting}
+            variant='contained'
+            color='primary'
+          >
+            Change
+          </Button>
+        </div>
+      </Paper>
+    </form>
+  )
+}
+
+export default ChangePasswordForm

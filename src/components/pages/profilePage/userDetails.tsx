@@ -11,7 +11,7 @@ import {
   createStyles
 } from '@material-ui/core'
 
-import { PROFILE_URL } from 'utilities/constants'
+import { EDIT_USER_DETIALS_URL, CHANGE_PASSWORD_URL } from 'utilities/constants'
 
 import type { User } from 'types'
 
@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'flex-end',
       alignItems: 'center'
+    },
+    changePasswordButton: {
+      marginLeft: theme.spacing(1)
     }
   })
 )
@@ -65,11 +68,20 @@ const UserDetails = (props: Props) => {
       <div className={classes.actions}>
         <Button
           component={Link}
-          to={`${PROFILE_URL}/details/edit`}
+          to={EDIT_USER_DETIALS_URL}
           variant='contained'
           color='primary'
         >
           Edit Details
+        </Button>
+        <Button
+          component={Link}
+          to={CHANGE_PASSWORD_URL}
+          variant='contained'
+          color='default'
+          className={classes.changePasswordButton}
+        >
+          Change Password
         </Button>
       </div>
     </Fragment>

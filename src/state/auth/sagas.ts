@@ -7,7 +7,8 @@ import {
   API_REGISTRATIONS_PATH,
   PROFILE_URL,
   LOGIN_URL,
-  API_USERS_PATH
+  API_USERS_PATH,
+  API_PASSWORDS_PATH
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 import * as actions from './actions'
@@ -86,7 +87,22 @@ function * updateUserSuccess (action) : Generator<any, any, any> {
   yield history.replace(PROFILE_URL)
 }
 
-export default function * teamsSagas () : Generator<any, any, any> {
+function * changePassword (action) : Generator<any, any, any> {
+  const { user } = action
+
+  const url = `${API_URL}${API_PASSWORDS_PATH}`
+
+  yield put({
+    type: requestActions.AUTHED_REQUEST,
+    method: 'PUT',
+    body: { user: decamelizeKeys(user) },
+    url,
+    successAction: success(actions.API_PASSWORDS_UPDATE),
+    failureAction: failure(actions.API_PASSWORDS_UPDATE)
+  })
+}
+
+export default function * authSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_SESSIONS_CREATE, logIn),
     yield takeLatest(actions.API_USERS_CREATE, signUp),
@@ -97,6 +113,10 @@ export default function * teamsSagas () : Generator<any, any, any> {
     yield takeLatest(actions.API_SESSIONS_UPDATE, updateSession),
     yield takeLatest([actions.LOG_OUT, failure(actions.API_SESSIONS_UPDATE)], logOut),
     yield takeLatest(actions.API_USERS_UPDATE, updateUser),
-    yield takeLatest(success(actions.API_USERS_UPDATE), updateUserSuccess)
+    yield takeLatest(actions.API_PASSWORDS_UPDATE, changePassword),
+    yield takeLatest([
+      success(actions.API_USERS_UPDATE),
+      success(actions.API_PASSWORDS_UPDATE)
+    ], updateUserSuccess)
   ])
 }
