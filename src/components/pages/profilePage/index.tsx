@@ -13,11 +13,15 @@ import Tabs from 'components/common/tabs'
 import UserDetails from './userDetails'
 import UserEditForm from './userEditForm'
 import ChangePasswordForm from './changePasswordForm'
+import LeaguesPage from 'components/pages/leaguesPage'
+import CreateLeagueForm from 'components/pages/leaguesPage/createLeagueForm'
 import {
   PROFILE_URL,
   USER_DETAILS_URL,
   EDIT_USER_DETIALS_URL,
-  CHANGE_PASSWORD_URL
+  CHANGE_PASSWORD_URL,
+  LEAGUES_URL,
+  NEW_LEAGUE_URL
 } from 'utilities/constants'
 
 import type { User, Error } from 'types'
@@ -28,6 +32,7 @@ type Props = {
   updateUser: Function,
   initializeAuth: Function,
   changePassword: Function,
+  fetchLeagues: Function,
   submitting: boolean,
   match: { params: { tab: string } }
 }
@@ -42,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const TABS = {
   details: { label: 'Details', value: 'details', display: true },
+  leagues: { label: 'Leagues', value: 'leagues', display: true }
 }
 
 const ProfilePage = (props: Props) => {
@@ -107,6 +113,16 @@ const ProfilePage = (props: Props) => {
               />
             )
           }
+        />
+        <Route
+          exact
+          path={`${PROFILE_URL}${LEAGUES_URL}`}
+          render={() => <LeaguesPage />}
+        />
+        <Route
+          exact
+          path={`${PROFILE_URL}${NEW_LEAGUE_URL}`}
+          render={() => <CreateLeagueForm />}
         />
       </Switch>
     </Fragment>

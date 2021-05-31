@@ -51,7 +51,6 @@ const UserEditForm = (props: Props) => {
      submitting,
      initializeAuth
   } = props
-
   const classes = useStyles()
 
   const [newEmail, setNewEmail] = useState(email)

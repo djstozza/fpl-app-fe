@@ -22,7 +22,15 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import PersonIcon from '@material-ui/icons/Person'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { iconLoader } from 'utilities/helpers'
-import { ROUNDS_URL, TEAMS_URL, PLAYERS_URL, SIGN_UP_URL, LOGIN_URL, PROFILE_URL } from 'utilities/constants'
+import {
+  ROUNDS_URL,
+  TEAMS_URL,
+  PLAYERS_URL,
+  SIGN_UP_URL,
+  LOGIN_URL,
+  PROFILE_URL,
+  LEAGUES_URL
+} from 'utilities/constants'
 
 import type { User } from 'types'
 
@@ -148,6 +156,13 @@ const NavBar = (props: Props) => {
         onClick={handleAccountMenuClose}
       >
         My profile
+      </MenuItem>
+      <MenuItem
+        component={Link}
+        to={`${PROFILE_URL}${LEAGUES_URL}`}
+        onClick={handleAccountMenuClose}
+      >
+        My leagues
       </MenuItem>
       <MenuItem
         onClick={handleLogoutClick}

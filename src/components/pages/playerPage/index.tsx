@@ -15,7 +15,6 @@ import HistoryPastTable from './historyPastTable'
 import { PLAYERS_URL } from 'utilities/constants'
 import TeamCrestLink from 'components/common/teamCrestLink'
 
-
 import type { PlayerState } from 'state/player'
 
 type Props = {

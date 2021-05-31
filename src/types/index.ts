@@ -200,3 +200,23 @@ export type User = {
   email: string,
   username: string
 }
+
+export type BaseFplTeam = {
+  id: string,
+  name: string
+}
+
+export type League = {
+  id: string,
+  name: string,
+  code: string,
+  isOwner: boolean,
+  owner: User,
+  fplTeams: BaseFplTeam[]
+}
+
+export type FplTeam = {
+  isOwner: boolean,
+  owner: User,
+  league: League
+} & BaseFplTeam

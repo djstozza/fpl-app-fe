@@ -1,5 +1,3 @@
-// import type { Sort } from 'types'
-
 export const API_PLAYERS_SHOW = 'API_PLAYERS_SHOW'
 export const API_PLAYERS_HISTORY_INDEX = 'API_PLAYERS_HISTORY_INDEX'
 export const API_PLAYERS_HISTORY_PAST_INDEX = 'API_PLAYERS_HISTORY_PAST_INDEX'
