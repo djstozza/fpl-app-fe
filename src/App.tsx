@@ -11,9 +11,11 @@ import {
   PLAYERS_URL,
   SIGN_UP_URL,
   LOGIN_URL,
-  PROFILE_URL
+  PROFILE_URL,
+  LEAGUES_URL
 } from 'utilities/constants'
 import LoadingBar from 'react-redux-loading-bar'
+import LeaguePage from 'components/pages/leaguePage'
 import RoundsPage from 'components/pages/roundsPage'
 import TeamsPage from 'components/pages/teamsPage'
 import TeamPage from 'components/pages/teamPage'
@@ -58,6 +60,8 @@ const App = () => {
               <Route exact path={PROFILE_URL} render={(props) => <ProfilePage {...props} />} />
               <Route exact path={`${PROFILE_URL}/:tab`} render={(props) => <ProfilePage {...props} />} />
               <Route exact path={`${PROFILE_URL}/:tab/:action`} render={(props) => <ProfilePage {...props} />} />
+              <Route exact path={`${LEAGUES_URL}/:leagueId`} render={(props) => <LeaguePage {...props} />} />
+              <Route path={`${LEAGUES_URL}/:leagueId/:tab`} render={(props) => <LeaguePage {...props} />} />
             </Switch>
           </PrivateRoute>
         </Switch>

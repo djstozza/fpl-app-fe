@@ -1,27 +1,27 @@
-import { useState } from 'react'
-import { connect } from 'react-redux'
-
+import { useState, Fragment } from 'react'
+import { Redirect } from 'react-router-dom'
 import {
   Paper,
   Theme,
   TextField,
   Button,
   Typography,
-  makeStyles
+  makeStyles,
+  createStyles
 } from '@material-ui/core'
+
 import {
-  PROFILE_URL,
   LEAGUES_URL
 } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
 
-import { leaguesActions } from 'state/leagues'
-
-import type { Error } from 'types'
+import type { League, Error } from 'types'
 
 type Props = {
+  league: League,
   errors: Error[],
-  createLeague: Function
+  submitting: boolean,
+  updateLeague: Function
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -53,18 +53,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const CreateLeagueForm = (props: Props) => {
-  const { errors, createLeague } = props
+const EditLeagueForm = (props: Props) => {
+  const {
+    errors,
+    updateLeague,
+    submitting,
+    league: { id, name, code, isOwner }
+  } = props
 
   const classes = useStyles()
 
-  const [name, setName] = useState('')
-  const [code, setCode] = useState('')
-  const [fplTeamName, setFplTeamName] = useState('')
+  const [newName, setName] = useState(name)
+  const [newCode, setNewCode] = useState(code)
+
+  if (!isOwner) return <Redirect to={`${LEAGUES_URL}/${id}/details`} />
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    createLeague({ league: { name, code, fplTeamName } })
+    updateLeague({ league: { name: newName, code: newCode } })
   }
 
   return (
@@ -74,7 +80,7 @@ const CreateLeagueForm = (props: Props) => {
           variant='h5'
           className={classes.formHeader}
         >
-          Create a league
+          Edit details
         </Typography>
         <TextField
           required
@@ -85,7 +91,7 @@ const CreateLeagueForm = (props: Props) => {
           name='name'
           type='text'
           onChange={({ target: { value }}) => setName(value)}
-          value={name}
+          value={newName}
           error={Boolean(errors.find(({ source }) => source === 'name'))}
           helperText={errors.find(({ source }) => source === 'name')?.detail}
         />
@@ -94,7 +100,7 @@ const CreateLeagueForm = (props: Props) => {
             <Button
               variant='contained'
               color='primary'
-              onClick={() => setCode(Math.random().toString(36).slice(2, 10))}
+              onClick={() => setNewCode(Math.random().toString(36).slice(2, 10))}
               className={classes.generateButton}
             >
               Generate Code
@@ -109,27 +115,14 @@ const CreateLeagueForm = (props: Props) => {
             name='code'
             type='text'
             disabled
-            value={code}
+            value={newCode}
             error={Boolean(errors.find(({ source }) => source === 'code'))}
             helperText={errors.find(({ source }) => source === 'code')?.detail}
           />
         </div>
-        <TextField
-          required
-          className={classes.textField}
-          fullWidth
-          variant='outlined'
-          label='Fpl Team Name'
-          name='fplTeamName'
-          type='text'
-          onChange={({ target: { value }}) => setFplTeamName(value)}
-          value={fplTeamName}
-          error={Boolean(errors.find(({ source }) => source === 'fpl_team_name'))}
-          helperText={errors.find(({ source }) => source === 'fpl_team_name')?.detail}
-        />
         <div className={classes.actions}>
           <ButtonLink
-            to={`${PROFILE_URL}${LEAGUES_URL}`}
+            to={`${LEAGUES_URL}/${id}/detials`}
             color='default'
             rightMargin
           >
@@ -137,7 +130,7 @@ const CreateLeagueForm = (props: Props) => {
           </ButtonLink>
           <Button
             type='submit'
-            disabled={!name || !code || !fplTeamName}
+            disabled={!name || !code}
             variant='contained'
             color='primary'
           >
@@ -149,20 +142,4 @@ const CreateLeagueForm = (props: Props) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  const {
-    leagues: {
-      errors = []
-    }
-  } = state
-
-  return {
-    errors
-  }
-}
-
-const matchDispatchToProps = {
-  createLeague: leaguesActions.createLeague
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(CreateLeagueForm)
+export default EditLeagueForm

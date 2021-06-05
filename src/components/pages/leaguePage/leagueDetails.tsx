@@ -11,17 +11,21 @@ import {
 
 import ButtonLink from 'components/common/buttonLink'
 
-import { EDIT_USER_DETIALS_URL, CHANGE_PASSWORD_URL } from 'utilities/constants'
+import { LEAGUES_URL } from 'utilities/constants'
 
-import type { User } from 'types'
+import type { League } from 'types'
 
 type Props = {
-  user: User
+  league: League
 }
 
-const USER_DETAILS_ROWS = [
-  { rowId: 'email', label: 'Email' },
-  { rowId: 'username', label: 'Username' }
+const LEAGUE_DETAILS_ROWS = [
+  { rowId: 'status', label: 'Status' },
+  {
+    rowId: 'owner',
+    label: 'Owner',
+    customRender: ({ owner: { username } }: League) => username
+  }
 ]
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,8 +41,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const UserDetails = (props: Props) => {
-  const { user } = props
+const LeagueDetails = (props: Props) => {
+  const { league } = props
+  const { isOwner } = league
   const classes = useStyles()
 
   return (
@@ -49,13 +54,13 @@ const UserDetails = (props: Props) => {
       >
         <TableBody>
           {
-            USER_DETAILS_ROWS.map(({ rowId, label }) => (
+            LEAGUE_DETAILS_ROWS.map(({ rowId, label, customRender }) => (
               <TableRow key={rowId}>
                 <TableCell align='center'>
                   {label}
                 </TableCell>
                 <TableCell align='center'>
-                  {user[rowId]}
+                  {customRender ? customRender(league) : league[rowId]}
                 </TableCell>
               </TableRow>
             ))
@@ -63,22 +68,18 @@ const UserDetails = (props: Props) => {
         </TableBody>
       </Table>
       <div className={classes.actions}>
-        <ButtonLink
-          to={EDIT_USER_DETIALS_URL}
-          color='primary'
-          rightMargin
-        >
-          Edit Details
-        </ButtonLink>
-        <ButtonLink
-          to={CHANGE_PASSWORD_URL}
-          color='default'
-        >
-          Change Password
-        </ButtonLink>
+        {
+          isOwner &&
+          <ButtonLink
+            to={`${LEAGUES_URL}/${league.id}/details/edit`}
+            color='primary'
+          >
+            Edit Details
+          </ButtonLink>
+        }
       </div>
     </Fragment>
   )
 }
 
-export default UserDetails
+export default LeagueDetails

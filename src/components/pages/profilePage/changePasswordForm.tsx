@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import {
   Typography,
   TextField,
@@ -10,6 +9,7 @@ import {
 } from '@material-ui/core'
 
 import { PROFILE_URL } from 'utilities/constants'
+import ButtonLink from 'components/common/buttonLink'
 
 import type { Error } from 'types'
 
@@ -36,9 +36,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   actions: {
     display: 'flex',
     justifyContent: 'flex-end'
-  },
-  cancelButton: {
-    marginRight: theme.spacing(1)
   }
 }))
 
@@ -109,15 +106,13 @@ const ChangePasswordForm = (props: Props) => {
           helperText={errors.find(({ source }) => source === 'new_password')?.detail}
         />
         <div className={classes.actions}>
-          <Button
-            component={Link}
+          <ButtonLink
             to={PROFILE_URL}
-            variant='contained'
             color='default'
-            className={classes.cancelButton}
+            rightMargin
           >
             Cancel
-          </Button>
+          </ButtonLink>
           <Button
             type='submit'
             disabled={!password || !newPassword || submitting}

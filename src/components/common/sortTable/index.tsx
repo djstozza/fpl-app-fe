@@ -24,12 +24,13 @@ import type {
   TeamFixture,
   History,
   HistoryPast,
+  League,
   Cell,
   Facets
 } from 'types'
 
 type Props = {
-  collection: PlayerSummary[] | TeamSummary[] | TeamPlayer[] | TeamFixture[] | History[] | HistoryPast[],
+  collection: PlayerSummary[] | TeamSummary[] | TeamPlayer[] | TeamFixture[] | History[] | HistoryPast[] | League[],
   facets?: Facets,
   handleSortChange?: Function,
   handleFilterChange?: Function,
