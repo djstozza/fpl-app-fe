@@ -29,13 +29,18 @@ const reducer = (state: State = initialState, action: Action) => {
   const { data = [], errors } = action
 
   switch (action.type) {
+    case actions.INITIALIZE_FORM:
+      return { ...initialState }
     case actions.API_LEAGUES_CREATE:
+    case actions.API_LEAGUES_JOIN:
       return { ...state, submitting: true }
     case success(actions.API_LEAGUES_INDEX):
     case success(actions.API_LEAGUES_CREATE):
+    case success(actions.API_LEAGUES_JOIN):
       return { ...state, data, submitting: false }
     case failure(actions.API_LEAGUES_INDEX):
     case failure(actions.API_LEAGUES_CREATE):
+    case failure(actions.API_LEAGUES_JOIN):
       return { ...state, errors, submitting: false }
     default:
       return state

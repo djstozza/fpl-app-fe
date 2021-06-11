@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -16,7 +17,9 @@ import { LEAGUES_URL } from 'utilities/constants'
 import type { League } from 'types'
 
 type Props = {
-  league: League
+  league: League,
+  submitting: boolean,
+  generateDraftPicks: Function
 }
 
 const LEAGUE_DETAILS_ROWS = [
@@ -42,8 +45,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const LeagueDetails = (props: Props) => {
-  const { league } = props
-  const { isOwner } = league
+  const { league, generateDraftPicks, submitting } = props
+  const { id, isOwner, canGenerateDraftPicks } = league
   const classes = useStyles()
 
   return (
@@ -67,17 +70,29 @@ const LeagueDetails = (props: Props) => {
           }
         </TableBody>
       </Table>
-      <div className={classes.actions}>
-        {
-          isOwner &&
+      {
+        isOwner &&
+        <div className={classes.actions}>
           <ButtonLink
             to={`${LEAGUES_URL}/${league.id}/details/edit`}
             color='primary'
+            rightMargin={canGenerateDraftPicks}
           >
             Edit Details
           </ButtonLink>
-        }
-      </div>
+          {
+            canGenerateDraftPicks &&
+            <Button
+              variant='contained'
+              color='default'
+              onClick={() => generateDraftPicks(id)}
+              disabled={submitting}
+            >
+              Generate draft picks
+            </Button>
+          }
+        </div>
+      }
     </Fragment>
   )
 }

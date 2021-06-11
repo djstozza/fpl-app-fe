@@ -14,14 +14,16 @@ import UserDetails from './userDetails'
 import UserEditForm from './userEditForm'
 import ChangePasswordForm from './changePasswordForm'
 import LeaguesPage from 'components/pages/leaguesPage'
-import CreateLeagueForm from 'components/pages/leaguesPage/createLeagueForm'
+import CreateLeague from 'components/pages/leaguesPage/createLeague'
+import JoinLeague from 'components/pages/leaguesPage/joinLeague'
 import {
   PROFILE_URL,
   USER_DETAILS_URL,
   EDIT_USER_DETIALS_URL,
   CHANGE_PASSWORD_URL,
   LEAGUES_URL,
-  NEW_LEAGUE_URL
+  NEW_LEAGUE_URL,
+  JOIN_LEAGUE_URL
 } from 'utilities/constants'
 
 import type { User, Error } from 'types'
@@ -122,7 +124,12 @@ const ProfilePage = (props: Props) => {
         <Route
           exact
           path={`${PROFILE_URL}${NEW_LEAGUE_URL}`}
-          render={() => <CreateLeagueForm />}
+          render={() => <CreateLeague />}
+        />
+        <Route
+          exact
+          path={`${PROFILE_URL}${JOIN_LEAGUE_URL}`}
+          render={() => <JoinLeague />}
         />
       </Switch>
     </Fragment>

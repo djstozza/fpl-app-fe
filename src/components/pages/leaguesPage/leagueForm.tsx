@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import { connect } from 'react-redux'
-
+import { useState, useEffect } from 'react'
 import {
   Paper,
   Theme,
@@ -15,13 +13,14 @@ import {
 } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
 
-import { leaguesActions } from 'state/leagues'
-
 import type { Error } from 'types'
 
 type Props = {
   errors: Error[],
-  createLeague: Function
+  title: string,
+  submitFn: Function,
+  initializeForm: Function,
+  create?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -50,13 +49,22 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   generateButton: {
     whiteSpace: 'nowrap'
+  },
+  baseErrorsContainer: {
+    marginBottom: theme.spacing(1)
   }
 }))
 
-const CreateLeagueForm = (props: Props) => {
-  const { errors, createLeague } = props
+const LeagueForm = (props: Props) => {
+  const { title, errors, submitFn, initializeForm, create } = props
 
   const classes = useStyles()
+
+  useEffect(
+    () => {
+      initializeForm()
+    }, [initializeForm]
+  )
 
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
@@ -64,8 +72,10 @@ const CreateLeagueForm = (props: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    createLeague({ league: { name, code, fplTeamName } })
+    submitFn({ league: { name, code, fplTeamName } })
   }
+
+  const baseErrors = errors.filter(({ source }) => source === 'base')
 
   return (
     <form onSubmit={handleSubmit} className={classes.form}>
@@ -74,8 +84,18 @@ const CreateLeagueForm = (props: Props) => {
           variant='h5'
           className={classes.formHeader}
         >
-          Create a league
+          {title}
         </Typography>
+        {
+          Boolean(baseErrors.length) &&
+          <div className={classes.baseErrorsContainer}>
+            {
+              baseErrors.map(({ detail }) => (
+                <Typography color='error'>{detail}</Typography>
+              ))
+            }
+          </div>
+        }
         <TextField
           required
           className={classes.textField}
@@ -90,16 +110,19 @@ const CreateLeagueForm = (props: Props) => {
           helperText={errors.find(({ source }) => source === 'name')?.detail}
         />
         <div className={classes.codeContainer}>
-          <div className={classes.generateButtonContainer}>
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => setCode(Math.random().toString(36).slice(2, 10))}
-              className={classes.generateButton}
-            >
-              Generate Code
-            </Button>
-          </div>
+          {
+            create &&
+            <div className={classes.generateButtonContainer}>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => setCode(Math.random().toString(36).slice(2, 10))}
+                className={classes.generateButton}
+              >
+                Generate Code
+              </Button>
+            </div>
+          }
           <TextField
             required
             className={classes.textField}
@@ -108,8 +131,9 @@ const CreateLeagueForm = (props: Props) => {
             label='Code'
             name='code'
             type='text'
-            disabled
+            disabled={create}
             value={code}
+            onChange={({ target: { value }}) => !create && setCode(value)}
             error={Boolean(errors.find(({ source }) => source === 'code'))}
             helperText={errors.find(({ source }) => source === 'code')?.detail}
           />
@@ -149,20 +173,4 @@ const CreateLeagueForm = (props: Props) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  const {
-    leagues: {
-      errors = []
-    }
-  } = state
-
-  return {
-    errors
-  }
-}
-
-const matchDispatchToProps = {
-  createLeague: leaguesActions.createLeague
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(CreateLeagueForm)
+export default LeagueForm

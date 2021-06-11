@@ -210,6 +210,10 @@ export type League = {
   id: string,
   name: string,
   code: string,
+  status: string,
+  canGenerateDraftPicks: boolean,
+  showDraftPickColumn: boolean,
+  showLiveColumns: boolean,
   isOwner: boolean,
   owner: User,
   fplTeams: BaseFplTeam[]

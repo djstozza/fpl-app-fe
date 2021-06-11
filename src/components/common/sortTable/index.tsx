@@ -18,6 +18,7 @@ import { SearchContext } from 'components/common/searchListener'
 import { SetElHeight, GetElHeight } from 'utilities/helpers'
 
 import type {
+  FplTeam,
   PlayerSummary,
   TeamSummary,
   TeamPlayer,
@@ -30,7 +31,16 @@ import type {
 } from 'types'
 
 type Props = {
-  collection: PlayerSummary[] | TeamSummary[] | TeamPlayer[] | TeamFixture[] | History[] | HistoryPast[] | League[],
+  collection: (
+    PlayerSummary[] |
+      TeamSummary[] |
+      TeamPlayer[] |
+      TeamFixture[] |
+      History[] |
+      HistoryPast[] |
+      League[] |
+      FplTeam[]
+  ),
   facets?: Facets,
   handleSortChange?: Function,
   handleFilterChange?: Function,

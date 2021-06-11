@@ -11,9 +11,13 @@ import ButtonLink from 'components/common/buttonLink'
 import Link from 'components/common/link'
 
 import { leaguesActions } from 'state/leagues'
-import { PROFILE_URL, LEAGUES_URL, NEW_LEAGUE_URL } from 'utilities/constants'
+import {
+  PROFILE_URL,
+  LEAGUES_URL,
+  NEW_LEAGUE_URL,
+  JOIN_LEAGUE_URL
+} from 'utilities/constants'
 import { initialFilterState } from 'state/leagues/reducer'
-
 
 import type { League } from 'types'
 
@@ -69,8 +73,15 @@ const LeaguesPage = (props: Props) => {
         <ButtonLink
           to={`${PROFILE_URL}${NEW_LEAGUE_URL}`}
           color='primary'
+          rightMargin
         >
           New League
+        </ButtonLink>
+        <ButtonLink
+          to={`${PROFILE_URL}${JOIN_LEAGUE_URL}`}
+          color='default'
+        >
+          Join a League
         </ButtonLink>
       </div>
     </Fragment>

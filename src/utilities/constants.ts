@@ -10,6 +10,7 @@ export const EDIT_USER_DETIALS_URL = `${USER_DETAILS_URL}/edit`
 export const CHANGE_PASSWORD_URL = `${PROFILE_URL}/change-password`
 export const LEAGUES_URL = '/leagues'
 export const NEW_LEAGUE_URL = `${LEAGUES_URL}/new`
+export const JOIN_LEAGUE_URL = `${LEAGUES_URL}/join`
 
 export const API_REGISTRATIONS_PATH = '/registrations'
 export const API_SESSIONS_PATH = '/sessions'

@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import {
   Paper,
@@ -6,8 +6,7 @@ import {
   TextField,
   Button,
   Typography,
-  makeStyles,
-  createStyles
+  makeStyles
 } from '@material-ui/core'
 
 import {
@@ -130,7 +129,7 @@ const EditLeagueForm = (props: Props) => {
           </ButtonLink>
           <Button
             type='submit'
-            disabled={!name || !code}
+            disabled={!name || !code || submitting}
             variant='contained'
             color='primary'
           >

@@ -13,15 +13,21 @@ import Tabs from 'components/common/tabs'
 import { LEAGUES_URL } from 'utilities/constants'
 import LeagueDetails from './leagueDetails'
 import EditLeagueForm from './editLeagueForm'
+import FplTeamsTable from './fplTeamsTable'
 
-import type { League, Error } from 'types'
+import type { League, FplTeam, Error } from 'types'
 
 type Props = {
   league: League,
+  fplTeams: FplTeam[],
   errors: Error[],
   submitting: boolean,
   fetchLeague: Function,
+  fetchFplTeams: Function,
+  updateFplTeamsSort: Function,
   updateLeague: Function,
+  generateDraftPicks: Function,
+  sort: Object,
   match: { params: { leagueId: string, tab: string } }
 }
 
@@ -41,10 +47,15 @@ const TABS = [
 const LeaguePage = (props: Props) => {
   const {
     league,
+    fplTeams,
     fetchLeague,
+    fetchFplTeams,
     updateLeague,
+    updateFplTeamsSort,
+    generateDraftPicks,
     errors,
     submitting,
+    sort,
     match: { params: { leagueId, tab = 'details' } }
   } = props
   const classes = useStyles()
@@ -74,12 +85,24 @@ const LeaguePage = (props: Props) => {
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId`}
-          render={() => <LeagueDetails league={league} />}
+          render={() => (
+            <LeagueDetails
+              league={league}
+              generateDraftPicks={generateDraftPicks}
+              submitting={submitting}
+            />
+          )}
         />
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId/details`}
-          render={() => <LeagueDetails league={league} />}
+          render={() => (
+            <LeagueDetails
+              league={league}
+              generateDraftPicks={generateDraftPicks}
+              submitting={submitting}
+            />
+          )}
         />
         <Route
           exact
@@ -93,6 +116,23 @@ const LeaguePage = (props: Props) => {
             />
           )}
         />
+        <Route
+          exact
+          path={`${LEAGUES_URL}/:leagueId/fplTeams`}
+          render={() => (
+            <FplTeamsTable
+              league={league}
+              leagueId={leagueId}
+              fplTeams={fplTeams}
+              fetchFplTeams={fetchFplTeams}
+              updateFplTeamsSort={updateFplTeamsSort}
+              generateDraftPicks={generateDraftPicks}
+              submitting={submitting}
+              sort={sort}
+              errors={errors}
+            />
+          )}
+        />
       </Switch>
     </Fragment>
   )
@@ -102,21 +142,28 @@ const mapStateToProps = (state) => {
   const {
     league: {
       data: league,
+      fplTeams,
       errors,
-      submitting
+      submitting,
+      sort
     }
   } = state
 
   return {
     league,
+    fplTeams,
     errors,
-    submitting
+    submitting,
+    sort
   }
 }
 
 const matchDispatchToProps = {
   fetchLeague: leagueActions.fetchLeague,
-  updateLeague: leagueActions.updateLeague
+  updateLeague: leagueActions.updateLeague,
+  fetchFplTeams: leagueActions.fetchFplTeams,
+  updateFplTeamsSort: leagueActions.updateFplTeamsSort,
+  generateDraftPicks: leagueActions.generateDraftPicks
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(LeaguePage)
