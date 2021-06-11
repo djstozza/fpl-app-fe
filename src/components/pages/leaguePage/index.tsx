@@ -27,6 +27,7 @@ type Props = {
   updateFplTeamsSort: Function,
   updateLeague: Function,
   generateDraftPicks: Function,
+  createDraft: Function,
   sort: Object,
   match: { params: { leagueId: string, tab: string } }
 }
@@ -53,6 +54,7 @@ const LeaguePage = (props: Props) => {
     updateLeague,
     updateFplTeamsSort,
     generateDraftPicks,
+    createDraft,
     errors,
     submitting,
     sort,
@@ -89,6 +91,7 @@ const LeaguePage = (props: Props) => {
             <LeagueDetails
               league={league}
               generateDraftPicks={generateDraftPicks}
+              createDraft={createDraft}
               submitting={submitting}
             />
           )}
@@ -100,6 +103,7 @@ const LeaguePage = (props: Props) => {
             <LeagueDetails
               league={league}
               generateDraftPicks={generateDraftPicks}
+              createDraft={createDraft}
               submitting={submitting}
             />
           )}
@@ -127,6 +131,7 @@ const LeaguePage = (props: Props) => {
               fetchFplTeams={fetchFplTeams}
               updateFplTeamsSort={updateFplTeamsSort}
               generateDraftPicks={generateDraftPicks}
+              createDraft={createDraft}
               submitting={submitting}
               sort={sort}
               errors={errors}
@@ -163,7 +168,8 @@ const matchDispatchToProps = {
   updateLeague: leagueActions.updateLeague,
   fetchFplTeams: leagueActions.fetchFplTeams,
   updateFplTeamsSort: leagueActions.updateFplTeamsSort,
-  generateDraftPicks: leagueActions.generateDraftPicks
+  generateDraftPicks: leagueActions.generateDraftPicks,
+  createDraft: leagueActions.createDraft
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(LeaguePage)

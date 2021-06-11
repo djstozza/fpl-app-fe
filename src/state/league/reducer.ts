@@ -33,6 +33,7 @@ const reducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
     case actions.API_LEAGUES_UPDATE:
     case actions.API_LEAGUE_GENERATE_DRAFT_PICKS:
+    case actions.API_LEAGUE_CREATE_DRAFT:
       return { ...state, submitting: true }
     case success(actions.API_LEAGUES_SHOW):
     case success(actions.API_LEAGUES_UPDATE):
@@ -44,10 +45,13 @@ const reducer = (state: State = initialState, action: Action) => {
       return { ...state, fplTeams, submitting: false }
     case actions.UPDATE_LEAGUE_FPL_TEAMS_SORT:
       return { ...state, sort }
+    case success(actions.API_LEAGUE_CREATE_DRAFT):
+      return { ...state, errors: [], data, submitting: false }
     case failure(actions.API_LEAGUES_SHOW):
     case failure(actions.API_LEAGUES_UPDATE):
     case failure(actions.API_LEAGUE_GENERATE_DRAFT_PICKS):
     case failure(actions.API_LEAGUE_FPL_TEAMS_INDEX):
+    case failure(actions.API_LEAGUE_CREATE_DRAFT):
       return { ...state, errors, submitting: false }
     default:
       return state

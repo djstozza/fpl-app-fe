@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 
 import ButtonLink from 'components/common/buttonLink'
+import ActionsFooter from './actionsFooter'
 
 import { LEAGUES_URL } from 'utilities/constants'
 
@@ -19,7 +20,8 @@ import type { League } from 'types'
 type Props = {
   league: League,
   submitting: boolean,
-  generateDraftPicks: Function
+  generateDraftPicks: Function,
+  createDraft: Function
 }
 
 const LEAGUE_DETAILS_ROWS = [
@@ -35,17 +37,17 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     table: {
       marginBottom: theme.spacing(2)
-    },
-    actions: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center'
     }
   })
 )
 
 const LeagueDetails = (props: Props) => {
-  const { league, generateDraftPicks, submitting } = props
+  const {
+    league,
+    generateDraftPicks,
+    createDraft,
+    submitting
+  } = props
   const { id, isOwner, canGenerateDraftPicks } = league
   const classes = useStyles()
 
@@ -70,29 +72,13 @@ const LeagueDetails = (props: Props) => {
           }
         </TableBody>
       </Table>
-      {
-        isOwner &&
-        <div className={classes.actions}>
-          <ButtonLink
-            to={`${LEAGUES_URL}/${league.id}/details/edit`}
-            color='primary'
-            rightMargin={canGenerateDraftPicks}
-          >
-            Edit Details
-          </ButtonLink>
-          {
-            canGenerateDraftPicks &&
-            <Button
-              variant='contained'
-              color='default'
-              onClick={() => generateDraftPicks(id)}
-              disabled={submitting}
-            >
-              Generate draft picks
-            </Button>
-          }
-        </div>
-      }
+      <ActionsFooter
+        league={league}
+        generateDraftPicks={generateDraftPicks}
+        createDraft={createDraft}
+        submitting={submitting}
+        detailsPage
+      />
     </Fragment>
   )
 }

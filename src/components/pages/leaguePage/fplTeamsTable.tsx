@@ -8,6 +8,7 @@ import {
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
+import ActionsFooter from './actionsFooter'
 import { initialFilterState } from 'state/league/reducer'
 
 import type { League, FplTeam, Error } from 'types'
@@ -27,6 +28,7 @@ type Props = {
   league: League,
   fetchFplTeams: Function,
   generateDraftPicks: Function,
+  createDraft: Function,
   submitting: boolean,
   sort: Object,
   leagueId: string,
@@ -85,6 +87,7 @@ const FplTeamsTable = (props: Props) => {
     fplTeams = [],
     fetchFplTeams,
     generateDraftPicks,
+    createDraft,
     submitting,
     updateFplTeamsSort
   } = props
@@ -115,22 +118,12 @@ const FplTeamsTable = (props: Props) => {
           cells={Object.values(cells)}
         />
       </SearchListener>
-      {
-        isOwner &&
-        <div className={classes.actions}>
-          {
-            canGenerateDraftPicks &&
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => generateDraftPicks(leagueId)}
-              disabled={submitting}
-            >
-              Generate draft picks
-            </Button>
-          }
-        </div>
-      }
+      <ActionsFooter
+        league={league}
+        generateDraftPicks={generateDraftPicks}
+        createDraft={createDraft}
+        submitting={submitting}
+      />
     </Fragment>
   )
 }

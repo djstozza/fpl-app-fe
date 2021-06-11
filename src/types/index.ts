@@ -212,6 +212,7 @@ export type League = {
   code: string,
   status: string,
   canGenerateDraftPicks: boolean,
+  canCreateDraft: boolean,
   showDraftPickColumn: boolean,
   showLiveColumns: boolean,
   isOwner: boolean,

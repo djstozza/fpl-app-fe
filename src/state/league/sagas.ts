@@ -87,6 +87,19 @@ function * generateDraftPicksSuccess (action) : Generator<any, any, any> {
   yield history.replace(`${LEAGUES_URL}/${id}/fplTeams?${stringify({ sort })}`)
 }
 
+function * createDraft (action) : Generator<any, any, any> {
+  const { leagueId } = action
+  const url = `${API_URL}${LEAGUES_URL}/${leagueId}/create_draft`
+
+  yield put({
+    type: requestActions.AUTHED_REQUEST,
+    method: 'POST',
+    url,
+    successAction: success(actions.API_LEAGUE_CREATE_DRAFT),
+    failureAction: failure(actions.API_LEAGUE_CREATE_DRAFT)
+  })
+}
+
 export default function * leagueSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_LEAGUES_SHOW, fetchLeague),
@@ -95,6 +108,7 @@ export default function * leagueSagas () : Generator<any, any, any> {
     yield takeLatest(success(actions.API_LEAGUES_UPDATE), updateLeagueSuccess),
     yield takeLatest(actions.UPDATE_LEAGUE_FPL_TEAMS_SORT, updateFplTeamsSort),
     yield takeLatest(actions.API_LEAGUE_GENERATE_DRAFT_PICKS, generateDraftPicks),
-    yield takeLatest(success(actions.API_LEAGUE_GENERATE_DRAFT_PICKS), generateDraftPicksSuccess)
+    yield takeLatest(success(actions.API_LEAGUE_GENERATE_DRAFT_PICKS), generateDraftPicksSuccess),
+    yield takeLatest(actions.API_LEAGUE_CREATE_DRAFT, createDraft)
   ])
 }
