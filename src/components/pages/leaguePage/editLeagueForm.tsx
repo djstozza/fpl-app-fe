@@ -121,7 +121,7 @@ const EditLeagueForm = (props: Props) => {
         </div>
         <div className={classes.actions}>
           <ButtonLink
-            to={`${LEAGUES_URL}/${id}/detials`}
+            to={`${LEAGUES_URL}/${id}/details`}
             color='default'
             rightMargin
           >

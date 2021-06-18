@@ -11,7 +11,7 @@ import {
 
 import ButtonLink from 'components/common/buttonLink'
 
-import { EDIT_USER_DETIALS_URL, CHANGE_PASSWORD_URL } from 'utilities/constants'
+import { EDIT_USER_DETAILS_URL, CHANGE_PASSWORD_URL } from 'utilities/constants'
 
 import type { User } from 'types'
 
@@ -64,7 +64,7 @@ const UserDetails = (props: Props) => {
       </Table>
       <div className={classes.actions}>
         <ButtonLink
-          to={EDIT_USER_DETIALS_URL}
+          to={EDIT_USER_DETAILS_URL}
           color='primary'
           rightMargin
         >

@@ -1,10 +1,4 @@
 import { Fragment } from 'react'
-import {
-  Button,
-  Theme,
-  createStyles,
-  makeStyles
-} from '@material-ui/core'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
@@ -70,16 +64,6 @@ const FPL_TEAMS_TABLE_CELLS = {
   }
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    actions: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center'
-    }
-  })
-)
-
 const FplTeamsTable = (props: Props) => {
   const {
     leagueId,
@@ -93,15 +77,11 @@ const FplTeamsTable = (props: Props) => {
   } = props
 
   const {
-    isOwner,
-    canGenerateDraftPicks,
     showDraftPickColumn,
     showLiveColumns
   } = league
 
-  const classes= useStyles()
-
-  const cells: Fpl_Team_Table_Cells = FPL_TEAMS_TABLE_CELLS
+  const cells: Fpl_Team_Table_Cells = { ...FPL_TEAMS_TABLE_CELLS }
 
   if (!showDraftPickColumn) delete cells['draftPickNumber']
   if (!showLiveColumns) {

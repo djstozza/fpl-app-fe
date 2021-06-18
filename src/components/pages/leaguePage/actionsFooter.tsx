@@ -39,7 +39,8 @@ const ActionsFooter = (props: Props) => {
       id,
       isOwner,
       canGenerateDraftPicks,
-      canCreateDraft
+      canCreateDraft,
+      canGoToDraft
     },
     generateDraftPicks,
     createDraft,
@@ -90,6 +91,18 @@ const ActionsFooter = (props: Props) => {
         >
           Create draft
         </Button>
+      )
+    },
+    {
+      renderCondition: canGoToDraft,
+      render: (index, addRightMargin) => (
+        <ButtonLink
+          to={`${LEAGUES_URL}/${id}/draft`}
+          color={setColor(index)}
+          rightMargin={addRightMargin}
+        >
+          Go to draft
+        </ButtonLink>
       )
     }
   ]

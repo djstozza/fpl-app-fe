@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const PLAYERS_TABLE_CELLS = [
+export const PLAYERS_TABLE_CELLS = [
   {
     cellId: 'lastName',
     label: 'LN',

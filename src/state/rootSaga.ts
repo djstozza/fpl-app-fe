@@ -1,6 +1,7 @@
-import { fork, all, takeLatest, put } from 'redux-saga/effects'
+import { fork, all } from 'redux-saga/effects'
 
 import { authSagas } from './auth'
+import { draftPicksSagas } from './draftPicks'
 import { leagueSagas } from './league'
 import { leaguesSagas } from './leagues'
 import { playerSagas } from './player'
@@ -14,6 +15,7 @@ import { teamsSagas } from './teams'
 export default function * rootSaga () : Generator<any, any, any> {
   yield all([
     fork(authSagas),
+    fork(draftPicksSagas),
     fork(leagueSagas),
     fork(leaguesSagas),
     fork(playerSagas),

@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { Redirect, Route, Switch, Link } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import {
   makeStyles,
   Theme
@@ -24,6 +24,7 @@ import PlayerPage from 'components/pages/playerPage'
 import SignUpPage from 'components/pages/signUpPage'
 import LoginPage from 'components/pages/loginPage'
 import ProfilePage from 'components/pages/profilePage'
+import DraftPage from 'components/pages/draftPage'
 import PrivateRoute from 'components/common/privateRoute'
 import NavBar from 'components/navBar'
 
@@ -61,6 +62,7 @@ const App = () => {
               <Route exact path={`${PROFILE_URL}/:tab`} render={(props) => <ProfilePage {...props} />} />
               <Route exact path={`${PROFILE_URL}/:tab/:action`} render={(props) => <ProfilePage {...props} />} />
               <Route exact path={`${LEAGUES_URL}/:leagueId`} render={(props) => <LeaguePage {...props} />} />
+              <Route exact path={`${LEAGUES_URL}/:leagueId/draft/:tab?`} render={(props) => <DraftPage {...props} />} />
               <Route path={`${LEAGUES_URL}/:leagueId/:tab`} render={(props) => <LeaguePage {...props} />} />
             </Switch>
           </PrivateRoute>

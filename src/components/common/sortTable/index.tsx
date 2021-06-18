@@ -18,6 +18,7 @@ import { SearchContext } from 'components/common/searchListener'
 import { SetElHeight, GetElHeight } from 'utilities/helpers'
 
 import type {
+  DraftPick,
   FplTeam,
   PlayerSummary,
   TeamSummary,
@@ -39,7 +40,8 @@ type Props = {
       History[] |
       HistoryPast[] |
       League[] |
-      FplTeam[]
+      FplTeam[] |
+      DraftPick[]
   ),
   facets?: Facets,
   handleSortChange?: Function,

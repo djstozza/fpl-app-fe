@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
 import auth from './auth'
+import draftPicks from './draftPicks'
 import league from './league'
 import leagues from './leagues'
 import player from './player'
@@ -15,6 +16,7 @@ import teams from './teams'
 
 const rootReducer = combineReducers({
   auth,
+  draftPicks,
   league,
   leagues,
   player,

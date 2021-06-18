@@ -213,6 +213,7 @@ export type League = {
   status: string,
   canGenerateDraftPicks: boolean,
   canCreateDraft: boolean,
+  canGoToDraft: boolean,
   showDraftPickColumn: boolean,
   showLiveColumns: boolean,
   isOwner: boolean,
@@ -225,3 +226,14 @@ export type FplTeam = {
   owner: User,
   league: League
 } & BaseFplTeam
+
+export type DraftPick = {
+  id: string,
+  pickNumber: number,
+  miniDraft: boolean,
+  fplTeam: BaseFplTeam,
+  user: User,
+  player?: Player,
+  team?: TeamBase,
+  position?: PositionSummary
+}

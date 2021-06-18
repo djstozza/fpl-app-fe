@@ -19,7 +19,7 @@ import JoinLeague from 'components/pages/leaguesPage/joinLeague'
 import {
   PROFILE_URL,
   USER_DETAILS_URL,
-  EDIT_USER_DETIALS_URL,
+  EDIT_USER_DETAILS_URL,
   CHANGE_PASSWORD_URL,
   LEAGUES_URL,
   NEW_LEAGUE_URL,
@@ -89,7 +89,7 @@ const ProfilePage = (props: Props) => {
         />
         <Route
           exact
-          path={EDIT_USER_DETIALS_URL}
+          path={EDIT_USER_DETAILS_URL}
           render={
             () => (
               <UserEditForm

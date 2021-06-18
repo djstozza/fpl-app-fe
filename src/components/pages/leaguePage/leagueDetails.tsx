@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -10,11 +9,7 @@ import {
   createStyles
 } from '@material-ui/core'
 
-import ButtonLink from 'components/common/buttonLink'
 import ActionsFooter from './actionsFooter'
-
-import { LEAGUES_URL } from 'utilities/constants'
-
 import type { League } from 'types'
 
 type Props = {
@@ -48,7 +43,6 @@ const LeagueDetails = (props: Props) => {
     createDraft,
     submitting
   } = props
-  const { id, isOwner, canGenerateDraftPicks } = league
   const classes = useStyles()
 
   return (

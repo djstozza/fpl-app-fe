@@ -36,6 +36,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case actions.API_LEAGUE_CREATE_DRAFT:
       return { ...state, submitting: true }
     case success(actions.API_LEAGUES_SHOW):
+      return { ...state, data }
     case success(actions.API_LEAGUES_UPDATE):
       return { ...initialState, data }
     case success(actions.API_LEAGUE_FPL_TEAMS_INDEX):

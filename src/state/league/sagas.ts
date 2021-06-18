@@ -7,6 +7,7 @@ import history from 'state/history'
 
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
+import { fetchPlayers } from 'state/players/actions'
 
 import {
   API_URL,
@@ -84,7 +85,11 @@ function * generateDraftPicks (action) : Generator<any, any, any> {
 function * generateDraftPicksSuccess (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
   const sort = { draft_pick_number: 'asc' }
-  yield history.replace(`${LEAGUES_URL}/${id}/fplTeams?${stringify({ sort })}`)
+
+  yield all([
+    history.replace(`${LEAGUES_URL}/${id}/fplTeams?${stringify({ sort })}`),
+    fetchLeague({ leagueId: id })
+  ])
 }
 
 function * createDraft (action) : Generator<any, any, any> {
@@ -100,6 +105,58 @@ function * createDraft (action) : Generator<any, any, any> {
   })
 }
 
+function * fetchAvailablePlayers (action) : Generator<any, any, any> {
+  const { data: { id } } = yield select(state => state.league)
+  const { sort, filter, page } = action
+
+  yield put(fetchPlayers({ filter: { ...filter, leagueId: id }, sort, page }))
+}
+
+function * updateAvailablePlayersSort (action) : Generator<any, any, any> {
+  const { data: { id } } = yield select(state => state.league)
+  const { filter, page } = yield select(state => state.players)
+  const { sort } = action
+
+  const query = { filter, sort, page }
+
+  yield history.push(`${LEAGUES_URL}/${id}/draft/availablePlayers?${qs.stringify(query)}`)
+}
+
+function * updateAvailablePlayersFilter (action) : Generator<any, any, any> {
+  const { data: { id } } = yield select(state => state.league)
+  const { sort, page } = yield select(state => state.players)
+  const { filter } = action
+
+  const query = {
+    filter,
+    sort,
+    page: {
+      ...page,
+      offset: 0
+    }
+  }
+
+  yield history.push(`${LEAGUES_URL}/${id}/draft/availablePlayers?${qs.stringify(query)}`)
+}
+
+function * updateAvailablePlayersPage (action) : Generator<any, any, any> {
+  const { data: { id } } = yield select(state => state.league)
+  const { filter, sort, page } = yield select(state => state.players)
+  const { offset } = action
+
+
+  const query = {
+    filter,
+    sort,
+    page: {
+      ...page,
+      offset
+    }
+  }
+
+  yield history.push(`${LEAGUES_URL}/${id}/draft/availablePlayers?${qs.stringify(query)}`)
+}
+
 export default function * leagueSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_LEAGUES_SHOW, fetchLeague),
@@ -109,6 +166,10 @@ export default function * leagueSagas () : Generator<any, any, any> {
     yield takeLatest(actions.UPDATE_LEAGUE_FPL_TEAMS_SORT, updateFplTeamsSort),
     yield takeLatest(actions.API_LEAGUE_GENERATE_DRAFT_PICKS, generateDraftPicks),
     yield takeLatest(success(actions.API_LEAGUE_GENERATE_DRAFT_PICKS), generateDraftPicksSuccess),
-    yield takeLatest(actions.API_LEAGUE_CREATE_DRAFT, createDraft)
+    yield takeLatest(actions.API_LEAGUE_CREATE_DRAFT, createDraft),
+    yield takeLatest(actions.FETCH_AVAILABLE_PLAYERS, fetchAvailablePlayers),
+    yield takeLatest(actions.UPDATE_AVAILABLE_PLAYERS_SORT, updateAvailablePlayersSort),
+    yield takeLatest(actions.UPDATE_AVAILABLE_PLAYERS_FILTER, updateAvailablePlayersFilter),
+    yield takeLatest(actions.UPDATE_AVAILABLE_PLAYERS_PAGE, updateAvailablePlayersPage)
   ])
 }
