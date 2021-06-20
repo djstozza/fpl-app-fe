@@ -1,4 +1,5 @@
 export const API_URL = process.env.REACT_APP_API_URL
+export const CABLE_URL = process.env.REACT_APP_CABLE_URL
 export const ROUNDS_URL = '/rounds'
 export const TEAMS_URL = '/teams'
 export const PLAYERS_URL = '/players'

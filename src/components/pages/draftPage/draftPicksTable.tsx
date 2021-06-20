@@ -16,17 +16,15 @@ type Props = {
   updateDraftPicksFilter: Function,
   updateDraftPicksSort: Function,
   updateDraftPicksPage: Function,
-  fetchDraftPickFacets: Function,
-  leagueId: string
+  fetchDraftPickFacets: Function
 }
 
 const DRAFT_PICKS_TABLE_CELLS = [
-  { cellId: 'pickNumber', label: 'PN', toolTipLabel: 'Pick Number', sortParam: 'pickNumber' },
+  { cellId: 'pickNumber', label: 'PN', toolTipLabel: 'Pick Number', sortParam: 'pickNumber', sticky: true },
   {
     cellId: 'lastName',
     label: 'LN',
     toolTipLabel: 'Last Name',
-    sticky: true,
     sortParam: 'lastName',
     customRender: ({ player }: DraftPick, classes) => {
       if (!player) return null
@@ -117,13 +115,12 @@ const DRAFT_PICKS_TABLE_CELLS = [
 
 const DraftPicksTable = (props: Props) => {
   const {
-    draftPicks: { draftPicks, facets = {}, meta: { total } },
+    draftPicks,
     fetchDraftPicks,
     updateDraftPicksPage,
     updateDraftPicksSort,
     updateDraftPicksFilter,
-    fetchDraftPickFacets,
-    leagueId
+    fetchDraftPickFacets
   } = props
 
   useEffect(
@@ -132,11 +129,13 @@ const DraftPicksTable = (props: Props) => {
     }, [fetchDraftPickFacets]
   )
 
+  const { data, facets = {}, meta: { total } } = draftPicks
+
   return (
     <Fragment>
-      <SearchListener id={leagueId} fetchAction={fetchDraftPicks} initialFilterState={initialFilterState}>
+      <SearchListener fetchAction={fetchDraftPicks} initialFilterState={initialFilterState}>
         <SortTable
-          collection={draftPicks}
+          collection={data}
           facets={facets}
           handleSortChange={(newSort) => updateDraftPicksSort(newSort)}
           handleFilterChange={(newFilter) => updateDraftPicksFilter(newFilter)}

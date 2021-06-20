@@ -14,9 +14,10 @@ import {
 } from 'utilities/constants'
 
 function * fetchDraftPicks (action) : Generator<any, any, any> {
-  const { leagueId, sort, filter, page } = action
+  const { data: { id } } = yield select(state => state.league)
+  const { sort, filter, page } = action
 
-  const url = `${API_URL}${LEAGUES_URL}/${leagueId}/draft_picks?${stringify({ sort, filter, page })}`
+  const url = `${API_URL}${LEAGUES_URL}/${id}/draft_picks?${stringify({ sort, filter, page })}`
 
   yield put({
     type: requestActions.AUTHED_REQUEST,
@@ -108,6 +109,20 @@ function * updateDraftPickSuccess (action) : Generator<any, any, any> {
   yield history.replace(`${LEAGUES_URL}/${id}/draft`)
 }
 
+function * fetchDraftPicksStatus (action) : Generator<any, any, any> {
+  const { leagueId } = action
+
+  const url = `${API_URL}${LEAGUES_URL}/${leagueId}/draft_picks/status`
+
+  yield put({
+    type: requestActions.AUTHED_REQUEST,
+    method: 'GET',
+    url,
+    successAction: success(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX),
+    failureAction: failure(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX)
+  })
+}
+
 export default function * draftPicksSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_LEAGUE_DRAFT_PICKS_INDEX, fetchDraftPicks),
@@ -117,5 +132,6 @@ export default function * draftPicksSagas () : Generator<any, any, any> {
     yield takeLatest(actions.UPDATE_DRAFT_PICKS_PAGE, updatePage),
     yield takeLatest(actions.API_LEAGUE_DRAFT_PICK_UPDATE, updateDraftPick),
     yield takeLatest(success(actions.API_LEAGUE_DRAFT_PICK_UPDATE), updateDraftPickSuccess),
+    yield takeLatest(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX, fetchDraftPicksStatus)
   ])
 }

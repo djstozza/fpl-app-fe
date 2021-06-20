@@ -4,9 +4,11 @@ import { success, failure } from 'utilities/actions'
 import type { Action, Facets, Error, DraftPick } from 'types'
 
 export type State = {
-  draftPicks: DraftPick[],
+  data: DraftPick[],
   draftFinished: boolean,
   userCanPick: boolean,
+  canMakePlayerPick: boolean,
+  canMakeMiniDraftPick: boolean,
   nextDraftPickId?: string,
   facets: Facets,
   errors: Error[],
@@ -31,10 +33,12 @@ export const initialFilterState = {
 }
 
 export const initialState = {
-  draftPicks: [],
+  data: [],
   draftFinished: false,
   userCanPick: false,
   submitting: false,
+  canMakePlayerPick: false,
+  canMakeMiniDraftPick: false,
   errors: [],
   facets: {},
   meta: {},
@@ -45,12 +49,7 @@ const reducer = (state: State = initialState, action: Action) => {
   if (state === undefined) { state = initialState }
 
   const {
-    data: {
-      draftPicks = [],
-      draftFinished,
-      userCanPick,
-      nextDraftPickId
-    } = {},
+    data = [],
     meta,
     filter = {},
     sort = {},
@@ -61,7 +60,11 @@ const reducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
     case success(actions.API_LEAGUE_DRAFT_PICKS_INDEX):
     case success(actions.API_LEAGUE_DRAFT_PICK_UPDATE):
-      return { ...state, errors: [], draftPicks, draftFinished, userCanPick, nextDraftPickId, meta, submitting: false }
+      return { ...state, errors: [], data, meta, submitting: false }
+    case success(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX):
+      const { data: { userCanPick, nextDraftPickId, draftFinished, canMakePlayerPick, canMakeMiniDraftPick } } = action
+
+      return { ...state, errors: [], userCanPick, nextDraftPickId, draftFinished, canMakePlayerPick, canMakeMiniDraftPick }
     case success(actions.API_LEAGUE_DRAFT_PICKS_FACETS_INDEX):
       return { ...state, facets: action.data }
     case actions.API_LEAGUE_DRAFT_PICK_UPDATE:

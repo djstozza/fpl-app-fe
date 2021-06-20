@@ -1,5 +1,5 @@
-import { Fragment } from 'react'
 import { Route, Switch } from 'react-router-dom'
+import { SnackbarProvider } from 'notistack'
 import {
   makeStyles,
   Theme
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const App = () => {
   const classes = useStyles()
   return (
-    <Fragment>
+    <SnackbarProvider maxSnack={1}>
       <NavBar />
       <div className={classes.container}>
         <LoadingBar showFastActions />
@@ -68,7 +68,7 @@ const App = () => {
           </PrivateRoute>
         </Switch>
       </div>
-    </Fragment>
+    </SnackbarProvider>
   );
 }
 

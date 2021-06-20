@@ -1,6 +1,8 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect, useState, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
+import ActionCable from 'actioncable'
+import { useSnackbar } from 'notistack'
 import {
   Typography,
   Theme,
@@ -14,7 +16,8 @@ import { draftPicksActions } from 'state/draftPicks'
 import Tabs from 'components/common/tabs'
 import DraftPicksTable from './draftPicksTable'
 import AvailablePlayersTable from './availablePlayersTable'
-import { LEAGUES_URL } from 'utilities/constants'
+import UserCanPickAlert from './userCanPickAlert'
+import { LEAGUES_URL, CABLE_URL } from 'utilities/constants'
 
 import type { DraftPicksState } from 'state/draftPicks'
 import type { PlayersState } from 'state/players'
@@ -36,7 +39,8 @@ type Props = {
   updateAvailablePlayersSort: Function,
   updateAvailablePlayersPage: Function,
   fetchDraftPickFacets: Function,
-  fetchPlayerFacets: Function
+  fetchPlayerFacets: Function,
+  fetchDraftPicksStatus: Function,
   match: { params: { leagueId: string, tab: string } }
 }
 
@@ -52,6 +56,8 @@ const TABS = [
   { label: 'Available Players', value: 'draft/availablePlayers', display: true },
   { label: 'Draft Picks', value: 'draft/draftPicks', display: true }
 ]
+
+const cable = ActionCable.createConsumer(CABLE_URL)
 
 const DraftPage = (props: Props) => {
   const {
@@ -70,21 +76,61 @@ const DraftPage = (props: Props) => {
     updateAvailablePlayersPage,
     fetchPlayerFacets,
     updateDraftPick,
+    fetchDraftPicksStatus,
     match: { params: { leagueId, tab = 'draftPicks' } }
   } = props
 
   const classes = useStyles()
+  const { enqueueSnackbar } = useSnackbar()
+  const [draftPickUpdatedAt, setDraftPickUpdatedAt] = useState()
 
   useEffect(
     () => {
       fetchLeague(leagueId)
-      fetchDraftPicks({ id: leagueId })
-    }, [fetchLeague, fetchDraftPicks, leagueId]
+
+    }, [fetchLeague, leagueId]
+  )
+
+  useEffect(
+    () => {
+      fetchDraftPicksStatus(leagueId)
+    }, [fetchDraftPicksStatus, leagueId]
+  )
+
+  const handleReceived = useCallback(
+    ({ updatedAt, message }) => {
+      if (updatedAt <= (draftPickUpdatedAt || 0)) return
+
+      fetchDraftPicksStatus(leagueId)
+      setDraftPickUpdatedAt(updatedAt)
+      enqueueSnackbar(message, { variant: 'success' })
+    }, [leagueId, fetchDraftPicksStatus, draftPickUpdatedAt, enqueueSnackbar]
+  )
+
+
+
+  useEffect(
+    () => {
+      cable.subscriptions.create(
+        { channel: 'DraftPicksChannel', league_id: leagueId },
+        { received: received  => handleReceived(received) }
+      )
+    }, [handleReceived, leagueId]
+  )
+
+  const { errors } = draftPicks
+
+  useEffect(
+    () => {
+      errors.forEach(({ detail }) => enqueueSnackbar(detail, { variant: 'error' }))
+    }, [enqueueSnackbar, errors]
   )
 
   if (!league) return null
 
   const { name } = league
+  const key = `${leagueId}-${draftPickUpdatedAt}`
+
   return (
     <Fragment>
       <Typography variant='h4' className={classes.title}>
@@ -97,14 +143,17 @@ const DraftPage = (props: Props) => {
         url={LEAGUES_URL}
         id={leagueId}
       />
+      <UserCanPickAlert
+        leagueId={leagueId}
+        draftPicks={draftPicks}
+      />
       <Switch>
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId/draft`}
           render={() => (
             <DraftPicksTable
-              key={leagueId}
-              leagueId={leagueId}
+              key={key}
               draftPicks={draftPicks}
               fetchDraftPicks={fetchDraftPicks}
               updateDraftPicksSort={updateDraftPicksSort}
@@ -119,8 +168,7 @@ const DraftPage = (props: Props) => {
           path={`${LEAGUES_URL}/:leagueId/draft/draftPicks`}
           render={() => (
             <DraftPicksTable
-              key={leagueId}
-              leagueId={leagueId}
+              key={key}
               draftPicks={draftPicks}
               fetchDraftPicks={fetchDraftPicks}
               updateDraftPicksSort={updateDraftPicksSort}
@@ -135,16 +183,14 @@ const DraftPage = (props: Props) => {
           path={`${LEAGUES_URL}/:leagueId/draft/availablePlayers`}
           render={() => (
             <AvailablePlayersTable
-              key={leagueId}
+              key={key}
+              draftPicks={draftPicks}
               players={players}
               fetchAvailablePlayers={fetchAvailablePlayers}
               updateAvailablePlayersSort={updateAvailablePlayersSort}
               updateAvailablePlayersFilter={updateAvailablePlayersFilter}
               updateAvailablePlayersPage={updateAvailablePlayersPage}
               fetchPlayerFacets={fetchPlayerFacets}
-              userCanPick={draftPicks.userCanPick}
-              nextDraftPickId={draftPicks.nextDraftPickId}
-              submitting={draftPicks.submitting}
               updateDraftPick={updateDraftPick}
             />
           )}
@@ -181,6 +227,7 @@ const matchDispatchToProps = {
   updateAvailablePlayersPage: leagueActions.updateAvailablePlayersPage,
   updateAvailablePlayersFilter: leagueActions.updateAvailablePlayersFilter,
   fetchPlayerFacets: playersActions.fetchFacets,
+  fetchDraftPicksStatus: draftPicksActions.fetchDraftPicksStatus
 }
 
 
