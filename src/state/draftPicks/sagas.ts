@@ -15,9 +15,9 @@ import {
 
 function * fetchDraftPicks (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
-  const { sort, filter, page } = action
+  const { sort, filter } = action
 
-  const url = `${API_URL}${LEAGUES_URL}/${id}/draft_picks?${stringify({ sort, filter, page })}`
+  const url = `${API_URL}${LEAGUES_URL}/${id}/draft_picks?${stringify({ sort, filter })}`
 
   yield put({
     type: requestActions.AUTHED_REQUEST,
@@ -45,7 +45,7 @@ function * fetchDraftPickFacets (action) : Generator<any, any, any> {
 function * updateFilter (action) : Generator<any, any, any> {
   const { filter } = action
   const { data: { id } } = yield select(state => state.league)
-  const { sort, page } = yield select(state => state.draftPicks)
+  const { sort } = yield select(state => state.draftPicks)
 
   const query = {
     filter,
@@ -58,19 +58,19 @@ function * updateFilter (action) : Generator<any, any, any> {
 function * updateSort (action) : Generator<any, any, any> {
   const { sort } = action
   const { data: { id } } = yield select(state => state.league)
-  const { filter, page } = yield select(state => state.draftPicks)
+  const { filter } = yield select(state => state.draftPicks)
 
-  const query = { filter, sort, page }
+  const query = { filter, sort }
 
   yield history.push(`${LEAGUES_URL}/${id}/draft/draftPicks?${qs.stringify(query)}`)
 }
 
 function * updateDraftPick (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
-  const { filter, sort, page } = yield select(state => state.draftPicks)
+  const { filter, sort } = yield select(state => state.draftPicks)
   const { playerId, miniDraft, nextDraftPickId } = action
 
-  const url = `${API_URL}${LEAGUES_URL}/${id}/draft_picks/${nextDraftPickId}?${stringify({ sort, filter, page })}`
+  const url = `${API_URL}${LEAGUES_URL}/${id}/draft_picks/${nextDraftPickId}?${stringify({ sort, filter })}`
 
   yield put({
     type: requestActions.AUTHED_REQUEST,

@@ -25,7 +25,8 @@ const DRAFT_PICKS_TABLE_CELLS = [
     label: 'LN',
     toolTipLabel: 'Last Name',
     sortParam: 'lastName',
-    customRender: ({ player }: DraftPick, classes) => {
+    customRender: ({ player, miniDraft }: DraftPick, classes) => {
+      if (miniDraft) return '-'
       if (!player) return null
 
       const { id, lastName } = player
@@ -42,7 +43,8 @@ const DRAFT_PICKS_TABLE_CELLS = [
     label: 'FN',
     toolTipLabel: 'First Name',
     sortParam: 'firstName',
-    customRender: ({ player }: DraftPick, classes) => {
+    customRender: ({ player, miniDraft }: DraftPick, classes) => {
+      if (miniDraft) return '-'
       if (!player) return null
 
       const { id, firstName } = player
@@ -60,7 +62,8 @@ const DRAFT_PICKS_TABLE_CELLS = [
     toolTipLabel: 'Team',
     sortParam: 'teams.shortName',
     filterParam: 'teamId',
-    customRender: ({ team }: DraftPick, classes) => {
+    customRender: ({ team, miniDraft }: DraftPick, classes) => {
+      if (miniDraft) return '-'
       if (!team) return null
 
       const { id, shortName } = team
@@ -81,7 +84,7 @@ const DRAFT_PICKS_TABLE_CELLS = [
     toolTipLabel: 'Position',
     sortParam: 'positions.singularNameShort',
     filterParam: 'positionId',
-    customRender: ({ position }: DraftPick) => position
+    customRender: ({ position, miniDraft }: DraftPick) => miniDraft ? '-' :  position
   },
   {
     cellId: 'miniDraft',

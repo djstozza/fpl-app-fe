@@ -80,7 +80,7 @@ const DraftPage = (props: Props) => {
 
   const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
-  const [draftPickUpdatedAt, setDraftPickUpdatedAt] = useState()
+  const [draftPickUpdatedAt, setDraftPickUpdatedAt] = useState(0)
 
   useEffect(
     () => {
@@ -97,22 +97,23 @@ const DraftPage = (props: Props) => {
 
   const handleReceived = useCallback(
     ({ updatedAt, message }) => {
-      if (updatedAt <= (draftPickUpdatedAt || 0)) return
-
+      if (updatedAt <= draftPickUpdatedAt) return
       fetchDraftPicksStatus(leagueId)
-      setDraftPickUpdatedAt(updatedAt)
       enqueueSnackbar(message, { variant: 'success' })
+      setDraftPickUpdatedAt(updatedAt)
     }, [leagueId, fetchDraftPicksStatus, draftPickUpdatedAt, enqueueSnackbar]
   )
 
-
-
   useEffect(
     () => {
+      let isActive = true
+
       cable.subscriptions.create(
         { channel: 'DraftPicksChannel', league_id: leagueId },
-        { received: received  => handleReceived(received) }
+        { received: received  => { if (isActive) handleReceived(received) } }
       )
+
+      return () => { isActive = false }
     }, [handleReceived, leagueId]
   )
 
@@ -144,6 +145,7 @@ const DraftPage = (props: Props) => {
       <UserCanPickAlert
         leagueId={leagueId}
         draftPicks={draftPicks}
+        updateDraftPick={updateDraftPick}
       />
       <Switch>
         <Route
