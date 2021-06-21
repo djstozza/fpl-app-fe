@@ -53,7 +53,8 @@ type Props = {
   page?: {
     limit: number,
     offset: number
-  }
+  },
+  noOffset?: boolean
 }
 
 type HeightProps = {
@@ -96,7 +97,8 @@ const SortTable = (props: Props) => {
     facets,
     cells,
     tab,
-    total
+    total,
+    noOffset
   } = props
   const {
     search: {
@@ -187,7 +189,7 @@ const SortTable = (props: Props) => {
         ref={paginationRef}
         component="div"
         count={total || collection.length}
-        rowsPerPage={limit}
+        rowsPerPage={noOffset ? total : limit}
         rowsPerPageOptions={[limit]}
         page={offset / limit}
         onChangePage={changePage}

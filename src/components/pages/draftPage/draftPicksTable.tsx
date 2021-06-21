@@ -15,7 +15,6 @@ type Props = {
   fetchDraftPicks: Function,
   updateDraftPicksFilter: Function,
   updateDraftPicksSort: Function,
-  updateDraftPicksPage: Function,
   fetchDraftPickFacets: Function
 }
 
@@ -117,7 +116,6 @@ const DraftPicksTable = (props: Props) => {
   const {
     draftPicks,
     fetchDraftPicks,
-    updateDraftPicksPage,
     updateDraftPicksSort,
     updateDraftPicksFilter,
     fetchDraftPickFacets
@@ -139,9 +137,9 @@ const DraftPicksTable = (props: Props) => {
           facets={facets}
           handleSortChange={(newSort) => updateDraftPicksSort(newSort)}
           handleFilterChange={(newFilter) => updateDraftPicksFilter(newFilter)}
-          handleChangePage={(newOffset) => updateDraftPicksPage(newOffset)}
           cells={DRAFT_PICKS_TABLE_CELLS}
           total={total}
+          noOffset
         />
       </SearchListener>
     </Fragment>

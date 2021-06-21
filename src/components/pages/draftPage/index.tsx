@@ -33,7 +33,6 @@ type Props = {
   updateDraftPick: Function,
   updateDraftPicksFilter: Function,
   updateDraftPicksSort: Function,
-  updateDraftPicksPage: Function,
   fetchAvailablePlayers: Function,
   updateAvailablePlayersFilter: Function,
   updateAvailablePlayersSort: Function,
@@ -69,7 +68,6 @@ const DraftPage = (props: Props) => {
     fetchDraftPickFacets,
     updateDraftPicksSort,
     updateDraftPicksFilter,
-    updateDraftPicksPage,
     fetchAvailablePlayers,
     updateAvailablePlayersSort,
     updateAvailablePlayersFilter,
@@ -158,7 +156,6 @@ const DraftPage = (props: Props) => {
               fetchDraftPicks={fetchDraftPicks}
               updateDraftPicksSort={updateDraftPicksSort}
               updateDraftPicksFilter={updateDraftPicksFilter}
-              updateDraftPicksPage={updateDraftPicksPage}
               fetchDraftPickFacets={fetchDraftPickFacets}
             />
           )}
@@ -173,7 +170,6 @@ const DraftPage = (props: Props) => {
               fetchDraftPicks={fetchDraftPicks}
               updateDraftPicksSort={updateDraftPicksSort}
               updateDraftPicksFilter={updateDraftPicksFilter}
-              updateDraftPicksPage={updateDraftPicksPage}
               fetchDraftPickFacets={fetchDraftPickFacets}
             />
           )}
@@ -221,7 +217,6 @@ const matchDispatchToProps = {
   updateDraftPick: draftPicksActions.updateDraftPick,
   updateDraftPicksSort: draftPicksActions.updateSort,
   updateDraftPicksFilter: draftPicksActions.updateFilter,
-  updateDraftPicksPage: draftPicksActions.updatePage,
   fetchAvailablePlayers: leagueActions.fetchAvailablePlayers,
   updateAvailablePlayersSort: leagueActions.updateAvailablePlayersSort,
   updateAvailablePlayersPage: leagueActions.updateAvailablePlayersPage,

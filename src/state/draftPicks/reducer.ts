@@ -17,15 +17,10 @@ export type State = {
   meta: {
     total?: number
   },
-  page: {
-    offset: number,
-    limit: number
-  },
   submitting: boolean
 }
 
 export const initialFilterState = {
-  page: { offset: 0, limit: 50 },
   filter: {},
   sort: {
     pickNumber: 'asc'
@@ -53,7 +48,6 @@ const reducer = (state: State = initialState, action: Action) => {
     meta,
     filter = {},
     sort = {},
-    page = {},
     errors
   } = action
 
@@ -70,7 +64,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case actions.API_LEAGUE_DRAFT_PICK_UPDATE:
       return { ...state, submitting: true }
     case actions.API_LEAGUE_DRAFT_PICKS_INDEX:
-      return { ...state, filter, sort, page }
+      return { ...state, filter, sort }
     case failure(actions.API_LEAGUE_DRAFT_PICKS_INDEX):
     case failure(actions.API_LEAGUE_DRAFT_PICKS_FACETS_INDEX):
     case failure(actions.API_LEAGUE_DRAFT_PICK_UPDATE):

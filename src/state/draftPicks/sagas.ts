@@ -49,11 +49,7 @@ function * updateFilter (action) : Generator<any, any, any> {
 
   const query = {
     filter,
-    sort,
-    page: {
-      ...page,
-      offset: 0
-    }
+    sort
   }
 
   yield history.push(`${LEAGUES_URL}/${id}/draft/draftPicks?${qs.stringify(query)}`)
@@ -65,23 +61,6 @@ function * updateSort (action) : Generator<any, any, any> {
   const { filter, page } = yield select(state => state.draftPicks)
 
   const query = { filter, sort, page }
-
-  yield history.push(`${LEAGUES_URL}/${id}/draft/draftPicks?${qs.stringify(query)}`)
-}
-
-function * updatePage (action) : Generator<any, any, any> {
-  const { offset } = action
-  const { data: { id } } = yield select(state => state.league)
-  const { filter, sort, page } = yield select(state => state.draftPicks)
-
-  const query = {
-    filter,
-    sort,
-    page: {
-      ...page,
-      offset
-    }
-  }
 
   yield history.push(`${LEAGUES_URL}/${id}/draft/draftPicks?${qs.stringify(query)}`)
 }
@@ -129,7 +108,6 @@ export default function * draftPicksSagas () : Generator<any, any, any> {
     yield takeLatest(actions.API_LEAGUE_DRAFT_PICKS_FACETS_INDEX, fetchDraftPickFacets),
     yield takeLatest(actions.UPDATE_DRAFT_PICKS_FILTER, updateFilter),
     yield takeLatest(actions.UPDATE_DRAFT_PICKS_SORT, updateSort),
-    yield takeLatest(actions.UPDATE_DRAFT_PICKS_PAGE, updatePage),
     yield takeLatest(actions.API_LEAGUE_DRAFT_PICK_UPDATE, updateDraftPick),
     yield takeLatest(success(actions.API_LEAGUE_DRAFT_PICK_UPDATE), updateDraftPickSuccess),
     yield takeLatest(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX, fetchDraftPicksStatus)
