@@ -72,6 +72,7 @@ type RoundBase = {
 }
 
 export type RoundSummary = {
+  current: boolean,
   finsihed: boolean,
   isCurrent: boolean,
   isNext: boolean,

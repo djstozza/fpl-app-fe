@@ -27,7 +27,7 @@ const RoundsPage = (props: Props) => {
     match: { params: { roundId } }
   } = props
 
-  const currentRoundId = rounds.find(({ isCurrent }) => isCurrent)?.id
+  const currentRoundId = rounds.find(({ current }) => current)?.id
   const lastRoundId = rounds[rounds.length - 1]?.id
 
   const getSelectedRoundId = () => roundId || currentRoundId || lastRoundId
