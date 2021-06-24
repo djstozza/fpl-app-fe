@@ -65,6 +65,20 @@ function * updateSort (action) : Generator<any, any, any> {
   yield history.push(`${LEAGUES_URL}/${id}/draft/draftPicks?${qs.stringify(query)}`)
 }
 
+function * fetchDraftPicksStatus (action) : Generator<any, any, any> {
+  const { leagueId } = action
+
+  const url = `${API_URL}${LEAGUES_URL}/${leagueId}/draft_picks/status`
+
+  yield put({
+    type: requestActions.AUTHED_REQUEST,
+    method: 'GET',
+    url,
+    successAction: success(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX),
+    failureAction: failure(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX)
+  })
+}
+
 function * updateDraftPick (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
   const { filter, sort } = yield select(state => state.draftPicks)
@@ -84,22 +98,8 @@ function * updateDraftPick (action) : Generator<any, any, any> {
 
 function * updateDraftPickSuccess (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
-
+  yield fetchDraftPicksStatus({ leagueId: id })
   yield history.replace(`${LEAGUES_URL}/${id}/draft`)
-}
-
-function * fetchDraftPicksStatus (action) : Generator<any, any, any> {
-  const { leagueId } = action
-
-  const url = `${API_URL}${LEAGUES_URL}/${leagueId}/draft_picks/status`
-
-  yield put({
-    type: requestActions.AUTHED_REQUEST,
-    method: 'GET',
-    url,
-    successAction: success(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX),
-    failureAction: failure(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX)
-  })
 }
 
 export default function * draftPicksSagas () : Generator<any, any, any> {

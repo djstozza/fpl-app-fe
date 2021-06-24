@@ -17,6 +17,7 @@ import Tabs from 'components/common/tabs'
 import DraftPicksTable from './draftPicksTable'
 import AvailablePlayersTable from './availablePlayersTable'
 import UserCanPickAlert from './userCanPickAlert'
+import DraftCompletedAlert from './draftCompletedAlert'
 import { LEAGUES_URL, CABLE_URL } from 'utilities/constants'
 
 import type { DraftPicksState } from 'state/draftPicks'
@@ -146,6 +147,9 @@ const DraftPage = (props: Props) => {
         leagueId={leagueId}
         draftPicks={draftPicks}
         updateDraftPick={updateDraftPick}
+      />
+      <DraftCompletedAlert
+        draftPicks={draftPicks}
       />
       <Switch>
         <Route

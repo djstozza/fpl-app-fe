@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const App = () => {
   const classes = useStyles()
   return (
-    <SnackbarProvider maxSnack={1}>
+    <SnackbarProvider maxSnack={3}>
       <NavBar />
       <div className={classes.container}>
         <LoadingBar showFastActions />

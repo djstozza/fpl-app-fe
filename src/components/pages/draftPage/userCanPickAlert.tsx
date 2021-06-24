@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: theme.spacing(0.5)
   },
   makeDraftPickContainer: {
-    display: 'inline'
+    display: 'inline',
+    marginLeft: theme.spacing(0.5)
   }
 }))
 
@@ -53,7 +54,6 @@ const UserCanPickAlert = (props: Props) => {
     }, [userCanPick]
   )
 
-
   if (!userCanPick) return null
 
   return (
@@ -68,7 +68,7 @@ const UserCanPickAlert = (props: Props) => {
         }
         {
           canMakePlayerPick && canMakeMiniDraftPick &&
-          ' or '
+          ' or'
         }
         {
           canMakeMiniDraftPick &&
