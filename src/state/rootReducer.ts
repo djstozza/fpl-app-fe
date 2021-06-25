@@ -3,6 +3,8 @@ import { loadingBarReducer } from 'react-redux-loading-bar'
 
 import auth from './auth'
 import draftPicks from './draftPicks'
+import fplTeam from './fplTeam'
+import fplTeams from './fplTeams'
 import league from './league'
 import leagues from './leagues'
 import player from './player'
@@ -17,6 +19,8 @@ import teams from './teams'
 const rootReducer = combineReducers({
   auth,
   draftPicks,
+  fplTeam,
+  fplTeams,
   league,
   leagues,
   player,

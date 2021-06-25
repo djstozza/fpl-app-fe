@@ -29,7 +29,8 @@ import {
   SIGN_UP_URL,
   LOGIN_URL,
   PROFILE_URL,
-  LEAGUES_URL
+  LEAGUES_URL,
+  FPL_TEAMS_URL
 } from 'utilities/constants'
 
 import type { User } from 'types'
@@ -163,6 +164,13 @@ const NavBar = (props: Props) => {
         onClick={handleAccountMenuClose}
       >
         My leagues
+      </MenuItem>
+      <MenuItem
+        component={Link}
+        to={`${PROFILE_URL}${FPL_TEAMS_URL}`}
+        onClick={handleAccountMenuClose}
+      >
+        My fpl teams
       </MenuItem>
       <MenuItem
         onClick={handleLogoutClick}

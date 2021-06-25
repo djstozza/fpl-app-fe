@@ -12,10 +12,12 @@ import {
   SIGN_UP_URL,
   LOGIN_URL,
   PROFILE_URL,
-  LEAGUES_URL
+  LEAGUES_URL,
+  FPL_TEAMS_URL
 } from 'utilities/constants'
 import LoadingBar from 'react-redux-loading-bar'
 import LeaguePage from 'components/pages/leaguePage'
+import FplTeamPage from 'components/pages/fplTeamPage'
 import RoundsPage from 'components/pages/roundsPage'
 import TeamsPage from 'components/pages/teamsPage'
 import TeamPage from 'components/pages/teamPage'
@@ -64,6 +66,7 @@ const App = () => {
               <Route exact path={`${LEAGUES_URL}/:leagueId`} render={(props) => <LeaguePage {...props} />} />
               <Route exact path={`${LEAGUES_URL}/:leagueId/draft/:tab?`} render={(props) => <DraftPage {...props} />} />
               <Route path={`${LEAGUES_URL}/:leagueId/:tab`} render={(props) => <LeaguePage {...props} />} />
+              <Route path={`${FPL_TEAMS_URL}/:fplTeamId/:tab?/`} render={(props) => <FplTeamPage {...props} />} />
             </Switch>
           </PrivateRoute>
         </Switch>

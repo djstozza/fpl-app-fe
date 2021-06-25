@@ -12,11 +12,13 @@ export const CHANGE_PASSWORD_URL = `${PROFILE_URL}/change-password`
 export const LEAGUES_URL = '/leagues'
 export const NEW_LEAGUE_URL = `${LEAGUES_URL}/new`
 export const JOIN_LEAGUE_URL = `${LEAGUES_URL}/join`
+export const FPL_TEAMS_URL = '/fplTeams'
 
 export const API_REGISTRATIONS_PATH = '/registrations'
 export const API_SESSIONS_PATH = '/sessions'
 export const API_USERS_PATH = '/users'
 export const API_PASSWORDS_PATH = '/passwords'
+export const API_FPL_TEAMS_PATH = '/fpl_teams'
 
 export const APPLICATION_ERRORS = {
   '403': {

@@ -10,17 +10,17 @@ import {
 } from '@material-ui/core'
 
 import {
-  LEAGUES_URL
+  FPL_TEAMS_URL
 } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
 
-import type { League, Error } from 'types'
+import type { FplTeam, Error } from 'types'
 
 type Props = {
-  league: League,
+  fplTeam: FplTeam,
   errors: Error[],
   submitting: boolean,
-  updateLeague: Function
+  updateFplTeam: Function
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -39,37 +39,26 @@ const useStyles = makeStyles((theme: Theme) => ({
   actions: {
     display: 'flex',
     justifyContent: 'flex-end'
-  },
-  codeContainer: {
-    display: 'flex',
-    alignItems: 'baseline'
-  },
-  generateButtonContainer: {
-    marginRight: theme.spacing(1)
-  },
-  generateButton: {
-    whiteSpace: 'nowrap'
   }
 }))
 
-const EditLeagueForm = (props: Props) => {
+const EditFplTeamForm = (props: Props) => {
   const {
     errors,
-    updateLeague,
+    updateFplTeam,
     submitting,
-    league: { id, name, code, isOwner }
+    fplTeam: { id, name, isOwner }
   } = props
 
   const classes = useStyles()
 
   const [newName, setName] = useState(name)
-  const [newCode, setNewCode] = useState(code)
 
-  if (!isOwner) return <Redirect to={`${LEAGUES_URL}/${id}/details`} />
+  if (!isOwner) return <Redirect to={`${FPL_TEAMS_URL}/${id}/details`} />
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    updateLeague({ league: { name: newName, code: newCode } })
+    updateFplTeam({ fplTeam: { name: newName } })
   }
 
   return (
@@ -94,34 +83,9 @@ const EditLeagueForm = (props: Props) => {
           error={Boolean(errors.find(({ source }) => source === 'name'))}
           helperText={errors.find(({ source }) => source === 'name')?.detail}
         />
-        <div className={classes.codeContainer}>
-          <div className={classes.generateButtonContainer}>
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => setNewCode(Math.random().toString(36).slice(2, 10))}
-              className={classes.generateButton}
-            >
-              Generate Code
-            </Button>
-          </div>
-          <TextField
-            required
-            className={classes.textField}
-            fullWidth
-            variant='outlined'
-            label='Code'
-            name='code'
-            type='text'
-            disabled
-            value={newCode}
-            error={Boolean(errors.find(({ source }) => source === 'code'))}
-            helperText={errors.find(({ source }) => source === 'code')?.detail}
-          />
-        </div>
         <div className={classes.actions}>
           <ButtonLink
-            to={`${LEAGUES_URL}/${id}/details`}
+            to={`${FPL_TEAMS_URL}/${id}/details`}
             color='default'
             rightMargin
           >
@@ -129,7 +93,7 @@ const EditLeagueForm = (props: Props) => {
           </ButtonLink>
           <Button
             type='submit'
-            disabled={!newName || !newCode || submitting}
+            disabled={!newName || submitting}
             variant='contained'
             color='primary'
           >
@@ -141,4 +105,4 @@ const EditLeagueForm = (props: Props) => {
   )
 }
 
-export default EditLeagueForm
+export default EditFplTeamForm
