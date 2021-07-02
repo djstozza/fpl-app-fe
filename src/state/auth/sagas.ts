@@ -1,4 +1,4 @@
-import { put, takeLatest, all } from 'redux-saga/effects'
+import { put, takeLatest, takeEvery, all } from 'redux-saga/effects'
 import { decamelizeKeys } from 'humps'
 
 import {
@@ -111,7 +111,7 @@ export default function * authSagas () : Generator<any, any, any> {
       success(actions.API_USERS_CREATE)
     ], onAuthed),
     yield takeLatest(actions.API_SESSIONS_UPDATE, updateSession),
-    yield takeLatest([actions.LOG_OUT, failure(actions.API_SESSIONS_UPDATE)], logOut),
+    yield takeEvery([actions.LOG_OUT, failure(actions.API_SESSIONS_UPDATE)], logOut),
     yield takeLatest(actions.API_USERS_UPDATE, updateUser),
     yield takeLatest(actions.API_PASSWORDS_UPDATE, changePassword),
     yield takeLatest([
