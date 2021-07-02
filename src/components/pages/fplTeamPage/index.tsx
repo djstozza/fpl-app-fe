@@ -52,10 +52,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const TABS = [
-  { label: 'Details', value: 'details', display: true },
-  { label: 'Team Lists', value: 'teamLists', display: true }
-]
+const TABS = {
+  details: { label: 'Details', value: 'details', display: true },
+  teamLists: { label: 'Team Lists', value: 'teamLists', display: true }
+}
 
 const FplTeamPage = (props: Props) => {
   const {
@@ -91,8 +91,9 @@ const FplTeamPage = (props: Props) => {
 
   if (!fplTeam) return null
 
-  const { name, isOwner } = fplTeam
+  const { name, isOwner, league: { showLiveColumns } } = fplTeam
   const currentFplTeamList = fplTeamLists.data.find(({ round: { current } }) => current)
+  if (!showLiveColumns) TABS.teamLists['display'] = false
 
   return (
     <Fragment>
@@ -101,7 +102,7 @@ const FplTeamPage = (props: Props) => {
       </Typography>
       <Tabs
         currentTab={tab}
-        tabs={TABS}
+        tabs={Object.values(TABS)}
         url={FPL_TEAMS_URL}
         id={fplTeamId}
       />
