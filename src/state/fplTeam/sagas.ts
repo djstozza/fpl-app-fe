@@ -48,7 +48,7 @@ function * updateFplTeamSuccess (action) : Generator<any, any, any> {
   yield history.replace(`${FPL_TEAMS_URL}/${id}`)
 }
 
-export default function * fplTeamsSagas () : Generator<any, any, any> {
+export default function * fplTeamSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_FPL_TEAMS_SHOW, fetchFplTeam),
     yield takeLatest(actions.API_FPL_TEAMS_UPDATE, updateFplTeam),

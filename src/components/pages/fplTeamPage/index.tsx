@@ -8,15 +8,23 @@ import {
   makeStyles
 } from '@material-ui/core'
 
-import { fplTeamActions } from 'state/fplTeam'
 import Tabs from 'components/common/tabs'
+import { fplTeamActions } from 'state/fplTeam'
+import { fplTeamListsActions } from 'state/fplTeamLists'
+import { fplTeamListActions } from 'state/fplTeamList'
+import { listPositionActions } from 'state/listPosition'
 import {
   FPL_TEAMS_URL
 } from 'utilities/constants'
 import FplTeamDetails from './fplTeamDetails'
 import EditFplTeamForm from './editFplTeamForm'
+import FplTeamListChart from './fplTeamListChart'
+import FplTeamAlert from './fplTeamAlert'
 
 import type { FplTeam, Error } from 'types'
+import type { FplTeamListState } from 'state/fplTeamList'
+import type { FplTeamListsState } from 'state/fplTeamLists'
+import type { ListPositionState } from 'state/listPosition'
 
 type Props = {
   fplTeam: FplTeam,
@@ -24,7 +32,16 @@ type Props = {
   submitting: boolean,
   fetchFplTeam: Function,
   updateFplTeam: Function,
-  match: { params: { fplTeamId: string, tab: string } }
+  fplTeamLists: FplTeamListsState,
+  fplTeamList: FplTeamListState,
+  listPosition: ListPositionState,
+  fetchFplTeamLists: Function,
+  fetchFplTeamList: Function,
+  fetchValidSubstitutions: Function,
+  processSubstitution: Function,
+  clearValidSubstitutions: Function,
+  fetchListPositions: Function,
+  match: { params: { fplTeamId: string, tab: string, fplTeamListId: string } }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,7 +64,16 @@ const FplTeamPage = (props: Props) => {
     submitting,
     fetchFplTeam,
     updateFplTeam,
-    match: { params: { fplTeamId, tab = 'details' } }
+    fplTeamLists,
+    fplTeamList,
+    listPosition,
+    fetchFplTeamLists,
+    fetchFplTeamList,
+    fetchValidSubstitutions,
+    processSubstitution,
+    clearValidSubstitutions,
+    fetchListPositions,
+    match: { params: { fplTeamId, tab = 'details', fplTeamListId } }
   } = props
   const classes = useStyles()
 
@@ -57,9 +83,16 @@ const FplTeamPage = (props: Props) => {
     }, [fetchFplTeam, fplTeamId]
   )
 
+  useEffect(
+    () => {
+      fetchFplTeamLists(fplTeamId)
+    }, [fetchFplTeamLists, fplTeamId]
+  )
+
   if (!fplTeam) return null
 
-  const { name } = fplTeam
+  const { name, isOwner } = fplTeam
+  const currentFplTeamList = fplTeamLists.data.find(({ round: { current } }) => current)
 
   return (
     <Fragment>
@@ -72,6 +105,7 @@ const FplTeamPage = (props: Props) => {
         url={FPL_TEAMS_URL}
         id={fplTeamId}
       />
+      <FplTeamAlert currentFplTeamList={currentFplTeamList} />
       <Switch>
         <Route
           exact
@@ -97,9 +131,29 @@ const FplTeamPage = (props: Props) => {
           render={() => (
             <EditFplTeamForm
               fplTeam={fplTeam}
-              errors={errors}
               submitting={submitting}
+              errors={errors}
               updateFplTeam={updateFplTeam}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={`${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId?`}
+          render={() => (
+            <FplTeamListChart
+              isOwner={isOwner}
+              fplTeamId={fplTeamId}
+              fplTeamListId={fplTeamListId}
+              fplTeamLists={fplTeamLists}
+              fplTeamList={fplTeamList}
+              listPosition={listPosition}
+              fetchValidSubstitutions={fetchValidSubstitutions}
+              processSubstitution={processSubstitution}
+              clearValidSubstitutions={clearValidSubstitutions}
+              fetchFplTeamList={fetchFplTeamList}
+              fetchListPositions={fetchListPositions}
+              currentFplTeamList={currentFplTeamList}
             />
           )}
         />
@@ -114,19 +168,31 @@ const mapStateToProps = (state) => {
       data: fplTeam,
       errors,
       submitting
-    }
+    },
+    fplTeamLists,
+    fplTeamList,
+    listPosition,
   } = state
 
   return {
     fplTeam,
+    fplTeamLists,
+    fplTeamList,
     errors,
-    submitting
+    submitting,
+    listPosition
   }
 }
 
 const matchDispatchToProps = {
   fetchFplTeam: fplTeamActions.fetchFplTeam,
-  updateFplTeam: fplTeamActions.updateFplTeam
+  updateFplTeam: fplTeamActions.updateFplTeam,
+  fetchFplTeamLists: fplTeamListsActions.fetchFplTeamLists,
+  fetchFplTeamList: fplTeamListActions.fetchFplTeamList,
+  fetchListPositions: fplTeamListActions.fetchListPositions,
+  processSubstitution: fplTeamListActions.processSubstitution,
+  fetchValidSubstitutions: listPositionActions.fetchValidSubstitutions,
+  clearValidSubstitutions: listPositionActions.clearValidSubstitutions
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(FplTeamPage)

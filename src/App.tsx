@@ -1,6 +1,8 @@
 import { Route, Switch } from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
 import {
+  MuiThemeProvider,
+  CssBaseline,
   makeStyles,
   Theme
 } from '@material-ui/core'
@@ -29,6 +31,7 @@ import ProfilePage from 'components/pages/profilePage'
 import DraftPage from 'components/pages/draftPage'
 import PrivateRoute from 'components/common/privateRoute'
 import NavBar from 'components/navBar'
+import theme from './theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -42,36 +45,50 @@ const useStyles = makeStyles((theme: Theme) => ({
 const App = () => {
   const classes = useStyles()
   return (
-    <SnackbarProvider maxSnack={3}>
-      <NavBar />
-      <div className={classes.container}>
-        <LoadingBar showFastActions />
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline>
+        <SnackbarProvider maxSnack={3}>
+          <NavBar />
+          <div className={classes.container}>
+            <LoadingBar showFastActions />
 
-        <Switch>
-          <Route exact path='/' render={(props) => <RoundsPage {...props} />} />
-          <Route exact path={`${ROUNDS_URL}/:roundId?`} render={(props) => <RoundsPage {...props} />} />
-          <Route exact path={`${TEAMS_URL}/:teamId`} render={(props) => <TeamPage {...props} />} />
-          <Route exact path={`${TEAMS_URL}/:teamId/:tab`} render={(props) => <TeamPage {...props} />} />
-          <Route exact path={TEAMS_URL} render={(props) => <TeamsPage {...props} />} />
-          <Route exact path={PLAYERS_URL} render={(props) => <PlayersPage {...props} />} />
-          <Route exact path={`${PLAYERS_URL}/:playerId`} render={(props) => <PlayerPage {...props} />} />
-          <Route exact path={`${PLAYERS_URL}/:playerId/:tab`} render={(props) => <PlayerPage {...props} />} />
-          <Route exact path={SIGN_UP_URL} render={(props) => <SignUpPage {...props} />} />
-          <Route exact path={LOGIN_URL} render={(props) => <LoginPage {...props} />} />
-          <PrivateRoute>
             <Switch>
-              <Route exact path={PROFILE_URL} render={(props) => <ProfilePage {...props} />} />
-              <Route exact path={`${PROFILE_URL}/:tab`} render={(props) => <ProfilePage {...props} />} />
-              <Route exact path={`${PROFILE_URL}/:tab/:action`} render={(props) => <ProfilePage {...props} />} />
-              <Route exact path={`${LEAGUES_URL}/:leagueId`} render={(props) => <LeaguePage {...props} />} />
-              <Route exact path={`${LEAGUES_URL}/:leagueId/draft/:tab?`} render={(props) => <DraftPage {...props} />} />
-              <Route path={`${LEAGUES_URL}/:leagueId/:tab`} render={(props) => <LeaguePage {...props} />} />
-              <Route path={`${FPL_TEAMS_URL}/:fplTeamId/:tab?/`} render={(props) => <FplTeamPage {...props} />} />
+              <Route exact path='/' render={(props) => <RoundsPage {...props} />} />
+              <Route exact path={`${ROUNDS_URL}/:roundId?`} render={(props) => <RoundsPage {...props} />} />
+              <Route exact path={`${TEAMS_URL}/:teamId`} render={(props) => <TeamPage {...props} />} />
+              <Route exact path={`${TEAMS_URL}/:teamId/:tab`} render={(props) => <TeamPage {...props} />} />
+              <Route exact path={TEAMS_URL} render={(props) => <TeamsPage {...props} />} />
+              <Route exact path={PLAYERS_URL} render={(props) => <PlayersPage {...props} />} />
+              <Route exact path={`${PLAYERS_URL}/:playerId`} render={(props) => <PlayerPage {...props} />} />
+              <Route exact path={`${PLAYERS_URL}/:playerId/:tab`} render={(props) => <PlayerPage {...props} />} />
+              <Route exact path={SIGN_UP_URL} render={(props) => <SignUpPage {...props} />} />
+              <Route exact path={LOGIN_URL} render={(props) => <LoginPage {...props} />} />
+              <PrivateRoute>
+                <Switch>
+                  <Route exact path={PROFILE_URL} render={(props) => <ProfilePage {...props} />} />
+                  <Route exact path={`${PROFILE_URL}/:tab`} render={(props) => <ProfilePage {...props} />} />
+                  <Route exact path={`${PROFILE_URL}/:tab/:action`} render={(props) => <ProfilePage {...props} />} />
+                  <Route exact path={`${LEAGUES_URL}/:leagueId`} render={(props) => <LeaguePage {...props} />} />
+                  <Route
+                    exact
+                    path={`${LEAGUES_URL}/:leagueId/draft/:tab?`}
+                    render={(props) => <DraftPage {...props} />}
+                  />
+                  <Route
+                    path={`${LEAGUES_URL}/:leagueId/:tab`}
+                    render={(props) => <LeaguePage {...props} />}
+                  />
+                  <Route
+                    path={`${FPL_TEAMS_URL}/:fplTeamId/:tab?/:fplTeamListId?`}
+                    render={(props) => <FplTeamPage {...props} />}
+                  />
+                </Switch>
+              </PrivateRoute>
             </Switch>
-          </PrivateRoute>
-        </Switch>
-      </div>
-    </SnackbarProvider>
+          </div>
+        </SnackbarProvider>
+      </CssBaseline>
+    </MuiThemeProvider>
   );
 }
 

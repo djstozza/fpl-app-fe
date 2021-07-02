@@ -4,8 +4,11 @@ import { authSagas } from './auth'
 import { draftPicksSagas } from './draftPicks'
 import { fplTeamSagas } from './fplTeam'
 import { fplTeamsSagas } from './fplTeams'
+import { fplTeamListSagas } from './fplTeamList'
+import { fplTeamListsSagas } from './fplTeamLists'
 import { leagueSagas } from './league'
 import { leaguesSagas } from './leagues'
+import { listPositionSagas } from './listPosition'
 import { playerSagas } from './player'
 import { playersSagas } from './players'
 import { requestSagas } from './request'
@@ -20,8 +23,11 @@ export default function * rootSaga () : Generator<any, any, any> {
     fork(draftPicksSagas),
     fork(fplTeamSagas),
     fork(fplTeamsSagas),
+    fork(fplTeamListSagas),
+    fork(fplTeamListsSagas),
     fork(leagueSagas),
     fork(leaguesSagas),
+    fork(listPositionSagas),
     fork(playerSagas),
     fork(playersSagas),
     fork(requestSagas),

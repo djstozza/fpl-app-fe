@@ -105,6 +105,7 @@ const NavBar = (props: Props) => {
         className={classnames({ [classes.active]: pathname === ROUNDS_URL })}
       >
         <IconButton
+          size='small'
           color='inherit'
           aria-label='Rounds'
         >
@@ -119,6 +120,7 @@ const NavBar = (props: Props) => {
         className={classnames({ [classes.active]: pathname === TEAMS_URL })}
       >
         <IconButton
+          size='small'
           color='inherit'
           aria-label='Teams'
         >
@@ -133,6 +135,7 @@ const NavBar = (props: Props) => {
         className={classnames({ [classes.active]: pathname === PLAYERS_URL })}
       >
         <IconButton
+          size='small'
           color='inherit'
           aria-label='Players'
         >
@@ -187,6 +190,7 @@ const NavBar = (props: Props) => {
         <Fragment>
           <Tooltip title='Sign Up'>
             <IconButton
+              size='small'
               color='inherit'
               component={Link}
               to={SIGN_UP_URL}
@@ -197,6 +201,7 @@ const NavBar = (props: Props) => {
           </Tooltip>
           <Tooltip title='Log In'>
             <IconButton
+              size='small'
               color='inherit'
               component={Link}
               to={LOGIN_URL}
@@ -212,6 +217,7 @@ const NavBar = (props: Props) => {
         <Fragment>
           <Tooltip title={user.username}>
             <IconButton
+              size='small'
               aria-label='Account'
               aria-haspopup='true'
               color='inherit'
@@ -238,6 +244,7 @@ const NavBar = (props: Props) => {
           <div className={classes.sectionDesktop}>
             <Tooltip title='Rounds'>
               <IconButton
+                size='small'
                 color='inherit'
                 aria-label='Rounds'
                 component={Link}
@@ -249,6 +256,7 @@ const NavBar = (props: Props) => {
             </Tooltip>
             <Tooltip title='Teams'>
               <IconButton
+                size='small'
                 color='inherit'
                 component={Link}
                 to={TEAMS_URL}
@@ -259,6 +267,7 @@ const NavBar = (props: Props) => {
             </Tooltip>
             <Tooltip title='Players'>
               <IconButton
+                size='small'
                 color='inherit'
                 component={Link}
                 to={`${PLAYERS_URL}`}
@@ -272,6 +281,7 @@ const NavBar = (props: Props) => {
           {renderAccountSection}
           <div className={classes.sectionMobile}>
             <IconButton
+              size='small'
               aria-label='show more'
               aria-haspopup='true'
               onClick={handleMobileMenuOpen}

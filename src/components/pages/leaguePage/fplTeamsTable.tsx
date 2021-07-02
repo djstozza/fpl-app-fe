@@ -4,6 +4,8 @@ import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import ActionsFooter from './actionsFooter'
 import { initialFilterState } from 'state/league/reducer'
+import { FPL_TEAMS_URL } from 'utilities/constants'
+import Link from 'components/common/link'
 
 import type { League, FplTeam, Error } from 'types'
 
@@ -36,7 +38,12 @@ const FPL_TEAMS_TABLE_CELLS = {
     label: 'N',
     toolTipLabel: 'Name',
     sticky: true,
-    sortParam: 'name'
+    sortParam: 'name',
+    customRender: ({ id, name }: FplTeam) => (
+      <Link to={`${FPL_TEAMS_URL}/${id}`}>
+        {name}
+      </Link>
+    )
   },
   rank: {
     cellId: 'rank',

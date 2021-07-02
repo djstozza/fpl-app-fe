@@ -5,8 +5,11 @@ import auth from './auth'
 import draftPicks from './draftPicks'
 import fplTeam from './fplTeam'
 import fplTeams from './fplTeams'
+import fplTeamList from './fplTeamList'
+import fplTeamLists from './fplTeamLists'
 import league from './league'
 import leagues from './leagues'
+import listPosition from './listPosition'
 import player from './player'
 import players from './players'
 import request from './request'
@@ -21,8 +24,11 @@ const rootReducer = combineReducers({
   draftPicks,
   fplTeam,
   fplTeams,
+  fplTeamList,
+  fplTeamLists,
   league,
   leagues,
+  listPosition,
   player,
   players,
   request,

@@ -19,6 +19,8 @@ export const API_SESSIONS_PATH = '/sessions'
 export const API_USERS_PATH = '/users'
 export const API_PASSWORDS_PATH = '/passwords'
 export const API_FPL_TEAMS_PATH = '/fpl_teams'
+export const API_FPL_TEAM_LISTS_PATH = '/fpl_team_lists'
+export const API_LIST_POSITIONS_PATH = '/list_positions'
 
 export const APPLICATION_ERRORS = {
   '403': {

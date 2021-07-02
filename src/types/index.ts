@@ -23,6 +23,7 @@ export type Action = {
 }
 
 export type PlayerBase = {
+  firstName: string,
   lastName: string,
   id: string
 }
@@ -79,7 +80,8 @@ export type RoundSummary = {
   isPrevious: boolean,
   finished: boolean,
   dataChecked: boolean,
-  deadlineTime: string
+  deadlineTime: string,
+  waiverDeadline: string
 } & RoundBase
 
 export type Round = { fixtures: Fixture[] } & RoundSummary
@@ -108,7 +110,6 @@ export type TeamFixture = {
 } & FixtureBase
 
 export type TeamPlayer = {
-  firstName: string,
   goalsScored: number,
   assists: number,
   cleanSheets: number,
@@ -175,6 +176,7 @@ export type Player = {
 
 export type History = {
   started: boolean,
+  finished: boolean,
   kickoffTime: number,
   minutes: number,
   round: RoundBase,
@@ -238,3 +240,31 @@ export type DraftPick = {
   team?: TeamBase,
   position?: PositionSummary
 }
+
+export type FplTeamList = {
+  id: string,
+  cumulativeRank?: number,
+  roundRank?: number,
+  totalScore?: number,
+  round: RoundSummary
+}
+
+export type ListPositionBase = {
+  id: string,
+  player: PlayerBase,
+  roleStr: string,
+  role: number,
+  displayOrder: number,
+  position: string,
+  team: TeamBase
+} & History
+
+export type ListPosition = {
+  opponent: TeamBase,
+  leg: string
+} & ListPositionBase
+
+export type ListPositionChartDisplay = {
+  opponents: TeamBase[],
+  legs: string[]
+} & ListPositionBase

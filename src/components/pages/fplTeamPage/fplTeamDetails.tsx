@@ -61,8 +61,6 @@ const FplTeamDetails = (props: Props) => {
   const { id, isOwner } = fplTeam
   const classes = useStyles()
 
-
-
   return (
     <Fragment>
       <Table

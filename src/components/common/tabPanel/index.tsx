@@ -7,10 +7,10 @@ import {
 } from '@material-ui/core'
 import history from 'state/history'
 
-import type { RoundSummary, TeamSummary } from 'types'
+import type { RoundSummary, TeamSummary, FplTeamList } from 'types'
 
 type Props = {
-  collection: RoundSummary[] | TeamSummary[],
+  collection: RoundSummary[] | TeamSummary[] | FplTeamList[],
   collectionId: string,
   labelRenderer: Function,
   url: string,
@@ -53,7 +53,6 @@ const TabPanel = (props: Props) => {
           textColor='primary'
           variant='scrollable'
           scrollButtons='auto'
-          aria-label='scrollable auto tabs example'
         >
           {
             collection.map((item, key) => (
