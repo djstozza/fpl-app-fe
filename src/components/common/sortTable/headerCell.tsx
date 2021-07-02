@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core'
 
 import Filter from './filter'
+import { colors } from 'utilities/colors'
 
 import type { Facets } from 'types'
 
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
     mainCell: {
       position: 'sticky',
       left: 0,
-      backgroundColor: '#ffffff',
+      backgroundColor: colors.white,
       zIndex: 2
     },
     headerWrapper: {

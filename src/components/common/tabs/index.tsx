@@ -8,6 +8,8 @@ import {
 } from '@material-ui/core'
 import { findIndex } from 'lodash'
 
+import { colors } from 'utilities/colors'
+
 type TabType = {
   label: string,
   value: string,
@@ -24,8 +26,8 @@ type Props = {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     tab: {
-      backgroundColor: '#eeeeee',
-      border: '0.5px solid #e0e0e0'
+      backgroundColor: colors.grey200,
+      border: `0.5px solid ${colors.grey300}`
     }
   })
 )

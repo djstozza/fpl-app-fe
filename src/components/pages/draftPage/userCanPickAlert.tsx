@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 
 import type { DraftPicksState } from 'state/draftPicks'
 import { LEAGUES_URL } from 'utilities/constants'
+import { colors } from 'utilities/colors'
 
 type Props = {
   leagueId: string,
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center'
   },
   draftPlayerLink: {
-    color: '#ffffff',
+    color: colors.white,
     marginLeft: theme.spacing(0.5)
   },
   makeDraftPickContainer: {

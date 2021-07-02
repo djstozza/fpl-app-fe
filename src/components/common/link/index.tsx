@@ -6,6 +6,8 @@ import {
   Theme
 } from '@material-ui/core'
 
+import { colors } from 'utilities/colors'
+
 type Props = {
   to: string,
   children: any,
@@ -17,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     link: {
       textDecoration: 'none',
-      color: '#0645AD'
+      color: colors.linkBlue
     },
     noWrap: {
       whiteSpace: 'nowrap'

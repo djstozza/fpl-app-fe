@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'
+import { colors } from 'utilities/colors'
 
 import type { Fixture } from 'types'
 
@@ -24,8 +25,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     summary: {
       textAlign: 'center',
-      backgroundColor: '#eeeeee',
-      border: '0.5px solid #e0e0e0'
+      backgroundColor: colors.grey200,
+      border: `0.5px solid ${colors.grey300}`
     },
     disabled: {
       paddingRight: theme.spacing(6),
@@ -40,10 +41,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     teamLink: {
       textDecoration: 'none',
-      color: '#0645AD'
+      color: colors.linkBlue
     },
     inProgressTeamLink: {
-      color: '#FFFFFF'
+      color: colors.white
     },
     inProgress: {
       backgroundColor: theme.palette.secondary.main

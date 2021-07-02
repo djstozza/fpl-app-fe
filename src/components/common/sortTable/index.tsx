@@ -14,6 +14,7 @@ import {
 import HeaderCell from './headerCell'
 
 import { SearchContext } from 'components/common/searchListener'
+import { colors } from 'utilities/colors'
 
 import { SetElHeight, GetElHeight } from 'utilities/helpers'
 
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) =>
     mainCell: {
       position: 'sticky',
       left: 0,
-      backgroundColor: '#ffffff',
+      backgroundColor: colors.white,
       zIndex: 2
     },
   })

@@ -15,6 +15,7 @@ import {
 
 import Link from 'components/common/link'
 import { PLAYERS_URL } from 'utilities/constants'
+import { colors } from 'utilities/colors'
 
 import type { Fixture } from 'types'
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: 0
     },
     headerCell: {
-      backgroundColor: '#f4f5f4',
+      backgroundColor: colors.grey200,
       '&:last-child': {
         paddingRight: theme.spacing(6.5)
       }

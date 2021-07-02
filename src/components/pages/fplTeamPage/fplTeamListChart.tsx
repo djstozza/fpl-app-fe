@@ -2,11 +2,11 @@ import { Fragment, useState, useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 import { groupBy } from 'lodash'
 import {
-  Grid,
   makeStyles,
   createStyles,
   Theme
 } from '@material-ui/core'
+import { colors } from 'utilities/colors'
 import TabPanel from 'components/common/tabPanel'
 
 import ListPositionBox from './listPositionBox'
@@ -46,7 +46,19 @@ const useStyles = makeStyles((theme: Theme) =>
     large: {
       maxHeight: theme.spacing(4)
     },
+    chartContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column'
+      }
+    },
     startingContainer: {
+      position: 'relative',
+      backgroundColor: colors.green800
+    },
+    startingRow: {
       display: 'flex',
       alignItems: 'start',
       justifyContent: 'center'
@@ -55,16 +67,140 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'start',
       justifyContent: 'space-evenly',
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up('md')]: {
         flexDirection: 'column'
       }
     },
-    playerContainer: {
-      paddingTop: theme.spacing(0.5),
-      textAlign: 'center',
-      border: '1px solid #ffffff',
+    penaltyBoxBottom: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      top: 0,
+      width: theme.spacing(30),
+      height: theme.spacing(10),
+      left: '50%',
+      marginLeft: 'auto',
+      marginRight: 'audo',
+      border: `1px solid ${colors.white}`,
+      zIndex: 1
+    },
+    penaltyBoxTop: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      bottom: 0,
+      width: theme.spacing(30),
+      height: theme.spacing(10),
+      left: '50%',
+      marginLeft: 'auto',
+      marginRight: 'audo',
+      border: `1px solid ${colors.white}`,
+      zIndex: 1
+    },
+    goalkeeperBoxBottom: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      bottom: 0,
       width: theme.spacing(15),
-      color: '#ffffff'
+      height: theme.spacing(5),
+      left: '50%',
+      marginLeft: 'auto',
+      marginRight: 'audo',
+      border: `1px solid ${colors.white}`,
+      zIndex: 1,
+      background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    },
+    goalkeeperBoxTop: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      top: 0,
+      width: theme.spacing(15),
+      height: theme.spacing(5),
+      left: '50%',
+      marginLeft: 'auto',
+      marginRight: 'audo',
+      border: `1px solid ${colors.white}`,
+      zIndex: 1,
+      background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    },
+    halfWayLine: {
+      position: 'absolute',
+      bottom: '50%',
+      width: `100%`,
+      border: `1px solid ${colors.white}`,
+      zIndex: 1
+    },
+    penaltyBoxSemiCircleBottom: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      bottom: theme.spacing(10),
+      height: theme.spacing(5),
+      left: '50%',
+      width: theme.spacing(10),
+      borderTopLeftRadius: theme.spacing(11),
+      borderTopRightRadius: theme.spacing(11),
+      border: `1px solid ${colors.white}`,
+      zIndex: 1,
+      background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    },
+    penaltyBoxSemiCircleTop: {
+      position: 'absolute',
+      top: theme.spacing(10),
+      height: theme.spacing(5),
+      left: '50%',
+      width: theme.spacing(10),
+      borderBottomLeftRadius: theme.spacing(11),
+      borderBottomRightRadius: theme.spacing(11),
+      border: `1px solid ${colors.white}`,
+      zIndex: 1,
+      transform: `translate(-50%, 0)`,
+      background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    },
+    centerCircle: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      bottom: '40%',
+      left: '50%',
+      width: theme.spacing(10),
+      height: theme.spacing(10),
+      borderRadius: '50%',
+      border: `1px solid ${colors.white}`,
+      zIndex: 0,
+      background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    },
+    penaltySpotTop: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      top: theme.spacing(7.5),
+      left: '50%',
+      backgroundColor: colors.white,
+      width: theme.spacing(0.8),
+      height: theme.spacing(0.8),
+      borderRadius: '50%',
+      border: `1px solid ${colors.white}`,
+      zIndex: 1
+    },
+    penaltySpotBottom: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      bottom: theme.spacing(7.5),
+      left: '50%',
+      backgroundColor: colors.white,
+      width: theme.spacing(0.75),
+      height: theme.spacing(0.75),
+      borderRadius: '50%',
+      border: `1px solid ${colors.white}`,
+      zIndex: 1
+    },
+    centerSpot: {
+      position: 'absolute',
+      transform: `translate(-50%, 0)`,
+      bottom: '49.5%',
+      left: '50%',
+      backgroundColor: colors.white,
+      width: theme.spacing(0.75),
+      height: theme.spacing(0.75),
+      borderRadius: '50%',
+      border: `1px solid ${colors.white}`,
+      zIndex: 2
     }
   })
 )
@@ -111,7 +247,7 @@ const FplTeamListChart = (props: Props) => {
     }, [enqueueSnackbar, errors]
   )
 
-  if (!fplTeamList) return null
+  if (!fplTeamList || !listPositions.length) return null
 
   const { round: { deadlineTime, current } } = fplTeamList
   const canSubstitute = current && new Date() < new Date(deadlineTime) && isOwner
@@ -152,11 +288,11 @@ const FplTeamListChart = (props: Props) => {
         labelRenderer={labelRenderer}
         url={`${FPL_TEAMS_URL}/${fplTeamId}/teamLists`}
       />
-      <Grid container>
-        <Grid item sm={10} xs={12} style={{ backgroundColor: 'green'}}>
+      <div className={classes.chartContainer}>
+        <div className={classes.startingContainer}>
           {
             Object.values(groupedListPositions).map((listPositions, i) => (
-              <div key={i} className={classes.startingContainer}>
+              <div key={i} className={classes.startingRow}>
                 {
                   listPositions.map((listPosition, j) => (
                     <ListPositionBox
@@ -178,31 +314,55 @@ const FplTeamListChart = (props: Props) => {
               </div>
             ))
           }
-        </Grid>
-        <Grid item sm={2} xs={12}>
-          <div className={classes.substitutesContainer}>
-            {
-              consolidatedSubstitutes.map((listPosition, j) => (
-                <ListPositionBox
-                  key={j}
-                  fplTeamListId={selectedFplTeamListId}
-                  listPosition={listPosition}
-                  fetchValidSubstitutions={fetchValidSubstitutions}
-                  selectedListPositionId={selectedListPositionId}
-                  setSelectedListPositionId={setSelectedListPositionId}
-                  validSubstitutions={validSubstitutions}
-                  processSubstitution={processSubstitution}
-                  clearValidSubstitutions={clearValidSubstitutions}
-                  fetching={fetching}
-                  submitting={submitting}
-                  canSubstitute={canSubstitute}
-                  substitute
-                />
-              ))
-            }
+
+          <div className={classes.goalkeeperBoxTop}>
           </div>
-        </Grid>
-      </Grid>
+          <div className={classes.penaltySpotTop}>
+          </div>
+          <div className={classes.penaltyBoxTop}>
+          </div>
+          <div className={classes.penaltyBoxSemiCircleTop}>
+          </div>
+
+          <div className={classes.centerSpot}>
+          </div>
+          <div className={classes.centerCircle}>
+          </div>
+          <div className={classes.halfWayLine}>
+          </div>
+
+          <div className={classes.penaltyBoxSemiCircleBottom}>
+          </div>
+          <div className={classes.penaltyBoxBottom}>
+          </div>
+          <div className={classes.penaltySpotBottom}>
+          </div>
+          <div className={classes.goalkeeperBoxBottom}>
+          </div>
+        </div>
+        <div className={classes.substitutesContainer}>
+          {
+            consolidatedSubstitutes.map((listPosition, j) => (
+              <ListPositionBox
+                key={j}
+                fplTeamListId={selectedFplTeamListId}
+                listPosition={listPosition}
+                fetchValidSubstitutions={fetchValidSubstitutions}
+                selectedListPositionId={selectedListPositionId}
+                setSelectedListPositionId={setSelectedListPositionId}
+                validSubstitutions={validSubstitutions}
+                processSubstitution={processSubstitution}
+                clearValidSubstitutions={clearValidSubstitutions}
+                fetching={fetching}
+                submitting={submitting}
+                canSubstitute={canSubstitute}
+                substitute
+              />
+            ))
+          }
+        </div>
+      </div>
+
     </Fragment>
   )
 }

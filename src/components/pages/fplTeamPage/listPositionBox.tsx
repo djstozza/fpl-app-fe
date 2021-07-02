@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import classnames from 'classnames'
 import {
   makeStyles,
@@ -5,6 +6,7 @@ import {
   Theme
 } from '@material-ui/core'
 
+import { colors } from 'utilities/colors'
 import { teamCrestPathLoader } from 'utilities/helpers'
 import type { ListPositionChartDisplay} from 'types'
 
@@ -26,7 +28,7 @@ type Props = {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     crest: {
-      maxHeight: theme.spacing(3.5)
+      maxHeight: theme.spacing(4)
     },
     large: {
       maxHeight: theme.spacing(4)
@@ -49,19 +51,32 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
       alignItems: 'center',
       justifyContent: 'center',
-      border: '1px solid #ffffff',
-      width: theme.spacing(16),
+      width: theme.spacing(20),
       height: theme.spacing(12),
-      color: '#ffffff'
+      color: colors.white
     },
     substitute: {
-      backgroundColor: 'grey'
+      backgroundColor: colors.grey700,
+      border: `1px solid ${colors.white}`,
     },
     selected: {
-      backgroundColor: 'red'
+      backgroundColor: colors.red,
+      border: `1px solid ${colors.white}`,
     },
     validSubstitution: {
-      backgroundColor: 'blue'
+      backgroundColor: colors.blue700,
+      border: `1px solid ${colors.white}`
+    },
+    canSelect: {
+      cursor: 'pointer'
+    },
+    player: {
+      zIndex: 2
+    },
+    playerInfo: {
+      border: `1px solid ${colors.black}`,
+      borderRadius: theme.spacing(0.5),
+      backgroundColor: colors.black
     }
   })
 )
@@ -90,6 +105,7 @@ const ListPositionBox = (props: Props) => {
   } = props
 
   const classes = useStyles()
+  const playerRef = useRef<null | HTMLDivElement>(null)
 
   const isSelected = selectedListPositionId === id
   const validSubstitution = validSubstitutions.includes(id)
@@ -111,6 +127,7 @@ const ListPositionBox = (props: Props) => {
       : setSelectedListPositionId(selectedListPositionId ? null : id)
 
     selectedListPositionId ? clearValidSubstitutions() : fetchValidSubstitutions(id)
+    !selectedListPositionId && playerRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
   return (
@@ -121,28 +138,32 @@ const ListPositionBox = (props: Props) => {
         {
           [classes.substitute]: substitute,
           [classes.selected]: isSelected,
-          [classes.validSubstitution]: !fetching && selectedListPositionId && validSubstitution
+          [classes.validSubstitution]: !fetching && selectedListPositionId && validSubstitution,
+          [classes.canSelect]: canSubstitute && (!selectedListPositionId || isSelected || validSubstitution)
         })
       }
     >
-      <div>
+      <div className={classes.player}>
         <img
           src={teamCrestPathLoader(shortName)}
           alt={shortName}
           className={classes.crest}
         />
-        <div>
-          {lastName}
-        </div>
-        <div>
-          {opponents.map(({ shortName }, k) => `${shortName} (${legs[k]})`)}
-        </div>
-        {
-          totalPoints &&
+        <div className={classes.playerInfo}>
           <div>
-            {totalPoints}
+            {lastName}
           </div>
-        }
+          <div>
+            {opponents.map(({ shortName }, k) => `${shortName} (${legs[k]})`)}
+          </div>
+          {
+            totalPoints &&
+            <div>
+              {totalPoints}
+            </div>
+          }
+        </div>
+        <div ref={playerRef} />
       </div>
     </div>
   )

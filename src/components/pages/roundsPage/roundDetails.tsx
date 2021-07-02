@@ -11,6 +11,7 @@ import {
 
 import FixtureSummary from './fixtureSummary'
 import FixtureDetails from './fixtureDetails'
+import { colors } from 'utilities/colors'
 
 import type { Round, Fixture } from 'types'
 
@@ -34,8 +35,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     summary: {
       textAlign: 'center',
-      backgroundColor: '#eeeeee',
-      border: '0.5px solid #e0e0e0'
+      backgroundColor: colors.grey200,
+      border: `0.5px solid ${colors.grey300}`
     },
     disabled: {
       paddingRight: theme.spacing(6)
