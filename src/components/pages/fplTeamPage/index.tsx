@@ -122,11 +122,12 @@ const FplTeamPage = (props: Props) => {
   const [waiverDeadlineAsTime, setWaiverDeadlineAsTime] = useState<Date|undefined>()
   const [deadline, setDeadline] = useState<Date|undefined>()
   const [isWaiver, setIsWaiver] = useState(false)
+  const sanitizedFplTeamListId = (fplTeamListId || '').match(/^\d+$/) ? fplTeamListId : undefined
 
   const currentFplTeamList = fplTeamLists.data.find(({ round: { current } }) => current)
   const currentFplTeamListId = (currentFplTeamList || {}).id
   const lastFplTeamListId = fplTeamLists[fplTeamLists.data.length - 1]?.id
-  const getSelectedFplteamListId = () => fplTeamListId || currentFplTeamListId || lastFplTeamListId
+  const getSelectedFplteamListId = () => sanitizedFplTeamListId || currentFplTeamListId || lastFplTeamListId
   const selectedFplTeamListId = getSelectedFplteamListId()
 
   const { outListPosition } = fplTeamList
@@ -239,31 +240,6 @@ const FplTeamPage = (props: Props) => {
         />
         <Route
           exact
-          path={`${FPL_TEAMS_URL}/:fplTeamId/waiverPicks/new`}
-          render={() => (
-            <NewWaiverPick
-              isOwner={isOwner}
-              currentFplTeamList={currentFplTeamList}
-              fetchListPositions={fetchListPositions}
-              fplTeamList={fplTeamList}
-              isWaiver={isWaiver}
-              deadline={deadline}
-              outListPosition={outListPosition}
-              setOutListPosition={setOutListPosition}
-              fetchTradeablePlayers={fetchTradeablePlayers}
-              updateTradeablePlayersFilter={updateTradeablePlayersFilter}
-              updateTradeablePlayersSort={updateTradeablePlayersSort}
-              updateTradeablePlayersPage={updateTradeablePlayersPage}
-              players={players}
-              fetchPlayerFacets={fetchPlayerFacets}
-              createWaiverPick={createWaiverPick}
-              selectedFplTeamListId={selectedFplTeamListId}
-              waiverPicks={waiverPicks}
-            />
-          )}
-        />
-        <Route
-          exact
           path={`${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId?`}
           render={() => (
             <FplTeamListChart
@@ -313,7 +289,31 @@ const FplTeamPage = (props: Props) => {
             />
           )}
         />
-
+        <Route
+          exact
+          path={`${FPL_TEAMS_URL}/:fplTeamId/waiverPicks/new`}
+          render={() => (
+            <NewWaiverPick
+              isOwner={isOwner}
+              currentFplTeamList={currentFplTeamList}
+              fetchListPositions={fetchListPositions}
+              fplTeamList={fplTeamList}
+              isWaiver={isWaiver}
+              deadline={deadline}
+              outListPosition={outListPosition}
+              setOutListPosition={setOutListPosition}
+              fetchTradeablePlayers={fetchTradeablePlayers}
+              updateTradeablePlayersFilter={updateTradeablePlayersFilter}
+              updateTradeablePlayersSort={updateTradeablePlayersSort}
+              updateTradeablePlayersPage={updateTradeablePlayersPage}
+              players={players}
+              fetchPlayerFacets={fetchPlayerFacets}
+              createWaiverPick={createWaiverPick}
+              selectedFplTeamListId={selectedFplTeamListId}
+              waiverPicks={waiverPicks}
+            />
+          )}
+        />
       </Switch>
     </Fragment>
   )
