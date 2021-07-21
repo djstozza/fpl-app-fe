@@ -142,6 +142,10 @@ export type Cell = {
   filterParam?: string
 }
 
+export type CellHash = {
+  [key: string]: Cell
+}
+
 export type Facet = {
   label: string,
   value: string | number | boolean
@@ -255,7 +259,7 @@ export type ListPositionBase = {
   roleStr: string,
   role: number,
   displayOrder: number,
-  position: string,
+  position: PositionSummary,
   team: TeamBase
 } & History
 
@@ -268,3 +272,14 @@ export type ListPositionChartDisplay = {
   opponents: TeamBase[],
   legs: string[]
 } & ListPositionBase
+
+export type WaiverPick = {
+  id: string,
+  pickNumber: string,
+  outPlayer: PlayerBase,
+  inPlayer: PlayerBase,
+  outTeam: TeamBase,
+  inTeam: TeamBase,
+  position: string,
+  status: string
+}

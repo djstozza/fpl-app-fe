@@ -17,7 +17,7 @@ import round from './round'
 import rounds from './rounds'
 import team from './team'
 import teams from './teams'
-
+import waiverPicks from './waiverPicks'
 
 const rootReducer = combineReducers({
   auth,
@@ -36,6 +36,7 @@ const rootReducer = combineReducers({
   rounds,
   team,
   teams,
+  waiverPicks,
   loadingBar: loadingBarReducer
 })
 

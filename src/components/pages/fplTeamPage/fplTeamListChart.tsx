@@ -21,17 +21,14 @@ import type { ListPosition, FplTeamList, ListPositionChartDisplay } from 'types'
 
 type Props = {
   fplTeamId: string,
-  fplTeamListId: string,
   fplTeamLists: FplTeamListsState,
   fplTeamList: FplTeamListState,
   listPosition: ListPositionState,
   fetchValidSubstitutions: Function,
   processSubstitution: Function,
   clearValidSubstitutions: Function,
-  fetchFplTeamList: Function,
-  fetchListPositions: Function,
-  isOwner: boolean
-  currentFplTeamList?: FplTeamList
+  isOwner: boolean,
+  selectedFplTeamListId?: string
 }
 
 interface GroupedListPositions {
@@ -208,38 +205,21 @@ const useStyles = makeStyles((theme: Theme) =>
 const FplTeamListChart = (props: Props) => {
   const {
     fplTeamId,
-    fplTeamListId,
     fplTeamLists: { data: fplTeamLists },
     fplTeamList: { data: fplTeamList, listPositions, submitting, errors },
     listPosition,
     fetchValidSubstitutions,
     processSubstitution,
     clearValidSubstitutions,
-    fetchFplTeamList,
-    fetchListPositions,
-    currentFplTeamList,
-    isOwner
+    isOwner,
+    selectedFplTeamListId
   } = props
   const [selectedListPositionId, setSelectedListPositionId] = useState()
   const { enqueueSnackbar } = useSnackbar()
 
-  const currentFplTeamListId = (currentFplTeamList || {}).id
-  const lastFplTeamListId = fplTeamLists[fplTeamLists.length - 1]?.id
-  const getSelectedFplteamListId = () => currentFplTeamListId || fplTeamListId || lastFplTeamListId
-  const selectedFplTeamListId = getSelectedFplteamListId()
-
   const { validSubstitutions, fetching } = listPosition
 
   const classes = useStyles()
-
-  useEffect(
-    () => {
-      if (!selectedFplTeamListId) return
-
-      fetchFplTeamList(selectedFplTeamListId)
-      fetchListPositions(selectedFplTeamListId)
-    }, [fetchFplTeamList, fetchListPositions, selectedFplTeamListId]
-  )
 
   useEffect(
     () => {
@@ -275,10 +255,15 @@ const FplTeamListChart = (props: Props) => {
     return result
   }, [] as ListPositionChartDisplay[])
 
-  const groupedListPositions: GroupedListPositions = groupBy(consolidatedListPositions(starting), 'position')
+  const groupedListPositions: GroupedListPositions = groupBy(
+    consolidatedListPositions(starting),
+    ({ position: { singularNameShort } }) => singularNameShort
+  )
   const consolidatedSubstitutes = consolidatedListPositions(substitutes)
 
   const labelRenderer = ({ round: { name } }: FplTeamList) => name
+
+  if (!selectedFplTeamListId) return null
 
   return (
     <Fragment>

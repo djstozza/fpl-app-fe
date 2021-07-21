@@ -7,17 +7,7 @@ import { initialFilterState } from 'state/league/reducer'
 import { FPL_TEAMS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
 
-import type { League, FplTeam, Error } from 'types'
-
-type Fpl_Team_Table_Cells = {
-  [key: string]: {
-    cellId: string,
-    label: string,
-    toolTipLabel: string,
-    sortParam?: string,
-    customRender?: Function
-  }
-}
+import type { League, FplTeam, Error, CellHash } from 'types'
 
 type Props = {
   fplTeams: FplTeam[],
@@ -88,7 +78,7 @@ const FplTeamsTable = (props: Props) => {
     showLiveColumns
   } = league
 
-  const cells: Fpl_Team_Table_Cells = { ...FPL_TEAMS_TABLE_CELLS }
+  const cells: CellHash = { ...FPL_TEAMS_TABLE_CELLS }
 
   if (!showDraftPickColumn) delete cells['draftPickNumber']
   if (!showLiveColumns) {

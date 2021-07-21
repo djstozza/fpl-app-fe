@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const PLAYERS_TABLE_CELLS = [
-  {
+export const playersTableCells = () => ({
+  lastName: {
     cellId: 'lastName',
     label: 'LN',
     toolTipLabel: 'Last Name',
@@ -49,7 +49,7 @@ export const PLAYERS_TABLE_CELLS = [
       </Link>
     )
   },
-  {
+  firstName: {
     cellId: 'firstName',
     label: 'FN',
     toolTipLabel: 'First Name',
@@ -60,7 +60,7 @@ export const PLAYERS_TABLE_CELLS = [
       </Link>
     )
   },
-  {
+  teams: {
     cellId: 'teams',
     label: 'T',
     toolTipLabel: 'Team',
@@ -75,7 +75,7 @@ export const PLAYERS_TABLE_CELLS = [
       </Link>
     )
   },
-  {
+  positions: {
     cellId: 'positions',
     label: 'P',
     toolTipLabel: 'Position',
@@ -83,18 +83,28 @@ export const PLAYERS_TABLE_CELLS = [
     filterParam: 'positionId',
     customRender: ({ position: { singularNameShort }}: PlayerSummary) => singularNameShort
   },
-  { cellId: 'totalPoints', label: 'TP', toolTipLabel: 'Total Points', sortParam: 'totalPoints' },
-  { cellId: 'goalsScored', label: 'GS', toolTipLabel: 'Goals Scored', sortParam: 'goalsScored' },
-  { cellId: 'assists', label: 'A', toolTipLabel: 'Assists', sortParam: 'assists' },
-  { cellId: 'yellowCards', label: 'YC', toolTipLabel: 'Yellow Cards', sortParam: 'yellowCards' },
-  { cellId: 'redCards', label: 'RC', toolTipLabel: 'Red Cards', sortParam: 'redCards' },
-  { cellId: 'bonus', label: 'BP', toolTipLabel: 'Bonus Points', sortParam: 'bonus' },
-  { cellId: 'cleanSheets', label: 'CS', toolTipLabel: 'Clean Sheets', sortParam: 'cleanSheets' },
-  { cellId: 'saves', label: 'S', toolTipLabel: 'Saves', sortParam: 'saves' },
-  { cellId: 'penaltiesSaved', label: 'PS', toolTipLabel: 'Penalties Saved', sortParam: 'penaltiesSaved' },
-  { cellId: 'penaltiesMissed', label: 'PM', toolTipLabel: 'Penalties Missed', sortParam: 'penaltiesMissed' },
-  { cellId: 'ownGoals', label: 'OG', toolTipLabel: 'Own Goals', sortParam: 'ownGoals' }
-]
+  totalPoints: { cellId: 'totalPoints', label: 'TP', toolTipLabel: 'Total Points', sortParam: 'totalPoints' },
+  goalsScored: { cellId: 'goalsScored', label: 'GS', toolTipLabel: 'Goals Scored', sortParam: 'goalsScored' },
+  assists: { cellId: 'assists', label: 'A', toolTipLabel: 'Assists', sortParam: 'assists' },
+  yellowCards: { cellId: 'yellowCards', label: 'YC', toolTipLabel: 'Yellow Cards', sortParam: 'yellowCards' },
+  redCards: { cellId: 'redCards', label: 'RC', toolTipLabel: 'Red Cards', sortParam: 'redCards' },
+  bonus: { cellId: 'bonus', label: 'BP', toolTipLabel: 'Bonus Points', sortParam: 'bonus' },
+  cleanSheets: { cellId: 'cleanSheets', label: 'CS', toolTipLabel: 'Clean Sheets', sortParam: 'cleanSheets' },
+  saves: { cellId: 'saves', label: 'S', toolTipLabel: 'Saves', sortParam: 'saves' },
+  penaltiesSaved: {
+    cellId: 'penaltiesSaved',
+    label: 'PS',
+    toolTipLabel: 'Penalties Saved',
+    sortParam: 'penaltiesSaved'
+  },
+  penaltiesMissed: {
+    cellId: 'penaltiesMissed',
+    label: 'PM',
+    toolTipLabel: 'Penalties Missed',
+    sortParam: 'penaltiesMissed'
+  },
+  ownGoals: { cellId: 'ownGoals', label: 'OG', toolTipLabel: 'Own Goals', sortParam: 'ownGoals' }
+})
 
 const PlayersPage = (props: Props) => {
   const {
@@ -126,7 +136,7 @@ const PlayersPage = (props: Props) => {
           handleSortChange={(newSort) => updateSort(newSort)}
           handleFilterChange={(newFilter) => updateFilter(newFilter)}
           handleChangePage={(newOffset) => updatePage(newOffset)}
-          cells={PLAYERS_TABLE_CELLS}
+          cells={Object.values(playersTableCells())}
           total={total}
         />
       </SearchListener>

@@ -10,7 +10,9 @@ import {
 type Props = {
   to: string,
   children: any,
+  size?: 'small' | 'medium' | 'large'
   color: 'inherit' | 'default' | 'primary' | 'secondary' | undefined,
+  onClick?: Function,
   rightMargin?: boolean
 }
 
@@ -26,18 +28,22 @@ const ButtonLink = (props: Props) => {
   const {
     to,
     rightMargin,
+    size = 'medium',
     color,
+    onClick,
     children
   } = props
   const classes= useStyles()
 
   return (
     <Button
+      variant='contained'
       component={Link}
       to={to}
-      variant='contained'
+      size={size}
       color={color}
       className={classnames({ [classes.rightMargin]: rightMargin })}
+      onClick={onClick}
     >
       {children}
     </Button>

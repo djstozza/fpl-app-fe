@@ -16,6 +16,7 @@ import { roundSagas } from './round'
 import { roundsSagas } from './rounds'
 import { teamSagas } from './team'
 import { teamsSagas } from './teams'
+import { waiverPicksSagas } from './waiverPicks'
 
 export default function * rootSaga () : Generator<any, any, any> {
   yield all([
@@ -34,6 +35,7 @@ export default function * rootSaga () : Generator<any, any, any> {
     fork(roundSagas),
     fork(roundsSagas),
     fork(teamSagas),
-    fork(teamsSagas)
+    fork(teamsSagas),
+    fork(waiverPicksSagas)
   ])
 }

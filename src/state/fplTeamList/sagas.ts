@@ -1,11 +1,13 @@
-import { put, takeLatest, all } from 'redux-saga/effects'
+import { put, takeLatest, all, select } from 'redux-saga/effects'
 
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
+import history from 'state/history'
 
 import {
   API_URL,
-  API_FPL_TEAM_LISTS_PATH
+  API_FPL_TEAM_LISTS_PATH,
+  FPL_TEAMS_URL
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
@@ -57,10 +59,20 @@ function * processSubstitution (action) : Generator<any, any, any> {
   })
 }
 
+function * clearSearchIfNoOutListPosition (action) : Generator<any, any, any> {
+  const { data: { id } } = yield select(state => state.fplTeam)
+  const { outListPosition } = yield select(state => state.fplTeamList)
+
+  if (outListPosition) return
+
+  yield history.replace(`${FPL_TEAMS_URL}/${id}/waiverPicks/new`)
+}
+
 export default function * fplTeamListSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_FPL_TEAM_LISTS_SHOW, fetchFplTeamList),
     yield takeLatest(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX, fetchListPositions),
-    yield takeLatest(actions.API_FPL_TEAM_LISTS_UPDATE, processSubstitution)
+    yield takeLatest(actions.API_FPL_TEAM_LISTS_UPDATE, processSubstitution),
+    yield takeLatest(actions.SET_OUT_LIST_POSITION, clearSearchIfNoOutListPosition),
   ])
 }

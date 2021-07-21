@@ -3,7 +3,7 @@ import { useEffect, useState, Fragment } from 'react'
 import SortTable from 'components/common/sortTable'
 import { initialFilterState } from 'state/players/reducer'
 import SearchListener from 'components/common/searchListener'
-import { PLAYERS_TABLE_CELLS } from 'components/pages/playersPage'
+import { playersTableCells } from 'components/pages/playersPage'
 
 import {
   Dialog,
@@ -14,7 +14,7 @@ import {
 
 import type { DraftPicksState } from 'state/draftPicks'
 import type { PlayersState } from 'state/players'
-import type { PlayerSummary } from 'types'
+import type { PlayerSummary, CellHash } from 'types'
 
 type Props = {
   players: PlayersState,
@@ -64,7 +64,7 @@ const AvailablePlayersTable = (props: Props) => {
     setPlayerId('')
   }
 
-  const cells = [...PLAYERS_TABLE_CELLS]
+  let cells: CellHash = playersTableCells()
 
   const draftPlayerColumn = {
     cellId: 'draftPlayer',
@@ -85,7 +85,7 @@ const AvailablePlayersTable = (props: Props) => {
     )
   }
 
-  if (nextDraftPickId && userCanPick) cells.push(draftPlayerColumn)
+  if (nextDraftPickId && userCanPick) cells = { ...cells, draftPlayerColumn }
 
   return (
     <Fragment>
@@ -96,7 +96,7 @@ const AvailablePlayersTable = (props: Props) => {
           handleSortChange={(newSort) => updateAvailablePlayersSort(newSort)}
           handleFilterChange={(newFilter) => updateAvailablePlayersFilter(newFilter)}
           handleChangePage={(newOffset) => updateAvailablePlayersPage(newOffset)}
-          cells={cells}
+          cells={Object.values(cells)}
           total={total}
         />
       </SearchListener>

@@ -8,6 +8,7 @@ import type { FplTeamList, ListPosition } from 'types'
 export type State = {
   data?: FplTeamList
   listPositions: ListPosition[],
+  outListPosition?: ListPosition,
   submitting: boolean,
   errors: Error[]
 }
@@ -19,12 +20,12 @@ export const initialState = {
 }
 
 type FplTeamListAction = {
-  listPositions: ListPosition[]
+  outListPosition?: ListPosition
 } & Action
 
 const reducer = (state: State = initialState, action: FplTeamListAction) => {
   if (state === undefined) { state = initialState }
-  const { data, errors } = action
+  const { data, errors, outListPosition } = action
 
   switch (action.type) {
     case success(actions.API_FPL_TEAM_LISTS_SHOW):
@@ -35,6 +36,8 @@ const reducer = (state: State = initialState, action: FplTeamListAction) => {
       return { ...state, listPositions, submitting: false }
     case actions.API_FPL_TEAM_LISTS_UPDATE:
       return { ...state, submitting: true }
+    case actions.SET_OUT_LIST_POSITION:
+      return { ...state, outListPosition }
     case failure(actions.API_FPL_TEAM_LISTS_SHOW):
     case failure(actions.API_FPL_TEAM_LISTS_UPDATE):
       return { ...state, errors, submitting: false }
