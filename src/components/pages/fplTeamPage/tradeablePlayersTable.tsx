@@ -25,8 +25,8 @@ type Props = {
   updateTradeablePlayersFilter: Function,
   updateTradeablePlayersSort: Function,
   updateTradeablePlayersPage: Function,
-  createWaiverPick: Function,
-  submitting: boolean
+  submitting: boolean,
+  submitAction: Function
 }
 
 const TradeablePlayersTable = (props: Props) => {
@@ -40,8 +40,8 @@ const TradeablePlayersTable = (props: Props) => {
     updateTradeablePlayersFilter,
     updateTradeablePlayersSort,
     updateTradeablePlayersPage,
-    createWaiverPick,
-    submitting
+    submitting,
+    submitAction
   } = props
   const [dialogOpen, setDialogOpen] = useState(false)
   const [player, setPlayer] = useState<undefined | PlayerSummary>()
@@ -61,10 +61,10 @@ const TradeablePlayersTable = (props: Props) => {
     setDialogOpen(true)
   }
 
-  const handleConfirmWaiverPick = () => {
+  const handleConfirm = () => {
     if (!player) return
     setDialogOpen(false)
-    createWaiverPick(player.id)
+    submitAction(player.id)
     setPlayer(undefined)
   }
 
@@ -72,8 +72,8 @@ const TradeablePlayersTable = (props: Props) => {
   cells.positions.filterParam = ''
   cells.positions.sortParam = ''
 
-  const waiverPlayerColumn = {
-    cellId: 'waiverPlayer',
+  const tradeInColumn = {
+    cellId: 'tradeIn',
     label: '',
     toolTipLabel: '',
     sortParam: '',
@@ -93,7 +93,7 @@ const TradeablePlayersTable = (props: Props) => {
   }
 
 
-  if (isOwner) cells['waiverPlayerColumn'] = waiverPlayerColumn
+  if (isOwner) cells['tradeInColumn'] = tradeInColumn
 
   return (
     <Fragment>
@@ -140,7 +140,7 @@ const TradeablePlayersTable = (props: Props) => {
             Cancel
           </Button>
           <Button
-            onClick={handleConfirmWaiverPick}
+            onClick={handleConfirm}
             variant='contained'
             color='secondary'
             disabled={submitting}

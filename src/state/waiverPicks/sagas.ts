@@ -66,7 +66,7 @@ function * changeWaiverPickOrder (action) : Generator <any, any, any> {
   })
 }
 
-export default function * waiverPickSagas () : Generator<any, any, any> {
+export default function * waiverPicksSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_LIST_POSITION_WAIVER_PICKS_CREATE, createWaiverPick),
     yield takeLatest(actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX, fetchWaiverPicks),

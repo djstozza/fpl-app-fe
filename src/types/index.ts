@@ -283,3 +283,12 @@ export type WaiverPick = {
   position: string,
   status: string
 }
+
+export type Trade = {
+  id: string,
+  outPlayer: PlayerBase,
+  inPlayer: PlayerBase,
+  outTeam: TeamBase,
+  inTeam: TeamBase,
+  position: string
+}

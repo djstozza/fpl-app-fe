@@ -8,6 +8,7 @@ import TradeablePlayersTable from './tradeablePlayersTable'
 import type { PlayersState } from 'state/players'
 import type { FplTeamListState } from 'state/fplTeamList'
 import type { WaiverPicksState } from 'state/waiverPicks'
+import type { TradesState } from 'state/trades'
 import type { FplTeamList, ListPosition } from 'types'
 
 type Props = {
@@ -27,7 +28,9 @@ type Props = {
   fetchPlayerFacets: Function,
   createWaiverPick: Function,
   selectedFplTeamListId?: string,
-  waiverPicks: WaiverPicksState
+  waiverPicks: WaiverPicksState,
+  trades: TradesState,
+  createTrade: Function
 }
 
 const NewWaiverPick = (props: Props) => {
@@ -47,7 +50,9 @@ const NewWaiverPick = (props: Props) => {
     players,
     fetchPlayerFacets,
     createWaiverPick,
-    waiverPicks: { errors, submitting: waiverPickSubmitting }
+    createTrade,
+    waiverPicks: { errors: waiverErrors, submitting: waiverPickSubmitting },
+    trades: { errors: tradeErrors, submitting: tradeSubmitting },
   } = props
   const { enqueueSnackbar } = useSnackbar()
 
@@ -61,8 +66,8 @@ const NewWaiverPick = (props: Props) => {
 
   useEffect(
     () => {
-      errors.forEach(({ detail }) => enqueueSnackbar(detail, { variant: 'error' }))
-    }, [enqueueSnackbar, errors]
+      (isWaiver ? waiverErrors : tradeErrors).forEach(({ detail }) => enqueueSnackbar(detail, { variant: 'error' }))
+    }, [enqueueSnackbar, isWaiver, waiverErrors, tradeErrors]
   )
 
   if (!listPositions.length) return null
@@ -95,8 +100,8 @@ const NewWaiverPick = (props: Props) => {
         updateTradeablePlayersPage={updateTradeablePlayersPage}
         players={players}
         fetchPlayerFacets={fetchPlayerFacets}
-        createWaiverPick={createWaiverPick}
-        submitting={waiverPickSubmitting}
+        submitting={isWaiver ? waiverPickSubmitting : tradeSubmitting}
+        submitAction={isWaiver ? createWaiverPick : createTrade}
       />
     }
 

@@ -15,6 +15,7 @@ import { fplTeamListActions } from 'state/fplTeamList'
 import { listPositionActions } from 'state/listPosition'
 import { playersActions } from 'state/players'
 import { waiverPicksActions } from 'state/waiverPicks'
+import { tradesActions } from 'state/trades'
 
 import {
   FPL_TEAMS_URL
@@ -32,6 +33,7 @@ import type { FplTeamListsState } from 'state/fplTeamLists'
 import type { ListPositionState } from 'state/listPosition'
 import type { PlayersState } from 'state/players'
 import type { WaiverPicksState } from 'state/waiverPicks'
+import type { TradesState } from 'state/trades'
 
 type Props = {
   fplTeam: FplTeam,
@@ -59,6 +61,9 @@ type Props = {
   createWaiverPick: Function,
   waiverPicks: WaiverPicksState,
   changeWaiverPickOrder: Function,
+  createTrade: Function,
+  fetchTrades: Function,
+  trades: TradesState,
   match: { params: { fplTeamId: string, tab: string, fplTeamListId: string } }
 }
 
@@ -84,7 +89,12 @@ const TABS = {
     matcher: /(teamLists\/\d+\/)?waiverPicks/,
     display: true
   },
-  trades: { label: 'Trades', value: 'trades', display: true },
+  trades: {
+    label: 'Trades',
+    value: 'trades',
+    matcher: /(teamLists\/\d+\/)?trades/,
+    display: true
+  },
   teamTrades: { label: 'Team Trades', value: 'teamTrades', display: true }
 }
 
@@ -115,6 +125,9 @@ const FplTeamPage = (props: Props) => {
     fetchWaiverPicks,
     waiverPicks,
     changeWaiverPickOrder,
+    fetchTrades,
+    createTrade,
+    trades,
     match: { params: { fplTeamId, tab = 'details', fplTeamListId } }
   } = props
   const classes = useStyles()
@@ -257,15 +270,24 @@ const FplTeamPage = (props: Props) => {
         />
         <Route
           exact
-          path={`${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/waiverPicks`}
+          path={
+            [
+              `${FPL_TEAMS_URL}/:fplTeamId/waiverPicks`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/waiverPicks`,
+              `${FPL_TEAMS_URL}/:fplTeamId/trades`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/trades`
+            ]
+          }
           render={() => (
             <WaiverPicksTable
               isOwner={isOwner}
               isWaiver={isWaiver}
               waiverPicks={waiverPicks}
+              trades={trades}
               selectedFplTeamListId={selectedFplTeamListId}
               fetchWaiverPicks={fetchWaiverPicks}
               changeWaiverPickOrder={changeWaiverPickOrder}
+              fetchTrades={fetchTrades}
               fplTeamList={fplTeamList}
               fplTeamLists={fplTeamLists}
               fplTeamId={fplTeamId}
@@ -274,24 +296,12 @@ const FplTeamPage = (props: Props) => {
         />
         <Route
           exact
-          path={`${FPL_TEAMS_URL}/:fplTeamId/waiverPicks`}
-          render={() => (
-            <WaiverPicksTable
-              isOwner={isOwner}
-              isWaiver={isWaiver}
-              waiverPicks={waiverPicks}
-              selectedFplTeamListId={selectedFplTeamListId}
-              fetchWaiverPicks={fetchWaiverPicks}
-              changeWaiverPickOrder={changeWaiverPickOrder}
-              fplTeamList={fplTeamList}
-              fplTeamLists={fplTeamLists}
-              fplTeamId={fplTeamId}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`${FPL_TEAMS_URL}/:fplTeamId/waiverPicks/new`}
+          path={
+            [
+              `${FPL_TEAMS_URL}/:fplTeamId/waiverPicks/new`,
+              `${FPL_TEAMS_URL}/:fplTeamId/trades/new`
+            ]
+          }
           render={() => (
             <NewWaiverPick
               isOwner={isOwner}
@@ -311,6 +321,8 @@ const FplTeamPage = (props: Props) => {
               createWaiverPick={createWaiverPick}
               selectedFplTeamListId={selectedFplTeamListId}
               waiverPicks={waiverPicks}
+              trades={trades}
+              createTrade={createTrade}
             />
           )}
         />
@@ -330,7 +342,8 @@ const mapStateToProps = (state) => {
     fplTeamList,
     listPosition,
     waiverPicks,
-    players
+    players,
+    trades
   } = state
 
   return {
@@ -341,7 +354,8 @@ const mapStateToProps = (state) => {
     submitting,
     listPosition,
     players,
-    waiverPicks
+    waiverPicks,
+    trades
   }
 }
 
@@ -362,7 +376,9 @@ const matchDispatchToProps = {
   fetchPlayerFacets: playersActions.fetchFacets,
   fetchWaiverPicks: waiverPicksActions.fetchWaiverPicks,
   createWaiverPick: waiverPicksActions.createWaiverPick,
-  changeWaiverPickOrder: waiverPicksActions.changeWaiverPickOrder
+  changeWaiverPickOrder: waiverPicksActions.changeWaiverPickOrder,
+  fetchTrades: tradesActions.fetchTrades,
+  createTrade: tradesActions.createTrade
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(FplTeamPage)

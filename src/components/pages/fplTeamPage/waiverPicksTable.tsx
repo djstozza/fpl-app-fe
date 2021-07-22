@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import {
   TextField,
   MenuItem
@@ -18,18 +19,21 @@ import TabPanel from 'components/common/tabPanel'
 import type { FplTeamListsState } from 'state/fplTeamLists'
 import type { FplTeamListState } from 'state/fplTeamList'
 import type { WaiverPicksState } from 'state/waiverPicks'
-import type { WaiverPick, FplTeamList } from 'types'
+import type { TradesState } from 'state/trades'
+import type { WaiverPick, FplTeamList, CellHash } from 'types'
 
 type Props = {
   isOwner: boolean,
   isWaiver: boolean,
   waiverPicks: WaiverPicksState,
+  trades: TradesState,
   fplTeamList: FplTeamListState,
   selectedFplTeamListId?: string,
   fetchWaiverPicks: Function,
   changeWaiverPickOrder: Function,
   fplTeamLists: FplTeamListsState,
-  fplTeamId: string
+  fplTeamId: string,
+  fetchTrades: Function
 }
 
 const WaiverPicksTable = (props: Props) => {
@@ -42,16 +46,22 @@ const WaiverPicksTable = (props: Props) => {
     fetchWaiverPicks,
     changeWaiverPickOrder,
     fplTeamLists: { data: fplTeamLists },
-    fplTeamId
+    fplTeamId,
+    fetchTrades,
+    trades: { data: trades }
   } = props
   const { enqueueSnackbar } = useSnackbar()
+  const { pathname } = useLocation()
+
+  const showTrades = pathname.includes('trades')
+  const fetchAction = showTrades ? fetchTrades : fetchWaiverPicks
 
   useEffect(
     () => {
       if (!selectedFplTeamListId) return
 
-      fetchWaiverPicks(selectedFplTeamListId)
-    }, [selectedFplTeamListId, fetchWaiverPicks]
+      fetchAction(selectedFplTeamListId)
+    }, [selectedFplTeamListId, fetchAction]
   )
 
   useEffect(
@@ -62,8 +72,8 @@ const WaiverPicksTable = (props: Props) => {
 
   const labelRenderer = ({ round: { name } }: FplTeamList) => name
 
-  const cells = [
-    {
+  const cells: CellHash = {
+    pickNumber: {
       cellId: 'pickNumber',
       label: 'PN',
       toolTipLabel: 'Pick Number',
@@ -88,7 +98,7 @@ const WaiverPicksTable = (props: Props) => {
         )
       }
     },
-    {
+    outPlayer: {
       cellId: 'outPlayer',
       label: 'OP',
       toolTipLabel: 'Out Player',
@@ -100,13 +110,13 @@ const WaiverPicksTable = (props: Props) => {
         )
       }
     },
-    {
+    outTeam: {
       cellId: 'outTeam',
       label: 'OT',
       toolTipLabel: 'Out Team',
       customRender: ({ outTeam }: WaiverPick, classes) => <TeamCrestLink team={outTeam} />
     },
-    {
+    inPlayer: {
       cellId: 'inPlayer',
       label: 'IP',
       toolTipLabel: 'In Player',
@@ -118,18 +128,23 @@ const WaiverPicksTable = (props: Props) => {
         )
       }
     },
-    {
+    inTeam: {
       cellId: 'inTeam',
       label: 'IT',
       toolTipLabel: 'In Team',
       customRender: ({ inTeam }: WaiverPick, classes) => <TeamCrestLink team={inTeam} />
     },
-    {
+    status: {
       cellId: 'status',
       label: 'S',
       toolTipLabel: 'Status'
     }
-  ]
+  }
+
+  if (showTrades) {
+    delete cells['pickNumber']
+    delete cells['status']
+  }
 
   if (!selectedFplTeamListId) return null
 
@@ -139,12 +154,12 @@ const WaiverPicksTable = (props: Props) => {
         collection={fplTeamLists}
         collectionId={selectedFplTeamListId}
         labelRenderer={labelRenderer}
-        tab='waiverPicks'
+        tab={showTrades ? 'trades' : 'waiverPicks'}
         url={`${FPL_TEAMS_URL}/${fplTeamId}/teamLists`}
       />
       <SortTable
-        collection={waiverPicks}
-        cells={cells}
+        collection={showTrades ? trades : waiverPicks}
+        cells={Object.values(cells)}
       />
     </Fragment>
   )
