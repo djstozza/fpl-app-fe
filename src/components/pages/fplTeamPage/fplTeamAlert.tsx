@@ -117,9 +117,14 @@ const FplTeamAlert = (props: Props) => {
           >
             New {isWaiver ? 'Waiver' : 'Trade'}
           </ButtonLink>
-          <Button size='small' color='secondary' variant='contained'>
+          <ButtonLink
+            size='small'
+            color='secondary'
+            to={`${FPL_TEAMS_URL}/${fplTeamId}/teamTrades/new`}
+            onClick={() => setOutListPosition(undefined)}
+          >
             New team trade
-          </Button>
+          </ButtonLink>
         </div>
       }
     </div>

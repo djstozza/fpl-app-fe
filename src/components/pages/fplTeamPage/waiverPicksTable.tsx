@@ -77,6 +77,7 @@ const WaiverPicksTable = (props: Props) => {
       cellId: 'pickNumber',
       label: 'PN',
       toolTipLabel: 'Pick Number',
+      sticky: true,
       customRender: ({ id, pickNumber }: WaiverPick, classes) => {
         if (!isWaiver || !current || !isOwner) return pickNumber
 

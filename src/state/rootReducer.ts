@@ -7,6 +7,7 @@ import fplTeam from './fplTeam'
 import fplTeams from './fplTeams'
 import fplTeamList from './fplTeamList'
 import fplTeamLists from './fplTeamLists'
+import interTeamTradeGroups from './interTeamTradeGroups'
 import league from './league'
 import leagues from './leagues'
 import listPosition from './listPosition'
@@ -23,6 +24,7 @@ import waiverPicks from './waiverPicks'
 const rootReducer = combineReducers({
   auth,
   draftPicks,
+  interTeamTradeGroups,
   fplTeam,
   fplTeams,
   fplTeamList,

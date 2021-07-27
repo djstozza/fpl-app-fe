@@ -59,20 +59,10 @@ function * processSubstitution (action) : Generator<any, any, any> {
   })
 }
 
-function * clearSearchIfNoOutListPosition (action) : Generator<any, any, any> {
-  const { data: { id } } = yield select(state => state.fplTeam)
-  const { outListPosition } = yield select(state => state.fplTeamList)
-
-  if (outListPosition) return
-
-  yield history.replace(`${FPL_TEAMS_URL}/${id}/waiverPicks/new`)
-}
-
 export default function * fplTeamListSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_FPL_TEAM_LISTS_SHOW, fetchFplTeamList),
     yield takeLatest(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX, fetchListPositions),
-    yield takeLatest(actions.API_FPL_TEAM_LISTS_UPDATE, processSubstitution),
-    yield takeLatest(actions.SET_OUT_LIST_POSITION, clearSearchIfNoOutListPosition),
+    yield takeLatest(actions.API_FPL_TEAM_LISTS_UPDATE, processSubstitution)
   ])
 }

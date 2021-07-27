@@ -6,6 +6,7 @@ import { fplTeamSagas } from './fplTeam'
 import { fplTeamsSagas } from './fplTeams'
 import { fplTeamListSagas } from './fplTeamList'
 import { fplTeamListsSagas } from './fplTeamLists'
+import { interTeamTradeGroupsSagas } from './interTeamTradeGroups'
 import { leagueSagas } from './league'
 import { leaguesSagas } from './leagues'
 import { listPositionSagas } from './listPosition'
@@ -27,6 +28,7 @@ export default function * rootSaga () : Generator<any, any, any> {
     fork(fplTeamsSagas),
     fork(fplTeamListSagas),
     fork(fplTeamListsSagas),
+    fork(interTeamTradeGroupsSagas),
     fork(leagueSagas),
     fork(leaguesSagas),
     fork(listPositionSagas),

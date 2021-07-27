@@ -265,7 +265,8 @@ export type ListPositionBase = {
 
 export type ListPosition = {
   opponent: TeamBase,
-  leg: string
+  leg: string,
+  fplTeam: BaseFplTeam
 } & ListPositionBase
 
 export type ListPositionChartDisplay = {
@@ -291,4 +292,22 @@ export type Trade = {
   outTeam: TeamBase,
   inTeam: TeamBase,
   position: string
+}
+
+export type InterTeamTradeGroup = {
+  id: string,
+  outFplTeamListId: string,
+  inFplTeamListId: string,
+  outFplTeam: BaseFplTeam,
+  inFplTeam: BaseFplTeam,
+  trades: Trade[],
+  canSubmit: boolean,
+  canApprove: boolean,
+  canCancel: boolean,
+  status: string
+}
+
+export type InterTeamTradeGroups = {
+  outTradeGroups: InterTeamTradeGroup[],
+  inTradeGroups: InterTeamTradeGroup[]
 }

@@ -52,7 +52,7 @@ const NewWaiverPick = (props: Props) => {
     createWaiverPick,
     createTrade,
     waiverPicks: { errors: waiverErrors, submitting: waiverPickSubmitting },
-    trades: { errors: tradeErrors, submitting: tradeSubmitting },
+    trades: { errors: tradeErrors, submitting: tradeSubmitting }
   } = props
   const { enqueueSnackbar } = useSnackbar()
 

@@ -1,5 +1,6 @@
 import { put, takeLatest, all, select } from 'redux-saga/effects'
 import qs from 'qs'
+import { stringify } from 'utilities/helpers'
 
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
@@ -91,12 +92,66 @@ function * updateAvailablePlayersPage (action) : Generator<any, any, any> {
   yield history.replace(`${FPL_TEAMS_URL}/${id}/waiverPicks/new?${qs.stringify(query)}`)
 }
 
+function * fetchTradeableListPositions (action) : Generator<any, any, any> {
+  const { outListPosition: { id = '' } = {} } = yield select(state => state.fplTeamList)
+  const { sort, filter, page } = action
+
+  const url = `${API_URL}${API_LIST_POSITIONS_PATH}/${id}/tradeable_list_positions?${stringify({ sort, filter, page })}`
+  yield put({
+    type: requestActions.AUTHED_REQUEST,
+    method: 'GET',
+    url,
+    successAction: success(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS),
+    failureAction: failure(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS)
+  })
+}
+
+function * fetchTradeableListPositionFacets (action) : Generator<any, any, any> {
+  const { outListPosition: { id = '' } = {} } = yield select(state => state.fplTeamList)
+
+  const url = `${API_URL}${API_LIST_POSITIONS_PATH}/${id}/tradeable_list_position_facets`
+  yield put({
+    type: requestActions.AUTHED_REQUEST,
+    method: 'GET',
+    url,
+    successAction: success(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITION_FACETS),
+    failureAction: failure(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITION_FACETS)
+  })
+}
+
+function * updateTradeableListPositionsFilter (action) : Generator<any, any, any> {
+  const { data: { id } } = yield select(state => state.fplTeam)
+  const { sort } = yield select(state => state.listPosition)
+  const { outListPosition: { position: { id: positionId = '' } = {} } = {} } = yield select(state => state.fplTeamList)
+  const { filter } = action
+
+  const query = { filter, sort }
+
+  yield history.replace(`${FPL_TEAMS_URL}/${id}/teamTrades/new?${qs.stringify(query)}`)
+}
+
+function * updateTradeableListPositionsSort (action) : Generator<any, any, any> {
+  const { data: { id, leagueId } } = yield select(state => state.fplTeam)
+  const { filter } = yield select(state => state.listPosition)
+  const { outListPosition: { position: { id: positionId = '' } = {} } = {} } = yield select(state => state.fplTeamList)
+  const { sort } = action
+
+  const query = { filter, sort }
+
+  yield history.replace(`${FPL_TEAMS_URL}/${id}/teamTrades/new?${qs.stringify(query)}`)
+}
+
 export default function * listPositionSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_LIST_POSITION_SHOW, fetchValidSubstitutions),
     yield takeLatest(actions.FETCH_TRADEABLE_PLAYERS, fetchTradeablePlayers),
     yield takeLatest(actions.UPDATE_TRADEABLE_PLAYERS_SORT, updateAvailablePlayersSort),
     yield takeLatest(actions.UPDATE_TRADEABLE_PLAYERS_FILTER, updateAvailablePlayersFilter),
-    yield takeLatest(actions.UPDATE_TRADEABLE_PLAYERS_PAGE, updateAvailablePlayersPage)
+    yield takeLatest(actions.UPDATE_TRADEABLE_PLAYERS_PAGE, updateAvailablePlayersPage),
+    yield takeLatest(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS, fetchTradeableListPositions),
+    yield takeLatest(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITION_FACETS, fetchTradeableListPositionFacets),
+    yield takeLatest(actions.UPDATE_TRADEABLE_LIST_POSITIONS_SORT, updateTradeableListPositionsSort),
+    yield takeLatest(actions.UPDATE_TRADEABLE_LIST_POSITIONS_FILTER, updateTradeableListPositionsFilter)
+
   ])
 }

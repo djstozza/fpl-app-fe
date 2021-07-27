@@ -55,6 +55,7 @@ const TradeablePlayersTable = (props: Props) => {
   if (!outListPosition) return null
 
   const { player: { firstName: outFirstName, lastName: outLastName } } = outListPosition
+  const { firstName: inFirstName = '', lastName: inLastName = '' } = player || {}
 
   const handleOpenDialog = (player) => {
     setPlayer(player)
@@ -121,7 +122,7 @@ const TradeablePlayersTable = (props: Props) => {
             Out: {outFirstName} {outLastName}
           </div>
           <div>
-            In: {player?.firstName} {player?.lastName}
+            In: {inFirstName} {inLastName}
           </div>
           {
             Boolean(!isWaiver) &&

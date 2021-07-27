@@ -4,11 +4,13 @@ import {
   IconButton,
   makeStyles
 } from '@material-ui/core'
+import { useLocation } from 'react-router-dom'
 import ForwardIcon from '@material-ui/icons/Forward'
 import CloseIcon from '@material-ui/icons/Close'
 
 import { colors } from 'utilities/colors'
 import { teamCrestPathLoader } from 'utilities/helpers'
+import history from 'state/history'
 
 import type { ListPosition } from 'types'
 
@@ -44,6 +46,12 @@ const OutListPosition = (props: Props) => {
   } = props
 
   const classes = useStyles()
+  const { pathname } = useLocation()
+
+  const clearOutListPosition = () => {
+    setOutListPosition(undefined)
+    history.replace(pathname)
+  }
 
   if (!outListPosition) return null
 
@@ -69,7 +77,7 @@ const OutListPosition = (props: Props) => {
         size='small'
         color='inherit'
         aria-label='Cancel'
-        onClick={() => setOutListPosition(undefined)}
+        onClick={clearOutListPosition}
       >
         <CloseIcon />
       </IconButton>
