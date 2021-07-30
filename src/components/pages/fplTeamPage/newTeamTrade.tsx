@@ -4,14 +4,10 @@ import { useSnackbar } from 'notistack'
 import ListPositionsTable from './listPositionsTable'
 import OutListPosition from './outListPosition'
 import TradeableListPositionsTable from './tradeableListPositionsTable'
-import {
-  FPL_TEAMS_URL
-} from 'utilities/constants'
 
 import type { ListPositionState } from 'state/listPosition'
 import type { FplTeamListState } from 'state/fplTeamList'
 import type { InterTeamTradeGroupsState } from 'state/interTeamTradeGroups'
-import type { TradesState } from 'state/trades'
 import type { FplTeamList, ListPosition } from 'types'
 
 type Props = {
@@ -94,6 +90,7 @@ const NewTeamTrade = (props: Props) => {
         updateTradeableListPositionsFilter={updateTradeableListPositionsFilter}
         updateTradeableListPositionsSort={updateTradeableListPositionsSort}
         fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
+        submitting={submitting}
       />
     }
 

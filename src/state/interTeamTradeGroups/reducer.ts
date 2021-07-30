@@ -28,10 +28,27 @@ const reducer = (state: State = initialState, action: Action) => {
 
   switch (action.type) {
     case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE:
+    case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CANCEL:
+    case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE:
+    case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_SUBMIT:
+    case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE:
+    case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE:
       return { ...state, submitting: true }
+    case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS):
     case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE):
+    case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CANCEL):
+    case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE):
+    case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_SUBMIT):
+    case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE):
+    case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE):
       return { ...state, data, submitting: false, errors: [] }
+    case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS):
     case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE):
+    case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CANCEL):
+    case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE):
+    case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_SUBMIT):
+    case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE):
+    case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE):
       return { ...state, errors, submitting: false }
     default:
       return state

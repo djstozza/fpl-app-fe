@@ -79,7 +79,12 @@ const App = () => {
                     render={(props) => <LeaguePage {...props} />}
                   />
                   <Route
-                    path={`${FPL_TEAMS_URL}/:fplTeamId/:tab?/:fplTeamListId?`}
+                    exact
+                    path={[
+                      `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:fplTeamListId?`,
+                      `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:action?`,
+                      `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId?/:tab?/:action?`
+                    ]}
                     render={(props) => <FplTeamPage {...props} />}
                   />
                 </Switch>

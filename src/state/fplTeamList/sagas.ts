@@ -1,13 +1,11 @@
-import { put, takeLatest, all, select } from 'redux-saga/effects'
+import { put, takeLatest, all } from 'redux-saga/effects'
 
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
-import history from 'state/history'
 
 import {
   API_URL,
-  API_FPL_TEAM_LISTS_PATH,
-  FPL_TEAMS_URL
+  API_FPL_TEAM_LISTS_PATH
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 

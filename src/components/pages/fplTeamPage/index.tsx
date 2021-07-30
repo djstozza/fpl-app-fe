@@ -27,6 +27,7 @@ import FplTeamAlert from './fplTeamAlert'
 import NewWaiverPick from './newWaiverPick'
 import WaiverPicksTable from './waiverPicksTable'
 import NewTeamTrade from './newTeamTrade'
+import TeamTradeTabs from './teamTradeTabs'
 
 import type { FplTeam, Error } from 'types'
 import type { FplTeamListState } from 'state/fplTeamList'
@@ -72,7 +73,13 @@ type Props = {
   updateTradeableListPositionsFilter: Function,
   updateTradeableListPositionsSort: Function,
   fetchTradeableListPositionFacets: Function,
-  match: { params: { fplTeamId: string, tab: string, fplTeamListId: string } }
+  fetchInterTeamTradeGroups: Function,
+  addToInterTeamTradeGroup: Function,
+  cancelInterTeamTradeGroup: Function,
+  submitInterTeamTradeGroup: Function,
+  approveInterTeamTradeGroup: Function,
+  declineInterTeamTradeGroup: Function,
+  match: { params: { fplTeamId: string, tab: string, fplTeamListId: string, action: string } }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -103,7 +110,12 @@ const TABS = {
     matcher: /(teamLists\/\d+\/)?trades/,
     display: true
   },
-  teamTrades: { label: 'Team Trades', value: 'teamTrades', display: true }
+  teamTrades: {
+    label: 'Team Trades',
+    value: 'teamTrades',
+    matcher: /(teamLists\/\d+\/)?teamTrades/,
+    display: true
+  }
 }
 
 const FplTeamPage = (props: Props) => {
@@ -142,7 +154,13 @@ const FplTeamPage = (props: Props) => {
     updateTradeableListPositionsFilter,
     updateTradeableListPositionsSort,
     fetchTradeableListPositionFacets,
-    match: { params: { fplTeamId, tab = 'details', fplTeamListId } }
+    fetchInterTeamTradeGroups,
+    addToInterTeamTradeGroup,
+    cancelInterTeamTradeGroup,
+    submitInterTeamTradeGroup,
+    approveInterTeamTradeGroup,
+    declineInterTeamTradeGroup,
+    match: { params: { fplTeamId, tab = 'details', fplTeamListId, action } }
   } = props
   const classes = useStyles()
   const [deadlineTimeAsTime, setDeadlineTimeAsTime] = useState<Date|undefined>()
@@ -363,6 +381,36 @@ const FplTeamPage = (props: Props) => {
             />
           )}
         />
+        <Route
+          exact
+          path={
+            [
+              `${FPL_TEAMS_URL}/:fplTeamId/teamTrades`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamTrades/out`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamTrades/in`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/teamTrades`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/teamTrades/out`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/teamTrades/in`
+            ]
+          }
+          render={() => (
+            <TeamTradeTabs
+              isOwner={isOwner}
+              interTeamTradeGroups={interTeamTradeGroups}
+              fetchInterTeamTradeGroups={fetchInterTeamTradeGroups}
+              fplTeamLists={fplTeamLists}
+              deadline={deadline}
+              fplTeamId={fplTeamId}
+              selectedFplTeamListId={selectedFplTeamListId}
+              action={action}
+              addToInterTeamTradeGroup={addToInterTeamTradeGroup}
+              cancelInterTeamTradeGroup={cancelInterTeamTradeGroup}
+              submitInterTeamTradeGroup={submitInterTeamTradeGroup}
+              approveInterTeamTradeGroup={approveInterTeamTradeGroup}
+              declineInterTeamTradeGroup={declineInterTeamTradeGroup}
+            />
+          )}
+        />
       </Switch>
     </Fragment>
   )
@@ -422,7 +470,13 @@ const matchDispatchToProps = {
   updateTradeableListPositionsFilter: listPositionActions.updateTradeableListPositionsFilter,
   updateTradeableListPositionsSort: listPositionActions.updateTradeableListPositionsSort,
   createInterTeamTradeGroup: interTeamTradeGroupsActions.createInterTeamTradeGroup,
-  fetchTradeableListPositionFacets: listPositionActions.fetchTradeableListPositionFacets
+  fetchTradeableListPositionFacets: listPositionActions.fetchTradeableListPositionFacets,
+  fetchInterTeamTradeGroups: interTeamTradeGroupsActions.fetchInterTeamTradeGroups,
+  cancelInterTeamTradeGroup: interTeamTradeGroupsActions.cancelInterTeamTradeGroup,
+  submitInterTeamTradeGroup: interTeamTradeGroupsActions.submitInterTeamTradeGroup,
+  addToInterTeamTradeGroup: interTeamTradeGroupsActions.addToInterTeamTradeGroup,
+  approveInterTeamTradeGroup: interTeamTradeGroupsActions.approveInterTeamTradeGroup,
+  declineInterTeamTradeGroup: interTeamTradeGroupsActions.declineInterTeamTradeGroup
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(FplTeamPage)

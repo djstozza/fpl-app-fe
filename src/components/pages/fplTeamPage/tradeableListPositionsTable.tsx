@@ -28,7 +28,8 @@ type Props = {
   createInterTeamTradeGroup: Function,
   updateTradeableListPositionsFilter: Function,
   updateTradeableListPositionsSort: Function,
-  fetchTradeableListPositionFacets: Function
+  fetchTradeableListPositionFacets: Function,
+  submitting?: boolean
 }
 
 const TradeableListPositionsTable = (props: Props) => {
@@ -41,7 +42,8 @@ const TradeableListPositionsTable = (props: Props) => {
     deadline,
     updateTradeableListPositionsFilter,
     updateTradeableListPositionsSort,
-    fetchTradeableListPositionFacets
+    fetchTradeableListPositionFacets,
+    submitting
   } = props
   const [dialogOpen, setDialogOpen] = useState(false)
   const [inListPosition, setInListPosition] = useState<undefined | ListPosition>()
@@ -144,7 +146,7 @@ const TradeableListPositionsTable = (props: Props) => {
             variant='contained'
             color='default'
             onClick={() => setDialogOpen(false)}
-
+            disabled={submitting}
           >
             Cancel
           </Button>
@@ -152,7 +154,7 @@ const TradeableListPositionsTable = (props: Props) => {
             onClick={handleConfirm}
             variant='contained'
             color='secondary'
-
+            disabled={submitting}
           >
             Confirm
           </Button>

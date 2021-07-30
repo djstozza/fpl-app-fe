@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import {
-  Button,
   Theme,
   makeStyles
 } from '@material-ui/core'
