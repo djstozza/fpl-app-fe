@@ -33,6 +33,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_SUBMIT:
     case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE:
     case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE:
+    case actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE:
       return { ...state, submitting: true }
     case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS):
     case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE):
@@ -41,6 +42,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_SUBMIT):
     case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE):
     case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE):
+    case success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE):
       return { ...state, data, submitting: false, errors: [] }
     case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS):
     case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE):
@@ -49,6 +51,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_SUBMIT):
     case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE):
     case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE):
+    case failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE):
       return { ...state, errors, submitting: false }
     default:
       return state

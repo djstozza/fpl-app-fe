@@ -1,4 +1,4 @@
-import type { ListPosition } from 'types'
+import type { ListPosition, InterTeamTradeGroup } from 'types'
 
 export const API_FPL_TEAM_LISTS_SHOW = 'API_FPL_TEAM_LISTS_SHOW'
 export const API_FPL_TEAM_LISTS_UPDATE = 'API_FPL_TEAM_LISTS_UPDATE'
@@ -8,8 +8,8 @@ export const SET_OUT_LIST_POSITION = 'SET_OUT_LIST_POSITION'
 export const fetchFplTeamList = (fplTeamListId: string) =>
   ({ type: API_FPL_TEAM_LISTS_SHOW, fplTeamListId })
 
-export const fetchListPositions = (fplTeamListId: string) =>
-  ({ type: API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX, fplTeamListId })
+export const fetchListPositions = (fplTeamListId: string, interTeamTradeGroup?: InterTeamTradeGroup) =>
+  ({ type: API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX, fplTeamListId, interTeamTradeGroup })
 
 export const processSubstitution = (fplTeamListId: string, outListPositionId: string, inListPositionId: string) =>
   ({ type:  API_FPL_TEAM_LISTS_UPDATE, fplTeamListId, outListPositionId, inListPositionId })

@@ -10,14 +10,14 @@ import {
 import SortTable from 'components/common/sortTable'
 import { initialFilterState } from 'state/players/reducer'
 import SearchListener from 'components/common/searchListener'
-import { listPositionTableCells } from './listPositionsTable'
+import { listPositionTableCells } from '../listPositionsTable'
 import Link from 'components/common/link'
 import {
   FPL_TEAMS_URL
 } from 'utilities/constants'
 
 import type { ListPositionState } from 'state/listPosition'
-import type { ListPosition, CellHash } from 'types'
+import type { ListPosition, CellHash, InterTeamTradeGroup } from 'types'
 
 type Props = {
   isOwner: boolean,
@@ -25,11 +25,12 @@ type Props = {
   listPosition: ListPositionState,
   outListPosition?: ListPosition,
   fetchTradeableListPositions: Function,
-  createInterTeamTradeGroup: Function,
+  submitAction: Function,
   updateTradeableListPositionsFilter: Function,
   updateTradeableListPositionsSort: Function,
   fetchTradeableListPositionFacets: Function,
-  submitting?: boolean
+  submitting?: boolean,
+  interTeamTradeGroup?: InterTeamTradeGroup
 }
 
 const TradeableListPositionsTable = (props: Props) => {
@@ -38,12 +39,13 @@ const TradeableListPositionsTable = (props: Props) => {
     listPosition: { tradeableListPositions, facets },
     outListPosition,
     fetchTradeableListPositions,
-    createInterTeamTradeGroup,
+    submitAction,
     deadline,
     updateTradeableListPositionsFilter,
     updateTradeableListPositionsSort,
     fetchTradeableListPositionFacets,
-    submitting
+    submitting,
+    interTeamTradeGroup
   } = props
   const [dialogOpen, setDialogOpen] = useState(false)
   const [inListPosition, setInListPosition] = useState<undefined | ListPosition>()
@@ -66,7 +68,7 @@ const TradeableListPositionsTable = (props: Props) => {
 
   const handleConfirm = () => {
     setDialogOpen(false)
-    createInterTeamTradeGroup(inListPosition)
+    submitAction(inListPosition)
     setInListPosition(undefined)
   }
 
@@ -113,6 +115,19 @@ const TradeableListPositionsTable = (props: Props) => {
 
 
   if (isOwner && deadline) cells['tradeInColumn'] = tradeInColumn
+  const { inFplTeamListId, trades = [] } = interTeamTradeGroup || {}
+  const excludedPlayerIds = trades.map(({ inPlayer: { id } }) => id)
+
+  initialFilterState.filter = {
+    ...initialFilterState.filter,
+    inFplTeamListId,
+    excludedPlayerIds
+  }
+
+  if (!interTeamTradeGroup) {
+    delete initialFilterState.filter['inFplTeamListId']
+    delete initialFilterState.filter['excludedPlayerIds']
+  }
 
   return (
     <Fragment>

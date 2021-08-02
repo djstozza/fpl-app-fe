@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
+import { Link as DomLink } from 'react-router-dom'
 import {
   Table,
   TableHead,
@@ -32,24 +33,32 @@ import TeamCrestLink from 'components/common/teamCrestLink'
 import Link from 'components/common/link'
 import { colors } from 'utilities/colors'
 
-import type { FplTeamList, InterTeamTradeGroup } from 'types'
+import type { FplTeamList, InterTeamTradeGroup, Trade } from 'types'
+import type { FplTeamListState } from 'state/fplTeamList'
 import type { FplTeamListsState } from 'state/fplTeamLists'
 import type { InterTeamTradeGroupsState } from 'state/interTeamTradeGroups'
+
+type OpenDialogProps = {
+  interTeamTradeGroup?: InterTeamTradeGroup,
+  trade?: Trade,
+  str: string
+}
 
 type Props = {
   isOwner: boolean,
   interTeamTradeGroups: InterTeamTradeGroupsState,
   fetchInterTeamTradeGroups: Function,
+  fplTeamList: FplTeamListState,
   fplTeamLists: FplTeamListsState,
   deadline?: Date,
   selectedFplTeamListId?: string,
   fplTeamId: string,
   action: string,
-  addToInterTeamTradeGroup: Function
-  cancelInterTeamTradeGroup: Function
-  submitInterTeamTradeGroup: Function
-  approveInterTeamTradeGroup: Function
-  declineInterTeamTradeGroup: Function
+  cancelInterTeamTradeGroup: Function,
+  submitInterTeamTradeGroup: Function,
+  approveInterTeamTradeGroup: Function,
+  declineInterTeamTradeGroup: Function,
+  removeTrade: Function
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -93,32 +102,42 @@ const TeamTradeTabs = (props: Props) => {
     isOwner,
     interTeamTradeGroups: { data: { outTradeGroups = [], inTradeGroups = [] } },
     fetchInterTeamTradeGroups,
+    fplTeamList: { data: fplTeamList },
     fplTeamLists,
     deadline,
     selectedFplTeamListId,
     fplTeamId,
-    action = 'out'
+    action = 'out',
+    removeTrade
   } = props
 
   const classes = useStyles()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [interTeamTradeGroup, setInterTeamTradeGroup] = useState<undefined | InterTeamTradeGroup>()
-  const [actionStr, setActionStr] = useState('')
+  const [trade, setTrade] = useState<undefined | Trade>()
+  const [str, setStr] = useState('')
 
   const { id: interTeamTradeGroupId = '', trades = [] } = interTeamTradeGroup || {}
 
-  const handleOpenDialog = (interTeamTradeGroup, actionStr) => {
+  const handleOpenDialog = ({ interTeamTradeGroup, trade, str }: OpenDialogProps) => {
     setInterTeamTradeGroup(interTeamTradeGroup)
-    setActionStr(actionStr)
+    setTrade(trade)
+    setStr(str)
     setDialogOpen(true)
   }
 
   const handleConfirm = () => {
     setDialogOpen(false)
-    props[`${actionStr.toLowerCase()}InterTeamTradeGroup`](interTeamTradeGroupId)
-    setActionStr('')
+    trade ? removeTrade(trade.id) : props[`${str.toLowerCase()}InterTeamTradeGroup`](interTeamTradeGroupId)
+    setStr('')
     setInterTeamTradeGroup(undefined)
+    setTrade(undefined)
+  }
 
+  const cancel = () => {
+    setDialogOpen(false)
+    setInterTeamTradeGroup(undefined)
+    setTrade(undefined)
   }
 
   useEffect(
@@ -135,10 +154,17 @@ const TeamTradeTabs = (props: Props) => {
     : `${FPL_TEAMS_URL}/${fplTeamId}/teamLists/teamTrades`
 
   const tradeGroups = action === 'out' ? outTradeGroups : inTradeGroups
-  const permitted = isOwner && deadline
 
+  if (!selectedFplTeamListId || !fplTeamList) return null
 
-  if (!selectedFplTeamListId) return null
+  const { round: { current } } = fplTeamList
+  const permitted = isOwner && deadline && current
+
+  const playerName = (trade, direction, alt) => {
+    const { firstName, lastName } = trade[`${action === 'out' ? direction : alt}Player`]
+
+    return `${firstName} ${lastName}`
+  }
 
   return (
     <Fragment>
@@ -182,7 +208,16 @@ const TeamTradeTabs = (props: Props) => {
           <TableBody>
             {
               tradeGroups.map((interTeamTradeGroup, i) => {
-                const { outFplTeam, inFplTeam, status, trades, canApprove, canSubmit, canCancel } = interTeamTradeGroup
+                const {
+                  id,
+                  outFplTeam,
+                  inFplTeam,
+                  status,
+                  trades,
+                  canApprove,
+                  canSubmit,
+                  canCancel
+                } = interTeamTradeGroup
                 const fplTeam = action === 'out' ? inFplTeam : outFplTeam
 
                 const expandComponent = (
@@ -229,9 +264,7 @@ const TeamTradeTabs = (props: Props) => {
                               </div>
                             </Tooltip>
                           </TableCell>
-                          {
-                            permitted && <TableCell />
-                          }
+                          <TableCell />
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -278,13 +311,17 @@ const TeamTradeTabs = (props: Props) => {
                                   permitted && canCancel &&
                                   <TableCell align='center'>
                                     <Tooltip title='Remove player'>
-                                      <IconButton size='small'>
+                                      <IconButton
+                                        size='small'
+                                        onClick={() => {
+                                          handleOpenDialog({ trade: trade, str: 'Remove Trade' })
+                                        }}
+                                      >
                                         <CloseIcon className={classes.cancel} />
                                       </IconButton>
                                     </Tooltip>
                                   </TableCell>
                                 }
-
                               </TableRow>
                             )
                           })
@@ -304,15 +341,20 @@ const TeamTradeTabs = (props: Props) => {
                     <TableCell align='center'>
                       {status}
                     </TableCell>
-                    {
-                      permitted &&
-                      <TableCell align='center'>
+
+
+                    <TableCell align='center'>
+                      {
+                        permitted &&
+                        <Fragment>
                         {
                           canCancel &&
                           <Tooltip title='Cancel'>
                             <IconButton
                               size='small'
-                              onClick={() => handleOpenDialog(interTeamTradeGroup, 'Cancel')}
+                              onClick={() => {
+                                handleOpenDialog({ interTeamTradeGroup: interTeamTradeGroup, str: 'Cancel' })
+                             }}
                             >
                               <CloseIcon className={classes.cancel} />
                             </IconButton>
@@ -323,6 +365,8 @@ const TeamTradeTabs = (props: Props) => {
                           <Tooltip title='Add player'>
                             <IconButton
                               size='small'
+                              component={DomLink}
+                              to={`${FPL_TEAMS_URL}/${fplTeamId}/teamTrades/${id}/addPlayer`}
                             >
                               <AddIcon className={classes.add} />
                             </IconButton>
@@ -333,7 +377,9 @@ const TeamTradeTabs = (props: Props) => {
                           <Tooltip title='Submit'>
                             <IconButton
                               size='small'
-                              onClick={() => handleOpenDialog(interTeamTradeGroup, 'Submit')}
+                              onClick={() => {
+                                handleOpenDialog({ interTeamTradeGroup: interTeamTradeGroup, str: 'Submit' })
+                              }}
                             >
                               <SendIcon className={classes.send} />
                             </IconButton>
@@ -343,19 +389,30 @@ const TeamTradeTabs = (props: Props) => {
                           canApprove &&
                           <Fragment>
                             <Tooltip title='Approve'>
-                              <IconButton size='small'>
-                                <CheckIcon />
+                              <IconButton
+                                size='small'
+                                onClick={() => {
+                                  handleOpenDialog({ interTeamTradeGroup: interTeamTradeGroup, str: 'Approve' })
+                                }}
+                              >
+                                <CheckIcon className={classes.add} />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title='Decline'>
-                              <IconButton size='small'>
-                                <CloseIcon className={classes.cancel} />
+                              <IconButton
+                                size='small'
+                                onClick={() => {
+                                  handleOpenDialog({ interTeamTradeGroup: interTeamTradeGroup, str: 'Decline' })
+                                }}
+                              >
+                              <CloseIcon className={classes.cancel} />
                               </IconButton>
                             </Tooltip>
                           </Fragment>
                         }
-                      </TableCell>
-                    }
+                        </Fragment>
+                      }
+                    </TableCell>
                   </ExpandableTableRow>
                 )
               })
@@ -369,25 +426,21 @@ const TeamTradeTabs = (props: Props) => {
         onClose={() => setDialogOpen(false)}
       >
         <DialogTitle>
-          Confirm {actionStr}
+          Confirm {str}
         </DialogTitle>
         <DialogContent>
           <div>
             Out: {
-              trades.map(trade => {
-                const { firstName, lastName } = trade[`${action === 'out' ? 'out' : 'in'}Player`]
-
-                return `${firstName} ${lastName}`
-              }).join(', ')
+              trade
+                ? playerName(trade, 'out', 'in')
+                : trades.map(trade => playerName(trade, 'out', 'in')).join(', ')
             }
           </div>
           <div>
             In: {
-              trades.map(trade => {
-                const { firstName, lastName } = trade[`${action === 'out' ? 'in' : 'out'}Player`]
-
-                return `${firstName} ${lastName}`
-              }).join(', ')
+              trade
+                ? playerName(trade, 'in', 'out')
+                : trades.map(trade => playerName(trade, 'in', 'out')).join(', ')
             }
           </div>
         </DialogContent>
@@ -395,7 +448,7 @@ const TeamTradeTabs = (props: Props) => {
           <Button
             variant='contained'
             color='default'
-            onClick={() => setDialogOpen(false)}
+            onClick={() => cancel()}
 
           >
             Cancel

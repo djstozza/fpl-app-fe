@@ -1,8 +1,8 @@
 import { Fragment, useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 
-import ListPositionsTable from './listPositionsTable'
-import OutListPosition from './outListPosition'
+import ListPositionsTable from '../listPositionsTable'
+import OutListPosition from '../outListPosition'
 import TradeableListPositionsTable from './tradeableListPositionsTable'
 
 import type { ListPositionState } from 'state/listPosition'
@@ -86,14 +86,13 @@ const NewTeamTrade = (props: Props) => {
         outListPosition={outListPosition}
         fetchTradeableListPositions={fetchTradeableListPositions}
         listPosition={listPosition}
-        createInterTeamTradeGroup={createInterTeamTradeGroup}
+        submitAction={createInterTeamTradeGroup}
         updateTradeableListPositionsFilter={updateTradeableListPositionsFilter}
         updateTradeableListPositionsSort={updateTradeableListPositionsSort}
         fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
         submitting={submitting}
       />
     }
-
     </Fragment>
   )
 }

@@ -94,9 +94,9 @@ function * updateAvailablePlayersPage (action) : Generator<any, any, any> {
 
 function * fetchTradeableListPositions (action) : Generator<any, any, any> {
   const { outListPosition: { id = '' } = {} } = yield select(state => state.fplTeamList)
-  const { sort, filter, page } = action
+  const { sort, filter } = action
 
-  const url = `${API_URL}${API_LIST_POSITIONS_PATH}/${id}/tradeable_list_positions?${stringify({ sort, filter, page })}`
+  const url = `${API_URL}${API_LIST_POSITIONS_PATH}/${id}/tradeable_list_positions?${stringify({ sort, filter })}`
   yield put({
     type: requestActions.AUTHED_REQUEST,
     method: 'GET',
@@ -120,12 +120,12 @@ function * fetchTradeableListPositionFacets (action) : Generator<any, any, any> 
 }
 
 function * updateTradeableListPositionsFilter (action) : Generator<any, any, any> {
-  const { data: { id } } = yield select(state => state.fplTeam)
+  const { data: { id, league: { id: leagueId } } } = yield select(state => state.fplTeam)
   const { sort } = yield select(state => state.listPosition)
   const { outListPosition: { position: { id: positionId = '' } = {} } = {} } = yield select(state => state.fplTeamList)
   const { filter } = action
 
-  const query = { filter, sort }
+  const query = { filter: { ...filter, leagueId, positionId }, sort }
 
   yield history.replace(`${FPL_TEAMS_URL}/${id}/teamTrades/new?${qs.stringify(query)}`)
 }
@@ -136,7 +136,7 @@ function * updateTradeableListPositionsSort (action) : Generator<any, any, any> 
   const { outListPosition: { position: { id: positionId = '' } = {} } = {} } = yield select(state => state.fplTeamList)
   const { sort } = action
 
-  const query = { filter, sort }
+  const query = { filter: { ...filter, leagueId, positionId }, sort }
 
   yield history.replace(`${FPL_TEAMS_URL}/${id}/teamTrades/new?${qs.stringify(query)}`)
 }

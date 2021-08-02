@@ -7,6 +7,7 @@ export const API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE = 'API_FPL_TEAM
 export const API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CANCEL = 'API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CANCEL'
 export const API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE = 'API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE'
 export const API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE = 'API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE'
+export const API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE = 'API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE'
 
 export const fetchInterTeamTradeGroups = (fplTeamListId: string) =>
   ({ type: API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS, fplTeamListId })
@@ -26,5 +27,8 @@ export const approveInterTeamTradeGroup = (interTeamTradeGroupId: string) =>
 export const declineInterTeamTradeGroup = (interTeamTradeGroupId: string) =>
   ({ type: API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE, interTeamTradeGroupId })
 
-export const addToInterTeamTradeGroup = (interTeamTradeGroupId: string, inListPosition: string) =>
-  ({ type: API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE, interTeamTradeGroupId, inListPosition })
+export const addToInterTeamTradeGroup = (inListPosition: ListPosition) =>
+  ({ type: API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE, inListPosition })
+
+export const removeTrade = (interTeamTradeId: string) =>
+  ({ type: API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE, interTeamTradeId})

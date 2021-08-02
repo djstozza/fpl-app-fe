@@ -1,4 +1,5 @@
 import { put, takeLatest, all } from 'redux-saga/effects'
+import { stringify } from 'utilities/helpers'
 
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
@@ -24,9 +25,12 @@ function * fetchFplTeamList (action) : Generator<any, any, any> {
 }
 
 function * fetchListPositions (action) : Generator<any, any, any> {
-  const { fplTeamListId } = action
+  const { fplTeamListId, interTeamTradeGroup: { trades = [] } = {} } = action
+  const excludedPlayerIds = trades.map(({ outPlayer: { id } }) => id)
 
-  const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/list_positions`
+  const query = { filter: { excludedPlayerIds } }
+
+  const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/list_positions?${stringify(query)}`
 
   yield put({
     type: requestActions.AUTHED_REQUEST,

@@ -5,6 +5,7 @@ import history from 'state/history'
 
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
+import { fetchListPositions, setOutListPosition } from 'state/fplTeamList/actions'
 
 import {
   API_URL,
@@ -30,9 +31,8 @@ function * fetchInterTeamTradeGroups (action) : Generator <any, any, any> {
 function * createInterTeamTradeGroup (action) : Generator <any, any, any> {
   const {
     data: { id },
-    outListPosition: { player: { id: outPlayerId = '' } = {} } = {}
+    outListPosition: { player: { id: outPlayerId } },
   } = yield select(state => state.fplTeamList)
-
   const { inListPosition: { player: { id: inPlayerId }, fplTeamListId: inFplTeamListId } } = action
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${id}/inter_team_trade_groups`
@@ -47,10 +47,12 @@ function * createInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
-function * createInterTeamTradeGroupSuccess (action) : Generator <any, any, any> {
+function * interTeamTradeGroupSuccess (action) : Generator <any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeam)
-
-  yield history.replace(`${FPL_TEAMS_URL}/${id}/teamTrades`)
+  yield all([
+    put(setOutListPosition(undefined)),
+    history.replace(`${FPL_TEAMS_URL}/${id}/teamTrades`)
+  ])
 }
 
 function * submitInterTeamTradeGroup (action) : Generator <any, any, any> {
@@ -73,7 +75,8 @@ function * addToInterTeamTradeGroup (action) : Generator <any, any, any> {
     data: { id },
     outListPosition: { player: { id: outPlayerId = '' } = {} } = {}
   } = yield select(state => state.fplTeamList)
-  const { interTeamTradeGroupId, inListPosition: { player: { id: inPlayerId } } } = action
+  const { data: { id: interTeamTradeGroupId } } = yield select(state => state.interTeamTradeGroup)
+  const { inListPosition: { player: { id: inPlayerId } } } = action
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${id}/inter_team_trade_groups/${interTeamTradeGroupId}/add_trade`
 
@@ -132,6 +135,30 @@ function * declineInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
+function * removeTrade (action) : Generator <any, any, any> {
+  const { data: { id } } = yield select(state => state.fplTeamList)
+  const { interTeamTradeId } = action
+
+  const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${id}/inter_team_trades/${interTeamTradeId}`
+
+  yield put({
+    type: requestActions.AUTHED_REQUEST,
+    method: 'DELETE',
+    url,
+    successAction: success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE),
+    failureAction: failure(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE)
+  })
+}
+
+function * approveInterTeamTradeGroupSuccess (action) : Generator <any, any, any> {
+  const { data: { id: fplTeamListId } } = yield select(state => state.fplTeamList)
+
+  yield all([
+    put(fetchListPositions(fplTeamListId)),
+    put(setOutListPosition(undefined))
+  ])
+}
+
 export default function * waiverPicksSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS, fetchInterTeamTradeGroups),
@@ -141,10 +168,17 @@ export default function * waiverPicksSagas () : Generator<any, any, any> {
     yield takeLatest(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_SUBMIT, submitInterTeamTradeGroup),
     yield takeLatest(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE, approveInterTeamTradeGroup),
     yield takeLatest(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_DECLINE, declineInterTeamTradeGroup),
+    yield takeLatest(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE, removeTrade),
     yield takeLatest(
       [
-        success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE)
-      ], createInterTeamTradeGroupSuccess
+        success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE),
+        success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE),
+        success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE),
+      ], interTeamTradeGroupSuccess
+    ),
+    yield takeLatest(
+      success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE),
+      approveInterTeamTradeGroupSuccess
     )
   ])
 }
