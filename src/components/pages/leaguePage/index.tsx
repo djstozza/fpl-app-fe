@@ -1,6 +1,7 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
+import { capitalize } from 'lodash'
 import {
   Typography,
   Theme,
@@ -29,7 +30,7 @@ type Props = {
   generateDraftPicks: Function,
   createDraft: Function,
   sort: Object,
-  match: { params: { leagueId: string, tab: string } }
+  match: { params: { leagueId: string, tab: string, action: string } }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -40,10 +41,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const TABS = [
-  { label: 'Details', value: 'details', display: true },
-  { label: 'Fpl Teams', value: 'fplTeams', display: true }
-]
+const TABS = {
+  details: { label: 'Details', value: 'details', display: true },
+  fplTeams: { label: 'Fpl Teams', value: 'fplTeams', display: true }
+}
 
 const LeaguePage = (props: Props) => {
   const {
@@ -58,7 +59,7 @@ const LeaguePage = (props: Props) => {
     errors,
     submitting,
     sort,
-    match: { params: { leagueId, tab = 'details' } }
+    match: { params: { leagueId, tab = 'details', action } }
   } = props
   const classes = useStyles()
 
@@ -72,6 +73,8 @@ const LeaguePage = (props: Props) => {
 
   const { name } = league
 
+  TABS.details['extraTitleInfo'] = capitalize(action)
+
   return (
     <Fragment>
       <Typography variant='h4' className={classes.title}>
@@ -79,9 +82,10 @@ const LeaguePage = (props: Props) => {
       </Typography>
       <Tabs
         currentTab={tab}
-        tabs={TABS}
+        tabs={Object.values(TABS)}
         url={LEAGUES_URL}
         id={leagueId}
+        titleSubstr={name}
       />
       <Switch>
         <Route

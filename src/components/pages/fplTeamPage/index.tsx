@@ -7,6 +7,7 @@ import {
   createStyles,
   makeStyles
 } from '@material-ui/core'
+import { capitalize } from 'lodash'
 
 import Tabs from 'components/common/tabs'
 import { fplTeamActions } from 'state/fplTeam'
@@ -177,7 +178,7 @@ const FplTeamPage = (props: Props) => {
   const [isWaiver, setIsWaiver] = useState(false)
   const sanitizedFplTeamListId = (fplTeamListId || '').match(/^\d+$/) ? fplTeamListId : undefined
 
-  const currentFplTeamList = fplTeamLists.data.find(({ round: { current } }) => current)
+  const currentFplTeamList = fplTeamLists.data.find(({ round: { current, name } }) => current)
   const currentFplTeamListId = (currentFplTeamList || {}).id
   const lastFplTeamListId = fplTeamLists[fplTeamLists.data.length - 1]?.id
   const getSelectedFplteamListId = () => sanitizedFplTeamListId || currentFplTeamListId || lastFplTeamListId
@@ -232,11 +233,19 @@ const FplTeamPage = (props: Props) => {
   if (!fplTeam) return null
 
   const { name, isOwner, league: { showLiveColumns } } = fplTeam
+  const { round: { name: roundName = '' } = {} } = currentFplTeamList || {}
+
+  const extraTitleInfo = capitalize(action || roundName)
 
   TABS.teamLists['display'] = showLiveColumns
   TABS.waiverPicks['display'] = showLiveColumns && isOwner
   TABS.trades['display'] = showLiveColumns && isOwner
   TABS.teamTrades['display'] = showLiveColumns && isOwner
+  TABS.waiverPicks['extraTitleInfo'] = extraTitleInfo
+  TABS.teamLists['extraTitleInfo'] = extraTitleInfo
+  TABS.trades['extraTitleInfo'] = extraTitleInfo
+  TABS.teamTrades['extraTitleInfo'] = extraTitleInfo
+  TABS.details['extraTitleInfo'] = capitalize(action)
 
   return (
     <Fragment>
@@ -248,6 +257,7 @@ const FplTeamPage = (props: Props) => {
         tabs={Object.values(TABS)}
         url={FPL_TEAMS_URL}
         id={fplTeamId}
+        titleSubstr={name}
       />
       <FplTeamAlert
         fplTeamId={fplTeamId}
@@ -263,16 +273,12 @@ const FplTeamPage = (props: Props) => {
       <Switch>
         <Route
           exact
-          path={`${FPL_TEAMS_URL}/:fplTeamId`}
-          render={() => (
-            <FplTeamDetails
-              fplTeam={fplTeam}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`${FPL_TEAMS_URL}/:fplTeamId/details`}
+          path={
+            [
+              `${FPL_TEAMS_URL}/:fplTeamId`,
+              `${FPL_TEAMS_URL}/:fplTeamId/details`
+            ]
+          }
           render={() => (
             <FplTeamDetails
               fplTeam={fplTeam}
@@ -417,6 +423,7 @@ const FplTeamPage = (props: Props) => {
               approveInterTeamTradeGroup={approveInterTeamTradeGroup}
               declineInterTeamTradeGroup={declineInterTeamTradeGroup}
               removeTrade={removeTrade}
+              fplTeamName={name}
             />
           )}
         />
@@ -445,6 +452,7 @@ const FplTeamPage = (props: Props) => {
               updateTradeableListPositionsSort={updateTradeableListPositionsSort}
               fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
               addToInterTeamTradeGroup={addToInterTeamTradeGroup}
+              name={name}
             />
           )
         }

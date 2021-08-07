@@ -6,6 +6,7 @@ import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/teams/reducer'
 import TeamCrestLink from 'components/common/teamCrestLink'
+import { TITLE } from 'utilities/constants'
 
 import {
   Theme,
@@ -61,6 +62,8 @@ const TeamsPage = (props: Props) => {
   } = props
 
   const classes = useStyles()
+
+  document.title = `${TITLE} - Teams`
 
   return (
     <Fragment>

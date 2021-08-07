@@ -1,4 +1,4 @@
-import { put, takeLatest, takeEvery, all, fork, select } from 'redux-saga/effects'
+import { put, takeLatest, all } from 'redux-saga/effects'
 import qs from 'qs'
 import { decamelizeKeys } from 'humps'
 

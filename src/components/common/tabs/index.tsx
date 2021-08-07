@@ -8,12 +8,14 @@ import {
 } from '@material-ui/core'
 import { findIndex } from 'lodash'
 
+import { TITLE } from 'utilities/constants'
 import { colors } from 'utilities/colors'
 
 type TabType = {
   label: string,
   value: string,
   matcher?: RegExp,
+  extraTitleInfo?: string,
   display: boolean
 }
 
@@ -21,7 +23,8 @@ type Props = {
   currentTab: string,
   url: string,
   id?: string,
-  tabs: TabType[]
+  tabs: TabType[],
+  titleSubstr: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -33,15 +36,21 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const Tabs = ({ currentTab, url, id, tabs }: Props) => {
+const Tabs = ({ currentTab, url, id, tabs, titleSubstr }: Props) => {
   const classes = useStyles()
   const { pathname } = useLocation()
 
+  const tabIndex = findIndex(tabs, ({ value, matcher }) => matcher ? pathname.match(matcher) : value === currentTab)
+  const { label, extraTitleInfo } = tabs[tabIndex]
+
+  const extraTitleInfoSubstr = extraTitleInfo ? ` - ${extraTitleInfo}` : ''
+
+  document.title = `${TITLE} - ${titleSubstr} - ${label}${extraTitleInfoSubstr}`
   return (
     <MuiTabs
       indicatorColor='primary'
       textColor='primary'
-      value={findIndex(tabs, ({ value, matcher }) => matcher ? pathname.match(matcher) : value === currentTab)}
+      value={tabIndex}
       variant='fullWidth'
       className={classes.tab}
     >

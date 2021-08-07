@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { roundActions } from 'state/round'
 import { roundsActions } from 'state/rounds'
-import { ROUNDS_URL } from 'utilities/constants'
+import { ROUNDS_URL, TITLE } from 'utilities/constants'
 
 import TabPanel from 'components/common/tabPanel'
 import RoundDetails from './roundDetails'
@@ -41,6 +41,7 @@ const RoundsPage = (props: Props) => {
   )
 
   if (rounds.length === 0) return null
+  if (round) document.title = `${TITLE} - ${round.name}`
 
   return (
     <Fragment>

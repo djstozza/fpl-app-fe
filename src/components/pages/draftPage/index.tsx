@@ -142,6 +142,7 @@ const DraftPage = (props: Props) => {
         tabs={TABS}
         url={LEAGUES_URL}
         id={leagueId}
+        titleSubstr={`${name} - Draft`}
       />
       <UserCanPickAlert
         leagueId={leagueId}

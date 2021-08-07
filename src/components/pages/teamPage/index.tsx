@@ -134,16 +134,17 @@ const TeamPage = (props: Props) => {
         tabs={TABS}
         url={TEAMS_URL}
         id={teamId}
+        titleSubstr={name}
       />
       <Switch>
         <Route
           exact
-          path={`${TEAMS_URL}/:teamId`}
-          render={() => <TeamDetails team={data} />}
-        />
-        <Route
-          exact
-          path={`${TEAMS_URL}/:teamId/details`}
+          path={
+            [
+              `${TEAMS_URL}/:teamId`,
+              `${TEAMS_URL}/:teamId/details`
+            ]
+          }
           render={() => <TeamDetails team={data} />}
         />
         <Route

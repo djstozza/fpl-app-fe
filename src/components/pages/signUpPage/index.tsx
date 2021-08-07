@@ -13,7 +13,7 @@ import { SetElHeight } from 'utilities/helpers'
 
 import { authActions } from 'state/auth'
 import { stadiumCrowdLoader } from 'utilities/helpers'
-import { LOGIN_URL } from 'utilities/constants'
+import { LOGIN_URL, TITLE } from 'utilities/constants'
 import Link from 'components/common/link'
 
 import type { Error } from 'types'
@@ -90,6 +90,8 @@ const SignUpPage = (props: Props) => {
   }, [initializeAuth])
 
   const classes = useStyles({ height })
+
+  document.title = `${TITLE} - Sign Up`
 
   return (
     <div ref={backgroundRef} className={classes.background}>

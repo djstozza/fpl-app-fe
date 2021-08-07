@@ -94,6 +94,7 @@ const PlayerPage = (props: Props) => {
         tabs={Object.values(TABS)}
         url={PLAYERS_URL}
         id={playerId}
+        titleSubstr={`${firstName} ${lastName}`}
       />
       <Switch>
         <Route

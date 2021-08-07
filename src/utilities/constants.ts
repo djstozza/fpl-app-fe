@@ -23,6 +23,8 @@ export const API_FPL_TEAM_LISTS_PATH = '/fpl_team_lists'
 export const API_LIST_POSITIONS_PATH = '/list_positions'
 export const API_WAIVER_PICKS_PATH = '/waiver_picks'
 
+export const TITLE = 'Fpl App'
+
 export const APPLICATION_ERRORS = {
   '403': {
     description: 'Forbidden',

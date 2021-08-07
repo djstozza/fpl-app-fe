@@ -30,7 +30,7 @@ type Props = {
   selectedFplTeamListId?: string,
   waiverPicks: WaiverPicksState,
   trades: TradesState,
-  createTrade: Function
+  createTrade: Function,
 }
 
 const NewWaiverPick = (props: Props) => {

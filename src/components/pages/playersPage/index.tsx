@@ -2,12 +2,12 @@ import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { playersActions } from 'state/players'
-import { teamCrestPathLoader } from 'utilities/helpers'
-import { TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
+import { PLAYERS_URL, TITLE } from 'utilities/constants'
 import SortTable from 'components/common/sortTable'
 import { initialFilterState } from 'state/players/reducer'
 import SearchListener from 'components/common/searchListener'
 import Link from 'components/common/link'
+import TeamCrestLink from 'components/common/teamCrestLink'
 
 import {
   Theme,
@@ -66,14 +66,7 @@ export const playersTableCells = () => ({
     toolTipLabel: 'Team',
     sortParam: 'teams.shortName',
     filterParam: 'teamId',
-    customRender: ({ team: { shortName, id } }: PlayerSummary, classes) => (
-      <Link to={`${TEAMS_URL}/${id}`} image>
-        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
-        <div>
-          {shortName}
-        </div>
-      </Link>
-    )
+    customRender: ({ team }: PlayerSummary, classes) => <TeamCrestLink team={team} />
   },
   positions: {
     cellId: 'positions',
@@ -123,6 +116,8 @@ const PlayersPage = (props: Props) => {
       fetchFacets()
     }, [fetchFacets]
   )
+
+  document.title = `${TITLE} - Players`
 
   return (
     <Fragment>

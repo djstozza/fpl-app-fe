@@ -1,4 +1,4 @@
-import { put, takeLatest, takeEvery, all, fork, select } from 'redux-saga/effects'
+import { put, takeLatest, all, fork } from 'redux-saga/effects'
 
 import { API_URL, ROUNDS_URL } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'

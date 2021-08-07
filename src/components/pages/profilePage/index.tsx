@@ -7,6 +7,7 @@ import {
   makeStyles,
   createStyles
 } from '@material-ui/core'
+import { capitalize } from 'lodash'
 
 import { authActions } from 'state/auth'
 import { fplTeamsActions } from 'state/fplTeams'
@@ -42,7 +43,7 @@ type Props = {
   updateFplTeamsSort: Function,
   fplTeams: FplTeamsState,
   submitting: boolean,
-  match: { params: { tab: string } }
+  match: { params: { tab: string, action: string } }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -70,10 +71,12 @@ const ProfilePage = (props: Props) => {
     fetchFplTeams,
     updateFplTeamsSort,
     fplTeams,
-    match: { params: { tab = 'details' } }
+    match: { params: { tab = 'details', action } }
   } = props
   const { username } = user
   const classes = useStyles()
+
+  TABS.details['extraTitleInfo'] = capitalize(action)
 
   return (
     <Fragment>
@@ -85,6 +88,7 @@ const ProfilePage = (props: Props) => {
         currentTab={tab}
         tabs={Object.values(TABS)}
         url={PROFILE_URL}
+        titleSubstr={username}
       />
       <Switch>
         <Route

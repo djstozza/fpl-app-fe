@@ -4,12 +4,12 @@ import { useSnackbar } from 'notistack'
 import ListPositionsTable from '../listPositionsTable'
 import OutListPosition from '../outListPosition'
 import TradeableListPositionsTable from './tradeableListPositionsTable'
+import { TITLE } from 'utilities/constants'
 
 import type { InterTeamTradeGroup, FplTeamList, ListPosition } from 'types'
 import type { FplTeamListState } from 'state/fplTeamList'
 import type { ListPositionState } from 'state/listPosition'
 import type { InterTeamTradeGroupsState } from 'state/interTeamTradeGroups'
-
 
 type Props = {
   isOwner: boolean,
@@ -29,7 +29,8 @@ type Props = {
   updateTradeableListPositionsFilter: Function,
   updateTradeableListPositionsSort: Function,
   fetchTradeableListPositionFacets: Function,
-  addToInterTeamTradeGroup: Function
+  addToInterTeamTradeGroup: Function,
+  name: string
 }
 
 const AddPlayer = (props: Props) => {
@@ -51,7 +52,8 @@ const AddPlayer = (props: Props) => {
     updateTradeableListPositionsSort,
     fetchTradeableListPositionFacets,
     addToInterTeamTradeGroup,
-    interTeamTradeGroups: { errors, submitting }
+    interTeamTradeGroups: { errors, submitting },
+    name
   } = props
 
   const { enqueueSnackbar } = useSnackbar()
@@ -76,6 +78,8 @@ const AddPlayer = (props: Props) => {
       (errors).forEach(({ detail }) => enqueueSnackbar(detail, { variant: 'error' }))
     }, [enqueueSnackbar, errors]
   )
+
+  document.title = `${TITLE} - ${name} - Team Trades - Add Player`
 
   if (!listPositions.length) return null
 

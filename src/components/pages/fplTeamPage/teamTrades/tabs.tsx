@@ -58,7 +58,8 @@ type Props = {
   submitInterTeamTradeGroup: Function,
   approveInterTeamTradeGroup: Function,
   declineInterTeamTradeGroup: Function,
-  removeTrade: Function
+  removeTrade: Function,
+  fplTeamName: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -108,7 +109,8 @@ const TeamTradeTabs = (props: Props) => {
     selectedFplTeamListId,
     fplTeamId,
     action = 'out',
-    removeTrade
+    removeTrade,
+    fplTeamName
   } = props
 
   const classes = useStyles()
@@ -157,7 +159,7 @@ const TeamTradeTabs = (props: Props) => {
 
   if (!selectedFplTeamListId || !fplTeamList) return null
 
-  const { round: { current } } = fplTeamList
+  const { round: { current, name: roundName } } = fplTeamList
   const permitted = isOwner && deadline && current
 
   const playerName = (trade, direction, alt) => {
@@ -179,6 +181,7 @@ const TeamTradeTabs = (props: Props) => {
         currentTab={action}
         tabs={Object.values(TABS)}
         url={tabUrl}
+        titleSubstr={`${fplTeamName} - Team Trades - ${roundName}`}
       />
       <div className={classes.container}>
         <Table
