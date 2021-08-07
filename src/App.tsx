@@ -55,36 +55,41 @@ const App = () => {
             <Switch>
               <Route exact path='/' render={(props) => <RoundsPage {...props} />} />
               <Route exact path={`${ROUNDS_URL}/:roundId?`} render={(props) => <RoundsPage {...props} />} />
-              <Route exact path={`${TEAMS_URL}/:teamId`} render={(props) => <TeamPage {...props} />} />
-              <Route exact path={`${TEAMS_URL}/:teamId/:tab`} render={(props) => <TeamPage {...props} />} />
+              <Route exact path={`${TEAMS_URL}/:teamId/:tab?`} render={(props) => <TeamPage {...props} />} />
               <Route exact path={TEAMS_URL} render={(props) => <TeamsPage {...props} />} />
               <Route exact path={PLAYERS_URL} render={(props) => <PlayersPage {...props} />} />
-              <Route exact path={`${PLAYERS_URL}/:playerId`} render={(props) => <PlayerPage {...props} />} />
-              <Route exact path={`${PLAYERS_URL}/:playerId/:tab`} render={(props) => <PlayerPage {...props} />} />
+              <Route exact path={`${PLAYERS_URL}/:playerId/:tab?`} render={(props) => <PlayerPage {...props} />} />
               <Route exact path={SIGN_UP_URL} render={(props) => <SignUpPage {...props} />} />
               <Route exact path={LOGIN_URL} render={(props) => <LoginPage {...props} />} />
               <PrivateRoute>
                 <Switch>
-                  <Route exact path={PROFILE_URL} render={(props) => <ProfilePage {...props} />} />
-                  <Route exact path={`${PROFILE_URL}/:tab`} render={(props) => <ProfilePage {...props} />} />
-                  <Route exact path={`${PROFILE_URL}/:tab/:action`} render={(props) => <ProfilePage {...props} />} />
-                  <Route exact path={`${LEAGUES_URL}/:leagueId`} render={(props) => <LeaguePage {...props} />} />
+                  <Route
+                    exact
+                    path={
+                      [
+                        PROFILE_URL,
+                        `${PROFILE_URL}/:tab`,
+                        `${PROFILE_URL}/:tab/:action`
+                      ]
+                    }
+                    render={(props) => <ProfilePage {...props} />}
+                  />
                   <Route
                     exact
                     path={`${LEAGUES_URL}/:leagueId/draft/:tab?`}
                     render={(props) => <DraftPage {...props} />}
                   />
                   <Route
-                    path={`${LEAGUES_URL}/:leagueId/:tab`}
+                    path={`${LEAGUES_URL}/:leagueId/:tab?/:action?`}
                     render={(props) => <LeaguePage {...props} />}
                   />
                   <Route
                     exact
                     path={[
-                      `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:fplTeamListId?`,
+                      `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:fplTeamListId(\\d+)?`,
                       `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:action?`,
-                      `${FPL_TEAMS_URL}/:fplTeamId/:tab/:teamTradeId/addPlayer`,
-                      `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId?/:tab?/:action?`
+                      `${FPL_TEAMS_URL}/:fplTeamId/:tab/:teamTradeId(\\d+)/addPlayer`,
+                      `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId(\\d+)?/:tab?/:action?`
                     ]}
                     render={(props) => <FplTeamPage {...props} />}
                   />
