@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-const NavBar = (props: Props) => {
+export const NavBar = (props: Props) => {
   const { user, logOut } = props
   const classes = useStyles()
 

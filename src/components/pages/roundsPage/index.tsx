@@ -18,6 +18,8 @@ type Props = {
   match: { params: { roundId?: string } }
 }
 
+export const labelRenderer = (roundSummary: RoundSummary) => roundSummary.name
+
 const RoundsPage = (props: Props) => {
   const {
     round,
@@ -31,8 +33,6 @@ const RoundsPage = (props: Props) => {
   const lastRoundId = rounds[rounds.length - 1]?.id
 
   const getSelectedRoundId = () => roundId || currentRoundId || lastRoundId
-
-  const labelRenderer = (roundSummary: RoundSummary) => roundSummary.name
 
   useEffect(
     () => {

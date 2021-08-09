@@ -6,7 +6,8 @@
       "state/*": ["./src/state/*"],
       "utilities/*": ["./src/utilities/*"],
       "components/*": ["./src/components/*"],
-      "contexts/*": ["./src/contexts/*"]
+      "contexts/*": ["./src/contexts/*"],
+      "test/*": ["./src/test/*"]
     }
   }
 }

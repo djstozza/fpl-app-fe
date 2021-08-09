@@ -194,7 +194,7 @@ const SortTable = (props: Props) => {
         ref={paginationRef}
         component='div'
         count={total || collection.length}
-        rowsPerPage={noOffset ? total || limit : limit}
+        rowsPerPage={noOffset ? collection.length || limit : limit}
         rowsPerPageOptions={[limit]}
         page={offset / limit}
         onChangePage={changePage}

@@ -40,12 +40,18 @@ const Tabs = ({ currentTab, url, id, tabs, titleSubstr }: Props) => {
   const classes = useStyles()
   const { pathname } = useLocation()
 
-  const tabIndex = findIndex(tabs, ({ value, matcher }) => matcher ? pathname.match(matcher) : value === currentTab)
-  const { label, extraTitleInfo } = tabs[tabIndex]
+  const activeTabs = tabs.filter(({ display }) => display)
+
+  const tabIndex = findIndex(activeTabs, ({ value, matcher }) => (
+    matcher ? pathname.match(matcher) : value === currentTab
+  ))
+
+  const { label, extraTitleInfo } = activeTabs[tabIndex]
 
   const extraTitleInfoSubstr = extraTitleInfo ? ` - ${extraTitleInfo}` : ''
 
   document.title = `${TITLE} - ${titleSubstr} - ${label}${extraTitleInfoSubstr}`
+
   return (
     <MuiTabs
       indicatorColor='primary'
@@ -55,7 +61,7 @@ const Tabs = ({ currentTab, url, id, tabs, titleSubstr }: Props) => {
       className={classes.tab}
     >
       {
-        tabs.filter(({ display }) => display).map(
+        activeTabs.map(
           ({ label, value }, key) => (
             <Tab
               key={key}

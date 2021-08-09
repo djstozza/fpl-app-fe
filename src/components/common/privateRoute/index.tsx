@@ -13,7 +13,7 @@ type Props = {
   children: any
 }
 
-const PrivateRoute = (props: Props) => {
+export const PrivateRoute = (props: Props) => {
   const { user, updateSession, children } = props
 
   const { pathname } = useLocation()

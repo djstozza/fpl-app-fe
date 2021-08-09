@@ -9,7 +9,7 @@ import {
   createStyles
 } from '@material-ui/core'
 
-import Filter from './filter'
+import Filter from '../filter'
 import { colors } from 'utilities/colors'
 
 import type { Facets } from 'types'
@@ -81,7 +81,6 @@ const HeaderCell = (props: Props) => {
     handleFilterChange && handleFilterChange(newFilter)
     setFilterAnchorEl(null)
   }
-
 
   return (
     <TableCell
