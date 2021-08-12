@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+# Fpl App Fe
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## General Info
 
-## Available Scripts
+The React/Redux front-end for Fpl App Api. Users can challenge their friends to see who is the best fantasy football manager by drafting and trading EPL stars. An in-depth look at the rules and logic can be found [here](https://github.com/djstozza/fpl-app-api).
 
-In the project directory, you can run:
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Initial setup
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**Node.js** version `=>14.75` is required to run this application locally. If you don't have it setup already, please use [NVM](https://github.com/creationix/nvm) - a script that allows you to manage multiple Node.js versions on your local system.
 
-### `npm test`
+### Quick start
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run  `npm install`  to install the required node packages and  `npm start`  to fire up the app on  `http://localhost:8080`.
 
-### `npm run build`
+Note that if the app doesn't run on  `http://localhost:8080`, it won't be able to connect to the Staging API due to CORS restrictions.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To get around this, either point the app to a local copy of the API that allows any domains to connect to it or run the app on  `http://localhost:8080`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Fpl App Api
+This frontend app requires an instance of the API to run against.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+During development, please pull down and setup an instance of the API by following  [these instructions](https://github.com/djstozza/fpl-app-api).
 
-### `npm run eject`
+Once you have the API up and running locally, ensure that the  `REACT_APP_API_URL`  variable, as well as the `REACT_APP_CABLE_URL` (for streaming) in your .env file is set to the URL for the local instance of the API.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+If you do not have a .env file, please create one in the root directory of this project.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Testing
+```
+npm run test
+```
+## Author
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* [Daniel Sztolcman](https://github.com/djstozza)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This project is licensed under the MIT License
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Acknowledgments
+
+* [Fantasy Premier League (FPL) API](https://fantasy.premierleague.com/drf/bootstrap-static)
