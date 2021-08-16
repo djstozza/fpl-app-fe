@@ -1,6 +1,6 @@
 import { createMount } from '@material-ui/core/test-utils'
-import history from 'state/history'
 
+import history from 'state/history'
 import TabPanel from '.'
 import { MockedRouter } from 'test/helpers'
 import { ROUNDS } from 'test/fixtures'

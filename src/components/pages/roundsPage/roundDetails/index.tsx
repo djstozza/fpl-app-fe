@@ -9,8 +9,8 @@ import {
   createStyles
 } from '@material-ui/core'
 
-import FixtureSummary from './fixtureSummary'
-import FixtureDetails from './fixtureDetails'
+import FixtureSummary from '../fixtureSummary'
+import FixtureDetails from '../fixtureDetails'
 import { colors } from 'utilities/colors'
 
 import type { Round, Fixture } from 'types'
@@ -28,7 +28,7 @@ type GroupedFixtures = {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: '100%',
+      
     },
     title: {
       padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,

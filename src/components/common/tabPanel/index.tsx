@@ -11,7 +11,7 @@ import type { RoundSummary, TeamSummary, FplTeamList } from 'types'
 
 type Props = {
   collection: RoundSummary[] | TeamSummary[] | FplTeamList[],
-  collectionId: string,
+  collectionId?: string,
   labelRenderer: Function,
   url: string,
   tab?: string

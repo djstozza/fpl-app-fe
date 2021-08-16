@@ -6,6 +6,7 @@ import {
   Typography,
   Grid,
   Theme,
+  Box,
   makeStyles,
   createStyles
 } from '@material-ui/core'
@@ -45,11 +46,16 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     inProgressTeamLink: {
       color: colors.white
-    },
-    inProgress: {
-      backgroundColor: theme.palette.secondary.main
     }
   })
+)
+
+const SummaryInfo = ({ inProgress, children }:{ inProgress?: boolean, children: any }) => (
+  <Typography component='div'>
+    <Box fontWeight={inProgress ? 'fontWeightBold' : 'fontWeightRegular'}>
+      {children}
+    </Box>
+  </Typography>
 )
 
 const FixtureSummary = (props: Props) => {
@@ -68,24 +74,18 @@ const FixtureSummary = (props: Props) => {
   } = props
 
   const classes = useStyles()
+  const inProgress = started && !finished
 
   const teamDetailsGrid = (teamId, shortName) => (
     <Grid item xs={4} md={4} lg={4}>
       <Link
         to={`${TEAMS_URL}/${teamId}`}
-        className={
-          classnames(
-            classes.teamLink,
-            {
-              [classes.inProgressTeamLink]: started && !finished
-            }
-          )
-        }
+        className={classnames(classes.teamLink)}
       >
         <img src={teamCrestPathLoader(shortName)} className={classes.crest} alt={shortName} />
-        <Typography>
+        <SummaryInfo inProgress={inProgress}>
           {shortName}
-        </Typography>
+        </SummaryInfo>
       </Link>
     </Grid>
   )
@@ -96,8 +96,7 @@ const FixtureSummary = (props: Props) => {
         classnames(
           classes.summary,
           {
-            [classes.disabled]: !started,
-            [classes.inProgress]: started && !finished,
+            [classes.disabled]: !started
           }
         )
       }
@@ -106,20 +105,20 @@ const FixtureSummary = (props: Props) => {
       <Grid container spacing={1} alignItems='center'>
         {teamDetailsGrid(homeTeamId, homeTeamName)}
         <Grid item xs={4} md={4} lg={4}>
-          <Typography>
+          <SummaryInfo inProgress={inProgress}>
             {moment(kickoffTime).format('HH:mm')}
-          </Typography>
+          </SummaryInfo>
           {
             (homeTeamScore !== null && awayTeamScore !== null) &&
-            <Typography>
+            <SummaryInfo inProgress={inProgress}>
               {homeTeamScore} - {awayTeamScore}
-            </Typography>
+            </SummaryInfo>
           }
           {
             minutes > 0 &&
-            <Typography>
+            <SummaryInfo inProgress={inProgress}>
               ({minutes})
-            </Typography>
+            </SummaryInfo>
           }
         </Grid>
         {teamDetailsGrid(awayTeamId, awayTeamName)}

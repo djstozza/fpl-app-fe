@@ -23,7 +23,7 @@ export type Action = {
 }
 
 export type PlayerBase = {
-  firstName: string,
+  firstName?: string,
   lastName: string,
   id: string
 }
@@ -53,8 +53,8 @@ export type TeamBase = {
 
 type FixtureBase = {
   finished: boolean,
-  awayTeamScore?: number,
-  homeTeamScore?: number,
+  awayTeamScore?: number | null,
+  homeTeamScore?: number | null,
   kickoffTime: string,
   minutes: number,
   started: boolean
@@ -63,7 +63,6 @@ type FixtureBase = {
 export type Fixture = {
   awayTeam: TeamBase,
   homeTeam: TeamBase,
-  homeTeamScore?: number,
   stats: StatsElement[]
 } & FixtureBase
 

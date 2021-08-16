@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect, useState, useMemo, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { roundActions } from 'state/round'
@@ -20,7 +20,7 @@ type Props = {
 
 export const labelRenderer = (roundSummary: RoundSummary) => roundSummary.name
 
-const RoundsPage = (props: Props) => {
+export const RoundsPage = (props: Props) => {
   const {
     round,
     rounds,
@@ -28,6 +28,7 @@ const RoundsPage = (props: Props) => {
     fetchRounds,
     match: { params: { roundId } }
   } = props
+  const [selectedRounId, setSelectedRoundId] = useState<string | undefined>()
 
   const currentRoundId = rounds.find(({ current }) => current)?.id
   const lastRoundId = rounds[rounds.length - 1]?.id
@@ -40,6 +41,12 @@ const RoundsPage = (props: Props) => {
     }, [fetchRounds]
   )
 
+  useMemo(
+    () => {
+      setSelectedRoundId(roundId || currentRoundId || lastRoundId)
+    }, [setSelectedRoundId, roundId, currentRoundId, lastRoundId]
+  )
+
   if (rounds.length === 0) return null
   if (round) document.title = `${TITLE} - ${round.name}`
 
@@ -47,12 +54,12 @@ const RoundsPage = (props: Props) => {
     <Fragment>
       <TabPanel
         collection={rounds}
-        collectionId={getSelectedRoundId()}
+        collectionId={selectedRounId}
         labelRenderer={labelRenderer}
         url={ROUNDS_URL}
       />
       <RoundDetails
-        roundId={getSelectedRoundId()}
+        roundId={selectedRounId}
         round={round}
         fetchRound={fetchRound}
       />
