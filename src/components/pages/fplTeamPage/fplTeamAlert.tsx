@@ -8,7 +8,7 @@ import Countdown from 'react-countdown'
 import pluralize from 'pluralize'
 
 import ButtonLink from 'components/common/buttonLink'
-import { FPL_TEAMS_URL } from 'utilities/constants'
+import { LEAGUES_URL, FPL_TEAMS_URL } from 'utilities/constants'
 
 import type { FplTeamList } from 'types'
 
@@ -21,7 +21,9 @@ type Props = {
   deadline?: Date,
   setIsWaiver: Function,
   isOwner: boolean,
-  setOutListPosition: Function
+  setOutListPosition: Function,
+  miniDraft: boolean,
+  leagueId: string
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -67,7 +69,9 @@ const FplTeamAlert = (props: Props) => {
     deadline,
     setIsWaiver,
     isOwner,
-    setOutListPosition
+    setOutListPosition,
+    miniDraft,
+    leagueId
   } = props
 
   const classes = useStyles()
@@ -76,10 +80,12 @@ const FplTeamAlert = (props: Props) => {
 
   const { name } = round
 
+  const substr = miniDraft ? 'mini draft' : 'waiver'
+
   const renderer = ({ days, hours, minutes, seconds, completed }) => (
     <div className={classes.textContainer}>
       <span>
-        {name} {isWaiver ? 'waiver' : 'trade'} deadline ends in {
+        {name} {isWaiver ? substr : 'trade'} deadline ends in {
           Boolean(days) &&
           <span className={classes.noWrap}>
            {days} {pluralize('day', days)}{!Boolean(days) || (!Boolean(hours) && !Boolean(minutes)) ? '' : ', '}
@@ -105,17 +111,46 @@ const FplTeamAlert = (props: Props) => {
           </span>
         }
       </span>
-      {
-        isOwner &&
-        <div>
+      <div>
+        {
+          isOwner &&
+          !miniDraft &&
+          isWaiver &&
           <ButtonLink
             size='small'
             color='secondary'
-            to={`${FPL_TEAMS_URL}/${fplTeamId}/${isWaiver ? 'waiverPicks' : 'trades'}/new`}
+            to={`${FPL_TEAMS_URL}/${fplTeamId}/waiverPicks/new`}
             onClick={() => setOutListPosition(undefined)}
           >
-            New {isWaiver ? 'Waiver' : 'Trade'}
+            New Waiver
           </ButtonLink>
+        }
+        {
+          isOwner &&
+          !isWaiver &&
+          <ButtonLink
+            size='small'
+            color='secondary'
+            to={`${FPL_TEAMS_URL}/${fplTeamId}/trades/new`}
+            onClick={() => setOutListPosition(undefined)}
+          >
+            New Trade
+          </ButtonLink>
+        }
+        {
+          isOwner &&
+          miniDraft &&
+          isWaiver &&
+          <ButtonLink
+            size='small'
+            color='secondary'
+            to={`${LEAGUES_URL}/${leagueId}/miniDraft`}
+          >
+            Go to mini draft
+          </ButtonLink>
+        }
+        {
+          isOwner &&
           <ButtonLink
             size='small'
             color='secondary'
@@ -124,8 +159,8 @@ const FplTeamAlert = (props: Props) => {
           >
             New team trade
           </ButtonLink>
-        </div>
-      }
+        }
+      </div>
     </div>
   )
 

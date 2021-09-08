@@ -78,6 +78,7 @@ export type RoundSummary = {
   isNext: boolean,
   isPrevious: boolean,
   finished: boolean,
+  miniDraft: boolean,
   dataChecked: boolean,
   deadlineTime: string,
   waiverDeadline: string
@@ -220,6 +221,7 @@ export type League = {
   canGenerateDraftPicks: boolean,
   canCreateDraft: boolean,
   canGoToDraft: boolean,
+  canGoToMiniDraft: boolean,
   showDraftPickColumn: boolean,
   showLiveColumns: boolean,
   isOwner: boolean,
@@ -310,3 +312,11 @@ export type InterTeamTradeGroups = {
   outTradeGroups: InterTeamTradeGroup[],
   inTradeGroups: InterTeamTradeGroup[]
 }
+
+export type MiniDraftPick = {
+  pickNumber: string,
+  season: string,
+  fplTeam: BaseFplTeam,
+  passed: boolean,
+  user: User
+} & Trade

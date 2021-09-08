@@ -12,6 +12,7 @@ import interTeamTradeGroups from './interTeamTradeGroups'
 import league from './league'
 import leagues from './leagues'
 import listPosition from './listPosition'
+import miniDraftPicks from './miniDraftPicks'
 import player from './player'
 import players from './players'
 import request from './request'
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   league,
   leagues,
   listPosition,
+  miniDraftPicks,
   player,
   players,
   request,

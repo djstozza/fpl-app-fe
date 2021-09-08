@@ -29,6 +29,7 @@ import SignUpPage from 'components/pages/signUpPage'
 import LoginPage from 'components/pages/loginPage'
 import ProfilePage from 'components/pages/profilePage'
 import DraftPage from 'components/pages/draftPage'
+import MiniDraftPage from 'components/pages/miniDraftPage'
 import PrivateRoute from 'components/common/privateRoute'
 import NavBar from 'components/navBar'
 import theme from './theme'
@@ -78,6 +79,11 @@ const App = () => {
                     exact
                     path={`${LEAGUES_URL}/:leagueId/draft/:tab?`}
                     render={(props) => <DraftPage {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={`${LEAGUES_URL}/:leagueId/miniDraft/:tab?`}
+                    render={(props) => <MiniDraftPage {...props} />}
                   />
                   <Route
                     path={`${LEAGUES_URL}/:leagueId/:tab?/:action?`}

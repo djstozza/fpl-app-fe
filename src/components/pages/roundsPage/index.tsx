@@ -33,8 +33,6 @@ export const RoundsPage = (props: Props) => {
   const currentRoundId = rounds.find(({ current }) => current)?.id
   const lastRoundId = rounds[rounds.length - 1]?.id
 
-  const getSelectedRoundId = () => roundId || currentRoundId || lastRoundId
-
   useEffect(
     () => {
       fetchRounds()

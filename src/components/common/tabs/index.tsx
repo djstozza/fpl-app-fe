@@ -42,9 +42,9 @@ const Tabs = ({ currentTab, url, id, tabs, titleSubstr }: Props) => {
 
   const activeTabs = tabs.filter(({ display }) => display)
 
-  const tabIndex = findIndex(activeTabs, ({ value, matcher }) => (
-    matcher ? pathname.match(matcher) : value === currentTab
-  ))
+  const tabIndex = findIndex(activeTabs, ({ value, matcher }) => {
+    return matcher ? pathname.match(matcher) : value === currentTab
+  })
 
   const { label, extraTitleInfo } = activeTabs[tabIndex]
 

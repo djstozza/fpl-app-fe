@@ -1,28 +1,28 @@
 import { useEffect } from 'react'
 import { Alert } from '@material-ui/lab'
 
-import type { DraftPicksState } from 'state/draftPicks'
-
 type Props = {
-  draftPicks: DraftPicksState
+  substr: string,
+  showAlert: boolean
 }
 
 const DraftCompletedAlert = (props: Props) => {
   const {
-    draftPicks: { draftFinished }
+    substr,
+    showAlert
   } = props
 
   useEffect(
     () => {
       window.dispatchEvent(new Event('resize'))
-    }, [draftFinished]
+    }, [showAlert]
   )
 
-  if (!draftFinished) return null
+  if (!showAlert) return null
 
   return (
     <Alert variant='filled' severity='success'>
-      The draft has successfully been completed
+      The {substr} has successfully been completed
     </Alert>
   )
 }

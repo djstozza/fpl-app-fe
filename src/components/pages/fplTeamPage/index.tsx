@@ -232,8 +232,8 @@ const FplTeamPage = (props: Props) => {
 
   if (!fplTeam) return null
 
-  const { name, isOwner, league: { showLiveColumns } } = fplTeam
-  const { round: { name: roundName = '' } = {} } = currentFplTeamList || {}
+  const { name, isOwner, league: { id: leagueId, showLiveColumns } } = fplTeam
+  const { round: { name: roundName = '', miniDraft = false } = {} } = currentFplTeamList || {}
 
   const extraTitleInfo = capitalize(action || roundName)
 
@@ -269,6 +269,8 @@ const FplTeamPage = (props: Props) => {
         setDeadline={setDeadline}
         isOwner={isOwner}
         setOutListPosition={setOutListPosition}
+        miniDraft={miniDraft}
+        leagueId={leagueId}
       />
       <Switch>
         <Route

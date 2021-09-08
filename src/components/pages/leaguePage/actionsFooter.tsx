@@ -40,7 +40,8 @@ const ActionsFooter = (props: Props) => {
       isOwner,
       canGenerateDraftPicks,
       canCreateDraft,
-      canGoToDraft
+      canGoToDraft,
+      canGoToMiniDraft
     },
     generateDraftPicks,
     createDraft,
@@ -57,6 +58,7 @@ const ActionsFooter = (props: Props) => {
       renderCondition: isOwner && detailsPage,
       render: (index, addRightMargin) => (
         <ButtonLink
+          key={index}
           to={`${LEAGUES_URL}/${id}/details/edit`}
           color={setColor(index)}
           rightMargin={addRightMargin}
@@ -69,6 +71,7 @@ const ActionsFooter = (props: Props) => {
       renderCondition: isOwner && canGenerateDraftPicks,
       render: (index, addRightMargin) => (
         <Button
+          key={index}
           variant='contained'
           color={setColor(index)}
           onClick={() => generateDraftPicks(id)}
@@ -83,6 +86,7 @@ const ActionsFooter = (props: Props) => {
       renderCondition: isOwner && canCreateDraft,
       render: (index, addRightMargin) => (
         <Button
+          key={index}
           variant='contained'
           color={setColor(index)}
           onClick={() => createDraft(id)}
@@ -97,14 +101,28 @@ const ActionsFooter = (props: Props) => {
       renderCondition: canGoToDraft,
       render: (index, addRightMargin) => (
         <ButtonLink
+          key={index}
           to={`${LEAGUES_URL}/${id}/draft`}
           color={setColor(index)}
           rightMargin={addRightMargin}
         >
-          Go to draft
+          Draft
         </ButtonLink>
       )
-    }
+    },
+    {
+      renderCondition: canGoToMiniDraft,
+      render: (index, addRightMargin) => (
+        <ButtonLink
+          key={index}
+          to={`${LEAGUES_URL}/${id}/miniDraft`}
+          color={setColor(index)}
+          rightMargin={addRightMargin}
+        >
+          Mini draft
+        </ButtonLink>
+      )
+    },
   ]
 
   const renderableButtons = buttons.filter(({ renderCondition }) => renderCondition)

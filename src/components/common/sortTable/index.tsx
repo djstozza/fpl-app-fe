@@ -29,6 +29,7 @@ import type {
   HistoryPast,
   League,
   WaiverPick,
+  MiniDraftPick,
   Trade,
   Cell,
   Facets
@@ -46,7 +47,8 @@ type Props = {
       FplTeam[] |
       DraftPick[] |
       WaiverPick[] |
-      Trade[]
+      Trade[] |
+      MiniDraftPick[]
   ),
   facets?: Facets,
   handleSortChange?: Function,

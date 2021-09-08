@@ -11,6 +11,7 @@ import { interTeamTradeGroupsSagas } from './interTeamTradeGroups'
 import { leagueSagas } from './league'
 import { leaguesSagas } from './leagues'
 import { listPositionSagas } from './listPosition'
+import { miniDraftPicksSagas } from './miniDraftPicks'
 import { playerSagas } from './player'
 import { playersSagas } from './players'
 import { requestSagas } from './request'
@@ -36,6 +37,7 @@ export default function * rootSaga () : Generator<any, any, any> {
     fork(listPositionSagas),
     fork(playerSagas),
     fork(playersSagas),
+    fork(miniDraftPicksSagas),
     fork(requestSagas),
     fork(roundSagas),
     fork(roundsSagas),
