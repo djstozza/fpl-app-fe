@@ -20,15 +20,16 @@ type Props = {
 const PlayersTable = (props: Props) => {
   const { teamId, players = [], tab, fetchTeamPlayers, updateTeamPlayersSort } = props
 
-  const cells: CellHash = playersTableCells()
-  delete cells['teams']
+  const cellHash: CellHash = playersTableCells()
+  delete cellHash['teams']
+  const cells = Object.values(cellHash).map(cell => ({ ...cell, filterParam: '' }))
 
   return (
     <SearchListener id={teamId} fetchAction={fetchTeamPlayers} initialFilterState={initialFilterState}>
       <SortTable
         collection={players}
         handleSortChange={(newSort) => updateTeamPlayersSort({ tab, sort: newSort })}
-        cells={Object.values(cells)}
+        cells={cells}
         tab={tab}
       />
     </SearchListener>

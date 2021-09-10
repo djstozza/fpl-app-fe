@@ -8,6 +8,7 @@ import { initialFilterState } from 'state/players/reducer'
 import SearchListener from 'components/common/searchListener'
 import Link from 'components/common/link'
 import TeamCrestLink from 'components/common/teamCrestLink'
+import StatusIconMapper from 'components/common/statusIconMapper'
 
 import {
   Theme,
@@ -75,6 +76,15 @@ export const playersTableCells = () => ({
     sortParam: 'positions.singularNameShort',
     filterParam: 'positionId',
     customRender: ({ position: { singularNameShort }}: PlayerSummary) => singularNameShort
+  },
+  status: {
+    cellId: 'statuses',
+    label: 'S',
+    toolTipLabel: 'Status',
+    filterParam: 'status',
+    customRender: ({ chanceOfPlayingThisRound, news, newsAdded, status }: PlayerSummary) => (
+      <StatusIconMapper status={status} news={news} newsAdded={newsAdded} chance={chanceOfPlayingThisRound} />
+    )
   },
   totalPoints: { cellId: 'totalPoints', label: 'TP', toolTipLabel: 'Total Points', sortParam: 'totalPoints' },
   goalsScored: { cellId: 'goalsScored', label: 'GS', toolTipLabel: 'Goals Scored', sortParam: 'goalsScored' },

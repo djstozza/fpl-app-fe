@@ -6,6 +6,7 @@ import SortTable from 'components/common/sortTable'
 import { PLAYERS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
 import TeamCrestLink from 'components/common/teamCrestLink'
+import StatusIconMapper from 'components/common/statusIconMapper'
 
 import type { ListPosition, CellHash } from 'types'
 
@@ -47,17 +48,32 @@ export const listPositionTableCells = () => ({
       )
     }
   },
+  team: {
+    cellId: 'teams',
+    label: 'T',
+    toolTipLabel: 'Team',
+    customRender: ({ team }: ListPosition, classes) => <TeamCrestLink team={team} />
+  },
   position: {
     cellId: 'position',
     label: 'P',
     toolTipLabel: 'Position',
     customRender: ({ position: { singularNameShort } }: ListPosition) => singularNameShort
   },
-  team: {
-    cellId: 'teams',
-    label: 'T',
-    toolTipLabel: 'Team',
-    customRender: ({ team }: ListPosition, classes) => <TeamCrestLink team={team} />
+  totalPoints: {
+    cellId: 'totalPoints',
+    label: 'TP',
+    toolTipLabel: 'Total Points',
+    customRender: ({ player: { totalPoints } }: ListPosition) => totalPoints
+  },
+  status: {
+    cellId: 'statuses',
+    label: 'S',
+    toolTipLabel: 'Status',
+    filterParam: 'status',
+    customRender: ({ player: { chanceOfPlayingThisRound, news, newsAdded, status } }: ListPosition) => (
+      <StatusIconMapper status={status} news={news} newsAdded={newsAdded} chance={chanceOfPlayingThisRound} />
+    )
   },
   role: {
     cellId: 'role',

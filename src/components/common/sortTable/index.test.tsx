@@ -70,8 +70,7 @@ describe('SortTable', () => {
 
       const wrapper = render({ handleChangePage })
       expect(tablePagination(wrapper).text()).toEqual(`${1 + offset}-${offset + limit} of ${PLAYER_SUMMARIES.length}`)
-
-      button(wrapper).at(3).simulate('click')
+      button(wrapper).at(4).simulate('click')
       expect(handleChangePage).toHaveBeenCalledWith(3)
     })
 

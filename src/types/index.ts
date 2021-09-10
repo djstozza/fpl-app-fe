@@ -120,7 +120,12 @@ export type TeamPlayer = {
   penaltiesSaved: number,
   penaltiesMissed: number,
   ownGoals: number,
-  position: PositionSummary
+  position: PositionSummary,
+  chanceOfPlayingNextRound?: number,
+  chanceOfPlayingThisRound?: number,
+  status: string,
+  news?: string,
+  newsAdded?: string
 } & PlayerBase
 
 export type Team = {
@@ -256,7 +261,7 @@ export type FplTeamList = {
 
 export type ListPositionBase = {
   id: string,
-  player: PlayerBase,
+  player: TeamPlayer,
   roleStr: string,
   role: number,
   displayOrder: number,
