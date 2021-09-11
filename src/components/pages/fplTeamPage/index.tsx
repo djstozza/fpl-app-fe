@@ -234,6 +234,7 @@ const FplTeamPage = (props: Props) => {
 
   const { name, isOwner, league: { id: leagueId, showLiveColumns } } = fplTeam
   const { round: { name: roundName = '', miniDraft = false } = {} } = currentFplTeamList || {}
+  const { data : { totalScore, round: { name: selectedRoundName = '' } = {} } = {} } = fplTeamList
 
   const extraTitleInfo = capitalize(action || roundName)
 
@@ -246,15 +247,28 @@ const FplTeamPage = (props: Props) => {
   TABS.trades['extraTitleInfo'] = extraTitleInfo
   TABS.teamTrades['extraTitleInfo'] = extraTitleInfo
   TABS.details['extraTitleInfo'] = capitalize(action)
+  const tabsArr = Object.values(TABS)
+  const showSelectedRoundNameTabs = tabsArr.map(({ value }) => {
+    if (value === 'details') return null
+    return value
+  }).filter(Boolean)
 
   return (
     <Fragment>
       <Typography variant='h4' className={classes.title}>
         {name}
+        {
+          showSelectedRoundNameTabs.includes(tab) && selectedRoundName &&
+          ` - ${selectedRoundName}`
+        }
+        {
+          tab === 'teamLists' && totalScore &&
+          ` - ${totalScore} Points`
+        }
       </Typography>
       <Tabs
         currentTab={tab}
-        tabs={Object.values(TABS)}
+        tabs={tabsArr}
         url={FPL_TEAMS_URL}
         id={fplTeamId}
         titleSubstr={name}
