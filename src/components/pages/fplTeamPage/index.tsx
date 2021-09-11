@@ -8,6 +8,7 @@ import {
   makeStyles
 } from '@material-ui/core'
 import { capitalize } from 'lodash'
+import pluralize from 'pluralize'
 
 import Tabs from 'components/common/tabs'
 import { fplTeamActions } from 'state/fplTeam'
@@ -263,7 +264,7 @@ const FplTeamPage = (props: Props) => {
         }
         {
           tab === 'teamLists' && totalScore &&
-          ` - ${totalScore} Points`
+          ` - ${totalScore} ${pluralize('Point', totalScore)}`
         }
       </Typography>
       <Tabs
@@ -327,6 +328,7 @@ const FplTeamPage = (props: Props) => {
               processSubstitution={processSubstitution}
               clearValidSubstitutions={clearValidSubstitutions}
               selectedFplTeamListId={selectedFplTeamListId}
+              fetchFplTeamList={fetchFplTeamList}
             />
           )}
         />

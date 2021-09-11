@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useCallback } from 'react'
 import { useSnackbar } from 'notistack'
 import { groupBy } from 'lodash'
 import {
@@ -8,10 +8,12 @@ import {
 } from '@material-ui/core'
 import { colors } from 'utilities/colors'
 import TabPanel from 'components/common/tabPanel'
+import ActionCable from 'actioncable'
 
 import ListPositionBox from './listPositionBox'
 import {
-  FPL_TEAMS_URL
+  FPL_TEAMS_URL,
+  CABLE_URL
 } from 'utilities/constants'
 
 import type { FplTeamListsState } from 'state/fplTeamLists'
@@ -28,7 +30,8 @@ type Props = {
   processSubstitution: Function,
   clearValidSubstitutions: Function,
   isOwner: boolean,
-  selectedFplTeamListId?: string
+  selectedFplTeamListId?: string,
+  fetchFplTeamList: Function
 }
 
 interface GroupedListPositions {
@@ -202,6 +205,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+const cable = ActionCable.createConsumer(CABLE_URL)
+
 const FplTeamListChart = (props: Props) => {
   const {
     fplTeamId,
@@ -212,19 +217,44 @@ const FplTeamListChart = (props: Props) => {
     processSubstitution,
     clearValidSubstitutions,
     isOwner,
-    selectedFplTeamListId
+    selectedFplTeamListId,
+    fetchFplTeamList
   } = props
   const [selectedListPositionId, setSelectedListPositionId] = useState()
+  const [fplTeamListUpdatedAt, setFplTeamListUpdatedAt] = useState(0)
   const { enqueueSnackbar } = useSnackbar()
 
   const { validSubstitutions, fetching } = listPosition
 
   const classes = useStyles()
 
+  const handleReceived = useCallback(
+    ({ updatedAt }) => {
+      if (updatedAt <= fplTeamListUpdatedAt) return
+
+      fetchFplTeamList(selectedFplTeamListId)
+      setFplTeamListUpdatedAt(updatedAt)
+    }, [selectedFplTeamListId, fetchFplTeamList, setFplTeamListUpdatedAt, fplTeamListUpdatedAt]
+  )
+
   useEffect(
     () => {
       errors.forEach(({ detail }) => enqueueSnackbar(detail, { variant: 'error' }))
     }, [enqueueSnackbar, errors]
+  )
+
+  useEffect(
+    () => {
+      if (!selectedFplTeamListId) return
+      let isActive = true
+
+      cable.subscriptions.create(
+        { channel: 'FplTeamListScoreChannel', fpl_team_list_id: selectedFplTeamListId },
+        { received: received  => { if (isActive) handleReceived(received) } }
+      )
+
+      return () => { isActive = false }
+    }, [handleReceived, selectedFplTeamListId]
   )
 
   if (!fplTeamList || !listPositions.length) return null
