@@ -30,14 +30,6 @@ export const TITLE = 'Fpl App'
 export const cable = ActionCable.createConsumer(CABLE_URL)
 
 export const APPLICATION_ERRORS = {
-  '403': {
-    description: 'Forbidden',
-    title: 'Not permitted',
-    message: 'You do not have permission to perform this action. Try logging out and in again.',
-    action: {
-      label: 'OK'
-    }
-  },
   '404': {
     description: 'Not Found',
     title: 'Requested resource not found',
@@ -49,8 +41,8 @@ export const APPLICATION_ERRORS = {
   },
   '429': {
     description: 'Too Many Requests',
-    title: 'Rate limit reached',
-    message: 'Too many requests. Please try again after {retryAfter} seconds.',
+    title: 'Too many requests',
+    message: 'Please try again after {retryAfter} seconds.',
     action: {
       label: 'OK'
     }

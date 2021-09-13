@@ -5,3 +5,7 @@ export const REQUEST_FAIL = 'REQUEST_FAIL'
 export const ADD_REQUEST_ERROR = 'ADD_REQUEST_ERROR'
 export const REQUEST_VALIDATION_ERROR = 'REQUEST_VALIDATION_ERROR'
 export const CLEAR_REQUEST_ERRORS = 'CLEAR_REQUEST_ERRORS'
+
+export const clearRequestErrors = () => ({
+  type: CLEAR_REQUEST_ERRORS
+})

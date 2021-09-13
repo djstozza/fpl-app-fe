@@ -32,6 +32,7 @@ import DraftPage from 'components/pages/draftPage'
 import MiniDraftPage from 'components/pages/miniDraftPage'
 import PrivateRoute from 'components/common/privateRoute'
 import NavBar from 'components/navBar'
+import ErrorDialog from 'components/errorDialog'
 import theme from './theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -52,6 +53,7 @@ const App = () => {
           <NavBar />
           <div className={classes.container}>
             <LoadingBar showFastActions />
+            <ErrorDialog />
 
             <Switch>
               <Route exact path='/' render={(props) => <RoundsPage {...props} />} />
