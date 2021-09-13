@@ -41,6 +41,11 @@ const FPL_TEAMS_TABLE_CELLS = {
     toolTipLabel: 'Rank',
     sortParam: 'rank'
   },
+  totalScore: {
+    cellId: 'totalScore',
+    label: 'TS',
+    toolTipLabel: 'Total Score'
+  },
   draftPickNumber: {
     cellId: 'draftPickNumber',
     label: 'DP',

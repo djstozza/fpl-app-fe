@@ -33,6 +33,7 @@ const FPL_TEAM_DETAILS_ROWS = [
     )
   },
   { rowId: 'rank', label: 'Rank' },
+  { rowId: 'totalScore', label: 'Total Score' },
   { rowId: 'draftPickNumber', label: 'Draft Pick Number' },
   { rowId: 'miniDraftPickNumber', label: 'Mini Draft Pick Number' },
   {

@@ -40,6 +40,7 @@ const FPL_TEAMS_TABLE_CELLS = [
     )
   },
   { cellId: 'rank', label: 'R', toolTipLabel: 'Rank', sortParam: 'rank' },
+  { cellId: 'totalScore', label: 'TS', toolTipLabel: 'Total Score' },
   {
     cellId: 'draftPickNumber',
     label: 'DP',
