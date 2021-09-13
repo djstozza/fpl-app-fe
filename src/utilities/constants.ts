@@ -1,3 +1,5 @@
+import ActionCable from 'actioncable'
+
 export const API_URL = process.env.REACT_APP_API_URL
 export const CABLE_URL = process.env.REACT_APP_CABLE_URL
 export const ROUNDS_URL = '/rounds'
@@ -24,6 +26,8 @@ export const API_LIST_POSITIONS_PATH = '/list_positions'
 export const API_WAIVER_PICKS_PATH = '/waiver_picks'
 
 export const TITLE = 'Fpl App'
+
+export const cable = ActionCable.createConsumer(CABLE_URL)
 
 export const APPLICATION_ERRORS = {
   '403': {

@@ -1,7 +1,6 @@
 import { useEffect, useState, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
-import ActionCable from 'actioncable'
 import { useSnackbar } from 'notistack'
 import {
   Typography,
@@ -18,7 +17,7 @@ import DraftPicksTable from './draftPicksTable'
 import AvailablePlayersTable from './availablePlayersTable'
 import UserCanPickAlert from './userCanPickAlert'
 import DraftCompletedAlert from 'components/common/draftCompletedAlert'
-import { LEAGUES_URL, CABLE_URL } from 'utilities/constants'
+import { LEAGUES_URL, cable } from 'utilities/constants'
 
 import type { DraftPicksState } from 'state/draftPicks'
 import type { PlayersState } from 'state/players'
@@ -56,8 +55,6 @@ const TABS = [
   { label: 'Available Players', value: 'draft/availablePlayers', display: true },
   { label: 'Draft Picks', value: 'draft/draftPicks', display: true }
 ]
-
-const cable = ActionCable.createConsumer(CABLE_URL)
 
 const DraftPage = (props: Props) => {
   const {

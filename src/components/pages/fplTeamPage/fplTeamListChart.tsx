@@ -8,12 +8,11 @@ import {
 } from '@material-ui/core'
 import { colors } from 'utilities/colors'
 import TabPanel from 'components/common/tabPanel'
-import ActionCable from 'actioncable'
 
 import ListPositionBox from './listPositionBox'
 import {
   FPL_TEAMS_URL,
-  CABLE_URL
+  cable
 } from 'utilities/constants'
 
 import type { FplTeamListsState } from 'state/fplTeamLists'
@@ -204,8 +203,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 )
-
-const cable = ActionCable.createConsumer(CABLE_URL)
 
 const FplTeamListChart = (props: Props) => {
   const {

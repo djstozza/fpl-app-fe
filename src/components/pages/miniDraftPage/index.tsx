@@ -1,7 +1,6 @@
 import { useEffect, useState, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
-import ActionCable from 'actioncable'
 import { useSnackbar } from 'notistack'
 import {
   Typography,
@@ -19,7 +18,7 @@ import MiniDraftPicksTable from './miniDraftPicksTable'
 import NewMiniDraftPick from './newMiniDraftPick'
 import UserCanPickAlert from './userCanPickAlert'
 import DraftCompletedAlert from 'components/common/draftCompletedAlert'
-import { LEAGUES_URL, CABLE_URL } from 'utilities/constants'
+import { LEAGUES_URL, cable } from 'utilities/constants'
 
 import type { FplTeamListState } from 'state/fplTeamList'
 import type { MiniDraftPicksState } from 'state/miniDraftPicks'
@@ -62,8 +61,6 @@ const TABS = [
   { label: 'Tradeable List Positions', value: 'miniDraft/tradeableListPositions', display: true },
   { label: 'Mini Draft Picks', value: 'miniDraft/miniDraftPicks', display: true }
 ]
-
-const cable = ActionCable.createConsumer(CABLE_URL)
 
 const MiniDraftPage = (props: Props) => {
   const {

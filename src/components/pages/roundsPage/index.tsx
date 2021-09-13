@@ -1,9 +1,9 @@
-import { useEffect, useState, useMemo, Fragment } from 'react'
+import { useEffect, useState, useMemo, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
 
 import { roundActions } from 'state/round'
 import { roundsActions } from 'state/rounds'
-import { ROUNDS_URL, TITLE } from 'utilities/constants'
+import { ROUNDS_URL, TITLE, cable } from 'utilities/constants'
 
 import TabPanel from 'components/common/tabPanel'
 import RoundDetails from './roundDetails'
@@ -29,9 +29,18 @@ export const RoundsPage = (props: Props) => {
     match: { params: { roundId } }
   } = props
   const [selectedRounId, setSelectedRoundId] = useState<string | undefined>()
+  const [lastUpdatedAt, setLastUpdatedAt] = useState(0)
 
   const currentRoundId = rounds.find(({ current }) => current)?.id
   const lastRoundId = rounds[rounds.length - 1]?.id
+
+  const handleReceived = useCallback(
+    ({ updatedAt }) => {
+      if (updatedAt <= lastUpdatedAt) return
+      fetchRound(selectedRounId)
+      setLastUpdatedAt(updatedAt)
+    }, [selectedRounId, fetchRound, lastUpdatedAt, setLastUpdatedAt]
+  )
 
   useEffect(
     () => {
@@ -43,6 +52,20 @@ export const RoundsPage = (props: Props) => {
     () => {
       setSelectedRoundId(roundId || currentRoundId || lastRoundId)
     }, [setSelectedRoundId, roundId, currentRoundId, lastRoundId]
+  )
+
+  useEffect(
+    () => {
+      if (!selectedRounId) return
+      let isActive = true
+
+      cable.subscriptions.create(
+        { channel: 'RoundsChannel', round_id: selectedRounId },
+        { received: received  => { if (isActive) handleReceived(received) } }
+      )
+
+      return () => { isActive = false }
+    }, [handleReceived, selectedRounId]
   )
 
   if (rounds.length === 0) return null
