@@ -12,8 +12,9 @@ import {
 
 import { SetElHeight } from 'utilities/helpers'
 import PlayerImage from './playerImage'
+import { playersTableCells } from 'components/pages/playersPage'
 
-import { Player } from 'types'
+import { Player, CellHash } from 'types'
 
 type Props = {
   player: Player
@@ -44,27 +45,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const PLAYER_DETAILS_ROWS = [
-  {
-    rowId: 'position',
-    label: 'Position',
-    customRender: ({ position: { singularNameShort }}: Player) => singularNameShort
-  },
-  { rowId: 'totalPoints', label: 'Total Points' },
-  { rowId: 'minutes', label: 'Minutes' },
-  {
-    rowId: 'goalsScored',
-    label: 'Goals Scored'
-  },
-  { rowId: 'assists', label: 'Assists' },
-  { rowId: 'saves', label: 'Saves' },
-  { rowId: 'cleanSheets', label: 'Clean Sheets' },
-  { rowId: 'penaltiesSaved', label: 'Penalties Saved' },
-  { rowId: 'penaltiesMissed', label: 'Penalties Missed' },
-  { rowId: 'ownGoals', label: 'Own Goals' },
-  { rowId: 'bonus', label: 'Bonus' }
-]
-
 const PlayerDetails = ({ player }: Props) => {
   const tableRef = useRef(null)
   const { code, lastName } = player
@@ -78,6 +58,11 @@ const PlayerDetails = ({ player }: Props) => {
   }, [tableHeight])
 
   const classes = useStyles({ tableHeight })
+
+  let cells: CellHash = playersTableCells()
+  delete cells.firstName
+  delete cells.lastName
+  delete cells.teams
 
   return (
     <Grid container >
@@ -96,13 +81,13 @@ const PlayerDetails = ({ player }: Props) => {
           <Table size='small'>
             <TableBody>
               {
-                PLAYER_DETAILS_ROWS.map(({ rowId, label, customRender }) => (
-                  <TableRow key={rowId}>
+                Object.values(cells).map(({ cellId, toolTipLabel: label, customRender }) => (
+                  <TableRow key={cellId}>
                     <TableCell align='center'>
                       {label}
                     </TableCell>
                     <TableCell align='center'>
-                      {customRender ? customRender(player) : player[rowId]}
+                      {customRender ? customRender(player) : player[cellId]}
                     </TableCell>
                   </TableRow>
                 ))
