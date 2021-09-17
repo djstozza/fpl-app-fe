@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     imageContainer: {
       display: 'flex',
-      justifyContent: 'center',
       alignItems: 'center'
     }
   })
