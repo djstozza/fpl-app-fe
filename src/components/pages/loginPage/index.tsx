@@ -61,6 +61,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  noWrap: {
+    whiteSpace: 'nowrap'
   }
 }))
 
@@ -129,10 +132,16 @@ const LoginPage = (props: Props) => {
             helperText={errors.find(({ source }) => source.includes('password'))?.detail}
           />
           <div className={classes.actions}>
-            <Typography>
-              Don't have an account? <Link to={SIGN_UP_URL}>Sign up</Link> now!
-            </Typography>
+            <div>
+              <Typography>
+                Don't have an account?
+              </Typography>
+              <Typography>
+                <Link to={SIGN_UP_URL}>Sign up</Link> now!
+              </Typography>
+            </div>
             <Button
+              className={classes.noWrap}
               type='submit'
               disabled={!email || !password || submitting}
               variant='contained'

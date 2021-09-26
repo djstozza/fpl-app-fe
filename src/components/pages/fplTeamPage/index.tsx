@@ -100,25 +100,25 @@ const useStyles = makeStyles((theme: Theme) =>
 const TABS = {
   details: { label: 'Details', value: 'details', display: true },
   teamLists: {
-    label: 'Team Lists',
+    label: 'Lists',
     value: 'teamLists',
     matcher: /teamLists((\/\d+)?\/)?$/,
     display: true
   },
   waiverPicks: {
-    label: 'Waiver Picks',
+    label: 'Waiver',
     value: 'waiverPicks',
     matcher: /(teamLists\/\d+\/)?waiverPicks/,
     display: true
   },
   trades: {
-    label: 'Trades',
-    value: 'trades',
-    matcher: /(teamLists\/\d+\/)?trades/,
+    label: 'Free',
+    value: 'freeAgents',
+    matcher: /(teamLists\/\d+\/)?freeAgents/,
     display: true
   },
   teamTrades: {
-    label: 'Team Trades',
+    label: 'Trades',
     value: 'teamTrades',
     matcher: /(teamLists\/\d+\/)?teamTrades/,
     display: true
@@ -263,7 +263,7 @@ const FplTeamPage = (props: Props) => {
           ` - ${selectedRoundName}`
         }
         {
-          tab === 'teamLists' && totalScore &&
+          tab === 'teamLists' && Boolean(totalScore) &&
           ` - ${totalScore} ${pluralize('Point', totalScore)}`
         }
       </Typography>
@@ -338,8 +338,8 @@ const FplTeamPage = (props: Props) => {
             [
               `${FPL_TEAMS_URL}/:fplTeamId/waiverPicks`,
               `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/waiverPicks`,
-              `${FPL_TEAMS_URL}/:fplTeamId/trades`,
-              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/trades`
+              `${FPL_TEAMS_URL}/:fplTeamId/freeAgents`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/freeAgents`
             ]
           }
           render={() => (
