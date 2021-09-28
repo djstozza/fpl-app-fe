@@ -44,4 +44,13 @@ describe('TabPanel', () => {
     tab(wrapper).at(0).find('button').simulate('click')
     expect(history.location.pathname).toEqual('/rounds/1/')
   })
+
+  it('adds the tab if present on click', () => {
+    const wrapper = render({ tab: 'foo' })
+
+    expect(history.location.pathname).not.toEqual('/rounds/1/foo')
+
+    tab(wrapper).at(0).find('button').simulate('click')
+    expect(history.location.pathname).toEqual('/rounds/1/foo')
+  })
 })

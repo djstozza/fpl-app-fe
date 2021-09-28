@@ -47,6 +47,12 @@ describe('SortTable', () => {
   const tablePagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
   const button = wrapper => wrapper.find('button')
 
+  it('shows the no results found message if the collection is empty', () => {
+    const wrapper = render({ collection: [] })
+
+    expect(tableCell(wrapper).text()).toEqual('No results found')
+  })
+
   it('renders the table rows and cells', () => {
     const wrapper = render()
     expect(headerCell(wrapper)).toHaveLength(cells.length)
@@ -56,12 +62,57 @@ describe('SortTable', () => {
     expect(tableCell(wrapper, 3).at(3).html()).toContain(PLAYER_SUMMARIES[3].position.singularNameShort)
   })
 
-  it('triggers handleSortChange, with the opposite direction', () => {
-    const handleSortChange = jest.fn()
-    const wrapper = render({ handleSortChange })
+  describe('sort', () => {
+    test('desc -> asc', () => {
+      const handleSortChange = jest.fn()
+      let wrapper = render({ handleSortChange })
 
-    sortLabel(wrapper).at(4).simulate('click') // Total points sort label
-    expect(handleSortChange).toBeCalledWith({ 'totalPoints': 'asc' })
+      sortLabel(wrapper).at(4).simulate('click') // Total points sort label
+      expect(handleSortChange).toBeCalledWith({ 'totalPoints': 'asc' })
+    })
+
+    test('asc -> desc', () => {
+      const handleSortChange = jest.fn()
+
+      const wrapper = render(
+        { handleSortChange },
+        {
+          search: {
+            page: { offset, limit },
+            sort: { totalPoints: 'asc' }
+          }
+        }
+      )
+
+      sortLabel(wrapper).at(4).simulate('click') // Total points sort label
+      expect(handleSortChange).toBeCalledWith({ totalPoints: 'desc' })
+    })
+
+    test('none -> asc', () => {
+      const handleSortChange = jest.fn()
+
+      const wrapper = render(
+        { handleSortChange },
+        {
+          search: {
+            page: { offset, limit }
+          }
+        }
+      )
+
+      sortLabel(wrapper).at(4).simulate('click') // Total points sort label
+      expect(handleSortChange).toBeCalledWith({ totalPoints: 'asc' })
+    })
+
+    test('with a tab', () => {
+      let wrapper = render(
+        { tab: 'tab' },
+        {
+          search: { sort: { tab: { totalPoints: 'asc' } } }
+        }
+      )
+      expect(wrapper.find('HeaderCell').at(4).props().sort).toEqual({ totalPoints: 'asc' })
+    })
   })
 
   describe('pagination', () => {
@@ -76,6 +127,16 @@ describe('SortTable', () => {
 
     it('disables pagination if noOffset is true', () => {
       const wrapper = render({ noOffset: true })
+
+      expect(tablePagination(wrapper).text())
+        .toEqual(`1-${offset + PLAYER_SUMMARIES.length} of ${PLAYER_SUMMARIES.length}`)
+    })
+
+    it('uses the default pagination if none provided', () => {
+      const wrapper = render(
+        {},
+        { search: undefined }
+      )
 
       expect(tablePagination(wrapper).text())
         .toEqual(`1-${offset + PLAYER_SUMMARIES.length} of ${PLAYER_SUMMARIES.length}`)

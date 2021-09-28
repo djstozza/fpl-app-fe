@@ -1,6 +1,6 @@
 import { createMount } from '@material-ui/core/test-utils'
 
-import { PrivateRoute } from '.'
+import ConnectedPrivateRoute, { PrivateRoute } from '.'
 import { MockedRouterStore, blank__ } from 'test/helpers'
 import { LOGIN_URL } from 'utilities/constants'
 import { USER } from 'test/fixtures'
@@ -19,6 +19,16 @@ describe('PrivateRoute', () => {
     </MockedRouterStore>
   )
 
+  const connectedRender = (state = {}) =>  createMount()(
+    <MockedRouterStore defaultState={{ auth: { user: null }, ...state }}>
+      <ConnectedPrivateRoute>
+        <div>
+          Child component
+        </div>
+      </ConnectedPrivateRoute>
+    </MockedRouterStore>
+  )
+
   it('redirects to the loginPage if there is no user', () => {
     expect(window.location.pathname).toEqual('/')
 
@@ -34,5 +44,11 @@ describe('PrivateRoute', () => {
 
     expect(wrapper.text()).toEqual('Child component')
     expect(updateSession).toHaveBeenCalled()
+  })
+
+  it('renders the connected component', () => {
+    const wrapper = connectedRender({ auth: { user: USER } })
+
+    expect(wrapper.text()).toEqual('Child component')
   })
 })

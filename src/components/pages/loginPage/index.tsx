@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const LoginPage = (props: Props) => {
+export const LoginPage = (props: Props) => {
   const { logIn, errors = [], submitting, initializeAuth } = props
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

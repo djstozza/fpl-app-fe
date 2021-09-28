@@ -19,7 +19,6 @@ import Link from 'components/common/link'
 import type { Error } from 'types'
 
 type Props = {
-  token?: string,
   submitting: boolean,
   signUp: Function,
   initializeAuth: Function,
@@ -64,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const SignUpPage = (props: Props) => {
+export const SignUpPage = (props: Props) => {
   const { signUp, errors = [], submitting, initializeAuth } = props
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
@@ -153,17 +152,15 @@ const SignUpPage = (props: Props) => {
               Submit
             </Button>
           </div>
-
         </Paper>
       </form>
     </div>
   )
 }
 
-const mapStateToProps = ( { auth: { errors, submitting, token } }) => ({
+const mapStateToProps = ({ auth: { errors, submitting } }) => ({
   errors,
-  submitting,
-  token
+  submitting
 })
 
 const matchDispatchToProps = {

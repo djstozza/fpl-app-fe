@@ -61,7 +61,7 @@ export const RoundsPage = (props: Props) => {
 
       cable.subscriptions.create(
         { channel: 'RoundsChannel', round_id: selectedRounId },
-        { received: received  => { if (isActive) handleReceived(received) } }
+        { received: received => { if (isActive) handleReceived(received) } }
       )
 
       return () => { isActive = false }

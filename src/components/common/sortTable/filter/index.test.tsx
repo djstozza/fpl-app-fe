@@ -15,6 +15,7 @@ describe('Filter', () => {
       filterParam='filterParam'
       setAnchorEl={blank__}
       applyFilter={blank__}
+      filterSelection={[]}
       {...props}
     />
   )
@@ -46,6 +47,10 @@ describe('Filter', () => {
     button(wrapper).at(0).simulate('click') // Open modal button
 
     expect(checkbox(wrapper).at(0).props().checked).toEqual(true)
+    expect(checkbox(wrapper).at(1).props().checked).toEqual(true)
+
+    checkbox(wrapper).at(0).simulate('click') // Uncheck checkbox
+    expect(checkbox(wrapper).at(0).props().checked).toEqual(false)
     expect(checkbox(wrapper).at(1).props().checked).toEqual(true)
 
     button(wrapper).at(1).simulate('click') // Clear all button

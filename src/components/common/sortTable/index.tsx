@@ -7,6 +7,7 @@ import {
   TableRow,
   TableHead,
   TablePagination,
+  Typography,
   Theme,
   makeStyles,
   createStyles
@@ -97,7 +98,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const SortTable = (props: Props) => {
   const {
-    collection = [],
+    collection,
     handleSortChange,
     handleFilterChange,
     handleChangePage,
@@ -173,21 +174,31 @@ const SortTable = (props: Props) => {
           </TableHead>
           <TableBody>
             {
-              collection.map((record, rowKey) => (
-                <TableRow key={rowKey}>
-                  {
-                    cells.map(({ cellId, sticky, customRender }, cellKey) => (
-                      <TableCell
-                        align='center'
-                        key={cellKey}
-                        className={classnames({ [classes.mainCell]: sticky })}
-                      >
-                        {customRender ? customRender(record, classes, tab) : record[cellId]}
-                      </TableCell>
-                    ))
-                  }
-                </TableRow>
-              ))
+              collection && !collection.length
+                ? (
+                  <TableRow>
+                    <TableCell colSpan={100}>
+                      <Typography align='center'>No results found</Typography>
+                    </TableCell>
+                  </TableRow>
+                )
+                : (
+                  collection.map((record, rowKey) => (
+                    <TableRow key={rowKey}>
+                      {
+                        cells.map(({ cellId, sticky, customRender }, cellKey) => (
+                          <TableCell
+                            align='center'
+                            key={cellKey}
+                            className={classnames({ [classes.mainCell]: sticky })}
+                          >
+                            {customRender ? customRender(record, classes, tab) : record[cellId]}
+                          </TableCell>
+                        ))
+                      }
+                    </TableRow>
+                  ))
+                )
             }
           </TableBody>
         </Table>
@@ -196,7 +207,7 @@ const SortTable = (props: Props) => {
         ref={paginationRef}
         component='div'
         count={total || collection.length}
-        rowsPerPage={noOffset ? collection.length || limit : limit}
+        rowsPerPage={noOffset ? collection.length : limit}
         rowsPerPageOptions={[limit]}
         page={offset / limit}
         onChangePage={changePage}

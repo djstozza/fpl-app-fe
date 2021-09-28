@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Filter = (props: Props) => {
   const {
-    facetValues = [],
+    facetValues,
     filterParam,
     anchorEl,
     setAnchorEl,
@@ -54,7 +54,7 @@ const Filter = (props: Props) => {
   }
 
   const handleSelect = (value: string) => {
-    const index = (selected || []).indexOf(String(value))
+    const index = selected.indexOf(String(value))
     const newSelection = index >= 0 ? selected.filter(a => a !== value): [...selected, String(value)]
 
     setSelected(newSelection)

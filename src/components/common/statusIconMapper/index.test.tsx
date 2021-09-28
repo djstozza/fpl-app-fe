@@ -20,7 +20,7 @@ describe('StatusIconMapper', () => {
   const tooltip = wrapper => wrapper.find('WithStyles(ForwardRef(Tooltip))')
 
   it('renders the CheckCircleIcon when status = a', () => {
-    const wrapper = render()
+    const wrapper = render({ chance: 100 })
     expect(checkCircleIcon(wrapper)).toHaveLength(1)
   })
 
@@ -56,7 +56,7 @@ describe('StatusIconMapper', () => {
     expect(wrapper.text()).toEqual('25%')
   })
 
-  it('renders the news and the newsAdded if present', () => {
+  it('renders the news and the newsAdded if both present', () => {
     timezoneMock.register('Australia/Adelaide')
 
     const news = 'Calf injury. 75% chance of playing'
@@ -64,5 +64,14 @@ describe('StatusIconMapper', () => {
     const wrapper = render({ status: 'd', news, newsAdded })
 
     expect(tooltip(wrapper).props().title).toEqual(`${news}. News added: 29/08/21 23:00`)
+  })
+
+  it('only the news if no newsAdded is present', () => {
+    timezoneMock.register('Australia/Adelaide')
+
+    const news = 'Calf injury. 75% chance of playing'
+    const wrapper = render({ status: 'd', news })
+
+    expect(tooltip(wrapper).props().title).toEqual(news)
   })
 })

@@ -8,6 +8,7 @@ import {
 } from 'test/fixtures'
 import { TITLE } from 'utilities/constants'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
+import { cable } from 'utilities/constants'
 
 describe('RoundsPage', () => {
   const connectedRender = (props = {}, state = {}) => createMount()(

@@ -100,7 +100,7 @@ describe('HeaderCell', () => {
     })
 
     it('does not render the filter if there is no filterParam', () => {
-      const wrapper = render({ filterParam: undefined })
+      const wrapper = render({ filterParam: undefined, facets: undefined })
 
       expect(wrapper.find('Filter')).toHaveLength(0)
     })

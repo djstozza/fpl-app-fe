@@ -32,7 +32,7 @@ type Props = {
   chance?: number
 }
 
-const StatusIconMapper = ({ status, news = '', newsAdded = '', chance }: Props) => {
+const StatusIconMapper = ({ status, news, newsAdded, chance = 0 }: Props) => {
   const classes = useStyles()
   const icons = {
     'a': <CheckCircleIcon className={classes.available} />,
@@ -43,11 +43,11 @@ const StatusIconMapper = ({ status, news = '', newsAdded = '', chance }: Props) 
     'i': <LocalHospitalIcon className={classes.unavailable} />
   }
 
-  const title = news && (news + (newsAdded ? `. News added: ${moment(newsAdded).format('DD/MM/YY HH:mm')}` : ''))
+  const title = news ? (news + (newsAdded ? `. News added: ${moment(newsAdded).format('DD/MM/YY HH:mm')}` : '')) : ''
 
   return (
     <Tooltip title={title}>
-      {Boolean(chance) && (chance || 0) < 100 ? <div className={classes.doubtful}>{chance}%</div> : icons[status]}
+      {Boolean(chance) && chance < 100 ? <div className={classes.doubtful}>{chance}%</div> : icons[status]}
     </Tooltip>
   )
 }

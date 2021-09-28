@@ -84,6 +84,19 @@ const errorFailedToFetch = {
   url: 'example.com'
 }
 
+const error422 = {
+  errors: [
+    {
+      detail: 'This is a 422 message',
+      status: '422',
+      title: 'Unprocessable entity'
+    }
+  ],
+  status: '422',
+  statusText: 'Unprocessable entity',
+  url: 'example.com'
+}
+
 const h6 = wrapper => wrapper.find('h6')
 const p = wrapper => wrapper.find('p')
 const button = wrapper => wrapper.find('WithStyles(ForwardRef(Button))')
@@ -154,5 +167,11 @@ describe('ErrorDialog', () => {
     button(wrapper).simulate('click')
     expect(onClose).toHaveBeenCalled()
     expect(clearRequestErrors).toHaveBeenCalled()
+  })
+
+  it('does not render anything if the error code is not one that has been specified in the constants', () => {
+    const wrapper = mockedStoreRender({ request: { errors: [error422] } })
+
+    expect(wrapper.html()).toEqual('')
   })
 })

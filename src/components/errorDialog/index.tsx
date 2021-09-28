@@ -39,15 +39,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const DEFAULT_ACTION: DefaultAction = { action: { label: 'OK' } }
-
 export const ErrorDialog = (props: Props) => {
   const { errorCode, title, message, clearRequestErrors, rateLimitError, onClose } = props
   const classes = useStyles()
 
   if (!errorCode) return null
 
-  const error = APPLICATION_ERRORS[errorCode] || DEFAULT_ACTION
+  const error = APPLICATION_ERRORS[errorCode]
+
+  if (!error) return null
   const { action: { label, path } } = error
 
   const handleClose = () => {
@@ -110,7 +110,6 @@ export const ErrorDialog = (props: Props) => {
 }
 
 const rateLimitError = (e) => {
-  if (!Array.isArray(e.errors)) return
   const error = e.errors.find(err => err.status === '429')
 
   return error && error.meta
