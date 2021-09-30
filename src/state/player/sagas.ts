@@ -50,14 +50,14 @@ function * fetchPlayerHistoryPast (action) : Generator<any, any, any> {
   })
 }
 
-function * updatePlayerHistory (action) : Generator<any, any, any> {
+function * updatePlayerHistorySort (action) : Generator<any, any, any> {
   const { sort } = action
   const { data: { id: playerId } } = yield select(state => state.player)
 
   yield history.push(`${PLAYERS_URL}/${playerId}/history?${qs.stringify({ sort: { history: sort } })}`)
 }
 
-function * updatePlayerHistoryPast (action) : Generator<any, any, any> {
+function * updatePlayerHistoryPastSort (action) : Generator<any, any, any> {
   const { sort } = action
   const { data: { id: playerId } } = yield select(state => state.player)
 
@@ -69,7 +69,7 @@ export default function * playerSagas () : Generator<any, any, any> {
     yield takeLatest(actions.API_PLAYERS_SHOW, fetchPlayer),
     yield takeLatest(actions.API_PLAYERS_HISTORY_INDEX, fetchPlayerHistory),
     yield takeLatest(actions.API_PLAYERS_HISTORY_PAST_INDEX, fetchPlayerHistoryPast),
-    yield takeLatest(actions.UPDATE_PLAYER_HISTORY, updatePlayerHistory),
-    yield takeLatest(actions.UPDATE_PLAYER_HISTORY_PAST, updatePlayerHistoryPast)
+    yield takeLatest(actions.UPDATE_PLAYER_HISTORY_SORT, updatePlayerHistorySort),
+    yield takeLatest(actions.UPDATE_PLAYER_HISTORY_PAST_SORT, updatePlayerHistoryPastSort)
   ])
 }

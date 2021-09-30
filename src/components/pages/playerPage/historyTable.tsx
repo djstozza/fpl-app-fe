@@ -15,7 +15,7 @@ type Props = {
   tab: string,
   history: History[],
   fetchPlayerHistory: Function,
-  updatePlayerHistory: Function,
+  updatePlayerHistorySort: Function,
   hasHistory: boolean
 }
 
@@ -76,7 +76,7 @@ const HISTORY_TABLE_CELLS = [
 ]
 
 const HistoryTable = (props: Props) => {
-  const { history = [], playerId, tab, fetchPlayerHistory, updatePlayerHistory, hasHistory } = props
+  const { history = [], playerId, tab, fetchPlayerHistory, updatePlayerHistorySort, hasHistory } = props
 
   if (!hasHistory) return <Redirect to={`${PLAYERS_URL}/${playerId}`} />
 
@@ -84,7 +84,7 @@ const HistoryTable = (props: Props) => {
     <SearchListener id={playerId} fetchAction={fetchPlayerHistory} initialFilterState={initialFilterState}>
       <SortTable
         collection={history}
-        handleSortChange={(newSort) => updatePlayerHistory({ tab, sort: newSort })}
+        handleSortChange={(newSort) => updatePlayerHistorySort({ tab, sort: newSort })}
         cells={HISTORY_TABLE_CELLS}
         tab={tab}
       />

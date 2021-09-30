@@ -31,4 +31,4 @@ export const addToInterTeamTradeGroup = (inListPosition: ListPosition) =>
   ({ type: API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE, inListPosition })
 
 export const removeTrade = (interTeamTradeId: string) =>
-  ({ type: API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE, interTeamTradeId})
+  ({ type: API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE, interTeamTradeId })

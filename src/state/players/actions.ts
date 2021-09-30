@@ -7,7 +7,6 @@ export const UPDATE_PLAYERS_PAGE = 'UPDATE_PLAYERS_PAGE'
 type Props = {
   filter?: Object,
   sort?: Object,
-  updateUrl?: boolean,
   page?: Object
 }
 

@@ -44,19 +44,19 @@ describe('Player reducer handles action', () => {
       .toEqual({ ...initialState, historyPast: PLAYER_HISTORY_PAST })
   })
 
-  test(actions.UPDATE_PLAYER_HISTORY, () => {
+  test(actions.UPDATE_PLAYER_HISTORY_SORT, () => {
     const newSort = { goalsScored: 'desc' }
     expect(reducer(initialState, {
-      type: actions.UPDATE_PLAYER_HISTORY,
+      type: actions.UPDATE_PLAYER_HISTORY_SORT,
       sort: newSort
     }))
       .toEqual({ ...initialState, sort: { ...initialState.sort, history: newSort }})
   })
 
-  test(actions.UPDATE_PLAYER_HISTORY_PAST, () => {
+  test(actions.UPDATE_PLAYER_HISTORY_PAST_SORT, () => {
     const newSort = { minutes: 'asc' }
     expect(reducer(initialState, {
-      type: actions.UPDATE_PLAYER_HISTORY_PAST,
+      type: actions.UPDATE_PLAYER_HISTORY_PAST_SORT,
       sort: newSort
     }))
       .toEqual({ ...initialState, sort: { ...initialState.sort, historyPast: newSort }})

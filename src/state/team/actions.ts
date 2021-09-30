@@ -15,17 +15,35 @@ type Props = {
   }
 }
 
+type FetchTeamPlayersProps = {
+  id: string,
+  sort: {
+    [key: string]:  {
+      [key: string]: string
+    }
+  }
+}
+
+type UpdateProps = {
+  tab: string,
+  sort: {
+    [key: string]:  {
+      [key: string]: string
+    }
+  }
+}
+
 export const fetchTeam = (teamId: string, tab: string, sort: Object) =>
   ({ type: API_TEAMS_SHOW, teamId, tab, sort })
 
 export const fetchTeamFixtures = ({ id: teamId, tab, sort }: Props) =>
   ({ type: API_TEAMS_FIXTURES_INDEX, teamId, tab, sort })
 
-export const fetchTeamPlayers = ({ id: teamId, tab, sort }: Props) =>
+export const fetchTeamPlayers = ({ id: teamId, sort }: FetchTeamPlayersProps) =>
   ({ type: FETCH_TEAM_PLAYERS, teamId, sort })
 
-export const updateTeamPlayersSort = ({ id: teamId, tab, sort }: Props) =>
+export const updateTeamPlayersSort = ({ tab, sort }: UpdateProps) =>
     ({ type: UPDATE_TEAM_PLAYERS_SORT, tab, sort })
 
-export const updateTeamFixturesSort = ({ id: teamId, tab, sort }: Props) =>
+export const updateTeamFixturesSort = ({ tab, sort }: UpdateProps) =>
     ({ type: UPDATE_TEAM_FIXTURES_SORT, tab, sort })

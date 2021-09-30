@@ -45,9 +45,9 @@ const reducer = (state: any = initialState, action: PlayerAction) => {
       const { data: historyPast } = action
 
       return { ...state, historyPast }
-    case actions.UPDATE_PLAYER_HISTORY:
+    case actions.UPDATE_PLAYER_HISTORY_SORT:
       return { ...state, sort: { ...state.sort, history: sort } }
-    case actions.UPDATE_PLAYER_HISTORY_PAST:
+    case actions.UPDATE_PLAYER_HISTORY_PAST_SORT:
       return { ...state, sort: { ...state.sort, historyPast: sort } }
     case failure(actions.API_PLAYERS_SHOW):
     case failure(actions.API_PLAYERS_HISTORY_INDEX):

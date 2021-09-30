@@ -22,8 +22,8 @@ type Props = {
   fetchPlayer: Function,
   fetchPlayerHistory: Function,
   fetchPlayerHistoryPast: Function,
-  updatePlayerHistory: Function,
-  updatePlayerHistoryPast: Function,
+  updatePlayerHistorySort: Function,
+  updatePlayerHistoryPastSort: Function,
   match: { params: { playerId: string, tab: string } }
 }
 
@@ -59,8 +59,8 @@ const PlayerPage = (props: Props) => {
     fetchPlayer,
     fetchPlayerHistory,
     fetchPlayerHistoryPast,
-    updatePlayerHistory,
-    updatePlayerHistoryPast,
+    updatePlayerHistorySort,
+    updatePlayerHistoryPastSort,
     match: { params: { playerId, tab = 'details' } }
   } = props
   const classes = useStyles()
@@ -118,7 +118,7 @@ const PlayerPage = (props: Props) => {
                 history={history}
                 fetchPlayerHistory={fetchPlayerHistory}
                 tab={tab}
-                updatePlayerHistory={updatePlayerHistory}
+                updatePlayerHistorySort={updatePlayerHistorySort}
                 hasHistory={hasHistory}
               />
             )
@@ -134,7 +134,7 @@ const PlayerPage = (props: Props) => {
                 playerId={playerId}
                 historyPast={historyPast}
                 fetchPlayerHistoryPast={fetchPlayerHistoryPast}
-                updatePlayerHistoryPast={updatePlayerHistoryPast}
+                updatePlayerHistoryPastSort={updatePlayerHistoryPastSort}
                 tab={tab}
                 hasHistoryPast={hasHistoryPast}
               />
@@ -160,8 +160,8 @@ const matchDispatchToProps = {
   fetchPlayer: playerActions.fetchPlayer,
   fetchPlayerHistory: playerActions.fetchPlayerHistory,
   fetchPlayerHistoryPast: playerActions.fetchPlayerHistoryPast,
-  updatePlayerHistory: playerActions.updatePlayerHistory,
-  updatePlayerHistoryPast: playerActions.updatePlayerHistoryPast
+  updatePlayerHistorySort: playerActions.updatePlayerHistorySort,
+  updatePlayerHistoryPastSort: playerActions.updatePlayerHistoryPastSort
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(PlayerPage)
