@@ -14,7 +14,6 @@ export const initialState = {
 }
 
 const reducer = (state: State = initialState, action: Action) => {
-  if (state === undefined) { state = initialState }
   switch (action.type) {
     case success(actions.API_ROUNDS_SHOW):
       const { data } = action

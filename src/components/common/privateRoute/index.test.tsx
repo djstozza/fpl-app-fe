@@ -3,7 +3,7 @@ import { createMount } from '@material-ui/core/test-utils'
 import ConnectedPrivateRoute, { PrivateRoute } from '.'
 import { MockedRouterStore, blank__ } from 'test/helpers'
 import { LOGIN_URL } from 'utilities/constants'
-import { USER } from 'test/fixtures'
+import { USER_1 } from 'test/fixtures'
 
 describe('PrivateRoute', () => {
   const render = (props = {}, state = {}) => createMount()(
@@ -40,14 +40,14 @@ describe('PrivateRoute', () => {
 
   it('renders the component if the user is present', () => {
     const updateSession = jest.fn()
-    const wrapper = render({ user: USER, updateSession }, { auth: { user: USER } })
+    const wrapper = render({ user: USER_1, updateSession }, { auth: { user: USER_1 } })
 
     expect(wrapper.text()).toEqual('Child component')
     expect(updateSession).toHaveBeenCalled()
   })
 
   it('renders the connected component', () => {
-    const wrapper = connectedRender({ auth: { user: USER } })
+    const wrapper = connectedRender({ auth: { user: USER_1 } })
 
     expect(wrapper.text()).toEqual('Child component')
   })

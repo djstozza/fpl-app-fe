@@ -20,7 +20,7 @@ export type State = {
   errors: RequestError[]
 }
 
-const initialState = {
+export const initialState = {
   inFlight: 0,
   errors: []
 }

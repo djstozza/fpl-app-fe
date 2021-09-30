@@ -24,7 +24,6 @@ type FplTeamListAction = {
 } & Action
 
 const reducer = (state: State = initialState, action: FplTeamListAction) => {
-  if (state === undefined) { state = initialState }
   const { data, errors, outListPosition } = action
 
   switch (action.type) {

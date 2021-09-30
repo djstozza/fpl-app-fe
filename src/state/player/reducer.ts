@@ -31,7 +31,6 @@ export const initialState = {
 }
 
 const reducer = (state: any = initialState, action: PlayerAction) => {
-  if (state === undefined) { state = initialState }
   const { data, sort } = action
   switch (action.type) {
     case success(actions.API_PLAYERS_SHOW):
@@ -52,6 +51,7 @@ const reducer = (state: any = initialState, action: PlayerAction) => {
       return { ...state, sort: { ...state.sort, historyPast: sort } }
     case failure(actions.API_PLAYERS_SHOW):
     case failure(actions.API_PLAYERS_HISTORY_INDEX):
+    case failure(actions.API_PLAYERS_HISTORY_PAST_INDEX):
       const { errors } = action
 
       return { ...state, errors }

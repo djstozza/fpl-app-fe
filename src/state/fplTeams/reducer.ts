@@ -24,7 +24,6 @@ export const initialState = {
 }
 
 const reducer = (state: State = initialState, action: Action) => {
-  if (state === undefined) { state = initialState }
   const { data = [], errors, sort } = action
 
   switch (action.type) {

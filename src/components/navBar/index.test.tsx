@@ -1,7 +1,7 @@
 import { createMount } from '@material-ui/core/test-utils'
 
 import { NavBar } from '.'
-import { USER } from 'test/fixtures'
+import { USER_1 } from 'test/fixtures'
 import { MockedRouter, blank__ } from 'test/helpers'
 
 describe('NavBar', () => {
@@ -28,7 +28,7 @@ describe('NavBar', () => {
 
   it('it renders a dropdown, which can be used by the user to logout if the user is present', () => {
     const logOut = jest.fn()
-    const wrapper = render({ user: USER, logOut })
+    const wrapper = render({ user: USER_1, logOut })
 
     expect(wrapper.find('PersonAddIcon')).toHaveLength(0)
     expect(wrapper.find('PersonIcon')).toHaveLength(0)

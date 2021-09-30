@@ -24,7 +24,6 @@ export const initialState = {
 }
 
 const reducer = (state: State = initialState, action: Action) => {
-  if (state === undefined) { state = initialState }
   switch (action.type) {
     case actions.API_TEAMS_INDEX:
       const { sort } = action

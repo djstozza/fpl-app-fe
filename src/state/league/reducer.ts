@@ -27,7 +27,6 @@ export const initialState = {
 }
 
 const reducer = (state: State = initialState, action: Action) => {
-  if (state === undefined) { state = initialState }
   const { data, sort, errors } = action
 
   switch (action.type) {
@@ -38,7 +37,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case success(actions.API_LEAGUES_SHOW):
       return { ...state, data }
     case success(actions.API_LEAGUES_UPDATE):
-      return { ...initialState, data }
+      return { ...initialState, data, submitting: false }
     case success(actions.API_LEAGUE_FPL_TEAMS_INDEX):
     case success(actions.API_LEAGUE_GENERATE_DRAFT_PICKS):
       const { data: fplTeams = [] } = action
