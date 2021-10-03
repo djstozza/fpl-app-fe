@@ -14,7 +14,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-function * createWaiverPick (action) : Generator <any, any, any> {
+export function * createWaiverPick (action) : Generator <any, any, any> {
   const { outListPosition: { id } } = yield select(state => state.fplTeamList)
   const { inPlayerId } = action
 
@@ -30,7 +30,7 @@ function * createWaiverPick (action) : Generator <any, any, any> {
   })
 }
 
-function * fetchWaiverPicks (action) : Generator <any, any, any> {
+export function * fetchWaiverPicks (action) : Generator <any, any, any> {
   const { fplTeamListId } = action
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/waiver_picks`
@@ -44,14 +44,13 @@ function * fetchWaiverPicks (action) : Generator <any, any, any> {
   })
 }
 
-function * createWaiverPickSuccess (action) : Generator<any, any, any> {
+export function * createWaiverPickSuccess (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeam)
-
 
   yield history.replace(`${FPL_TEAMS_URL}/${id}/waiverPicks`)
 }
 
-function * changeWaiverPickOrder (action) : Generator <any, any, any> {
+export function * changeWaiverPickOrder (action) : Generator <any, any, any> {
   const { fplTeamListId, waiverPickId, newPickNumber } = action
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/waiver_picks/${waiverPickId}/change_order`

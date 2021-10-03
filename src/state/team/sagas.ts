@@ -9,13 +9,13 @@ import { fetchPlayers } from 'state/players/actions'
 import history from 'state/history'
 import { stringify } from 'utilities/helpers'
 
-function * fetchTeamPlayers (action) : Generator<any, any, any> {
+export function * fetchTeamPlayers (action) : Generator<any, any, any> {
   const { teamId, sort: { players } } = action
 
   yield put(fetchPlayers({ filter: { teamId }, sort: players }))
 }
 
-function * fetchTeamFixtures (action) : Generator<any, any, any> {
+export function * fetchTeamFixtures (action) : Generator<any, any, any> {
   const { teamId, sort: { fixtures } } = action
 
   const url = `${API_URL}${TEAMS_URL}/${teamId}/fixtures?${stringify({ sort: fixtures })}`
@@ -29,21 +29,21 @@ function * fetchTeamFixtures (action) : Generator<any, any, any> {
   })
 }
 
-function * updateTeamPlayersSort (action) : Generator<any, any, any> {
+export function * updateTeamPlayersSort (action) : Generator<any, any, any> {
   const { tab, sort } = action
   const { data: { id: teamId } } = yield select(state => state.team)
 
   yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify({ sort: { players: sort } })}`)
 }
 
-function * updateTeamFixturesSort (action) : Generator<any, any, any> {
+export function * updateTeamFixturesSort (action) : Generator<any, any, any> {
   const { tab, sort } = action
   const { data: { id: teamId } } = yield select(state => state.team)
 
   yield history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify({ sort: { fixtures: sort } })}`)
 }
 
-function * fetchTeam (action) : Generator<any, any, any> {
+export function * fetchTeam (action) : Generator<any, any, any> {
   const { teamId } = action
 
   const url = `${API_URL}${TEAMS_URL}/${teamId}`

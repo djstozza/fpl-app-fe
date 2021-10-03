@@ -15,7 +15,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-function * fetchLeagues (action): Generator<any, any, any> {
+export function * fetchLeagues (action): Generator<any, any, any> {
   const url = `${API_URL}${LEAGUES_URL}`
 
   yield put({
@@ -27,7 +27,7 @@ function * fetchLeagues (action): Generator<any, any, any> {
   })
 }
 
-function * createLeague (action): Generator<any, any, any> {
+export function * createLeague (action): Generator<any, any, any> {
   const { league } = action
   const url = `${API_URL}${LEAGUES_URL}`
 
@@ -41,7 +41,7 @@ function * createLeague (action): Generator<any, any, any> {
   })
 }
 
-function * joinLeague (action): Generator<any, any, any> {
+export function * joinLeague (action): Generator<any, any, any> {
   const { league } = action
   const url = `${API_URL}${JOIN_LEAGUE_URL}`
 
@@ -50,16 +50,16 @@ function * joinLeague (action): Generator<any, any, any> {
     method: 'POST',
     url,
     body: { league: decamelizeKeys(league) },
-    successAction: success(actions.API_LEAGUES_CREATE),
-    failureAction: failure(actions.API_LEAGUES_CREATE)
+    successAction: success(actions.API_LEAGUES_JOIN),
+    failureAction: failure(actions.API_LEAGUES_JOIN)
   })
 }
 
-function * leagueSuccess (action) : Generator<any, any, any> {
+export function * leagueSuccess (action) : Generator<any, any, any> {
   yield history.replace(`${PROFILE_URL}${LEAGUES_URL}`)
 }
 
-function * updateSort (action) : Generator<any, any, any> {
+export function * updateSort (action) : Generator<any, any, any> {
   const { sort } = action
 
   yield history.push(`${PROFILE_URL}${LEAGUES_URL}?${qs.stringify({ sort })}`)

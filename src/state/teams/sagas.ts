@@ -8,7 +8,7 @@ import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
 import history from 'state/history'
 
-function * fetchTeams (action) : Generator<any, any, any> {
+export function * fetchTeams (action) : Generator<any, any, any> {
   const { sort } = action
 
   const query = {
@@ -26,7 +26,7 @@ function * fetchTeams (action) : Generator<any, any, any> {
   })
 }
 
-function * updateSort (action) : Generator<any, any, any> {
+export function * updateSort (action) : Generator<any, any, any> {
   const { sort } = action
 
   const query = {

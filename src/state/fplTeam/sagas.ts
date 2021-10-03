@@ -13,7 +13,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-function * fetchFplTeam (action): Generator<any, any, any> {
+export function * fetchFplTeam (action): Generator<any, any, any> {
   const { fplTeamId } = action
   const url = `${API_URL}${API_FPL_TEAMS_PATH}/${fplTeamId}`
 
@@ -26,7 +26,7 @@ function * fetchFplTeam (action): Generator<any, any, any> {
   })
 }
 
-function * updateFplTeam (action): Generator<any, any, any> {
+export function * updateFplTeam (action): Generator<any, any, any> {
   const { fplTeam } = action
 
   const { data: { id } } = yield select(state => state.fplTeam)
@@ -42,7 +42,7 @@ function * updateFplTeam (action): Generator<any, any, any> {
   })
 }
 
-function * updateFplTeamSuccess (action) : Generator<any, any, any> {
+export function * updateFplTeamSuccess (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeam)
 
   yield history.replace(`${FPL_TEAMS_URL}/${id}`)

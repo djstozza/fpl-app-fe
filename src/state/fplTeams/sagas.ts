@@ -1,7 +1,7 @@
 import { put, takeLatest, all } from 'redux-saga/effects'
-import qs from 'qs'
 
 import history from 'state/history'
+import { stringify } from 'utilities/helpers'
 
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
@@ -14,7 +14,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-function * fetchFplTeams (action): Generator<any, any, any> {
+export function * fetchFplTeams (action): Generator<any, any, any> {
   const url = `${API_URL}${API_FPL_TEAMS_PATH}`
 
   yield put({
@@ -26,10 +26,10 @@ function * fetchFplTeams (action): Generator<any, any, any> {
   })
 }
 
-function * updateSort (action) : Generator<any, any, any> {
+export function * updateSort (action) : Generator<any, any, any> {
   const { sort } = action
 
-  yield history.push(`${PROFILE_URL}${FPL_TEAMS_URL}?${qs.stringify({ sort })}`)
+  yield history.push(`${PROFILE_URL}${FPL_TEAMS_URL}?${stringify({ sort })}`)
 }
 
 export default function * fplTeamsSagas () : Generator<any, any, any> {

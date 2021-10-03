@@ -1,6 +1,6 @@
 import { put, takeLatest, all } from 'redux-saga/effects'
-import qs from 'qs'
 
+import { stringify } from 'utilities/helpers'
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
 
@@ -10,13 +10,11 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-function * fetchFplTeamLists (action) : Generator<any, any, any> {
+export function * fetchFplTeamLists (action) : Generator<any, any, any> {
   const { fplTeamId } = action
-  const query = {
-    fpl_team_list: { fpl_team_id: fplTeamId }
-  }
+  const query = { fplTeamList: { fplTeamId } }
 
-  const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}?${qs.stringify(query)}`
+  const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}?${stringify(query)}`
 
   yield put({
     type: requestActions.AUTHED_REQUEST,

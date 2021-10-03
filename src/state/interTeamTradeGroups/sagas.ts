@@ -14,7 +14,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-function * fetchInterTeamTradeGroups (action) : Generator <any, any, any> {
+export function * fetchInterTeamTradeGroups (action) : Generator <any, any, any> {
   const { fplTeamListId } = action
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/inter_team_trade_groups`
@@ -28,7 +28,7 @@ function * fetchInterTeamTradeGroups (action) : Generator <any, any, any> {
   })
 }
 
-function * createInterTeamTradeGroup (action) : Generator <any, any, any> {
+export function * createInterTeamTradeGroup (action) : Generator <any, any, any> {
   const {
     data: { id },
     outListPosition: { player: { id: outPlayerId } },
@@ -47,15 +47,16 @@ function * createInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
-function * interTeamTradeGroupSuccess (action) : Generator <any, any, any> {
+export function * interTeamTradeGroupSuccess (action) : Generator <any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeam)
+
   yield all([
     put(setOutListPosition(undefined)),
     history.replace(`${FPL_TEAMS_URL}/${id}/teamTrades`)
   ])
 }
 
-function * submitInterTeamTradeGroup (action) : Generator <any, any, any> {
+export function * submitInterTeamTradeGroup (action) : Generator <any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeamList)
   const { interTeamTradeGroupId } = action
 
@@ -70,10 +71,10 @@ function * submitInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
-function * addToInterTeamTradeGroup (action) : Generator <any, any, any> {
+export function * addToInterTeamTradeGroup (action) : Generator <any, any, any> {
   const {
     data: { id },
-    outListPosition: { player: { id: outPlayerId = '' } = {} } = {}
+    outListPosition: { player: { id: outPlayerId } }
   } = yield select(state => state.fplTeamList)
   const { data: { id: interTeamTradeGroupId } } = yield select(state => state.interTeamTradeGroup)
   const { inListPosition: { player: { id: inPlayerId } } } = action
@@ -90,7 +91,7 @@ function * addToInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
-function * cancelInterTeamTradeGroup (action) : Generator <any, any, any> {
+export function * cancelInterTeamTradeGroup (action) : Generator <any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeamList)
   const { interTeamTradeGroupId } = action
 
@@ -105,7 +106,7 @@ function * cancelInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
-function * approveInterTeamTradeGroup (action) : Generator <any, any, any> {
+export function * approveInterTeamTradeGroup (action) : Generator <any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeamList)
   const { interTeamTradeGroupId } = action
 
@@ -120,7 +121,7 @@ function * approveInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
-function * declineInterTeamTradeGroup (action) : Generator <any, any, any> {
+export function * declineInterTeamTradeGroup (action) : Generator <any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeamList)
   const { interTeamTradeGroupId } = action
 
@@ -135,7 +136,7 @@ function * declineInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
-function * removeTrade (action) : Generator <any, any, any> {
+export function * removeTrade (action) : Generator <any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeamList)
   const { interTeamTradeId } = action
 
@@ -150,7 +151,7 @@ function * removeTrade (action) : Generator <any, any, any> {
   })
 }
 
-function * approveInterTeamTradeGroupSuccess (action) : Generator <any, any, any> {
+export function * approveInterTeamTradeGroupSuccess (action) : Generator <any, any, any> {
   const { data: { id: fplTeamListId } } = yield select(state => state.fplTeamList)
 
   yield all([
@@ -159,7 +160,7 @@ function * approveInterTeamTradeGroupSuccess (action) : Generator <any, any, any
   ])
 }
 
-export default function * waiverPicksSagas () : Generator<any, any, any> {
+export default function * interTeamTradeGroupsSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS, fetchInterTeamTradeGroups),
     yield takeLatest(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE, createInterTeamTradeGroup),

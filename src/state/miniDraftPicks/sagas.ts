@@ -16,7 +16,7 @@ import {
   API_FPL_TEAM_LISTS_PATH
 } from 'utilities/constants'
 
-function * fetchMiniDraftPicks (action) : Generator<any, any, any> {
+export function * fetchMiniDraftPicks (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
   const { season } = yield select(state => state.miniDraftPicks)
   const { sort, filter } = action
@@ -34,7 +34,7 @@ function * fetchMiniDraftPicks (action) : Generator<any, any, any> {
   })
 }
 
-function * fetchMiniDraftPickFacets (action) : Generator<any, any, any> {
+export function * fetchMiniDraftPickFacets (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
   const { season } = yield select(state => state.miniDraftPicks)
 
@@ -51,7 +51,7 @@ function * fetchMiniDraftPickFacets (action) : Generator<any, any, any> {
   })
 }
 
-function * updateFilter (action) : Generator<any, any, any> {
+export function * updateFilter (action) : Generator<any, any, any> {
   const { filter } = action
   const { data: { id } } = yield select(state => state.league)
   const { sort } = yield select(state => state.miniDraftPicks)
@@ -64,7 +64,7 @@ function * updateFilter (action) : Generator<any, any, any> {
   yield history.push(`${LEAGUES_URL}/${id}/miniDraft/miniDraftPicks?${qs.stringify(query)}`)
 }
 
-function * updateSort (action) : Generator<any, any, any> {
+export function * updateSort (action) : Generator<any, any, any> {
   const { sort } = action
   const { data: { id } } = yield select(state => state.league)
   const { filter } = yield select(state => state.miniDraftPicks)
@@ -74,7 +74,7 @@ function * updateSort (action) : Generator<any, any, any> {
   yield history.push(`${LEAGUES_URL}/${id}/miniDraft/miniDraftPicks?${qs.stringify(query)}`)
 }
 
-function * fetchMiniDraftPicksStatus (action) : Generator<any, any, any> {
+export function * fetchMiniDraftPicksStatus (action) : Generator<any, any, any> {
   const { leagueId } = action
 
   const url = `${API_URL}${LEAGUES_URL}/${leagueId}/mini_draft_picks/status`
@@ -88,9 +88,9 @@ function * fetchMiniDraftPicksStatus (action) : Generator<any, any, any> {
   })
 }
 
-function * createMiniDraftPick (action) : Generator<any, any, any> {
+export function * createMiniDraftPick (action) : Generator<any, any, any> {
   const { fplTeamListId } = yield select(state => state.miniDraftPicks)
-  const { outListPosition: { id: listPositionId = '' } = {} } = yield select(state => state.fplTeamList)
+  const { outListPosition: { id: listPositionId } } = yield select(state => state.fplTeamList)
   const { inPlayerId } = action
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/list_positions/${listPositionId}/mini_draft_picks`
@@ -105,7 +105,7 @@ function * createMiniDraftPick (action) : Generator<any, any, any> {
   })
 }
 
-function * passMiniDraftPick () : Generator<any, any, any> {
+export function * passMiniDraftPick () : Generator<any, any, any> {
   const { fplTeamListId } = yield select(state => state.miniDraftPicks)
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/mini_draft_picks`
@@ -120,7 +120,7 @@ function * passMiniDraftPick () : Generator<any, any, any> {
   })
 }
 
-function * createMiniDraftPickSuccess (action) : Generator<any, any, any> {
+export function * createMiniDraftPickSuccess (action) : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
 
   yield all([
@@ -130,19 +130,18 @@ function * createMiniDraftPickSuccess (action) : Generator<any, any, any> {
   ])
 }
 
-function * fetchTradeablePlayers (action) : Generator<any, any, any> {
+export function * fetchTradeablePlayers (action) : Generator<any, any, any> {
   const { data: { id: leagueId } } = yield select(state => state.league)
-  const { outListPosition: { position: { id: positionId = '' } = {} } = {} } = yield select(state => state.fplTeamList)
+  const { outListPosition: { position: { id: positionId } } } = yield select(state => state.fplTeamList)
   const { sort, filter, page } = action
-
 
   yield put(fetchPlayers({ filter: { ...filter, leagueId, positionId }, sort, page }))
 }
 
-function * updateAvailablePlayersSort (action) : Generator<any, any, any> {
+export function * updateAvailablePlayersSort (action) : Generator<any, any, any> {
   const { data: { id: leagueId } } = yield select(state => state.league)
   const { filter, page } = yield select(state => state.players)
-  const { outListPosition: { position: { id: positionId = '' } = {} } = {} } = yield select(state => state.fplTeamList)
+  const { outListPosition: { position: { id: positionId } } } = yield select(state => state.fplTeamList)
   const { sort } = action
 
   const query = { filter: { ...filter, leagueId, positionId }, sort, page }
@@ -150,10 +149,10 @@ function * updateAvailablePlayersSort (action) : Generator<any, any, any> {
   yield history.replace(`${LEAGUES_URL}/${leagueId}/miniDraft/tradeableListPositions?${qs.stringify(query)}`)
 }
 
-function * updateAvailablePlayersFilter (action) : Generator<any, any, any> {
+export function * updateAvailablePlayersFilter (action) : Generator<any, any, any> {
   const { data: { id: leagueId } } = yield select(state => state.league)
   const { sort, page } = yield select(state => state.players)
-  const { outListPosition: { position: { id: positionId = '' } = {} } = {} } = yield select(state => state.fplTeamList)
+  const { outListPosition: { position: { id: positionId } } } = yield select(state => state.fplTeamList)
   const { filter } = action
 
   const query = {
@@ -172,10 +171,10 @@ function * updateAvailablePlayersFilter (action) : Generator<any, any, any> {
   yield history.replace(`${LEAGUES_URL}/${leagueId}/miniDraft/tradeableListPositions?${qs.stringify(query)}`)
 }
 
-function * updateAvailablePlayersPage (action) : Generator<any, any, any> {
+export function * updateAvailablePlayersPage (action) : Generator<any, any, any> {
   const { data: { id: leagueId } } = yield select(state => state.league)
   const { filter, sort, page } = yield select(state => state.players)
-  const { outListPosition: { position: { id: positionId = '' } = {} } = {} } = yield select(state => state.fplTeamList)
+  const { outListPosition: { position: { id: positionId } } } = yield select(state => state.fplTeamList)
   const { offset } = action
 
   const query = {

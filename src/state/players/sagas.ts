@@ -8,7 +8,7 @@ import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
 import history from 'state/history'
 
-function * fetchPlayers (action) : Generator<any, any, any> {
+export function * fetchPlayers (action) : Generator<any, any, any> {
   const { sort, filter, page } = action
 
   const url = `${API_URL}${PLAYERS_URL}?${stringify({ sort, filter, page })}`
@@ -22,7 +22,7 @@ function * fetchPlayers (action) : Generator<any, any, any> {
   })
 }
 
-function * fetchFacets (action) : Generator<any, any, any> {
+export function * fetchFacets (action) : Generator<any, any, any> {
   const url = `${API_URL}${PLAYERS_URL}/facets`
 
   yield put({
@@ -34,7 +34,7 @@ function * fetchFacets (action) : Generator<any, any, any> {
   })
 }
 
-function * updateFilter (action) : Generator<any, any, any> {
+export function * updateFilter (action) : Generator<any, any, any> {
   const { filter } = action
   const { sort, page } = yield select(state => state.players)
 
@@ -50,7 +50,7 @@ function * updateFilter (action) : Generator<any, any, any> {
   yield history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
 }
 
-function * updateSort (action) : Generator<any, any, any> {
+export function * updateSort (action) : Generator<any, any, any> {
   const { sort } = action
   const { filter, page } = yield select(state => state.players)
 
@@ -59,7 +59,7 @@ function * updateSort (action) : Generator<any, any, any> {
   yield history.push(`${PLAYERS_URL}?${qs.stringify(query)}`)
 }
 
-function * updatePage (action) : Generator<any, any, any> {
+export function * updatePage (action) : Generator<any, any, any> {
   const { offset } = action
   const { filter, sort, page } = yield select(state => state.players)
 
@@ -77,10 +77,10 @@ function * updatePage (action) : Generator<any, any, any> {
 
 export default function * playersSagas () : Generator<any, any, any> {
   yield all([
-    yield takeLatest([actions.API_PLAYERS_INDEX], fetchPlayers),
-    yield takeLatest([actions.API_PLAYERS_FACETS_INDEX], fetchFacets),
-    yield takeLatest([actions.UPDATE_PLAYERS_FILTER], updateFilter),
-    yield takeLatest([actions.UPDATE_PLAYERS_SORT], updateSort),
-    yield takeLatest([actions.UPDATE_PLAYERS_PAGE], updatePage)
+    yield takeLatest(actions.API_PLAYERS_INDEX, fetchPlayers),
+    yield takeLatest(actions.API_PLAYERS_FACETS_INDEX, fetchFacets),
+    yield takeLatest(actions.UPDATE_PLAYERS_FILTER, updateFilter),
+    yield takeLatest(actions.UPDATE_PLAYERS_SORT, updateSort),
+    yield takeLatest(actions.UPDATE_PLAYERS_PAGE, updatePage)
   ])
 }

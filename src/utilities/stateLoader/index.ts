@@ -3,7 +3,7 @@ export const initialAuth = {
   token: '',
 }
 
-const authKey = 'fplAppAuth'
+export const authKey = 'fplAppAuth'
 
 const StateLoader = {
   saveAuth: (auth) => {

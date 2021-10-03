@@ -11,7 +11,7 @@ type LogInProps = {
 }
 
 type SignUpProps = {
-  user: { email: string, password: string }
+  user: { email: string, username: string, password: string }
 }
 
 type ChangePasswordProps = {

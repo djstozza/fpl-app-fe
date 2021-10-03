@@ -1,4 +1,3 @@
-// @flow
 import { connect } from 'react-redux'
 import {
   Button,
@@ -27,10 +26,6 @@ type Props = {
   rateLimitError?: RateLimitError,
   clearRequestErrors: Function,
   onClose?: Function
-}
-
-type DefaultAction = {
-  action: { label: string, path?: string }
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -110,7 +105,7 @@ export const ErrorDialog = (props: Props) => {
 }
 
 const rateLimitError = (e) => {
-  const error = e.errors.find(err => err.status === '429')
+  const error = (e.errors || []).find(err => err.status === '429')
 
   return error && error.meta
 }

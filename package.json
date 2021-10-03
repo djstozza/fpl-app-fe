@@ -16,7 +16,9 @@
         "statements": 90
       }
     },
-    "coverageReporters": ["text"]
+    "coverageReporters": [
+      "text"
+    ]
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -80,6 +82,7 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "react-app-rewire-alias": "^1.0.1",
     "react-app-rewired": "^2.1.8",
+    "redux-saga-test-plan": "^4.0.3",
     "timezone-mock": "^1.2.1",
     "tsconfig-paths": "^3.9.0"
   }

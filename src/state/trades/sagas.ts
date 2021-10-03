@@ -15,7 +15,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-function * creatTrade (action) : Generator <any, any, any> {
+export function * creatTrade (action) : Generator <any, any, any> {
   const { outListPosition: { id } } = yield select(state => state.fplTeamList)
   const { inPlayerId } = action
 
@@ -31,7 +31,7 @@ function * creatTrade (action) : Generator <any, any, any> {
   })
 }
 
-function * fetchTrades (action) : Generator <any, any, any> {
+export function * fetchTrades (action) : Generator <any, any, any> {
   const { fplTeamListId } = action
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/trades`
@@ -45,7 +45,7 @@ function * fetchTrades (action) : Generator <any, any, any> {
   })
 }
 
-function * creatTradeSuccess (action) : Generator<any, any, any> {
+export function * creatTradeSuccess (action) : Generator<any, any, any> {
   const { data: { id: fplTeamListId } } = yield select(state => state.fplTeamList)
   const { data: { id: fplTeamId } } = yield select(state => state.fplTeam)
 

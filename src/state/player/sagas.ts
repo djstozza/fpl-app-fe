@@ -8,7 +8,7 @@ import * as requestActions from 'state/request/actions'
 import { stringify } from 'utilities/helpers'
 import history from 'state/history'
 
-function * fetchPlayer (action) : Generator<any, any, any> {
+export function * fetchPlayer (action) : Generator<any, any, any> {
   const { playerId } = action
 
   const url = `${API_URL}${PLAYERS_URL}/${playerId}`
@@ -22,7 +22,7 @@ function * fetchPlayer (action) : Generator<any, any, any> {
   })
 }
 
-function * fetchPlayerHistory (action) : Generator<any, any, any> {
+export function * fetchPlayerHistory (action) : Generator<any, any, any> {
   const { playerId, sort } = action
 
   const url = `${API_URL}${PLAYERS_URL}/${playerId}/history?${stringify({ sort: sort.history })}`
@@ -36,7 +36,7 @@ function * fetchPlayerHistory (action) : Generator<any, any, any> {
   })
 }
 
-function * fetchPlayerHistoryPast (action) : Generator<any, any, any> {
+export function * fetchPlayerHistoryPast (action) : Generator<any, any, any> {
   const { playerId, sort } = action
 
   const url = `${API_URL}${PLAYERS_URL}/${playerId}/history_past?${stringify({ sort: sort.historyPast })}`
@@ -50,14 +50,14 @@ function * fetchPlayerHistoryPast (action) : Generator<any, any, any> {
   })
 }
 
-function * updatePlayerHistorySort (action) : Generator<any, any, any> {
+export function * updatePlayerHistorySort (action) : Generator<any, any, any> {
   const { sort } = action
   const { data: { id: playerId } } = yield select(state => state.player)
 
   yield history.push(`${PLAYERS_URL}/${playerId}/history?${qs.stringify({ sort: { history: sort } })}`)
 }
 
-function * updatePlayerHistoryPastSort (action) : Generator<any, any, any> {
+export function * updatePlayerHistoryPastSort (action) : Generator<any, any, any> {
   const { sort } = action
   const { data: { id: playerId } } = yield select(state => state.player)
 

@@ -9,7 +9,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-function * fetchInterTeamTradeGroup (action) : Generator <any, any, any> {
+export function * fetchInterTeamTradeGroup (action) : Generator <any, any, any> {
   const { fplTeamListId, interTeamTradeGroupId } = action
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/inter_team_trade_groups/${interTeamTradeGroupId}`
 
@@ -22,7 +22,7 @@ function * fetchInterTeamTradeGroup (action) : Generator <any, any, any> {
   })
 }
 
-export default function * waiverPicksSagas () : Generator<any, any, any> {
+export default function * interTeamTradeGroupSagas () : Generator<any, any, any> {
   yield all([
     yield takeLatest(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUP, fetchInterTeamTradeGroup)
   ])

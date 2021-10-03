@@ -16,9 +16,8 @@ import * as requestActions from 'state/request/actions'
 import history from 'state/history'
 import StateLoader from 'utilities/stateLoader'
 
-function * logIn (action) : Generator<any, any, any> {
+export function * logIn (action) : Generator<any, any, any> {
   const { user } = action
-
   const url = `${API_URL}${API_SESSIONS_PATH}`
 
   yield put({
@@ -31,7 +30,7 @@ function * logIn (action) : Generator<any, any, any> {
   })
 }
 
-function * signUp (action) : Generator<any, any, any> {
+export function * signUp (action) : Generator<any, any, any> {
   const { user } = action
 
   const url = `${API_URL}${API_REGISTRATIONS_PATH}`
@@ -46,11 +45,11 @@ function * signUp (action) : Generator<any, any, any> {
   })
 }
 
-function * onAuthed (action) : Generator<any, any, any> {
+export function * onAuthed (action) : Generator<any, any, any> {
   yield history.replace(PROFILE_URL)
 }
 
-function * updateSession (action): Generator<any, any, any> {
+export function * updateSession (action): Generator<any, any, any> {
   const url = `${API_URL}${API_SESSIONS_PATH}`
 
   yield put({
@@ -63,12 +62,12 @@ function * updateSession (action): Generator<any, any, any> {
   })
 }
 
-function * logOut (action): Generator<any, any, any> {
+export function * logOut (action): Generator<any, any, any> {
   StateLoader.deleteAuth()
   yield history.replace(LOGIN_URL)
 }
 
-function * updateUser (action) : Generator<any, any, any> {
+export function * updateUser (action) : Generator<any, any, any> {
   const { user } = action
 
   const url = `${API_URL}${API_USERS_PATH}`
@@ -83,11 +82,11 @@ function * updateUser (action) : Generator<any, any, any> {
   })
 }
 
-function * updateUserSuccess (action) : Generator<any, any, any> {
+export function * updateUserSuccess (action) : Generator<any, any, any> {
   yield history.replace(PROFILE_URL)
 }
 
-function * changePassword (action) : Generator<any, any, any> {
+export function * changePassword (action) : Generator<any, any, any> {
   const { user } = action
 
   const url = `${API_URL}${API_PASSWORDS_PATH}`
