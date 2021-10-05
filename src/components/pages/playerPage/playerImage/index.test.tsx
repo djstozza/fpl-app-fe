@@ -16,7 +16,7 @@ describe('PlayerImage', () => {
     />
   )
 
-  it('foo', () => {
+  it('renders the player image', () => {
     const wrapper = render()
 
     expect(wrapper.find('PlayerImage').props()).toMatchObject({ code, lastName, maxHeight })

@@ -894,9 +894,10 @@ export const LIVE_LEAGUE = {
   canGenerateDraftPicks: true,
   canCreateDraft: true,
   canGoToMiniDraft: true,
+  showDraftPickColumn: true,
   showLiveColumns: true,
   isOwner: true,
-  user: USER_1
+  owner: USER_1
 }
 
 export const INITIALIZED_LEAGUE = {
@@ -909,7 +910,7 @@ export const INITIALIZED_LEAGUE = {
   canGoToMiniDraft: false,
   showLiveColumns: false,
   isOwner: true,
-  user: USER_1
+  owner: USER_1
 }
 
 export const LEAGUES = [
@@ -926,6 +927,10 @@ export const FPL_TEAM_1 = {
   isOwner: true,
   owner: USER_1,
   league: LIVE_LEAGUE,
+  rank: 3,
+  totalScore: 300,
+  draftPickNumber: 2,
+  miniDraftPickNumber: 1,
   ...FPL_TEAM_1_BASE
 }
 
@@ -938,6 +943,10 @@ export const FPL_TEAM_2 = {
   isOwner: false,
   owner: USER_2,
   league: LIVE_LEAGUE,
+  rank: 1,
+  totalScore: 351,
+  draftPickNumber: 3,
+  miniDraftPickNumber: 2,
   ...FPL_TEAM_2_BASE
 }
 
@@ -951,6 +960,10 @@ export const FPL_TEAM_3 = {
   isOwner: false,
   owner: USER_3,
   league: LIVE_LEAGUE,
+  rank: 2,
+  totalScore: 337,
+  draftPickNumber: 1,
+  miniDraftPickNumber: 3,
   ...FPL_TEAM_3_BASE
 }
 

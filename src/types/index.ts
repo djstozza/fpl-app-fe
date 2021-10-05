@@ -237,7 +237,11 @@ export type League = {
 export type FplTeam = {
   isOwner: boolean,
   owner: User,
-  league: League
+  league: League,
+  draftPickNumber?: number,
+  miniDraftPickNumber?: number,
+  rank?: number,
+  totalScore?: number
 } & BaseFplTeam
 
 export type DraftPick = {

@@ -8,6 +8,7 @@ export const FETCH_AVAILABLE_PLAYERS = 'FETCH_AVAILABLE_PLAYERS'
 export const UPDATE_AVAILABLE_PLAYERS_SORT = 'UPDATE_AVAILABLE_PLAYERS_SORT'
 export const UPDATE_AVAILABLE_PLAYERS_FILTER = 'UPDATE_AVAILABLE_PLAYERS_FILTER'
 export const UPDATE_AVAILABLE_PLAYERS_PAGE = 'UPDATE_AVAILABLE_PLAYERS_PAGE'
+export const INITIALIZE_FORM = 'INITIALIZE_FORM'
 
 type Props = {
   league: {
@@ -37,3 +38,4 @@ export const fetchAvailablePlayers = ({ sort, filter, page }: AvailablePlayersPr
 export const updateAvailablePlayersFilter = (filter: Object) => ({ type: UPDATE_AVAILABLE_PLAYERS_FILTER, filter })
 export const updateAvailablePlayersSort = (sort: Object) => ({ type: UPDATE_AVAILABLE_PLAYERS_SORT, sort })
 export const updateAvailablePlayersPage = (offset: string) => ({ type: UPDATE_AVAILABLE_PLAYERS_PAGE, offset })
+export const initializeForm = () => ({ type: INITIALIZE_FORM })

@@ -58,4 +58,8 @@ describe('League actions', () => {
     expect(actions.updateAvailablePlayersPage(page.offset))
       .toEqual({ type: actions.UPDATE_AVAILABLE_PLAYERS_PAGE, offset: page.offset })
   })
+
+  test(actions.INITIALIZE_FORM, () => {
+    expect(actions.initializeForm()).toEqual({ type: actions.INITIALIZE_FORM })
+  })
 })

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 
 import { leaguesActions } from 'state/leagues'
-import LeagueForm from './leagueForm'
+import LeagueForm from '../leagueForm'
 
 import type { Error } from 'types'
 
@@ -11,8 +11,8 @@ type Props = {
   initializeForm: Function
 }
 
-const JoinLeague = (props: Props) => {
-  const { errors, joinLeague, initializeForm } = props
+export const JoinLeague = (props: Props) => {
+  const { errors = [], joinLeague, initializeForm } = props
 
   return (
     <LeagueForm
@@ -27,7 +27,7 @@ const JoinLeague = (props: Props) => {
 const mapStateToProps = (state) => {
   const {
     leagues: {
-      errors = []
+      errors
     }
   } = state
 

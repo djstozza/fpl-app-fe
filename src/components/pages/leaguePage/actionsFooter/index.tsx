@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-
 const ActionsFooter = (props: Props) => {
   const {
     league: {

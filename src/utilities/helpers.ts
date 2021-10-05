@@ -58,7 +58,7 @@ const commaJoinValues = (object: Object) => {
 export const stringify = (query) => {
   query = decamelizeKeys(query || {})
   return qs.stringify({
-    ...query,
+    ...decamelizeKeys(query || {}),
     filter: query.filter && commaJoinValues(query.filter)
   })
 }

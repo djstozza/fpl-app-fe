@@ -29,6 +29,7 @@ type Props = {
   updateLeague: Function,
   generateDraftPicks: Function,
   createDraft: Function,
+  initializeForm: Function,
   sort: Object,
   match: { params: { leagueId: string, tab: string, action: string } }
 }
@@ -46,7 +47,7 @@ const TABS = {
   fplTeams: { label: 'Fpl Teams', value: 'fplTeams', display: true }
 }
 
-const LeaguePage = (props: Props) => {
+export const LeaguePage = (props: Props) => {
   const {
     league,
     fplTeams,
@@ -56,6 +57,7 @@ const LeaguePage = (props: Props) => {
     updateFplTeamsSort,
     generateDraftPicks,
     createDraft,
+    initializeForm,
     errors,
     submitting,
     sort,
@@ -91,57 +93,54 @@ const LeaguePage = (props: Props) => {
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId`}
-          render={() => (
-            <LeagueDetails
-              league={league}
-              generateDraftPicks={generateDraftPicks}
-              createDraft={createDraft}
-              submitting={submitting}
-            />
-          )}
-        />
+        >
+          <LeagueDetails
+            league={league}
+            generateDraftPicks={generateDraftPicks}
+            createDraft={createDraft}
+            submitting={submitting}
+          />
+        </Route>
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId/details`}
-          render={() => (
-            <LeagueDetails
-              league={league}
-              generateDraftPicks={generateDraftPicks}
-              createDraft={createDraft}
-              submitting={submitting}
-            />
-          )}
-        />
+        >
+          <LeagueDetails
+            league={league}
+            generateDraftPicks={generateDraftPicks}
+            createDraft={createDraft}
+            submitting={submitting}
+          />
+        </Route>
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId/details/edit`}
-          render={() => (
-            <EditLeagueForm
-              league={league}
-              updateLeague={updateLeague}
-              errors={errors}
-              submitting={submitting}
-            />
-          )}
-        />
+        >
+          <EditLeagueForm
+            league={league}
+            updateLeague={updateLeague}
+            errors={errors}
+            submitting={submitting}
+            initializeForm={initializeForm}
+          />
+        </Route>
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId/fplTeams`}
-          render={() => (
-            <FplTeamsTable
-              league={league}
-              leagueId={leagueId}
-              fplTeams={fplTeams}
-              fetchFplTeams={fetchFplTeams}
-              updateFplTeamsSort={updateFplTeamsSort}
-              generateDraftPicks={generateDraftPicks}
-              createDraft={createDraft}
-              submitting={submitting}
-              sort={sort}
-              errors={errors}
-            />
-          )}
-        />
+        >
+          <FplTeamsTable
+            league={league}
+            leagueId={leagueId}
+            fplTeams={fplTeams}
+            fetchFplTeams={fetchFplTeams}
+            updateFplTeamsSort={updateFplTeamsSort}
+            generateDraftPicks={generateDraftPicks}
+            createDraft={createDraft}
+            submitting={submitting}
+            sort={sort}
+            errors={errors}
+          />
+        </Route>
       </Switch>
     </Fragment>
   )
@@ -168,6 +167,7 @@ const mapStateToProps = (state) => {
 }
 
 const matchDispatchToProps = {
+  initializeForm: leagueActions.initializeForm,
   fetchLeague: leagueActions.fetchLeague,
   updateLeague: leagueActions.updateLeague,
   fetchFplTeams: leagueActions.fetchFplTeams,

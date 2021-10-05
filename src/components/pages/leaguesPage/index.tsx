@@ -56,8 +56,8 @@ const LEAGUES_TABLE_CELLS = [
   }
 ]
 
-const LeaguesPage = (props: Props) => {
-  const { leagues, fetchLeagues, updateSort } = props
+export const LeaguesPage = (props: Props) => {
+  const { leagues = [], fetchLeagues, updateSort } = props
   const classes = useStyles()
 
   return (
@@ -91,7 +91,7 @@ const LeaguesPage = (props: Props) => {
 const mapStateToProps = (state) => {
   const {
     leagues: {
-      data: leagues = []
+      data: leagues
     }
   } = state
 

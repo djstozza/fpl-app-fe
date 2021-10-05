@@ -60,7 +60,7 @@ const TABS = {
   fplTeams: { label: 'Fpl Teams', value: 'fplTeams', display: true }
 }
 
-const ProfilePage = (props: Props) => {
+export const ProfilePage = (props: Props) => {
   const {
     user,
     updateUser,
@@ -93,71 +93,64 @@ const ProfilePage = (props: Props) => {
       <Switch>
         <Route
           exact
-          path={PROFILE_URL}
-          render={() => <UserDetails user={user} />}
-        />
-        <Route
-          exact
-          path={USER_DETAILS_URL}
-          render={() => <UserDetails user={user} />}
-        />
+          path={[
+            USER_DETAILS_URL,
+            PROFILE_URL
+          ]}
+        >
+          <UserDetails user={user} />
+        </Route>
         <Route
           exact
           path={EDIT_USER_DETAILS_URL}
-          render={
-            () => (
-              <UserEditForm
-                user={user}
-                errors={errors}
-                updateUser={updateUser}
-                submitting={submitting}
-                initializeAuth={initializeAuth}
-              />
-            )
-          }
-        />
+        >
+          <UserEditForm
+            user={user}
+            errors={errors}
+            updateUser={updateUser}
+            submitting={submitting}
+            initializeAuth={initializeAuth}
+          />
+        </Route>
         <Route
           exact
           path={CHANGE_PASSWORD_URL}
-          render={
-            () => (
-              <ChangePasswordForm
-                errors={errors}
-                changePassword={changePassword}
-                submitting={submitting}
-                initializeAuth={initializeAuth}
-              />
-            )
-          }
-        />
+        >
+          <ChangePasswordForm
+            errors={errors}
+            changePassword={changePassword}
+            submitting={submitting}
+            initializeAuth={initializeAuth}
+          />
+        </Route>
         <Route
           exact
           path={`${PROFILE_URL}${LEAGUES_URL}`}
-          render={() => <LeaguesPage />}
-        />
+        >
+          <LeaguesPage />
+        </Route>
         <Route
           exact
           path={`${PROFILE_URL}${NEW_LEAGUE_URL}`}
-          render={() => <CreateLeague />}
-        />
+        >
+          <CreateLeague />
+        </Route>
         <Route
           exact
           path={`${PROFILE_URL}${JOIN_LEAGUE_URL}`}
-          render={() => <JoinLeague />}
-        />
+        >
+          <JoinLeague />
+        </Route>
         <Route
           exact
           path={`${PROFILE_URL}${FPL_TEAMS_URL}`}
-          render={
-            () => (
-              <FplTeamsTable
-                fplTeams={fplTeams}
-                fetchFplTeams={fetchFplTeams}
-                updateFplTeamsSort={updateFplTeamsSort}
-              />
-            )
-          }
-        />
+        >
+          <FplTeamsTable
+            fplTeams={fplTeams}
+            fetchFplTeams={fetchFplTeams}
+            updateFplTeamsSort={updateFplTeamsSort}
+          />
+        </Route>
       </Switch>
     </Fragment>
   )

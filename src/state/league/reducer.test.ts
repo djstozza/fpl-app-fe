@@ -30,6 +30,13 @@ describe('League reducer handles action', () => {
       .toEqual({ ...initialState, submitting: true })
   })
 
+  test(actions.INITIALIZE_FORM, () => {
+    expect(reducer({ ...initialState, errors }, {
+      type: actions.INITIALIZE_FORM
+    }))
+      .toEqual(initialState)
+  })
+
   test(success(actions.API_LEAGUES_SHOW), () => {
     expect(reducer(initialState, {
       type: success(actions.API_LEAGUES_SHOW),

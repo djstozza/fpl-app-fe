@@ -9,7 +9,7 @@ import {
   createStyles
 } from '@material-ui/core'
 
-import ActionsFooter from './actionsFooter'
+import ActionsFooter from '../actionsFooter'
 import type { League } from 'types'
 
 type Props = {

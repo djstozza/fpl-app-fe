@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
-import ActionsFooter from './actionsFooter'
+import ActionsFooter from '../actionsFooter'
 import { initialFilterState } from 'state/league/reducer'
 import { FPL_TEAMS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
@@ -88,6 +88,7 @@ const FplTeamsTable = (props: Props) => {
   if (!showDraftPickColumn) delete cells['draftPickNumber']
   if (!showLiveColumns) {
     delete cells['rank']
+    delete cells['totalScore']
     delete cells['miniDraftPickNumber']
   }
 

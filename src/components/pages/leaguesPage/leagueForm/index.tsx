@@ -20,7 +20,9 @@ type Props = {
   title: string,
   submitFn: Function,
   initializeForm: Function,
-  create?: boolean
+  create?: boolean,
+  hideFplTeamName?: boolean,
+  returnUrl?: string
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -56,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 const LeagueForm = (props: Props) => {
-  const { title, errors, submitFn, initializeForm, create } = props
+  const { title, errors, submitFn, initializeForm, create, hideFplTeamName = false, returnUrl } = props
 
   const classes = useStyles()
 
@@ -72,7 +74,9 @@ const LeagueForm = (props: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    submitFn({ league: { name, code, fplTeamName } })
+    const params = { name, code, fplTeamName }
+    if (hideFplTeamName) delete params.fplTeamName
+    submitFn({ league: params })
   }
 
   const baseErrors = errors.filter(({ source }) => source === 'base')
@@ -90,8 +94,8 @@ const LeagueForm = (props: Props) => {
           Boolean(baseErrors.length) &&
           <div className={classes.baseErrorsContainer}>
             {
-              baseErrors.map(({ detail }) => (
-                <Typography color='error'>{detail}</Typography>
+              baseErrors.map(({ detail }, i) => (
+                <Typography key={i} color='error'>{detail}</Typography>
               ))
             }
           </div>
@@ -116,6 +120,7 @@ const LeagueForm = (props: Props) => {
               <Button
                 variant='contained'
                 color='primary'
+                name='generateCode'
                 onClick={() => setCode(Math.random().toString(36).slice(2, 10))}
                 className={classes.generateButton}
               >
@@ -138,22 +143,25 @@ const LeagueForm = (props: Props) => {
             helperText={errors.find(({ source }) => source === 'code')?.detail}
           />
         </div>
-        <TextField
-          required
-          className={classes.textField}
-          fullWidth
-          variant='outlined'
-          label='Fpl Team Name'
-          name='fplTeamName'
-          type='text'
-          onChange={({ target: { value }}) => setFplTeamName(value)}
-          value={fplTeamName}
-          error={Boolean(errors.find(({ source }) => source === 'fpl_team_name'))}
-          helperText={errors.find(({ source }) => source === 'fpl_team_name')?.detail}
-        />
+        {
+          !hideFplTeamName &&
+          <TextField
+            required
+            className={classes.textField}
+            fullWidth
+            variant='outlined'
+            label='Fpl Team Name'
+            name='fplTeamName'
+            type='text'
+            onChange={({ target: { value }}) => setFplTeamName(value)}
+            value={fplTeamName}
+            error={Boolean(errors.find(({ source }) => source === 'fpl_team_name'))}
+            helperText={errors.find(({ source }) => source === 'fpl_team_name')?.detail}
+          />
+        }
         <div className={classes.actions}>
           <ButtonLink
-            to={`${PROFILE_URL}${LEAGUES_URL}`}
+            to={returnUrl || `${PROFILE_URL}${LEAGUES_URL}`}
             color='default'
             rightMargin
           >
@@ -161,7 +169,7 @@ const LeagueForm = (props: Props) => {
           </ButtonLink>
           <Button
             type='submit'
-            disabled={!name || !code || !fplTeamName}
+            disabled={!name || !code || (!hideFplTeamName && !fplTeamName)}
             variant='contained'
             color='primary'
           >

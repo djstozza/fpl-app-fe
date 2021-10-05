@@ -11,11 +11,12 @@ import {
 import { PROFILE_URL } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
 
-import type { Error } from 'types'
+import type { User, Error } from 'types'
 
 type Props = {
+  user: User,
   errors: Error[],
-  changePassword: Function,
+  updateUser: Function,
   submitting: boolean,
   initializeAuth: Function
 }
@@ -39,18 +40,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const ChangePasswordForm = (props: Props) => {
+const UserEditForm = (props: Props) => {
   const {
-     errors,
-     changePassword,
-     submitting,
-     initializeAuth
+    user: { email, username },
+    errors = [],
+    updateUser,
+    submitting,
+    initializeAuth
   } = props
 
   const classes = useStyles()
 
-  const [password, setPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
+  const [newEmail, setNewEmail] = useState(email)
+  const [newUsername, setNewUsername] = useState(username)
 
   useEffect(
     () => {
@@ -60,7 +62,7 @@ const ChangePasswordForm = (props: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    changePassword({ user: { password, newPassword } })
+    updateUser({ user: { email: newEmail, username: newUsername } })
   }
 
   return (
@@ -71,39 +73,33 @@ const ChangePasswordForm = (props: Props) => {
           variant='h5'
           className={classes.formHeader}
         >
-          Change password
+          Edit details
         </Typography>
         <TextField
           required
           className={classes.textField}
           fullWidth
           variant='outlined'
-          label='Password'
-          name='password'
-          type='password'
-          onChange={({ target: { value }}) => setPassword(value)}
-          value={password}
-          InputProps={{
-            autoComplete: 'off'
-          }}
-          error={Boolean(errors.find(({ source }) => source === 'password'))}
-          helperText={errors.find(({ source }) => source === 'password')?.detail}
+          label='Email'
+          name='email'
+          type='email'
+          onChange={({ target: { value }}) => setNewEmail(value)}
+          value={newEmail}
+          error={Boolean(errors.find(({ source }) => source === 'email'))}
+          helperText={errors.find(({ source }) => source === 'email')?.detail}
         />
         <TextField
           required
           className={classes.textField}
           fullWidth
           variant='outlined'
-          label='New Password'
-          name='newPassword'
-          type='password'
-          onChange={({ target: { value }}) => setNewPassword(value)}
-          value={newPassword}
-          InputProps={{
-            autoComplete: 'off'
-          }}
-          error={Boolean(errors.find(({ source }) => source === 'new_password'))}
-          helperText={errors.find(({ source }) => source === 'new_password')?.detail}
+          label='Username'
+          name='username'
+          type='text'
+          onChange={({ target: { value }}) => setNewUsername(value)}
+          value={newUsername}
+          error={Boolean(errors.find(({ source }) => source === 'username'))}
+          helperText={errors.find(({ source }) => source === 'username')?.detail}
         />
         <div className={classes.actions}>
           <ButtonLink
@@ -115,11 +111,11 @@ const ChangePasswordForm = (props: Props) => {
           </ButtonLink>
           <Button
             type='submit'
-            disabled={!password || !newPassword || submitting}
+            disabled={!email || !username || submitting}
             variant='contained'
             color='primary'
           >
-            Change
+            Update
           </Button>
         </div>
       </Paper>
@@ -127,4 +123,4 @@ const ChangePasswordForm = (props: Props) => {
   )
 }
 
-export default ChangePasswordForm
+export default UserEditForm
