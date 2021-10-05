@@ -62,7 +62,7 @@ const TABS = [
   { label: 'Players', value: 'players', display: true }
 ]
 
-const TeamPage = (props: Props) => {
+export const TeamPage = (props: Props) => {
   const {
     team,
     teams,
@@ -145,40 +145,37 @@ const TeamPage = (props: Props) => {
               `${TEAMS_URL}/:teamId/details`
             ]
           }
-          render={() => <TeamDetails team={data} />}
-        />
+        >
+          <TeamDetails team={data} />
+        </Route>
         <Route
           exact
           path={`${TEAMS_URL}/:teamId/fixtures`}
-          render={
-            () => (
-              <FixturesTable
-                key={teamId}
-                teamId={teamId}
-                fixtures={fixtures}
-                fetchTeamFixtures={fetchTeamFixtures}
-                sort={sortQuery}
-                tab={tab}
-                updateTeamFixturesSort={updateTeamFixturesSort}
-              />
-            )
-          }
-        />
+        >
+          <FixturesTable
+            key={teamId}
+            teamId={teamId}
+            fixtures={fixtures}
+            fetchTeamFixtures={fetchTeamFixtures}
+            sort={sortQuery}
+            tab={tab}
+            updateTeamFixturesSort={updateTeamFixturesSort}
+          />
+        </Route>
         <Route
           exact
           path={`${TEAMS_URL}/:teamId/players`}
-          render={() => (
-            <PlayersTable
-              key={teamId}
-              players={players}
-              fetchTeamPlayers={fetchTeamPlayers}
-              sort={sortQuery}
-              teamId={teamId}
-              tab={tab}
-              updateTeamPlayersSort={updateTeamPlayersSort}
-            />
-          )}
-        />
+        >
+          <PlayersTable
+            key={teamId}
+            players={players}
+            fetchTeamPlayers={fetchTeamPlayers}
+            sort={sortQuery}
+            teamId={teamId}
+            tab={tab}
+            updateTeamPlayersSort={updateTeamPlayersSort}
+          />
+        </Route>
       </Switch>
     </Fragment>
   )

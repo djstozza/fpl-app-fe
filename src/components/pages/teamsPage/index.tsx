@@ -54,7 +54,7 @@ const TEAMS_TABLE_CELLS = [
   { cellId: 'currentForm', label: 'Last 5', toolTipLabel: 'Last 5' }
 ]
 
-const TeamsPage = (props: Props) => {
+export const TeamsPage = (props: Props) => {
   const {
     teams: { data: teams },
     fetchTeams,

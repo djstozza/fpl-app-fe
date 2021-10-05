@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const PlayerPage = (props: Props) => {
+export const PlayerPage = (props: Props) => {
   const {
     player: { data: player, history = [], historyPast = []},
     fetchPlayer,
@@ -64,7 +64,6 @@ const PlayerPage = (props: Props) => {
     match: { params: { playerId, tab = 'details' } }
   } = props
   const classes = useStyles()
-
 
   useEffect(
     () => {
@@ -99,48 +98,41 @@ const PlayerPage = (props: Props) => {
       <Switch>
         <Route
           exact
-          path={`${PLAYERS_URL}/:playerId`}
-          render={() => <PlayerDetails key={playerId} player={player} />}
-        />
-        <Route
-          exact
-          path={`${PLAYERS_URL}/:playerId/details`}
-          render={() => <PlayerDetails key={playerId} player={player} />}
-        />
+          path={[
+            `${PLAYERS_URL}/:playerId`,
+            `${PLAYERS_URL}/:playerId/details`
+          ]}
+        >
+          <PlayerDetails key={playerId} player={player} />
+        </Route>
         <Route
           exact
           path={`${PLAYERS_URL}/:playerId/history`}
-          render={
-            () => (
-              <HistoryTable
-                key={playerId}
-                playerId={playerId}
-                history={history}
-                fetchPlayerHistory={fetchPlayerHistory}
-                tab={tab}
-                updatePlayerHistorySort={updatePlayerHistorySort}
-                hasHistory={hasHistory}
-              />
-            )
-          }
-        />
+        >
+          <HistoryTable
+            key={playerId}
+            playerId={playerId}
+            history={history}
+            fetchPlayerHistory={fetchPlayerHistory}
+            tab={tab}
+            updatePlayerHistorySort={updatePlayerHistorySort}
+            hasHistory={hasHistory}
+          />
+        </Route>
         <Route
           exact
           path={`${PLAYERS_URL}/:playerId/historyPast`}
-          render={
-            () => (
-              <HistoryPastTable
-                key={playerId}
-                playerId={playerId}
-                historyPast={historyPast}
-                fetchPlayerHistoryPast={fetchPlayerHistoryPast}
-                updatePlayerHistoryPastSort={updatePlayerHistoryPastSort}
-                tab={tab}
-                hasHistoryPast={hasHistoryPast}
-              />
-            )
-          }
-        />
+        >
+          <HistoryPastTable
+            key={playerId}
+            playerId={playerId}
+            historyPast={historyPast}
+            fetchPlayerHistoryPast={fetchPlayerHistoryPast}
+            updatePlayerHistoryPastSort={updatePlayerHistoryPastSort}
+            tab={tab}
+            hasHistoryPast={hasHistoryPast}
+          />
+        </Route>
       </Switch>
     </Fragment>
   )

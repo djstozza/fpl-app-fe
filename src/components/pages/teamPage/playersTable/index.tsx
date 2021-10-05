@@ -18,7 +18,7 @@ type Props = {
 }
 
 const PlayersTable = (props: Props) => {
-  const { teamId, players = [], tab, fetchTeamPlayers, updateTeamPlayersSort } = props
+  const { teamId, players, tab, fetchTeamPlayers, updateTeamPlayersSort } = props
 
   const cellHash: CellHash = playersTableCells()
   delete cellHash['teams']

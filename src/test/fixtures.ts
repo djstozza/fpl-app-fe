@@ -408,7 +408,7 @@ export const PLAYER_SUMMARIES = [
   }
 ]
 
-const PLAYER_HISTORY = [
+export const PLAYER_HISTORY = [
   {
     assists: 2,
     awayTeamScore: 3,

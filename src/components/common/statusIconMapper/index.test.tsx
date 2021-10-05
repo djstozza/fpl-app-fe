@@ -67,8 +67,6 @@ describe('StatusIconMapper', () => {
   })
 
   it('only the news if no newsAdded is present', () => {
-    timezoneMock.register('Australia/Adelaide')
-
     const news = 'Calf injury. 75% chance of playing'
     const wrapper = render({ status: 'd', news })
 

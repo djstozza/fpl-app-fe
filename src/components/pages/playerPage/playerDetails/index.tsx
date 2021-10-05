@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core'
 
 import { SetElHeight } from 'utilities/helpers'
-import PlayerImage from './playerImage'
+import PlayerImage from '../playerImage'
 import { playersTableCells } from 'components/pages/playersPage'
 
 import { Player, CellHash } from 'types'

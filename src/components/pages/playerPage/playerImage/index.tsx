@@ -37,8 +37,8 @@ const PlayerImage = (props: Props) => {
   }, [src])
 
   useEffect(() => {
-    const img = new Image();
-    img.src = src as string;
+    const img = new Image()
+    img.src = src as string
     img.addEventListener('load', onLoad)
     return () => {
       img.removeEventListener('load', onLoad)

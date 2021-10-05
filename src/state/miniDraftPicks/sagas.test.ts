@@ -19,7 +19,7 @@ import { LIVE_LEAGUE, LIST_POSITION_1 } from 'test/fixtures'
 
 const { id } = LIVE_LEAGUE
 const season = 'winder'
-const sort = { lasName: 'desc' }
+const sort = { lastName: 'desc' }
 const filter = { team_id: ['3'] }
 const page = { offset: 51, limit: 50 }
 const fplTeamListId = '12'

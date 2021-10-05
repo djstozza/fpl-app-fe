@@ -51,17 +51,7 @@ const HISTORY_TABLE_CELLS = [
     ),
     sortParam: 'kickoffTime'
   },
-  {
-    cellId: 'minutes',
-    label: 'M',
-    toolTipLabel: 'Minutes',
-    customRender: ({ started, minutes }: History, classses) => {
-      if (!started) return null
-
-      return minutes
-    },
-    sortParam: 'minutes'
-  },
+  { cellId: 'minutes', label: 'M', toolTipLabel: 'Minutes', sortParam: 'minutes' },
   { cellId: 'totalPoints', label: 'TP', toolTipLabel: 'Total Points', sortParam: 'totalPoints' },
   { cellId: 'goalsScored', label: 'GS', toolTipLabel: 'Goals Scored', sortParam: 'goalsScored' },
   { cellId: 'assists', label: 'A', toolTipLabel: 'Assists', sortParam: 'assists' },

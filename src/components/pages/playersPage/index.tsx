@@ -109,7 +109,7 @@ export const playersTableCells = () => ({
   ownGoals: { cellId: 'ownGoals', label: 'OG', toolTipLabel: 'Own Goals', sortParam: 'ownGoals' }
 })
 
-const PlayersPage = (props: Props) => {
+export const PlayersPage = (props: Props) => {
   const {
     players: { data: players, facets = {}, meta: { total } },
     fetchPlayers,

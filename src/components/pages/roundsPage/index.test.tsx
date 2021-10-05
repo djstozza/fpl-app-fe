@@ -31,7 +31,7 @@ describe('RoundsPage', () => {
   const render = (props = {}) => createMount()(
     <MockedRouter>
       <RoundsPage
-        rounds={ROUND_1}
+        round={ROUND_1}
         rounds={[ROUND_1, ROUND_2, ROUND_3]}
         fetchRound={blank__}
         fetchRounds={blank__}
