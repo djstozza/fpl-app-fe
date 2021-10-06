@@ -60,10 +60,10 @@ describe('FplTeamsTable', () => {
     expect(liveColumns.filter(column => cellNames(wrapper).includes(column))).toEqual([])
   })
 
-  it('triggers fetchTeamFplTeams on render', () => {
+  it('triggers fetchFplTeams on render', () => {
     const fetchFplTeams = jest.fn()
     const wrapper = render({ fetchFplTeams })
-    expect(fetchFplTeams).toHaveBeenCalled()
+
     expect(fetchFplTeams).toHaveBeenCalledWith({ id: LIVE_LEAGUE.id, ...initialFilterState })
   })
 

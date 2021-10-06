@@ -62,7 +62,7 @@ const TABS = [
   { label: 'Mini Draft Picks', value: 'miniDraft/miniDraftPicks', display: true }
 ]
 
-const MiniDraftPage = (props: Props) => {
+export const MiniDraftPage = (props: Props) => {
   const {
     league,
     miniDraftPicks,
@@ -175,54 +175,52 @@ const MiniDraftPage = (props: Props) => {
       />
       <UserCanPickAlert
         leagueId={leagueId}
+        deadline={deadline}
         miniDraftPicks={miniDraftPicks}
         passMiniDraftPick={passMiniDraftPick}
       />
       <DraftCompletedAlert
         substr='mini draft'
-        showAlert={miniDraftFinished}
+        showAlert={!deadline || miniDraftFinished}
       />
       <Switch>
-
-          <Route
-            exact
-            path={[
-              `${LEAGUES_URL}/:leagueId/miniDraft`,
-              `${LEAGUES_URL}/:leagueId/miniDraft/miniDraftPicks`
-            ]}
-            render={() => (
-              <MiniDraftPicksTable
-                key={key}
-                miniDraftPicks={miniDraftPicks}
-                fetchMiniDraftPicks={fetchMiniDraftPicks}
-                updateMiniDraftPicksSort={updateMiniDraftPicksSort}
-                updateMiniDraftPicksFilter={updateMiniDraftPicksFilter}
-                fetchMiniDraftPickFacets={fetchMiniDraftPickFacets}
-              />
-            )}
+        <Route
+          exact
+          path={[
+            `${LEAGUES_URL}/:leagueId/miniDraft`,
+            `${LEAGUES_URL}/:leagueId/miniDraft/miniDraftPicks`
+          ]}
+        >
+          <MiniDraftPicksTable
+            key={key}
+            miniDraftPicks={miniDraftPicks}
+            fetchMiniDraftPicks={fetchMiniDraftPicks}
+            updateMiniDraftPicksSort={updateMiniDraftPicksSort}
+            updateMiniDraftPicksFilter={updateMiniDraftPicksFilter}
+            fetchMiniDraftPickFacets={fetchMiniDraftPickFacets}
           />
-          <Route
-            exact
-            path={`${LEAGUES_URL}/:leagueId/miniDraft/tradeableListPositions`}
-            render={() => (
-              <NewMiniDraftPick
-                fetchListPositions={fetchListPositions}
-                fplTeamList={fplTeamList}
-                isWaiver={false}
-                deadline={deadline}
-                outListPosition={outListPosition}
-                setOutListPosition={setOutListPosition}
-                fetchTradeablePlayers={fetchTradeablePlayers}
-                updateTradeablePlayersFilter={updateTradeablePlayersFilter}
-                updateTradeablePlayersSort={updateTradeablePlayersSort}
-                updateTradeablePlayersPage={updateTradeablePlayersPage}
-                players={players}
-                fetchPlayerFacets={fetchPlayerFacets}
-                miniDraftPicks={miniDraftPicks}
-                createMiniDraftPick={createMiniDraftPick}
-              />
-            )}
+        </Route>
+        <Route
+          exact
+          path={`${LEAGUES_URL}/:leagueId/miniDraft/tradeableListPositions`}
+        >
+          <NewMiniDraftPick
+            fetchListPositions={fetchListPositions}
+            fplTeamList={fplTeamList}
+            isWaiver={false}
+            deadline={deadline}
+            outListPosition={outListPosition}
+            setOutListPosition={setOutListPosition}
+            fetchTradeablePlayers={fetchTradeablePlayers}
+            updateTradeablePlayersFilter={updateTradeablePlayersFilter}
+            updateTradeablePlayersSort={updateTradeablePlayersSort}
+            updateTradeablePlayersPage={updateTradeablePlayersPage}
+            players={players}
+            fetchPlayerFacets={fetchPlayerFacets}
+            miniDraftPicks={miniDraftPicks}
+            createMiniDraftPick={createMiniDraftPick}
           />
+        </Route>
       </Switch>
     </Fragment>
   )

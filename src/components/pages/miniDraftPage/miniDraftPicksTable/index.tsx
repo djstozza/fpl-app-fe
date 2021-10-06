@@ -78,10 +78,9 @@ const MINI_DRAFT_PICKS_TABLE_CELLS = [
     toolTipLabel: 'Passed',
     filterParam: 'passed',
     customRender: ({ passed }: MiniDraftPick) => {
-      if (passed === false) return 'No'
       if (passed) return 'Yes'
 
-      return null
+      return 'No'
     }
   },
   {

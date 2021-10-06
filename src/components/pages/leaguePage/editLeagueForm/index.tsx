@@ -1,18 +1,12 @@
-import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import {
-  Paper,
   Theme,
-  TextField,
-  Button,
-  Typography,
   makeStyles
 } from '@material-ui/core'
 
 import {
   LEAGUES_URL
 } from 'utilities/constants'
-import ButtonLink from 'components/common/buttonLink'
 import LeagueForm from 'components/pages/leaguesPage/leagueForm'
 
 import type { League, Error } from 'types'
@@ -21,7 +15,8 @@ type Props = {
   league: League,
   errors: Error[],
   submitting: boolean,
-  updateLeague: Function
+  updateLeague: Function,
+  initializeForm: Function
 }
 
 const useStyles = makeStyles((theme: Theme) => ({

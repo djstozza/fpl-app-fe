@@ -41,10 +41,10 @@ describe('FplTeamsTable', () => {
     expect(tableCell(wrapper, 3, 2).text()).toEqual(String(FPL_TEAMS[2].rank))
   })
 
-  it('triggers fetchTeamFplTeams on render', () => {
+  it('triggers fetchFplTeams on render', () => {
     const fetchFplTeams = jest.fn()
     const wrapper = render({ fetchFplTeams })
-    expect(fetchFplTeams).toHaveBeenCalled()
+
     expect(fetchFplTeams).toHaveBeenCalledWith(initialFilterState)
   })
 

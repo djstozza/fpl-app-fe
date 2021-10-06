@@ -252,7 +252,7 @@ export type DraftPick = {
   user: User,
   player?: Player,
   team?: TeamBase,
-  position?: PositionSummary
+  position?: string
 }
 
 export type FplTeamList = {

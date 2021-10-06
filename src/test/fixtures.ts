@@ -1080,7 +1080,7 @@ export const DRAFT_PICK_1 = {
   user: USER_1,
   player: PLAYER_SUMMARIES[0],
   team: SPURS_TEAM_BASE,
-  position: FORWARD
+  position: FORWARD.singularNameShort
 }
 
 export const DRAFT_PICK_2 = {
@@ -1088,9 +1088,10 @@ export const DRAFT_PICK_2 = {
   pickNumber: 2,
   miniDraft: false,
   fplTeam: FPL_TEAM_2_BASE,
+  user: USER_2,
   player: PLAYER_SUMMARIES[1],
   team: LIVERPOOL_TEAM_BASE,
-  position: MIDFIELDER
+  position: MIDFIELDER.singularNameShort
 }
 
 export const DRAFT_PICK_3 = {
@@ -1101,10 +1102,18 @@ export const DRAFT_PICK_3 = {
   fplTeam: FPL_TEAM_3
 }
 
+export const DRAFT_PICK_4 = {
+  id: '4',
+  pickNumber: 4,
+  user: USER_3,
+  fplTeam: FPL_TEAM_3
+}
+
 export const DRAFT_PICKS = [
   DRAFT_PICK_1,
   DRAFT_PICK_2,
-  DRAFT_PICK_3
+  DRAFT_PICK_3,
+  DRAFT_PICK_4
 ]
 
 export const DRAFT_PICK_FACETS = {
@@ -1224,3 +1233,15 @@ export const WAIVER_PICKS = [
     status: 'Approved'
   }
 ]
+
+export const DRAFT_PICK_STATUS = {
+  canMakeMiniDraftPick: true,
+  canMakePlayerPick: true,
+  draftFinished: false,
+  nextDraftPickId: '4',
+  userCanPick: true
+}
+
+export const MINI_DRAFT_PICK_STATUS = {
+  canMakeMiniDraftPick: true
+}

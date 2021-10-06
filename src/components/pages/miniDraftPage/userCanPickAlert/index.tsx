@@ -17,7 +17,8 @@ import { colors } from 'utilities/colors'
 type Props = {
   leagueId: string,
   miniDraftPicks: MiniDraftPicksState,
-  passMiniDraftPick: Function
+  passMiniDraftPick: Function,
+  deadline?: Date
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -39,7 +40,8 @@ const UserCanPickAlert = (props: Props) => {
   const {
     leagueId,
     miniDraftPicks: { canMakeMiniDraftPick, submitting },
-    passMiniDraftPick
+    passMiniDraftPick,
+    deadline
   } = props
 
   const classes = useStyles()
@@ -55,7 +57,7 @@ const UserCanPickAlert = (props: Props) => {
     }, [canMakeMiniDraftPick]
   )
 
-  if (!canMakeMiniDraftPick) return null
+  if (!canMakeMiniDraftPick || !deadline) return null
 
   return (
     <Fragment>

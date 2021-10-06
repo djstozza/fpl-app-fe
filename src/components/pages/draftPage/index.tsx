@@ -56,7 +56,7 @@ const TABS = [
   { label: 'Draft Picks', value: 'draft/draftPicks', display: true }
 ]
 
-const DraftPage = (props: Props) => {
+export const DraftPage = (props: Props) => {
   const {
     league,
     draftPicks,
@@ -108,7 +108,7 @@ const DraftPage = (props: Props) => {
 
       cable.subscriptions.create(
         { channel: 'DraftPicksChannel', league_id: leagueId },
-        { received: received  => { if (isActive) handleReceived(received) } }
+        { received: received => { if (isActive) handleReceived(received) } }
       )
 
       return () => { isActive = false }
@@ -153,49 +153,36 @@ const DraftPage = (props: Props) => {
       <Switch>
         <Route
           exact
-          path={`${LEAGUES_URL}/:leagueId/draft`}
-          render={() => (
-            <DraftPicksTable
-              key={key}
-              draftPicks={draftPicks}
-              fetchDraftPicks={fetchDraftPicks}
-              updateDraftPicksSort={updateDraftPicksSort}
-              updateDraftPicksFilter={updateDraftPicksFilter}
-              fetchDraftPickFacets={fetchDraftPickFacets}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`${LEAGUES_URL}/:leagueId/draft/draftPicks`}
-          render={() => (
-            <DraftPicksTable
-              key={key}
-              draftPicks={draftPicks}
-              fetchDraftPicks={fetchDraftPicks}
-              updateDraftPicksSort={updateDraftPicksSort}
-              updateDraftPicksFilter={updateDraftPicksFilter}
-              fetchDraftPickFacets={fetchDraftPickFacets}
-            />
-          )}
-        />
+          path={[
+            `${LEAGUES_URL}/:leagueId/draft`,
+            `${LEAGUES_URL}/:leagueId/draft/draftPicks`
+          ]}
+        >
+          <DraftPicksTable
+            key={key}
+            draftPicks={draftPicks}
+            fetchDraftPicks={fetchDraftPicks}
+            updateDraftPicksSort={updateDraftPicksSort}
+            updateDraftPicksFilter={updateDraftPicksFilter}
+            fetchDraftPickFacets={fetchDraftPickFacets}
+          />
+        </Route>
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId/draft/availablePlayers`}
-          render={() => (
-            <AvailablePlayersTable
-              key={key}
-              draftPicks={draftPicks}
-              players={players}
-              fetchAvailablePlayers={fetchAvailablePlayers}
-              updateAvailablePlayersSort={updateAvailablePlayersSort}
-              updateAvailablePlayersFilter={updateAvailablePlayersFilter}
-              updateAvailablePlayersPage={updateAvailablePlayersPage}
-              fetchPlayerFacets={fetchPlayerFacets}
-              updateDraftPick={updateDraftPick}
-            />
-          )}
-        />
+        >
+          <AvailablePlayersTable
+            key={key}
+            draftPicks={draftPicks}
+            players={players}
+            fetchAvailablePlayers={fetchAvailablePlayers}
+            updateAvailablePlayersSort={updateAvailablePlayersSort}
+            updateAvailablePlayersFilter={updateAvailablePlayersFilter}
+            updateAvailablePlayersPage={updateAvailablePlayersPage}
+            fetchPlayerFacets={fetchPlayerFacets}
+            updateDraftPick={updateDraftPick}
+          />
+        </Route>
       </Switch>
     </Fragment>
   )

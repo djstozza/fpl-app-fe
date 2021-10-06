@@ -25,6 +25,10 @@ type Props = {
   returnUrl?: string
 }
 
+interface Params {
+  [key: string]: string
+}
+
 const useStyles = makeStyles((theme: Theme) => ({
   form: {
     marginTop: theme.spacing(2)
@@ -74,7 +78,7 @@ const LeagueForm = (props: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const params = { name, code, fplTeamName }
+    const params: Params = { name, code, fplTeamName }
     if (hideFplTeamName) delete params.fplTeamName
     submitFn({ league: params })
   }

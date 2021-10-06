@@ -130,7 +130,7 @@ const DraftPicksTable = (props: Props) => {
     }, [fetchDraftPickFacets]
   )
 
-  const { data, facets = {}, meta: { total } } = draftPicks
+  const { data, facets, meta: { total } } = draftPicks
 
   return (
     <Fragment>
