@@ -93,7 +93,6 @@ const TradeablePlayersTable = (props: Props) => {
     )
   }
 
-
   if (isOwner) cells['tradeInColumn'] = tradeInColumn
 
   return (

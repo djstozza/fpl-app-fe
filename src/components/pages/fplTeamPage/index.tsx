@@ -125,10 +125,10 @@ const TABS = {
   }
 }
 
-const FplTeamPage = (props: Props) => {
+export const FplTeamPage = (props: Props) => {
   const {
     fplTeam,
-    errors,
+    errors = [],
     submitting,
     fetchFplTeam,
     updateFplTeam,
@@ -178,11 +178,11 @@ const FplTeamPage = (props: Props) => {
   const [deadline, setDeadline] = useState<Date|undefined>()
   const [isWaiver, setIsWaiver] = useState(false)
   const sanitizedFplTeamListId = (fplTeamListId || '').match(/^\d+$/) ? fplTeamListId : undefined
-
   const currentFplTeamList = fplTeamLists.data.find(({ round: { current, name } }) => current)
   const currentFplTeamListId = (currentFplTeamList || {}).id
-  const lastFplTeamListId = fplTeamLists[fplTeamLists.data.length - 1]?.id
+  const lastFplTeamListId = fplTeamLists.data[fplTeamLists.data.length - 1]?.id
   const getSelectedFplteamListId = () => sanitizedFplTeamListId || currentFplTeamListId || lastFplTeamListId
+
   const selectedFplTeamListId = getSelectedFplteamListId()
 
   const { outListPosition } = fplTeamList
@@ -225,9 +225,8 @@ const FplTeamPage = (props: Props) => {
 
       const waiverDeadlinePassed = new Date() > waiverDeadlineAsTime
 
-      setDeadline(new Date() > waiverDeadlineAsTime ? deadlineTimeAsTime : waiverDeadlineAsTime)
+      setDeadline(waiverDeadlinePassed ? deadlineTimeAsTime : waiverDeadlineAsTime)
       setIsWaiver(!waiverDeadlinePassed)
-
     }, [deadlineTimeAsTime, waiverDeadlineAsTime, setDeadline, setIsWaiver]
   )
 
@@ -296,42 +295,39 @@ const FplTeamPage = (props: Props) => {
               `${FPL_TEAMS_URL}/:fplTeamId/details`
             ]
           }
-          render={() => (
-            <FplTeamDetails
-              fplTeam={fplTeam}
-            />
-          )}
-        />
+        >
+          <FplTeamDetails
+            fplTeam={fplTeam}
+          />
+        </Route>
         <Route
           exact
           path={`${FPL_TEAMS_URL}/:fplTeamId/details/edit`}
-          render={() => (
-            <EditFplTeamForm
-              fplTeam={fplTeam}
-              submitting={submitting}
-              errors={errors}
-              updateFplTeam={updateFplTeam}
-            />
-          )}
-        />
+        >
+          <EditFplTeamForm
+            fplTeam={fplTeam}
+            submitting={submitting}
+            errors={errors}
+            updateFplTeam={updateFplTeam}
+          />
+        </Route>
         <Route
           exact
           path={`${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId?`}
-          render={() => (
-            <FplTeamListChart
-              isOwner={isOwner}
-              fplTeamId={fplTeamId}
-              fplTeamLists={fplTeamLists}
-              fplTeamList={fplTeamList}
-              listPosition={listPosition}
-              fetchValidSubstitutions={fetchValidSubstitutions}
-              processSubstitution={processSubstitution}
-              clearValidSubstitutions={clearValidSubstitutions}
-              selectedFplTeamListId={selectedFplTeamListId}
-              fetchFplTeamList={fetchFplTeamList}
-            />
-          )}
-        />
+        >
+          <FplTeamListChart
+            isOwner={isOwner}
+            fplTeamId={fplTeamId}
+            fplTeamLists={fplTeamLists}
+            fplTeamList={fplTeamList}
+            listPosition={listPosition}
+            fetchValidSubstitutions={fetchValidSubstitutions}
+            processSubstitution={processSubstitution}
+            clearValidSubstitutions={clearValidSubstitutions}
+            selectedFplTeamListId={selectedFplTeamListId}
+            fetchFplTeamList={fetchFplTeamList}
+          />
+        </Route>
         <Route
           exact
           path={
@@ -342,22 +338,21 @@ const FplTeamPage = (props: Props) => {
               `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/freeAgents`
             ]
           }
-          render={() => (
-            <WaiverPicksTable
-              isOwner={isOwner}
-              isWaiver={isWaiver}
-              waiverPicks={waiverPicks}
-              trades={trades}
-              selectedFplTeamListId={selectedFplTeamListId}
-              fetchWaiverPicks={fetchWaiverPicks}
-              changeWaiverPickOrder={changeWaiverPickOrder}
-              fetchTrades={fetchTrades}
-              fplTeamList={fplTeamList}
-              fplTeamLists={fplTeamLists}
-              fplTeamId={fplTeamId}
-            />
-          )}
-        />
+        >
+          <WaiverPicksTable
+            isOwner={isOwner}
+            isWaiver={isWaiver}
+            waiverPicks={waiverPicks}
+            trades={trades}
+            selectedFplTeamListId={selectedFplTeamListId}
+            fetchWaiverPicks={fetchWaiverPicks}
+            changeWaiverPickOrder={changeWaiverPickOrder}
+            fetchTrades={fetchTrades}
+            fplTeamList={fplTeamList}
+            fplTeamLists={fplTeamLists}
+            fplTeamId={fplTeamId}
+          />
+        </Route>
         <Route
           exact
           path={
@@ -366,53 +361,51 @@ const FplTeamPage = (props: Props) => {
               `${FPL_TEAMS_URL}/:fplTeamId/trades/new`
             ]
           }
-          render={() => (
-            <NewWaiverPick
-              isOwner={isOwner}
-              currentFplTeamList={currentFplTeamList}
-              fetchListPositions={fetchListPositions}
-              fplTeamList={fplTeamList}
-              isWaiver={isWaiver}
-              deadline={deadline}
-              outListPosition={outListPosition}
-              setOutListPosition={setOutListPosition}
-              fetchTradeablePlayers={fetchTradeablePlayers}
-              updateTradeablePlayersFilter={updateTradeablePlayersFilter}
-              updateTradeablePlayersSort={updateTradeablePlayersSort}
-              updateTradeablePlayersPage={updateTradeablePlayersPage}
-              players={players}
-              fetchPlayerFacets={fetchPlayerFacets}
-              createWaiverPick={createWaiverPick}
-              selectedFplTeamListId={selectedFplTeamListId}
-              waiverPicks={waiverPicks}
-              trades={trades}
-              createTrade={createTrade}
-            />
-          )}
-        />
+        >
+          <NewWaiverPick
+            isOwner={isOwner}
+            currentFplTeamList={currentFplTeamList}
+            fetchListPositions={fetchListPositions}
+            fplTeamList={fplTeamList}
+            isWaiver={isWaiver}
+            deadline={deadline}
+            outListPosition={outListPosition}
+            setOutListPosition={setOutListPosition}
+            fetchTradeablePlayers={fetchTradeablePlayers}
+            updateTradeablePlayersFilter={updateTradeablePlayersFilter}
+            updateTradeablePlayersSort={updateTradeablePlayersSort}
+            updateTradeablePlayersPage={updateTradeablePlayersPage}
+            players={players}
+            fetchPlayerFacets={fetchPlayerFacets}
+            createWaiverPick={createWaiverPick}
+            selectedFplTeamListId={selectedFplTeamListId}
+            waiverPicks={waiverPicks}
+            trades={trades}
+            createTrade={createTrade}
+          />
+        </Route>
         <Route
           exact
           path={`${FPL_TEAMS_URL}/:fplTeamId/teamTrades/new`}
-          render={() => (
-            <NewTeamTrade
-              isOwner={isOwner}
-              currentFplTeamList={currentFplTeamList}
-              fetchListPositions={fetchListPositions}
-              fplTeamList={fplTeamList}
-              deadline={deadline}
-              outListPosition={outListPosition}
-              setOutListPosition={setOutListPosition}
-              fetchTradeableListPositions={fetchTradeableListPositions}
-              createInterTeamTradeGroup={createInterTeamTradeGroup}
-              selectedFplTeamListId={selectedFplTeamListId}
-              listPosition={listPosition}
-              interTeamTradeGroups={interTeamTradeGroups}
-              updateTradeableListPositionsFilter={updateTradeableListPositionsFilter}
-              updateTradeableListPositionsSort={updateTradeableListPositionsSort}
-              fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
-            />
-          )}
-        />
+        >
+          <NewTeamTrade
+            isOwner={isOwner}
+            currentFplTeamList={currentFplTeamList}
+            fetchListPositions={fetchListPositions}
+            fplTeamList={fplTeamList}
+            deadline={deadline}
+            outListPosition={outListPosition}
+            setOutListPosition={setOutListPosition}
+            fetchTradeableListPositions={fetchTradeableListPositions}
+            createInterTeamTradeGroup={createInterTeamTradeGroup}
+            selectedFplTeamListId={selectedFplTeamListId}
+            listPosition={listPosition}
+            interTeamTradeGroups={interTeamTradeGroups}
+            updateTradeableListPositionsFilter={updateTradeableListPositionsFilter}
+            updateTradeableListPositionsSort={updateTradeableListPositionsSort}
+            fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
+          />
+        </Route>
         <Route
           exact
           path={
@@ -425,56 +418,52 @@ const FplTeamPage = (props: Props) => {
               `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/teamTrades/in`
             ]
           }
-          render={() => (
-            <TeamTradeTabs
-              isOwner={isOwner}
-              interTeamTradeGroups={interTeamTradeGroups}
-              fetchInterTeamTradeGroups={fetchInterTeamTradeGroups}
-              fplTeamList={fplTeamList}
-              fplTeamLists={fplTeamLists}
-              deadline={deadline}
-              fplTeamId={fplTeamId}
-              selectedFplTeamListId={selectedFplTeamListId}
-              action={action}
-              cancelInterTeamTradeGroup={cancelInterTeamTradeGroup}
-              submitInterTeamTradeGroup={submitInterTeamTradeGroup}
-              approveInterTeamTradeGroup={approveInterTeamTradeGroup}
-              declineInterTeamTradeGroup={declineInterTeamTradeGroup}
-              removeTrade={removeTrade}
-              fplTeamName={name}
-            />
-          )}
-        />
+        >
+          <TeamTradeTabs
+            isOwner={isOwner}
+            interTeamTradeGroups={interTeamTradeGroups}
+            fetchInterTeamTradeGroups={fetchInterTeamTradeGroups}
+            fplTeamList={fplTeamList}
+            fplTeamLists={fplTeamLists}
+            deadline={deadline}
+            fplTeamId={fplTeamId}
+            selectedFplTeamListId={selectedFplTeamListId}
+            action={action}
+            cancelInterTeamTradeGroup={cancelInterTeamTradeGroup}
+            submitInterTeamTradeGroup={submitInterTeamTradeGroup}
+            approveInterTeamTradeGroup={approveInterTeamTradeGroup}
+            declineInterTeamTradeGroup={declineInterTeamTradeGroup}
+            removeTrade={removeTrade}
+            fplTeamName={name}
+          />
+        </Route>
+        <Route
+          exact
+          path={`${FPL_TEAMS_URL}/:fplTeamId/teamTrades/:teamTradeId/addPlayer`}
+        >
+          <AddPlayer
+            isOwner={isOwner}
+            currentFplTeamList={currentFplTeamList}
+            selectedFplTeamListId={selectedFplTeamListId}
+            teamTradeId={teamTradeId}
+            fetchInterTeamTradeGroup={fetchInterTeamTradeGroup}
+            interTeamTradeGroup={interTeamTradeGroup}
+            fetchListPositions={fetchListPositions}
+            outListPosition={outListPosition}
+            setOutListPosition={setOutListPosition}
+            deadline={deadline}
+            fetchTradeableListPositions={fetchTradeableListPositions}
+            listPosition={listPosition}
+            fplTeamList={fplTeamList}
+            interTeamTradeGroups={interTeamTradeGroups}
+            updateTradeableListPositionsFilter={updateTradeableListPositionsFilter}
+            updateTradeableListPositionsSort={updateTradeableListPositionsSort}
+            fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
+            addToInterTeamTradeGroup={addToInterTeamTradeGroup}
+            name={name}
+          />
+        </Route>
       </Switch>
-      <Route
-        exact
-        path={`${FPL_TEAMS_URL}/:fplTeamId/teamTrades/:teamTradeId/addPlayer`}
-        render={
-          () => (
-            <AddPlayer
-              isOwner={isOwner}
-              currentFplTeamList={currentFplTeamList}
-              selectedFplTeamListId={selectedFplTeamListId}
-              teamTradeId={teamTradeId}
-              fetchInterTeamTradeGroup={fetchInterTeamTradeGroup}
-              interTeamTradeGroup={interTeamTradeGroup}
-              fetchListPositions={fetchListPositions}
-              outListPosition={outListPosition}
-              setOutListPosition={setOutListPosition}
-              deadline={deadline}
-              fetchTradeableListPositions={fetchTradeableListPositions}
-              listPosition={listPosition}
-              fplTeamList={fplTeamList}
-              interTeamTradeGroups={interTeamTradeGroups}
-              updateTradeableListPositionsFilter={updateTradeableListPositionsFilter}
-              updateTradeableListPositionsSort={updateTradeableListPositionsSort}
-              fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
-              addToInterTeamTradeGroup={addToInterTeamTradeGroup}
-              name={name}
-            />
-          )
-        }
-      />
     </Fragment>
   )
 }

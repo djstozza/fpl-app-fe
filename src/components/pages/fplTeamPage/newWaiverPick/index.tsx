@@ -1,9 +1,9 @@
 import { Fragment, useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 
-import ListPositionsTable from './listPositionsTable'
-import OutListPosition from './outListPosition'
-import TradeablePlayersTable from './tradeablePlayersTable'
+import ListPositionsTable from '../listPositionsTable'
+import OutListPosition from '../outListPosition'
+import TradeablePlayersTable from '../tradeablePlayersTable'
 
 import type { PlayersState } from 'state/players'
 import type { FplTeamListState } from 'state/fplTeamList'

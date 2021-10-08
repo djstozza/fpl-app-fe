@@ -55,7 +55,7 @@ const OutListPosition = (props: Props) => {
 
   if (!outListPosition) return null
 
-  const { player: { firstName, lastName }, team: { shortName }, position: { singularNameShort} } = outListPosition
+  const { player: { firstName, lastName }, team: { shortName }, position: { singularNameShort } } = outListPosition
 
   return (
     <Paper

@@ -1,5 +1,4 @@
 import { Fragment, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
 import {
   TextField,
   MenuItem
@@ -51,9 +50,8 @@ const WaiverPicksTable = (props: Props) => {
     trades: { data: trades }
   } = props
   const { enqueueSnackbar } = useSnackbar()
-  const { pathname } = useLocation()
 
-  const showTrades = pathname.includes('trades')
+  const showTrades = window.location.pathname.includes('trades')
   const fetchAction = showTrades ? fetchTrades : fetchWaiverPicks
 
   useEffect(

@@ -49,7 +49,7 @@ describe('PlayersPage', () => {
   const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
   const pagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
 
-  it('renders the players  table and sets the document title', () => {
+  it('renders the players table and sets the document title', () => {
     const wrapper = connectedRender()
 
     expect(wrapper.find('WithStyles(ForwardRef(TableRow))')).toHaveLength(PLAYER_SUMMARIES.length + 1)
@@ -83,7 +83,7 @@ describe('PlayersPage', () => {
     expect(updateSort).toHaveBeenCalledWith({ lastName: 'asc' })
   })
 
-  it('triggers updateSort', () => {
+  it('triggers updateFilter', () => {
     const updateFilter = jest.fn()
     const wrapper = render({ updateFilter})
 

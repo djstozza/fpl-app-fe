@@ -4,6 +4,7 @@ import { groupBy } from 'lodash'
 import {
   makeStyles,
   createStyles,
+  Box,
   Theme
 } from '@material-ui/core'
 import { colors } from 'utilities/colors'
@@ -258,7 +259,6 @@ const FplTeamListChart = (props: Props) => {
 
   const { round: { deadlineTime, current } } = fplTeamList
   const canSubstitute = current && new Date() < new Date(deadlineTime) && isOwner
-
   const starting = listPositions.filter(({ roleStr }) => roleStr === 'Starting')
   const substitutes = listPositions.filter(({ roleStr }) => roleStr !== 'Starting')
   // Players may have two fixtures in a round
@@ -304,7 +304,7 @@ const FplTeamListChart = (props: Props) => {
         <div className={classes.startingContainer}>
           {
             Object.values(groupedListPositions).map((listPositions, i) => (
-              <div key={i} className={classes.startingRow}>
+              <Box key={i} className={classes.startingRow}>
                 {
                   listPositions.map((listPosition, j) => (
                     <ListPositionBox
@@ -323,7 +323,7 @@ const FplTeamListChart = (props: Props) => {
                     />
                   ))
                 }
-              </div>
+              </Box>
             ))
           }
 
@@ -352,7 +352,7 @@ const FplTeamListChart = (props: Props) => {
           <div className={classes.goalkeeperBoxBottom}>
           </div>
         </div>
-        <div className={classes.substitutesContainer}>
+        <Box className={classes.substitutesContainer}>
           {
             consolidatedSubstitutes.map((listPosition, j) => (
               <ListPositionBox
@@ -372,9 +372,8 @@ const FplTeamListChart = (props: Props) => {
               />
             ))
           }
-        </div>
+        </Box>
       </div>
-
     </Fragment>
   )
 }

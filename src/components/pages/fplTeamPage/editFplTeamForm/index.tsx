@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const EditFplTeamForm = (props: Props) => {
   const {
-    errors,
+    errors = [],
     updateFplTeam,
     submitting,
     fplTeam: { id, name, isOwner }

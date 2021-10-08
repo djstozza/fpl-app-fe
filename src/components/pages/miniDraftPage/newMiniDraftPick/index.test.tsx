@@ -90,7 +90,7 @@ describe('NewMiniDraftPick', () => {
       fetchListPositions
     })
 
-    expect(fetchListPositions).not.toHaveBeenCalledWith()
+    expect(fetchListPositions).not.toHaveBeenCalled()
   })
 
   it('shows errors with the snackbar when present', () => {

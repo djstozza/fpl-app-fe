@@ -111,46 +111,43 @@ const FplTeamAlert = (props: Props) => {
           </span>
         }
       </span>
-      <div>
-        {
-          isOwner &&
-          !miniDraft &&
-          isWaiver &&
-          <ButtonLink
-            size='small'
-            color='secondary'
-            to={`${FPL_TEAMS_URL}/${fplTeamId}/waiverPicks/new`}
-            onClick={() => setOutListPosition(undefined)}
-          >
-            New Waiver
-          </ButtonLink>
-        }
-        {
-          isOwner &&
-          !isWaiver &&
-          <ButtonLink
-            size='small'
-            color='secondary'
-            to={`${FPL_TEAMS_URL}/${fplTeamId}/trades/new`}
-            onClick={() => setOutListPosition(undefined)}
-          >
-            New Trade
-          </ButtonLink>
-        }
-        {
-          isOwner &&
-          miniDraft &&
-          isWaiver &&
-          <ButtonLink
-            size='small'
-            color='secondary'
-            to={`${LEAGUES_URL}/${leagueId}/miniDraft`}
-          >
-            Go to mini draft
-          </ButtonLink>
-        }
-        {
-          isOwner &&
+      {
+        isOwner &&
+        <div>
+          {
+            !miniDraft &&
+            isWaiver &&
+            <ButtonLink
+              size='small'
+              color='secondary'
+              to={`${FPL_TEAMS_URL}/${fplTeamId}/waiverPicks/new`}
+              onClick={() => setOutListPosition(undefined)}
+            >
+              New Waiver
+            </ButtonLink>
+          }
+          {
+            !isWaiver &&
+            <ButtonLink
+              size='small'
+              color='secondary'
+              to={`${FPL_TEAMS_URL}/${fplTeamId}/trades/new`}
+              onClick={() => setOutListPosition(undefined)}
+            >
+              New Trade
+            </ButtonLink>
+          }
+          {
+            miniDraft &&
+            isWaiver &&
+            <ButtonLink
+              size='small'
+              color='secondary'
+              to={`${LEAGUES_URL}/${leagueId}/miniDraft`}
+            >
+              Go to mini draft
+            </ButtonLink>
+          }
           <ButtonLink
             size='small'
             color='secondary'
@@ -159,8 +156,8 @@ const FplTeamAlert = (props: Props) => {
           >
             New team trade
           </ButtonLink>
-        }
-      </div>
+        </div>
+      }
     </div>
   )
 

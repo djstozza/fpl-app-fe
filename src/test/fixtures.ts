@@ -46,9 +46,34 @@ export const BRENTFORD_TEAM_BASE: TeamBase = {
   shortName: 'BRE'
 }
 
+export const BRIGHTON_TEAM_BASE: TeamBase = {
+  id: '4',
+  shortName: 'BHA'
+}
+
+export const BURNLEY_TEAM_BASE: TeamBase = {
+  id: '5',
+  shortName: 'BUR'
+}
+
+export const CHELSEA_TEAM_BASE: TeamBase = {
+  id: '6',
+  shortName: 'CHE'
+}
+
+export const CRYSTAL_PALACE_TEAM_BASE: TeamBase = {
+  id: '7',
+  shortName: 'CRY'
+}
+
 export const LEEDS_TEAM_BASE: TeamBase = {
-  id: '10',
+  id: '8',
   shortName: 'LEE'
+}
+
+export const LEICESTER_TEAM_BASE: TeamBase = {
+  id: '9',
+  shortName: 'LEI'
 }
 
 export const LIVERPOOL_TEAM_BASE: TeamBase = {
@@ -66,9 +91,34 @@ export const MANCHESTER_UNITED_TEAM_BASE: TeamBase = {
   shortName: 'MUN'
 }
 
+export const NEWCASTLE_TEAM_BASE: TeamBase = {
+  id: '14',
+  shortName: 'NEW'
+}
+
+export const NORWICH_TEAM_BASE: TeamBase = {
+  id: '15',
+  shortName: 'NOR'
+}
+
+export const SOUTHAMPTON_TEAM_BASE: TeamBase = {
+  id: '16',
+  shortName: 'SOU'
+}
+
 export const SPURS_TEAM_BASE: TeamBase = {
   id: '17',
   shortName: 'TOT'
+}
+
+export const WEST_HAM_TEAM_BASE: TeamBase = {
+  id: '19',
+  shortName: 'WHU'
+}
+
+export const WOLVES_TEAM_BASE: TeamBase = {
+  id: '20',
+  shortName: 'WOL'
 }
 
 export const ARSENAL: Team = {
@@ -279,24 +329,74 @@ export const PLAYER_BASES = [
     lastName: 'Kane'
   },
   {
+    id: '580',
+    firstName: 'Cristiano Ronaldo',
+    lastName: 'dos Santos Aveiro'
+  },
+  {
+    id: '219',
+    firstName: 'Jamie',
+    lastName: 'Vardy'
+  },
+  {
     id: '233',
     firstName: 'Mohamed',
     lastName: 'Salah'
   },
   {
-    id: '210',
-    firstName: 'Patrick',
-    lastName: 'Bamford'
+    id: '320',
+    firstName: 'Bruno Miguel',
+    lastName: 'Borges Fernandes'
   },
   {
-    id: '30',
-    firstName: 'Emiliano',
-    lastName: 'Martínez'
+    id: '424',
+    firstName: 'Heung-Min',
+    lastName: 'Son'
+  },
+  {
+    id: '495',
+    firstName: 'Saïd',
+    lastName: 'Benrahma'
+  },
+  {
+    id: '295',
+    firstName: 'Riyad',
+    lastName: 'Mahrez'
+  },
+  {
+    id: '141',
+    firstName: 'Marcos',
+    lastName: 'Alonso'
   },
   {
     id: '411',
     firstName: 'Aaron',
     lastName: 'Cresswell'
+  },
+  {
+    id: '435',
+    firstName: 'Sergio',
+    lastName: 'Reguilón'
+  },
+  {
+    id: '62',
+    firstName: 'Pontus',
+    lastName: 'Jansson'
+  },
+  {
+    id: '276',
+    firstName: 'Trent',
+    lastName: 'Alexander-Arnold'
+  },
+  {
+    id: '418',
+    firstName: 'Hugo',
+    lastName: 'Lloris'
+  },
+  {
+    id: '313',
+    firstName: 'David',
+    lastName: 'de Gea'
   }
 ]
 
@@ -313,14 +413,62 @@ export const PLAYER_SUMMARIES = [
     ownGoals: 0,
     penaltiesMissed: 0,
     penaltiesSaved: 0,
-    position: { id: '4', singularNameShort: 'FWD' },
+    position: FORWARD,
     redCards: 0,
     saves: 0,
     status: 'a',
-    team: { id: '17', shortName: 'TOT' },
+    team: SPURS_TEAM_BASE,
     totalPoints: 242,
     yellowCards: 1,
     ...PLAYER_BASES[0]
+  },
+  {
+    assists: 0,
+    bonus: 3,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    clean_sheets: 0,
+    externalId: '579',
+    goalsScored: 3,
+    minutes: 303,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: FORWARD,
+    positionId: 4,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: MANCHESTER_UNITED_TEAM_BASE,
+    totalPoints: 22,
+    yellowCards: 0,
+    ...PLAYER_BASES[1],
+  },
+  {
+    assists: 1,
+    bonus: 3,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 1,
+    externalId: '205',
+    goalsScored: 2,
+    minutes: 260,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: FORWARD,
+    positionId: 4,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: LEICESTER_TEAM_BASE,
+    totalPoints: 19,
+    yellowCards: 1,
+    ...PLAYER_BASES[2]
   },
   {
     assists: 6,
@@ -334,77 +482,270 @@ export const PLAYER_SUMMARIES = [
     ownGoals: 0,
     penaltiesMissed: 0,
     penaltiesSaved: 0,
-    position: { id: '3', singularNameShort: 'MID' },
+    position: MIDFIELDER,
     redCards: 0,
     saves: 0,
     status: 'a',
-    team: { id: '11', shortName: 'LIV' },
+    team: LIVERPOOL_TEAM_BASE,
     totalPoints: 231,
     yellowCards: 0,
-    ...PLAYER_BASES[1]
-  },
-  {
-    assists: 11,
-    bonus: 26,
-    chanceOfPlayingNextRound: 100,
-    chanceOfPlayingThisRound: 100,
-    cleanSheets: 10,
-    externalId: '189',
-    goalsScored: 17,
-    minutes: 3052,
-    ownGoals: 0,
-    penaltiesMissed: 0,
-    penaltiesSaved: 0,
-    position: { id: '4', singularNameShort: 'FWD' },
-    redCards: 0,
-    saves: 0,
-    status: 'a',
-    team: { id: '10', shortName: 'LEE' },
-    totalPoints: 194,
-    yellowCards: 3,
-    ...PLAYER_BASES[2]
-  },
-  {
-    assists: 0,
-    bonus: 27,
-    chanceOfPlayingNextRound: 100,
-    chanceOfPlayingThisRound: 100,
-    cleanSheets: 15,
-    externalId: '30',
-    goalsScored: 0,
-    minutes: 3420,
-    ownGoals: 0,
-    penaltiesMissed: 0,
-    penaltiesSaved: 1,
-    position: { id: '1', singularNameShort: 'GKP' },
-    redCards: 0,
-    saves: 142,
-    status: 'a',
-    team: { id: '2', shortName: 'AVL' },
-    totalPoints: 186,
-    yellowCards: 1,
     ...PLAYER_BASES[3]
   },
   {
-    assists: 11,
-    bonus: 21,
+    assists: 0,
+    bonus: 3,
     chanceOfPlayingNextRound: null,
     chanceOfPlayingThisRound: null,
-    cleanSheets: 11,
-    externalId: '411',
-    goalsScored: 0,
-    minutes: 3170,
+    cleanSheets: 1,
+    externalId: '277',
+    goalsScored: 3,
+    minutes: 270,
+    news: '',
+    newsAdded: null,
     ownGoals: 0,
     penaltiesMissed: 0,
     penaltiesSaved: 0,
-    position: { id: '2', singularNameShort: 'DEF' },
+    position: MIDFIELDER,
     redCards: 0,
     saves: 0,
     status: 'a',
-    team: { id: '19', shortName: 'WHU' },
-    totalPoints: 153,
-    yellowCards: 3,
+    team: MANCHESTER_UNITED_TEAM_BASE,
+    totalPoints: 23,
+    yellowCards: 2,
     ...PLAYER_BASES[4]
+  },
+  {
+    assists: 0,
+    bonus: 4,
+    chanceOfPlayingNextRound: 75,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 3,
+    externalId: '359',
+    goalsScored: 2,
+    minutes: 248,
+    news: 'Calf injury - 75% chance of playing',
+    newsAdded: '2021-09-07T10:30:11.021Z',
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: MIDFIELDER,
+    redCards: 0,
+    saves: 0,
+    status: 'd',
+    team: SPURS_TEAM_BASE,
+    totalPoints: 23,
+    yellowCards: 0,
+    ...PLAYER_BASES[5]
+  },
+  {
+    assists: 2,
+    bonus: 4,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 0,
+    externalId: '419',
+    goalsScored: 2,
+    minutes: 264,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penalties_missed: 0,
+    penaltiesSaved: 0,
+    position: MIDFIELDER,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: WEST_HAM_TEAM_BASE,
+    totalPoints: 26,
+    yellowCards: 0,
+    ...PLAYER_BASES[6]
+  },
+  {
+    assists: 1,
+    bonus: 0,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 0,
+    externalId: '254',
+    goalsScored: 1,
+    minutes: 122,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penalties_missed: 0,
+    penaltiesSaved: 0,
+    position: MIDFIELDER,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: MANCHESTER_CITY_TEAM_BASE,
+    totalPoints: 12,
+    yellowCards: 0,
+    ...PLAYER_BASES[7]
+  },
+  {
+    assists: 0,
+    bonus: 3,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 2,
+    externalId: '122',
+    goalsScored: 1,
+    minutes: 265,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: DEFENDER,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: CHELSEA_TEAM_BASE,
+    totalPoints: 23,
+    yellowCards: 0,
+    ...PLAYER_BASES[8]
+  },
+  {
+    assists: 1,
+    bonus: 3,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 1,
+    externalId: '411',
+    goalsScored: 1,
+    minutes: 630,
+    news: '',
+    newsAdded: null,
+    own_goals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: DEFENDER,
+    positionId: 2,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: WEST_HAM_TEAM_BASE,
+    totalPoints: 26,
+    yellowCards: 0,
+    ...PLAYER_BASES[9]
+  },
+  {
+    assists: 0,
+    bonus: 4,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 3,
+    externalId: '370',
+    goalsScored: 0,
+    minutes: 270,
+    news: '',
+    newsAdded: null,
+    own_goals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: DEFENDER,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: SPURS_TEAM_BASE,
+    totalPoints: 22,
+    yellowCards: 0,
+    ...PLAYER_BASES[10]
+  },
+  {
+    assists: 1,
+    bonus: 5,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 2,
+    externalId: '76',
+    goalsScored: 0,
+    minutes: 270,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: DEFENDER,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: BRENTFORD_TEAM_BASE,
+    totalPoints: 22,
+    yellowCards: 0,
+    ...PLAYER_BASES[11]
+  },
+  {
+    assists: 1,
+    bonus: 5,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 2,
+    externalId: '237',
+    goalsScored: 0,
+    minutes: 270,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: DEFENDER,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: LIVERPOOL_TEAM_BASE,
+    totalPoints: 22,
+    yellowCards: 0,
+    ...PLAYER_BASES[12]
+  },
+  {
+    assists: 0,
+    bonus: 6,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 3,
+    externalId: '353',
+    goalsScored: 0,
+    minutes: 270,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: GOALKEEPER,
+    redCards: 0,
+    saves: 12,
+    status: 'a',
+    team: SPURS_TEAM_BASE,
+    totalPoints: 27,
+    yellowCards: 0,
+    ...PLAYER_BASES[13]
+  },
+  {
+    assists: 0,
+    bonus: 0,
+    chanceOfPlayingNextRound: null,
+    chanceOfPlayingThisRound: null,
+    cleanSheets: 1,
+    externalId: '270',
+    goalsScored: 0,
+    minutes: 270,
+    news: '',
+    newsAdded: null,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: GOALKEEPER,
+    positionId: 1,
+    redCards: 0,
+    saves: 10,
+    status: 'a',
+    team: MANCHESTER_UNITED_TEAM_BASE,
+    teamId: 13,
+    totalPoints: 12,
+    yellowCards: 0,
+    ...PLAYER_BASES[14]
   }
 ]
 
@@ -419,7 +760,7 @@ export const PLAYER_HISTORY = [
     kickoffTime: '2021-08-14T16:30:00Z',
     leg: 'A',
     minutes: 90,
-    opponent: { id: '15', shortName: 'NOR' },
+    opponent: NORWICH_TEAM_BASE,
     ownGoals: 0,
     penaltiesMissed: 0,
     penaltiesSaved: 0,
@@ -441,7 +782,7 @@ export const PLAYER_HISTORY = [
     kickoffTime: '2021-08-21T11:30:00Z',
     leg: 'H',
     minutes: 90,
-    opponent: { id: '5', shortName: 'BUR' },
+    opponent: BURNLEY_TEAM_BASE,
     ownGoals: 0,
     penaltiesMissed: 0,
     penaltiesSaved: 0,
@@ -463,7 +804,7 @@ export const PLAYER_HISTORY = [
     kickoffTime: '2021-08-28T16:30:00Z',
     leg: 'H',
     minutes: 90,
-    opponent: { id: '6', shortName: 'CHE' },
+    opponent: CHELSEA_TEAM_BASE,
     ownGoals: 0,
     penaltiesMissed: 0,
     penaltiesSaved: 0,
@@ -473,6 +814,270 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 10,
+    yellowCards: 0
+  },
+  {
+    assists: 2,
+    awayTeamScore: 4,
+    bonus: 3,
+    cleanSheets: 0,
+    goalsScored: 1,
+    homeTeamScore: 2,
+    kickoffTime: '2021-08-15T13:00:00Z',
+    leg: 'A',
+    minutes: 90,
+    opponent: NEWCASTLE_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 1,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'W',
+    round: { id: '1', name: 'Gameweek 1' },
+    saves: 0,
+    started: true,
+    totalPoints: 13,
+    yellowCards: 0
+  },
+  {
+    assists: 1,
+    awayTeamScore: 1,
+    bonus: 3,
+    cleanSheets: 0,
+    goalsScored: 2,
+    homeTeamScore: 4,
+    kickoffTime: '2021-08-23T19:00:00Z',
+    leg: 'H',
+    minutes: 88,
+    opponent: LEICESTER_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'W',
+    round: { id: '2', name: 'Gameweek 2' },
+    saves: 0,
+    started: true,
+    totalPoints: 16,
+    yellowCards: 0
+  },
+  {
+    assists: 1,
+    awayTeamScore: 2,
+    bonus: 2,
+    cleanSheets: 0,
+    goalsScored: 1,
+    homeTeamScore: 2,
+    kickoffTime: '2021-08-28T14:00:00Z',
+    leg: 'H',
+    minutes: 90,
+    opponent: CRYSTAL_PALACE_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'D',
+    round: { id: '3', name: 'Gameweek 3' },
+    saves: 0,
+    started: true,
+    totalPoints: 11,
+    yellowCards: 0
+  },
+  {
+    assists: 0,
+    awayTeamScore: 0,
+    bonus: 0,
+    cleanSheets: 1,
+    goalsScored: 0,
+    homeTeamScore: 0,
+    kickoffTime: '2021-09-11T14:00:00Z',
+    leg: 'A',
+    minutes: 90,
+    opponent: SOUTHAMPTON_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 1,
+    result: 'D',
+    round: { id: '4', name: 'Gameweek 4' },
+    saves: 0,
+    started: true,
+    totalPoints: -1,
+    yellowCards: 0
+  },
+  {
+    assists: 0,
+    awayTeamScore: 2,
+    bonus: 3,
+    cleanSheets: 0,
+    goalsScored: 1,
+    homeTeamScore: 1,
+    kickoffTime: '2021-09-25T14:00:00Z',
+    leg: 'A',
+    minutes: 90,
+    opponent: LEEDS_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'W',
+    round: { id: '6', name: 'Gameweek 6' },
+    saves: 0,
+    started: true,
+    totalPoints: 8,
+    yellowCards: 1
+  },
+  {
+    assists: 0,
+    awayTeamScore: 2,
+    bonus: 0,
+    cleanSheets: 0,
+    goalsScored: 0,
+    homeTeamScore: 1,
+    kickoffTime: '2021-10-03T13:00:00Z',
+    leg: 'H',
+    minutes: 90,
+    opponent: BRENTFORD_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'L',
+    round: { id: '7', name: 'Gameweek 7' },
+    saves: 0,
+    started: true,
+    totalPoints: 2,
+    yellowCards: 0
+  },
+  {
+    assists: 0,
+    awayTeamScore: 0,
+    bonus: 0,
+    cleanSheets: 1,
+    goalsScored: 1,
+    homeTeamScore: 1,
+    kickoffTime: '2021-08-14T14:00:00Z',
+    leg: 'H',
+    minutes: 90,
+    opponent: WOLVES_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'W',
+    round: { id: '1', name: 'Gameweek 1' },
+    saves: 0,
+    started: true,
+    totalPoints: 5,
+    yellowCards: 1
+  },
+  {
+    assists: 0,
+    awayTeamScore: 1,
+    bonus: 0,
+    cleanSheets: 0,
+    goalsScored: 0,
+    homeTeamScore: 4,
+    kickoffTime: '2021-08-23T19:00:00Z',
+    leg: 'A',
+    minutes: 80,
+    opponent: WEST_HAM_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'L',
+    round: { id: '2', name: 'Gameweek 2' },
+    saves: 0,
+    started: true,
+    totalPoints: 2,
+    yellowCards: 0
+  },
+  {
+    assists: 1,
+    awayTeamScore: 2,
+    bonus: 3,
+    cleanSheets: 0,
+    goalsScored: 1,
+    homeTeamScore: 1,
+    kickoffTime: '2021-08-28T14:00:00Z',
+    leg: 'A',
+    minutes: 90,
+    opponent: NORWICH_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'W',
+    round: { id: '3', name: 'Gameweek 3' },
+    saves: 0,
+    started: true,
+    totalPoints: 12,
+    yellowCards: 0
+  },
+  {
+    assists: 0,
+    awayTeamScore: 1,
+    bonus: 0,
+    cleanSheets: 0,
+    goalsScored: 0,
+    homeTeamScore: 0,
+    kickoffTime: '2021-09-11T14:00:00Z',
+    leg: 'H',
+    minutes: 90,
+    opponent: MANCHESTER_CITY_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'L',
+    round: { id: '4', name: 'Gameweek 4' },
+    saves: 0,
+    started: true,
+    totalPoints: 2,
+    yellowCards: 0
+  },
+  {
+    assists: 0,
+    awayTeamScore: 1,
+    bonus: 2,
+    cleanSheets: 0,
+    goalsScored: 1,
+    homeTeamScore: 2,
+    kickoffTime: '2021-09-19T13:00:00Z',
+    leg: 'A',
+    minutes: 90,
+    opponent: BRIGHTON_TEAM_BASE,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'L',
+    round: { id: '5', name: 'Gameweek 5' },
+    saves: 0,
+    started: true,
+    totalPoints: 8,
+    yellowCards: 0
+  },
+  {
+    assists: 0,
+    awayTeamScore: 0,
+    bonus: 0,
+    cleanSheets: 1,
+    goalsScored: 0,
+    homeTeamScore: 0,
+    kickoffTime: '2021-09-11T14:00:00Z',
+    leg: 'A',
+    minutes: 62,
+    opponent: SOUTHAMPTON_TEAM_BASE,
+    own_goals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    redCards: 0,
+    result: 'D',
+    round: { id: '4', name: 'Gameweek 4' },
+    saves: 0,
+    started: true,
+    totalPoints: 3,
     yellowCards: 0
   }
 ]
@@ -1009,7 +1614,7 @@ export const LIST_POSITION_BASE_1 = {
   team: MANCHESTER_UNITED_TEAM_BASE,
   position: FORWARD,
   displayOrder: 1,
-  roleStr: 'S',
+  roleStr: 'Starting',
   role: 0,
   ...PLAYER_HISTORY[0]
 }
@@ -1055,9 +1660,156 @@ export const LIST_POSITION_3 = {
 }
 
 export const LIST_POSITIONS = [
-  LIST_POSITION_1,
-  LIST_POSITION_2,
-  LIST_POSITION_3
+  {
+    id: '1',
+    player: PLAYER_SUMMARIES[0],
+    team: PLAYER_SUMMARIES[0].team,
+    position: PLAYER_SUMMARIES[0].position,
+    displayOrder: 0,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[0]
+  },
+  {
+    id: '2',
+    player: PLAYER_SUMMARIES[1],
+    team: PLAYER_SUMMARIES[1].team,
+    position: PLAYER_SUMMARIES[1].position,
+    displayOrder: 0,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[1]
+  },
+  {
+    id: '3',
+    player: PLAYER_SUMMARIES[2],
+    team: PLAYER_SUMMARIES[2].team,
+    position: PLAYER_SUMMARIES[2].position,
+    displayOrder: 0,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[2]
+  },
+  {
+    id: '4',
+    player: PLAYER_SUMMARIES[3],
+    team: PLAYER_SUMMARIES[3].team,
+    position: PLAYER_SUMMARIES[3].position,
+    displayOrder: 1,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[3]
+  },
+  {
+    id: '5',
+    player: PLAYER_SUMMARIES[4],
+    team: PLAYER_SUMMARIES[4].team,
+    position: PLAYER_SUMMARIES[4].position,
+    displayOrder: 1,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[4]
+  },
+  {
+    id: '6',
+    player: PLAYER_SUMMARIES[5],
+    team: PLAYER_SUMMARIES[5].team,
+    position: PLAYER_SUMMARIES[5].position,
+    displayOrder: 1,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[5]
+  },
+  {
+    id: '7',
+    player: PLAYER_SUMMARIES[6],
+    team: PLAYER_SUMMARIES[6].team,
+    position: PLAYER_SUMMARIES[6].position,
+    displayOrder: 1,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[6]
+  },
+  {
+    id: '8',
+    player: PLAYER_SUMMARIES[8],
+    team: PLAYER_SUMMARIES[8].team,
+    position: PLAYER_SUMMARIES[8].position,
+    displayOrder: 2,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[8]
+  },
+  {
+    id: '9',
+    player: PLAYER_SUMMARIES[9],
+    team: PLAYER_SUMMARIES[9].team,
+    position: PLAYER_SUMMARIES[9].position,
+    displayOrder: 2,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[9]
+  },
+  {
+    id: '10',
+    player: PLAYER_SUMMARIES[10],
+    team: PLAYER_SUMMARIES[10].team,
+    position: PLAYER_SUMMARIES[10].position,
+    displayOrder: 2,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[10]
+  },
+  {
+    id: '11',
+    player: PLAYER_SUMMARIES[13],
+    team: PLAYER_SUMMARIES[13].team,
+    position: PLAYER_SUMMARIES[13].position,
+    displayOrder: 3,
+    roleStr: 'Starting',
+    role: 0,
+    ...PLAYER_HISTORY[13]
+  },
+  {
+    id: '12',
+    player: PLAYER_SUMMARIES[7],
+    team: PLAYER_SUMMARIES[7].team,
+    position: PLAYER_SUMMARIES[7].position,
+    displayOrder: 1,
+    roleStr: 'S1',
+    role: 1,
+    ...PLAYER_HISTORY[7]
+  },
+  {
+    id: '13',
+    player: PLAYER_SUMMARIES[11],
+    team: PLAYER_SUMMARIES[11].team,
+    position: PLAYER_SUMMARIES[11].position,
+    displayOrder: 1,
+    roleStr: 'S2',
+    role: 1,
+    ...PLAYER_HISTORY[7]
+  },
+  {
+    id: '14',
+    player: PLAYER_SUMMARIES[12],
+    team: PLAYER_SUMMARIES[12].team,
+    position: PLAYER_SUMMARIES[12].position,
+    displayOrder: 1,
+    roleStr: 'S2',
+    role: 2,
+    ...PLAYER_HISTORY[11]
+  },
+  {
+    id: '15',
+    player: PLAYER_SUMMARIES[14],
+    team: PLAYER_SUMMARIES[14].team,
+    position: PLAYER_SUMMARIES[14].position,
+    displayOrder: 1,
+    roleStr: 'SGKP',
+    role: 3,
+    ...PLAYER_HISTORY[14]
+  }
 ]
 
 export const FPL_TEAM_FACETS = [
@@ -1221,14 +1973,18 @@ export const WAIVER_PICKS = [
     pickNumber: 1,
     outPlayer: PLAYER_BASES[4],
     inPlayer: PLAYER_BASES[0],
+    inTeam: MANCHESTER_CITY_TEAM_BASE,
+    outTeam: LEEDS_TEAM_BASE,
     position: DEFENDER,
     status: 'Declined'
   },
   {
-    id: '1',
+    id: '2',
     pickNumber: 2,
     outPlayer: PLAYER_BASES[2],
     inPlayer: PLAYER_BASES[1],
+    inTeam: WOLVES_TEAM_BASE,
+    outTeam: SPURS_TEAM_BASE,
     position: GOALKEEPER,
     status: 'Approved'
   }

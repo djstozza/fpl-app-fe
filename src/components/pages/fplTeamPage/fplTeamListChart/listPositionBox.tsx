@@ -76,7 +76,8 @@ const useStyles = makeStyles((theme: Theme) =>
     playerInfo: {
       border: `1px solid ${colors.black}`,
       borderRadius: theme.spacing(0.5),
-      backgroundColor: colors.black
+      backgroundColor: colors.black,
+      fontSize: 12
     }
   })
 )
@@ -119,7 +120,6 @@ const ListPositionBox = (props: Props) => {
   const handleClick = () => {
     if (submitting) return
     if (!canSubstitute) return
-
     if (Boolean(selectedListPositionId) && Boolean(!isSelected) && Boolean(!validSubstitution)) return
 
     validSubstitution
@@ -127,7 +127,7 @@ const ListPositionBox = (props: Props) => {
       : setSelectedListPositionId(selectedListPositionId ? null : id)
 
     selectedListPositionId ? clearValidSubstitutions() : fetchValidSubstitutions(id)
-    !selectedListPositionId && playerRef.current?.scrollIntoView({ behavior: "smooth" })
+    !selectedListPositionId && playerRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (

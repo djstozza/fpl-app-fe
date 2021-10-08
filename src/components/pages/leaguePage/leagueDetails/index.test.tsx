@@ -1,7 +1,7 @@
 import { createMount } from '@material-ui/core/test-utils'
 
 import LeagueDetails from '.'
-import { LIVE_LEAGUE, INITIALIZED_LEAGUE } from 'test/fixtures'
+import { LIVE_LEAGUE } from 'test/fixtures'
 import { MockedRouter, blank__ } from 'test/helpers'
 
 describe('LeagueDetails', () => {
@@ -18,7 +18,7 @@ describe('LeagueDetails', () => {
     wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
   )
 
-  it('renders the team details page', () => {
+  it('renders the league details page', () => {
     const wrapper = render()
 
     expect(tableCell(wrapper, 0, 0).text()).toEqual('Status')
