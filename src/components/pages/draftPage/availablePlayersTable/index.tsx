@@ -29,7 +29,7 @@ type Props = {
 
 const AvailablePlayersTable = (props: Props) => {
   const {
-    players: { data: players, facets = {}, meta: { total } },
+    players: { data: players, facets = {}, meta: { total }, fetching },
     draftPicks,
     fetchAvailablePlayers,
     fetchPlayerFacets,
@@ -98,6 +98,8 @@ const AvailablePlayersTable = (props: Props) => {
           handleChangePage={(newOffset) => updateAvailablePlayersPage(newOffset)}
           cells={Object.values(cells)}
           total={total}
+          fetching={fetching}
+          name='available players'
         />
       </SearchListener>
 

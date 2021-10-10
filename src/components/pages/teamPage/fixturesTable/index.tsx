@@ -18,7 +18,8 @@ type Props = {
     players: Object,
     fixtures: Object
   },
-  updateTeamFixturesSort: Function
+  updateTeamFixturesSort: Function,
+  fetching: boolean
 }
 
 const FIXTURES_TABLE_CELLS = [
@@ -82,7 +83,7 @@ const FIXTURES_TABLE_CELLS = [
 ]
 
 const FixturesTable = (props: Props) => {
-  const { fixtures, teamId, tab, fetchTeamFixtures, updateTeamFixturesSort } = props
+  const { fixtures, teamId, tab, fetchTeamFixtures, updateTeamFixturesSort, fetching } = props
 
   return (
     <SearchListener id={teamId} fetchAction={fetchTeamFixtures} initialFilterState={initialFilterState}>
@@ -91,6 +92,8 @@ const FixturesTable = (props: Props) => {
         handleSortChange={(newSort) => updateTeamFixturesSort({ tab, sort: newSort })}
         cells={FIXTURES_TABLE_CELLS}
         tab={tab}
+        fetching={fetching}
+        name='fixtures'
       />
     </SearchListener>
   )

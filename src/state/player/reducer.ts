@@ -7,7 +7,8 @@ export type State = {
   data?: Player,
   history?: History[],
   historyPast?: HistoryPast[],
-  sort: Sort
+  sort: Sort,
+  fetching: boolean
 }
 
 type PlayerAction = {
@@ -27,6 +28,7 @@ export const initialFilterState = {
 
 export const initialState = {
   errors: [],
+  fetching: false,
   ...initialFilterState
 }
 
@@ -37,14 +39,17 @@ const reducer = (state: any = initialState, action: PlayerAction) => {
       if (data) return { ...state, data }
 
       return state
+    case actions.API_PLAYERS_HISTORY_INDEX:
+    case actions.API_PLAYERS_HISTORY_PAST_INDEX:
+      return { ...state, fetching: true }
     case success(actions.API_PLAYERS_HISTORY_INDEX):
       const { data: history } = action
 
-      return { ...state, history }
+      return { ...state, history, fetching: false }
     case success(actions.API_PLAYERS_HISTORY_PAST_INDEX):
       const { data: historyPast } = action
 
-      return { ...state, historyPast }
+      return { ...state, historyPast, fetching: false }
     case actions.UPDATE_PLAYER_HISTORY_SORT:
       return { ...state, sort: { ...state.sort, history: sort } }
     case actions.UPDATE_PLAYER_HISTORY_PAST_SORT:
@@ -54,7 +59,7 @@ const reducer = (state: any = initialState, action: PlayerAction) => {
     case failure(actions.API_PLAYERS_HISTORY_PAST_INDEX):
       const { errors } = action
 
-      return { ...state, errors }
+      return { ...state, errors, fetching: false }
     default:
       return state
   }

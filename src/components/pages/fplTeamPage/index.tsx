@@ -113,8 +113,8 @@ const TABS = {
   },
   trades: {
     label: 'Free',
-    value: 'freeAgents',
-    matcher: /(teamLists\/\d+\/)?freeAgents/,
+    value: 'trades',
+    matcher: /(teamLists\/\d+\/)?trades/,
     display: true
   },
   teamTrades: {
@@ -334,8 +334,8 @@ export const FplTeamPage = (props: Props) => {
             [
               `${FPL_TEAMS_URL}/:fplTeamId/waiverPicks`,
               `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/waiverPicks`,
-              `${FPL_TEAMS_URL}/:fplTeamId/freeAgents`,
-              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/freeAgents`
+              `${FPL_TEAMS_URL}/:fplTeamId/trades`,
+              `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/trades`
             ]
           }
         >

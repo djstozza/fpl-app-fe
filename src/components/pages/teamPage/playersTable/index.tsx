@@ -3,10 +3,12 @@ import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/team/reducer'
 import { playersTableCells } from 'components/pages/playersPage'
 
+
+import type { PlayersState } from 'state/players'
 import type { TeamPlayer, CellHash } from 'types'
 
 type Props = {
-  players: TeamPlayer[],
+  players: PlayersState,
   fetchTeamPlayers: Function,
   sort: {
     players: Object,
@@ -18,7 +20,7 @@ type Props = {
 }
 
 const PlayersTable = (props: Props) => {
-  const { teamId, players, tab, fetchTeamPlayers, updateTeamPlayersSort } = props
+  const { teamId, players: { data: players, fetching }, tab, fetchTeamPlayers, updateTeamPlayersSort } = props
 
   const cellHash: CellHash = playersTableCells()
   delete cellHash['teams']
@@ -31,6 +33,8 @@ const PlayersTable = (props: Props) => {
         handleSortChange={(newSort) => updateTeamPlayersSort({ tab, sort: newSort })}
         cells={cells}
         tab={tab}
+        fetching={fetching}
+        name='players'
       />
     </SearchListener>
   )

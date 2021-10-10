@@ -109,7 +109,7 @@ const MiniDraftPicksTable = (props: Props) => {
     fetchMiniDraftPickFacets
   } = props
 
-  const { data, facets = {}, meta: { total }, season } = miniDraftPicks
+  const { data, facets = {}, meta: { total }, season, fetching } = miniDraftPicks
 
   useEffect(
     () => {
@@ -130,6 +130,8 @@ const MiniDraftPicksTable = (props: Props) => {
           handleFilterChange={(newFilter) => updateMiniDraftPicksFilter(newFilter)}
           cells={MINI_DRAFT_PICKS_TABLE_CELLS}
           total={total}
+          fetching={fetching}
+          name='mini draft picks'
           noOffset
         />
       </SearchListener>

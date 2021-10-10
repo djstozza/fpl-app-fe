@@ -17,6 +17,13 @@ describe('Fpl teams reducer handles action', () => {
       .toEqual({ ...initialState, data: FPL_TEAMS })
   })
 
+  test(actions.API_FPL_TEAMS_INDEX, () => {
+    expect(reducer(initialState, {
+      type: actions.API_FPL_TEAMS_INDEX
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
   test(actions.UPDATE_FPL_TEAMS_SORT, () => {
     const newSort = { name: 'desc' }
     expect(reducer(initialState, {

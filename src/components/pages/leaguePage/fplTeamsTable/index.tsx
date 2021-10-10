@@ -19,7 +19,8 @@ type Props = {
   sort: Object,
   leagueId: string,
   updateFplTeamsSort: Function,
-  errors: Error[]
+  errors: Error[],
+  fetching: boolean
 }
 
 const FPL_TEAMS_TABLE_CELLS = {
@@ -75,7 +76,8 @@ const FplTeamsTable = (props: Props) => {
     generateDraftPicks,
     createDraft,
     submitting,
-    updateFplTeamsSort
+    updateFplTeamsSort,
+    fetching
   } = props
 
   const {
@@ -99,6 +101,8 @@ const FplTeamsTable = (props: Props) => {
           collection={fplTeams}
           handleSortChange={(newSort) => updateFplTeamsSort({ sort: newSort })}
           cells={Object.values(cells)}
+          fetching={fetching}
+          name='Fpl teams'
         />
       </SearchListener>
       <ActionsFooter

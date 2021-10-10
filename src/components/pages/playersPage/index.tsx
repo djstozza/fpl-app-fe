@@ -111,7 +111,7 @@ export const playersTableCells = () => ({
 
 export const PlayersPage = (props: Props) => {
   const {
-    players: { data: players, facets = {}, meta: { total } },
+    players: { data: players, fetching, facets = {}, meta: { total } },
     fetchPlayers,
     fetchFacets,
     updateFilter,
@@ -143,6 +143,8 @@ export const PlayersPage = (props: Props) => {
           handleChangePage={(newOffset) => updatePage(newOffset)}
           cells={Object.values(playersTableCells())}
           total={total}
+          fetching={fetching}
+          name='players'
         />
       </SearchListener>
     </Fragment>

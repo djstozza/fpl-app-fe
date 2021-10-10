@@ -56,7 +56,7 @@ const TEAMS_TABLE_CELLS = [
 
 export const TeamsPage = (props: Props) => {
   const {
-    teams: { data: teams },
+    teams: { data: teams, fetching },
     fetchTeams,
     updateSort
   } = props
@@ -75,6 +75,8 @@ export const TeamsPage = (props: Props) => {
           collection={teams}
           handleSortChange={(newSort) => updateSort(newSort)}
           cells={TEAMS_TABLE_CELLS}
+          fetching={fetching}
+          name='teams'
         />
       </SearchListener>
     </Fragment>

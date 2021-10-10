@@ -17,7 +17,7 @@ describe('Teams reducer handles action', () => {
       type: actions.API_TEAMS_INDEX,
       sort: newSort
     }))
-      .toEqual({ ...initialState, sort: newSort })
+      .toEqual({ ...initialState, sort: newSort, fetching: true })
   })
 
   test(success(actions.API_TEAMS_INDEX), () => {

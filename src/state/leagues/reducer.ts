@@ -8,7 +8,8 @@ import type { League } from 'types'
 export type State = {
   data: League[],
   submitting: boolean,
-  errors: Error[]
+  errors: Error[],
+  fetching: boolean
 }
 
 export const initialFilterState = {
@@ -21,7 +22,8 @@ export const initialFilterState = {
 export const initialState = {
   data: [],
   submitting: false,
-  errors: []
+  errors: [],
+  fetching: false
 }
 
 const reducer = (state: State = initialState, action: Action) => {
@@ -30,17 +32,19 @@ const reducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
     case actions.INITIALIZE_FORM:
       return { ...initialState }
+    case actions.API_LEAGUES_INDEX:
+      return { ...state, fetching: true }
     case actions.API_LEAGUES_CREATE:
     case actions.API_LEAGUES_JOIN:
       return { ...state, submitting: true }
     case success(actions.API_LEAGUES_INDEX):
     case success(actions.API_LEAGUES_CREATE):
     case success(actions.API_LEAGUES_JOIN):
-      return { ...state, data, submitting: false }
+      return { ...state, data, submitting: false, fetching: false }
     case failure(actions.API_LEAGUES_INDEX):
     case failure(actions.API_LEAGUES_CREATE):
     case failure(actions.API_LEAGUES_JOIN):
-      return { ...state, errors, submitting: false }
+      return { ...state, errors, submitting: false, fetching: false }
     default:
       return state
   }

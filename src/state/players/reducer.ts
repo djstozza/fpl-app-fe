@@ -15,7 +15,8 @@ export type State = {
   page: {
     offset: number,
     limit: number
-  }
+  },
+  fetching: boolean
 }
 
 export const initialFilterState = {
@@ -23,7 +24,8 @@ export const initialFilterState = {
   filter: {},
   sort: {
     totalPoints: 'desc'
-  }
+  },
+  fetching: false
 }
 
 export const initialState = {
@@ -39,14 +41,14 @@ const reducer = (state: State = initialState, action: Action) => {
 
   switch (action.type) {
     case success(actions.API_PLAYERS_INDEX):
-      return { ...state, data, meta }
+      return { ...state, data, meta, fetching: false }
     case success(actions.API_PLAYERS_FACETS_INDEX):
       return { ...state, facets: action.data }
     case actions.API_PLAYERS_INDEX:
-      return { ...state, filter, sort, page }
+      return { ...state, filter, sort, page, fetching: true }
     case failure(actions.API_PLAYERS_INDEX):
     case failure(actions.API_PLAYERS_FACETS_INDEX):
-      return { ...state, errors }
+      return { ...state, errors, fetching: false }
     default:
       return state
   }

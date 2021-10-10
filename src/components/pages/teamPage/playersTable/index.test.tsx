@@ -11,7 +11,7 @@ describe('PlayersTable', () => {
   const render = (props = {}) => createMount()(
     <MockedRouter>
       <PlayersTable
-        players={PLAYER_SUMMARIES}
+        players={{ data: PLAYER_SUMMARIES }}
         fetchTeamPlayers={blank__}
         updateTeamPlayersSort={blank__}
         tab='players'

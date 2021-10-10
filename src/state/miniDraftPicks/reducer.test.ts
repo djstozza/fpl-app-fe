@@ -83,7 +83,7 @@ describe('Mini draft picks reducer handles action', () => {
       sort: { pickNumber: 'asc' },
       filter: { position_id: ['0', '1'] }
     }))
-      .toEqual({ ...initialState, sort: { pickNumber: 'asc' }, filter: { position_id: ['0', '1'] } })
+      .toEqual({ ...initialState, sort: { pickNumber: 'asc' }, filter: { position_id: ['0', '1'] }, fetching: true })
   })
 
   test(failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX), () => {

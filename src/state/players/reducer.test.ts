@@ -38,7 +38,7 @@ describe('Players reducer handles action', () => {
       type: actions.API_PLAYERS_INDEX,
       ...newParams
     }))
-      .toEqual({ ...initialState, ...newParams })
+      .toEqual({ ...initialState, ...newParams, fetching: true })
   })
 
   test(failure(actions.API_PLAYERS_INDEX), () => {

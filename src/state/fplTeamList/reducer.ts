@@ -10,13 +10,15 @@ export type State = {
   listPositions: ListPosition[],
   outListPosition?: ListPosition,
   submitting: boolean,
+  fetching: boolean,
   errors: Error[]
 }
 
 export const initialState = {
   listPositions: [],
   submitting: false,
-  errors: []
+  errors: [],
+  fetching: false
 }
 
 type FplTeamListAction = {
@@ -29,17 +31,20 @@ const reducer = (state: State = initialState, action: FplTeamListAction) => {
   switch (action.type) {
     case success(actions.API_FPL_TEAM_LISTS_SHOW):
       return { ...state, data }
+    case actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX:
+      return { ...state, fetching: true }
     case success(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX):
     case success(actions.API_FPL_TEAM_LISTS_UPDATE):
       const { data: listPositions = [] } = action
-      return { ...state, listPositions, submitting: false }
+      return { ...state, listPositions, submitting: false, fetching: false }
     case actions.API_FPL_TEAM_LISTS_UPDATE:
       return { ...state, submitting: true }
     case actions.SET_OUT_LIST_POSITION:
       return { ...state, outListPosition }
     case failure(actions.API_FPL_TEAM_LISTS_SHOW):
     case failure(actions.API_FPL_TEAM_LISTS_UPDATE):
-      return { ...state, errors, submitting: false }
+    case failure(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX):
+      return { ...state, errors, submitting: false, fetching: false }
     default:
       return state
   }

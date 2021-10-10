@@ -33,7 +33,7 @@ const TradeablePlayersTable = (props: Props) => {
   const {
     isOwner,
     isWaiver,
-    players: { data: players, facets = {}, meta: { total } },
+    players: { data: players, facets = {}, meta: { total }, fetching },
     outListPosition,
     fetchTradeablePlayers,
     fetchPlayerFacets,
@@ -106,6 +106,8 @@ const TradeablePlayersTable = (props: Props) => {
           handleChangePage={(newOffset) => updateTradeablePlayersPage(newOffset)}
           cells={Object.values(cells)}
           total={total}
+          fetching={fetching}
+          name='tradeable players'
         />
       </SearchListener>
 

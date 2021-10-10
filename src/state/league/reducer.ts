@@ -10,7 +10,8 @@ export type State = {
   fplTeams: FplTeam[]
   submitting: boolean,
   errors: Error[],
-  sort?: Object
+  sort?: Object,
+  fetching: boolean
 }
 
 export const initialFilterState = {
@@ -23,6 +24,7 @@ export const initialState = {
   submitting: false,
   fplTeams: [],
   errors: [],
+  fetching: false,
   ...initialFilterState
 }
 
@@ -34,6 +36,8 @@ const reducer = (state: State = initialState, action: Action) => {
     case actions.API_LEAGUE_GENERATE_DRAFT_PICKS:
     case actions.API_LEAGUE_CREATE_DRAFT:
       return { ...state, submitting: true }
+    case actions.API_LEAGUE_FPL_TEAMS_INDEX:
+      return { ...state, fetching: true }
     case success(actions.API_LEAGUES_SHOW):
       return { ...state, data }
     case success(actions.API_LEAGUES_UPDATE):
@@ -42,7 +46,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case success(actions.API_LEAGUE_GENERATE_DRAFT_PICKS):
       const { data: fplTeams = [] } = action
 
-      return { ...state, fplTeams, submitting: false }
+      return { ...state, fplTeams, submitting: false, fetching: false }
     case actions.UPDATE_LEAGUE_FPL_TEAMS_SORT:
       return { ...state, sort }
     case actions.INITIALIZE_FORM:
@@ -54,7 +58,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case failure(actions.API_LEAGUE_GENERATE_DRAFT_PICKS):
     case failure(actions.API_LEAGUE_FPL_TEAMS_INDEX):
     case failure(actions.API_LEAGUE_CREATE_DRAFT):
-      return { ...state, errors, submitting: false }
+      return { ...state, errors, submitting: false, fetching: false }
     default:
       return state
   }

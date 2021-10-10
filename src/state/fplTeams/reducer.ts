@@ -8,7 +8,8 @@ import type { FplTeam } from 'types'
 export type State = {
   data: FplTeam[],
   errors: Error[],
-  sort?: Object
+  sort?: Object,
+  fetching: boolean
 }
 
 export const initialFilterState = {
@@ -20,6 +21,7 @@ export const initialFilterState = {
 export const initialState = {
   data: [],
   errors: [],
+  fetching: false,
   ...initialFilterState
 }
 
@@ -27,12 +29,14 @@ const reducer = (state: State = initialState, action: Action) => {
   const { data = [], errors, sort } = action
 
   switch (action.type) {
+    case actions.API_FPL_TEAMS_INDEX:
+      return { ...state, fetching: true }
     case success(actions.API_FPL_TEAMS_INDEX):
-      return { ...state, data }
+      return { ...state, data, fetching : false }
     case actions.UPDATE_FPL_TEAMS_SORT:
       return { ...state, sort }
     case failure(actions.API_FPL_TEAMS_INDEX):
-      return { ...state, errors }
+      return { ...state, errors, fetching: false }
     default:
       return state
   }

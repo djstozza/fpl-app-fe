@@ -57,7 +57,7 @@ const FPL_TEAMS_TABLE_CELLS = [
 
 const HistoryPastTable = (props: Props) => {
   const {
-    fplTeams: { data: fplTeams },
+    fplTeams: { data: fplTeams, fetching },
     fetchFplTeams,
     updateFplTeamsSort
   } = props
@@ -68,6 +68,8 @@ const HistoryPastTable = (props: Props) => {
         collection={fplTeams}
         cells={FPL_TEAMS_TABLE_CELLS}
         handleSortChange={(newSort) => updateFplTeamsSort({ sort: newSort })}
+        fetching={fetching}
+        name='Fpl teams'
       />
     </SearchListener>
   )

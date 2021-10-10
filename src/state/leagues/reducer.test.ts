@@ -16,6 +16,13 @@ describe('Leagues reducer handles action', () => {
       .toEqual({ ...initialState })
   })
 
+  test(actions.API_LEAGUES_INDEX, () => {
+    expect(reducer(initialState, {
+      type: actions.API_LEAGUES_INDEX
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
   test(actions.API_LEAGUES_CREATE, () => {
     expect(reducer(initialState, {
       type: actions.API_LEAGUES_CREATE

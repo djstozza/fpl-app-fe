@@ -15,7 +15,8 @@ type Props = {
   isWaiver?: boolean,
   deadline?: Date,
   listPositions: ListPosition[],
-  setOutListPosition: Function
+  setOutListPosition: Function,
+  fetching: boolean
 }
 
 export const listPositionTableCells = () => ({
@@ -89,7 +90,8 @@ const ListPositionsTable = (props: Props) => {
     isWaiver,
     deadline,
     listPositions,
-    setOutListPosition
+    setOutListPosition,
+    fetching
   } = props
 
   let cells: CellHash = listPositionTableCells()
@@ -119,6 +121,8 @@ const ListPositionsTable = (props: Props) => {
     <SortTable
       collection={listPositions}
       cells={Object.values(cells)}
+      fetching={fetching}
+      name='list positions'
     />
   )
 }

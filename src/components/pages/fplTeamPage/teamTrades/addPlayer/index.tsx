@@ -41,7 +41,7 @@ const AddPlayer = (props: Props) => {
     fetchInterTeamTradeGroup,
     teamTradeId,
     selectedFplTeamListId,
-    fplTeamList: { listPositions },
+    fplTeamList: { listPositions, fetching },
     fetchListPositions,
     deadline,
     outListPosition,
@@ -92,6 +92,7 @@ const AddPlayer = (props: Props) => {
           isOwner={isOwner}
           deadline={deadline}
           setOutListPosition={setOutListPosition}
+          fetching={fetching}
         />
       }
       <OutListPosition

@@ -7,7 +7,8 @@ export type State = {
   data: TeamSummary[],
   errors: Object[],
   page: Object,
-  sort: Object
+  sort: Object,
+  fetching: boolean
 }
 
 export const initialFilterState = {
@@ -20,6 +21,7 @@ export const initialFilterState = {
 export const initialState = {
   data: [],
   errors: [],
+  fetching: false,
   ...initialFilterState
 }
 
@@ -28,15 +30,15 @@ const reducer = (state: State = initialState, action: Action) => {
     case actions.API_TEAMS_INDEX:
       const { sort } = action
 
-      return { ...state, sort }
+      return { ...state, sort, fetching: true }
     case success(actions.API_TEAMS_INDEX):
       const { data = [] } = action
 
-      return { ...state, data }
+      return { ...state, data, fetching: false }
     case failure(actions.API_TEAMS_INDEX):
       const { errors } = action
 
-      return { ...state, errors }
+      return { ...state, errors, fetching: false }
     default:
       return state
   }

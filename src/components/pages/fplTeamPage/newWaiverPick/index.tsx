@@ -38,7 +38,7 @@ const NewWaiverPick = (props: Props) => {
     isOwner,
     isWaiver,
     currentFplTeamList,
-    fplTeamList: { listPositions },
+    fplTeamList: { listPositions, fetching },
     fetchListPositions,
     deadline,
     outListPosition,
@@ -82,6 +82,7 @@ const NewWaiverPick = (props: Props) => {
         isWaiver={isWaiver}
         deadline={deadline}
         setOutListPosition={setOutListPosition}
+        fetching={fetching}
       />
     }
     <OutListPosition

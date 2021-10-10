@@ -23,6 +23,13 @@ describe('Waiver picks reducer handles action', () => {
       .toEqual({ ...initialState, submitting: true })
   })
 
+  test(actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX, () => {
+    expect(reducer(initialState, {
+      type: actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
   test(success(actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX), () => {
     expect(reducer({ ...initialState, errors }, {
       type: success(actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX),

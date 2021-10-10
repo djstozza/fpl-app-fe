@@ -31,6 +31,7 @@ type Props = {
   createDraft: Function,
   initializeForm: Function,
   sort: Object,
+  fetching: boolean,
   match: { params: { leagueId: string, tab: string, action: string } }
 }
 
@@ -61,6 +62,7 @@ export const LeaguePage = (props: Props) => {
     errors,
     submitting,
     sort,
+    fetching,
     match: { params: { leagueId, tab = 'details', action } }
   } = props
   const classes = useStyles()
@@ -139,6 +141,7 @@ export const LeaguePage = (props: Props) => {
             submitting={submitting}
             sort={sort}
             errors={errors}
+            fetching={fetching}
           />
         </Route>
       </Switch>
@@ -153,7 +156,8 @@ const mapStateToProps = (state) => {
       fplTeams,
       errors,
       submitting,
-      sort
+      sort,
+      fetching
     }
   } = state
 
@@ -162,7 +166,8 @@ const mapStateToProps = (state) => {
     fplTeams,
     errors,
     submitting,
-    sort
+    sort,
+    fetching
   }
 }
 

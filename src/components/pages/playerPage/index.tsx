@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const PlayerPage = (props: Props) => {
   const {
-    player: { data: player, history = [], historyPast = []},
+    player: { data: player, history = [], historyPast = [], fetching },
     fetchPlayer,
     fetchPlayerHistory,
     fetchPlayerHistoryPast,
@@ -117,6 +117,7 @@ export const PlayerPage = (props: Props) => {
             tab={tab}
             updatePlayerHistorySort={updatePlayerHistorySort}
             hasHistory={hasHistory}
+            fetching={fetching}
           />
         </Route>
         <Route
@@ -131,6 +132,7 @@ export const PlayerPage = (props: Props) => {
             updatePlayerHistoryPastSort={updatePlayerHistoryPastSort}
             tab={tab}
             hasHistoryPast={hasHistoryPast}
+            fetching={fetching}
           />
         </Route>
       </Switch>

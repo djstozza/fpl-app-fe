@@ -33,6 +33,13 @@ describe('Team reducer handles action', () => {
       .toEqual({ ...initialState, data: MANCHESTER_UNITED })
   })
 
+  test(actions.API_TEAMS_FIXTURES_INDEX, () => {
+    expect(reducer(initialState, {
+      type: actions.API_TEAMS_FIXTURES_INDEX
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
   test(`${success(actions.API_TEAMS_SHOW)} - no data`, () => {
     expect(reducer(initialState, {
       type: success(actions.API_TEAMS_SHOW)

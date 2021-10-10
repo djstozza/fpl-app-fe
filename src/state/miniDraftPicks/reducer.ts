@@ -17,7 +17,8 @@ export type State = {
   meta: {
     total?: number
   },
-  submitting: boolean
+  submitting: boolean,
+  fetching: boolean
 }
 
 export const initialFilterState = {
@@ -37,6 +38,7 @@ export const initialState = {
   meta: {},
   fplTeamListId: '',
   season: '',
+  fetching: false,
   ...initialFilterState
 }
 
@@ -51,23 +53,32 @@ const reducer = (state: State = initialState, action: Action) => {
 
   switch (action.type) {
     case success(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX):
-      return { ...state, errors: [], data, meta, submitting: false }
+      return { ...state, errors: [], data, meta, submitting: false, fetching: false }
     case success(actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE):
     case success(actions.API_LEAGUE_MINI_DRAFT_PICK_PASS):
     case success(actions.API_LEAGUE_MINI_DRAFT_PICKS_STATUS_INDEX):
       const { data: { canMakeMiniDraftPick, miniDraftFinished, season, round, fplTeamListId } } = action
 
-      return { ...state, errors: [], canMakeMiniDraftPick, miniDraftFinished, season, round, fplTeamListId, submitting: false }
+      return {
+        ...state,
+        errors: [],
+        canMakeMiniDraftPick,
+        miniDraftFinished,
+        season,
+        round,
+        fplTeamListId,
+        submitting: false
+      }
     case success(actions.API_LEAGUE_MINI_DRAFT_PICKS_FACETS_INDEX):
       return { ...state, facets: action.data }
     case actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE:
       return { ...state, submitting: true }
     case actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX:
-      return { ...state, filter, sort }
+      return { ...state, filter, sort, fetching: true }
     case failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX):
     case failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_FACETS_INDEX):
     case failure(actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE):
-      return { ...state, errors, submitting: false }
+      return { ...state, errors, submitting: false, fetching: false }
     default:
       return state
   }

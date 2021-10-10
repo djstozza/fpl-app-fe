@@ -53,6 +53,20 @@ describe('Player reducer handles action', () => {
       .toEqual({ ...initialState, sort: { ...initialState.sort, history: newSort }})
   })
 
+  test(actions.API_PLAYERS_HISTORY_INDEX, () => {
+    expect(reducer(initialState, {
+      type: actions.API_PLAYERS_HISTORY_INDEX
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
+  test(actions.API_PLAYERS_HISTORY_PAST_INDEX, () => {
+    expect(reducer(initialState, {
+      type: actions.API_PLAYERS_HISTORY_PAST_INDEX
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
   test(actions.UPDATE_PLAYER_HISTORY_PAST_SORT, () => {
     const newSort = { minutes: 'asc' }
     expect(reducer(initialState, {

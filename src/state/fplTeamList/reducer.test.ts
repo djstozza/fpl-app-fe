@@ -19,6 +19,13 @@ describe('Fpl team list reducer handles action', () => {
       .toEqual({ ...state, data: FPL_TEAM_LISTS[0] })
   })
 
+  test(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX, () => {
+    expect(reducer(initialState, {
+      type: actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
   test(success(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX), () => {
     const state = { ...initialState, data: FPL_TEAM_LISTS[0] }
 

@@ -19,12 +19,13 @@ import TeamDetails from './teamDetails'
 import FixturesTable from './fixturesTable'
 import PlayersTable from './playersTable'
 
+import type { PlayersState } from 'state/players'
 import type { TeamState } from 'state/team'
-import type { TeamSummary, TeamPlayer } from 'types'
+import type { TeamSummary } from 'types'
 
 type Props = {
   team: TeamState,
-  players: TeamPlayer[],
+  players: PlayersState,
   teams: TeamSummary[],
   fetchTeam: Function,
   fetchTeams: Function,
@@ -32,7 +33,7 @@ type Props = {
   fetchTeamFixtures: Function,
   updateTeamFixturesSort: Function,
   updateTeamPlayersSort: Function,
-  match: { params: { teamId: string, tab: string } },
+  match: { params: { teamId: string, tab: string } }
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -79,7 +80,8 @@ export const TeamPage = (props: Props) => {
   const {
     data,
     sort,
-    fixtures
+    fixtures,
+    fetching
   } = team
 
   const search = window.location.search.substring(1)
@@ -160,6 +162,7 @@ export const TeamPage = (props: Props) => {
             sort={sortQuery}
             tab={tab}
             updateTeamFixturesSort={updateTeamFixturesSort}
+            fetching={fetching}
           />
         </Route>
         <Route
@@ -185,7 +188,7 @@ const mapStateToProps = (state) => {
   const {
     teams: { data: teams },
     team,
-    players: { data: players = [] }
+    players
   } = state
 
   return {

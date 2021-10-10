@@ -40,6 +40,13 @@ describe('List position reducer handles action', () => {
       .toEqual({ ...initialState, fetching: true })
   })
 
+  test(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS, () => {
+    expect(reducer(initialState, {
+      type: actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
   test(failure(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITION_FACETS), () => {
     const errors = [{ failure: true }]
     expect(reducer(initialState, {

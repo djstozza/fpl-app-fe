@@ -36,7 +36,7 @@ type Props = {
 const TradeableListPositionsTable = (props: Props) => {
   const {
     isOwner,
-    listPosition: { tradeableListPositions, facets },
+    listPosition: { tradeableListPositions, facets, fetching },
     outListPosition,
     fetchTradeableListPositions,
     submitAction,
@@ -138,6 +138,8 @@ const TradeableListPositionsTable = (props: Props) => {
           facets={facets}
           handleSortChange={(newSort) => updateTradeableListPositionsSort(newSort)}
           handleFilterChange={(newFilter) => updateTradeableListPositionsFilter(newFilter)}
+          fetching={fetching}
+          name='tradeable list positions'
         />
       </SearchListener>
 

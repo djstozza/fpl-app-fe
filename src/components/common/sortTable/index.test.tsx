@@ -31,6 +31,8 @@ describe('SortTable', () => {
           handleChangePage={blank__}
           facets={PLAYER_FACETS}
           cells={cells}
+          fetching={false}
+          name='collection'
           {...props}
         />
       </SearchContext.Provider>
@@ -51,6 +53,12 @@ describe('SortTable', () => {
     const wrapper = render({ collection: [] })
 
     expect(tableCell(wrapper).text()).toEqual('No results found')
+  })
+
+  it('shows the fetching message if fetching = true and the collection is empty', () => {
+    const wrapper = render({ collection: [], fetching: true })
+
+    expect(tableCell(wrapper).text()).toEqual('Loading collection...')
   })
 
   it('renders the table rows and cells', () => {

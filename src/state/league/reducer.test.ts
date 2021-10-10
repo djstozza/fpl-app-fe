@@ -23,6 +23,13 @@ describe('League reducer handles action', () => {
       .toEqual({ ...initialState, submitting: true })
   })
 
+  test(actions.API_LEAGUE_FPL_TEAMS_INDEX, () => {
+    expect(reducer(initialState, {
+      type: actions.API_LEAGUE_FPL_TEAMS_INDEX
+    }))
+      .toEqual({ ...initialState, fetching: true })
+  })
+
   test(actions.API_LEAGUE_CREATE_DRAFT, () => {
     expect(reducer(initialState, {
       type: actions.API_LEAGUE_CREATE_DRAFT

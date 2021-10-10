@@ -65,7 +65,7 @@ describe('Draft picks reducer handles action', () => {
       filter: { team_ids: ['1', '2'] },
       sort: { pickNumber: 'desc' }
     }))
-      .toEqual({ ...initialState, sort: { pickNumber: 'desc' }, filter: { team_ids: ['1', '2'] } })
+      .toEqual({ ...initialState, sort: { pickNumber: 'desc' }, filter: { team_ids: ['1', '2'] }, fetching: true })
   })
 
   test(failure(actions.API_LEAGUE_DRAFT_PICKS_INDEX), () => {

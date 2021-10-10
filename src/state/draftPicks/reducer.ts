@@ -17,7 +17,8 @@ export type State = {
   meta: {
     total?: number
   },
-  submitting: boolean
+  submitting: boolean,
+  fetching: boolean
 }
 
 export const initialFilterState = {
@@ -37,6 +38,7 @@ export const initialState = {
   errors: [],
   facets: {},
   meta: {},
+  fetching: false,
   ...initialFilterState
 }
 
@@ -62,11 +64,11 @@ const reducer = (state: State = initialState, action: Action) => {
     case actions.API_LEAGUE_DRAFT_PICK_UPDATE:
       return { ...state, submitting: true }
     case actions.API_LEAGUE_DRAFT_PICKS_INDEX:
-      return { ...state, filter, sort }
+      return { ...state, filter, sort, fetching: true }
     case failure(actions.API_LEAGUE_DRAFT_PICKS_INDEX):
     case failure(actions.API_LEAGUE_DRAFT_PICKS_FACETS_INDEX):
     case failure(actions.API_LEAGUE_DRAFT_PICK_UPDATE):
-      return { ...state, errors, submitting: false }
+      return { ...state, errors, submitting: false, fetching: false }
     default:
       return state
   }

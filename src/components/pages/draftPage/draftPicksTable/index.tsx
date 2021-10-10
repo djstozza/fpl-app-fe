@@ -130,7 +130,7 @@ const DraftPicksTable = (props: Props) => {
     }, [fetchDraftPickFacets]
   )
 
-  const { data, facets, meta: { total } } = draftPicks
+  const { data, facets, meta: { total }, fetching } = draftPicks
 
   return (
     <Fragment>
@@ -142,6 +142,8 @@ const DraftPicksTable = (props: Props) => {
           handleFilterChange={(newFilter) => updateDraftPicksFilter(newFilter)}
           cells={DRAFT_PICKS_TABLE_CELLS}
           total={total}
+          fetching={fetching}
+          name='draft picks'
           noOffset
         />
       </SearchListener>

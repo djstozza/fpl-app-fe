@@ -30,7 +30,7 @@ type Props = {
 const NewMiniDraftPick = (props: Props) => {
   const {
     isWaiver,
-    fplTeamList: { listPositions },
+    fplTeamList: { listPositions, fetching },
     fetchListPositions,
     deadline,
     outListPosition,
@@ -73,6 +73,7 @@ const NewMiniDraftPick = (props: Props) => {
         isWaiver={isWaiver}
         deadline={deadline}
         setOutListPosition={setOutListPosition}
+        fetching={fetching}
       />
     }
     <OutListPosition

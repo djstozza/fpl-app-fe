@@ -62,7 +62,9 @@ type Props = {
     limit: number,
     offset: number
   },
-  noOffset?: boolean
+  noOffset?: boolean,
+  fetching: boolean,
+  name: string
 }
 
 type HeightProps = {
@@ -106,7 +108,9 @@ const SortTable = (props: Props) => {
     cells,
     tab,
     total,
-    noOffset
+    noOffset,
+    fetching,
+    name
   } = props
   const {
     search: {
@@ -178,7 +182,12 @@ const SortTable = (props: Props) => {
                 ? (
                   <TableRow>
                     <TableCell colSpan={100}>
-                      <Typography align='center'>No results found</Typography>
+                      <Typography align='center'>
+                      {
+                        fetching ? `Loading ${name}...` : 'No results found'
+                      }
+
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 )

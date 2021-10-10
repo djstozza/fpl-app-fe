@@ -24,7 +24,8 @@ import type { League } from 'types'
 type Props = {
   leagues: League[],
   fetchLeagues: Function,
-  updateSort: Function
+  updateSort: Function,
+  fetching: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -57,7 +58,7 @@ const LEAGUES_TABLE_CELLS = [
 ]
 
 export const LeaguesPage = (props: Props) => {
-  const { leagues = [], fetchLeagues, updateSort } = props
+  const { leagues = [], fetchLeagues, updateSort, fetching } = props
   const classes = useStyles()
 
   return (
@@ -67,6 +68,8 @@ export const LeaguesPage = (props: Props) => {
           collection={leagues}
           handleSortChange={(newSort) => updateSort(newSort)}
           cells={LEAGUES_TABLE_CELLS}
+          fetching={fetching}
+          name='leagues'
         />
       </SearchListener>
       <div className={classes.actions}>
@@ -91,12 +94,14 @@ export const LeaguesPage = (props: Props) => {
 const mapStateToProps = (state) => {
   const {
     leagues: {
-      data: leagues
+      data: leagues,
+      fetching
     }
   } = state
 
   return {
-    leagues
+    leagues,
+    fetching
   }
 }
 

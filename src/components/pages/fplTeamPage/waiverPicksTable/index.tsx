@@ -39,7 +39,7 @@ const WaiverPicksTable = (props: Props) => {
   const {
     isOwner,
     isWaiver,
-    waiverPicks: { data: waiverPicks, submitting, errors },
+    waiverPicks: { data: waiverPicks, submitting, errors, fetching: waiverPicksFetching },
     fplTeamList: { data: { round: { current = false } = {} } = {} },
     selectedFplTeamListId,
     fetchWaiverPicks,
@@ -47,12 +47,14 @@ const WaiverPicksTable = (props: Props) => {
     fplTeamLists: { data: fplTeamLists },
     fplTeamId,
     fetchTrades,
-    trades: { data: trades }
+    trades: { data: trades, fetching: tradesFetching }
   } = props
   const { enqueueSnackbar } = useSnackbar()
 
   const showTrades = window.location.pathname.includes('trades')
   const fetchAction = showTrades ? fetchTrades : fetchWaiverPicks
+  const fetching = showTrades ? tradesFetching : waiverPicksFetching
+  const name = showTrades ? 'trades' : 'waiver picks'
 
   useEffect(
     () => {
@@ -159,6 +161,8 @@ const WaiverPicksTable = (props: Props) => {
       <SortTable
         collection={showTrades ? trades : waiverPicks}
         cells={Object.values(cells)}
+        fetching={fetching}
+        name={name}
       />
     </Fragment>
   )

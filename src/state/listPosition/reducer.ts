@@ -12,6 +12,7 @@ export type State = {
   filter: Object,
   sort: Object
 }
+
 export const initialFilterState = {
   filter: {},
   sort: {
@@ -32,14 +33,15 @@ const reducer = (state: State = initialState, action: Action) => {
   const { data: { validSubstitutions = [] } = {}, errors } = action
 
   switch (action.type) {
+    case actions.API_LIST_POSITION_SHOW:
+    case actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS:
+      return { ...state, fetching: true }
     case success(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS):
-      return { ...state, tradeableListPositions: action.data }
+      return { ...state, tradeableListPositions: action.data, fetching: false }
     case success(actions.API_LIST_POSITION_SHOW):
       return { ...state, validSubstitutions, fetching: false }
     case success(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITION_FACETS):
       return { ...state, facets: action.data }
-    case actions.API_LIST_POSITION_SHOW:
-      return { ...state, fetching: true }
     case failure(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITION_FACETS):
     case failure(actions.API_LIST_POSITION_SHOW):
     case failure(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS):
