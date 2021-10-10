@@ -1,9 +1,9 @@
 import { Fragment, useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 
-import ListPositionsTable from '../listPositionsTable'
-import OutListPosition from '../outListPosition'
-import TradeableListPositionsTable from './tradeableListPositionsTable'
+import ListPositionsTable from '../../listPositionsTable'
+import OutListPosition from '../../outListPosition'
+import TradeableListPositionsTable from '../tradeableListPositionsTable'
 import { TITLE } from 'utilities/constants'
 
 import type { InterTeamTradeGroup, FplTeamList, ListPosition } from 'types'

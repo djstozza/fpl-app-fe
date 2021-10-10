@@ -1668,7 +1668,8 @@ export const LIST_POSITIONS = [
     displayOrder: 0,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[0]
+    ...PLAYER_HISTORY[0],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '2',
@@ -1678,7 +1679,8 @@ export const LIST_POSITIONS = [
     displayOrder: 0,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[1]
+    ...PLAYER_HISTORY[1],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '3',
@@ -1688,7 +1690,8 @@ export const LIST_POSITIONS = [
     displayOrder: 0,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[2]
+    ...PLAYER_HISTORY[2],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '4',
@@ -1698,7 +1701,8 @@ export const LIST_POSITIONS = [
     displayOrder: 1,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[3]
+    ...PLAYER_HISTORY[3],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '5',
@@ -1708,7 +1712,8 @@ export const LIST_POSITIONS = [
     displayOrder: 1,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[4]
+    ...PLAYER_HISTORY[4],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '6',
@@ -1718,7 +1723,8 @@ export const LIST_POSITIONS = [
     displayOrder: 1,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[5]
+    ...PLAYER_HISTORY[5],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '7',
@@ -1728,7 +1734,8 @@ export const LIST_POSITIONS = [
     displayOrder: 1,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[6]
+    ...PLAYER_HISTORY[6],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '8',
@@ -1738,7 +1745,8 @@ export const LIST_POSITIONS = [
     displayOrder: 2,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[8]
+    ...PLAYER_HISTORY[8],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '9',
@@ -1748,7 +1756,8 @@ export const LIST_POSITIONS = [
     displayOrder: 2,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[9]
+    ...PLAYER_HISTORY[9],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '10',
@@ -1758,7 +1767,8 @@ export const LIST_POSITIONS = [
     displayOrder: 2,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[10]
+    ...PLAYER_HISTORY[10],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '11',
@@ -1768,7 +1778,8 @@ export const LIST_POSITIONS = [
     displayOrder: 3,
     roleStr: 'Starting',
     role: 0,
-    ...PLAYER_HISTORY[13]
+    ...PLAYER_HISTORY[13],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '12',
@@ -1778,7 +1789,8 @@ export const LIST_POSITIONS = [
     displayOrder: 1,
     roleStr: 'S1',
     role: 1,
-    ...PLAYER_HISTORY[7]
+    ...PLAYER_HISTORY[7],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '13',
@@ -1788,7 +1800,8 @@ export const LIST_POSITIONS = [
     displayOrder: 1,
     roleStr: 'S2',
     role: 1,
-    ...PLAYER_HISTORY[7]
+    ...PLAYER_HISTORY[7],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '14',
@@ -1798,7 +1811,8 @@ export const LIST_POSITIONS = [
     displayOrder: 1,
     roleStr: 'S2',
     role: 2,
-    ...PLAYER_HISTORY[11]
+    ...PLAYER_HISTORY[11],
+    fplTeam: FPL_TEAM_1
   },
   {
     id: '15',
@@ -1808,7 +1822,8 @@ export const LIST_POSITIONS = [
     displayOrder: 1,
     roleStr: 'SGKP',
     role: 3,
-    ...PLAYER_HISTORY[14]
+    ...PLAYER_HISTORY[14],
+    fplTeam: FPL_TEAM_1
   }
 ]
 
@@ -1891,7 +1906,7 @@ export const INTER_TEAM_TRADE_GROUP_1 = {
       outTeam: SPURS_TEAM_BASE,
       inPlayer: PLAYER_BASES[3],
       inTeam: MANCHESTER_CITY_TEAM_BASE,
-      position: FORWARD
+      position: FORWARD.singularNameShort
     },
     {
       id: '2',
@@ -1899,20 +1914,107 @@ export const INTER_TEAM_TRADE_GROUP_1 = {
       outTeam: LIVERPOOL_TEAM_BASE,
       inPlayer: PLAYER_BASES[4],
       inTeam: LEEDS_TEAM_BASE,
-      position: MIDFIELDER
+      position: FORWARD.singularNameShort
     },
   ],
   status: 'Submitted',
-  canApprove: true,
+  canApprove: false,
   canSubmit: false,
   canCancel: true
 }
 
-export const INTER_TEAM_TRADE_GROUPS = {
-  outTradeGroups: [INTER_TEAM_TRADE_GROUP_1],
-  inTradeGroups: []
+export const INTER_TEAM_TRADE_GROUP_2 = {
+  id: '2',
+  outFplTeamListId: '1',
+  inFplTeamListId: '3',
+  outFplTeam: FPL_TEAM_1,
+  inFplTeam: FPL_TEAM_3,
+  trades: [
+    {
+      id: '3',
+      outPlayer: PLAYER_BASES[8],
+      outTeam: ARSENAL_TEAM_BASE,
+      inPlayer: PLAYER_BASES[10],
+      inTeam: BRENTFORD_TEAM_BASE,
+      position: DEFENDER.singularNameShort
+    }
+  ],
+  status: 'Pending',
+  canApprove: false,
+  canSubmit: true,
+  canCancel: true
 }
 
+export const INTER_TEAM_TRADE_GROUP_3 = {
+  id: '3',
+  outFplTeamListId: '1',
+  inFplTeamListId: '2',
+  outFplTeam: FPL_TEAM_1,
+  inFplTeam: FPL_TEAM_2,
+  trades: [
+    {
+      id: '4',
+      outPlayer: PLAYER_BASES[8],
+      outTeam: ARSENAL_TEAM_BASE,
+      inPlayer: PLAYER_BASES[10],
+      inTeam: BRENTFORD_TEAM_BASE,
+      position: MIDFIELDER.singularNameShort
+    }
+  ],
+  status: 'Approved',
+  canApprove: false,
+  canSubmit: false,
+  canCancel: false
+}
+
+export const INTER_TEAM_TRADE_GROUP_4 = {
+  id: '4',
+  outFplTeamListId: '2',
+  inFplTeamListId: '1',
+  outFplTeam: FPL_TEAM_2,
+  inFplTeam: FPL_TEAM_1,
+  trades: [
+    {
+      id: '5',
+      outPlayer: PLAYER_BASES[11],
+      outTeam: WOLVES_TEAM_BASE,
+      inPlayer: PLAYER_BASES[4],
+      inTeam: MANCHESTER_UNITED_TEAM_BASE,
+      position: DEFENDER.singularNameShort
+    }
+  ],
+  status: 'Submitted',
+  canApprove: true,
+  canSubmit: false,
+  canCancel: false
+}
+
+export const INTER_TEAM_TRADE_GROUP_5 = {
+  id: '5',
+  outFplTeamListId: '3',
+  inFplTeamListId: '1',
+  outFplTeam: FPL_TEAM_3,
+  inFplTeam: FPL_TEAM_1,
+  trades: [
+    {
+      id: '6',
+      outPlayer: PLAYER_BASES[11],
+      outTeam: WOLVES_TEAM_BASE,
+      inPlayer: PLAYER_BASES[4],
+      inTeam: MANCHESTER_UNITED_TEAM_BASE,
+      position: GOALKEEPER.singularNameShort
+    }
+  ],
+  status: 'Declined',
+  canApprove: false,
+  canSubmit: false,
+  canCancel: false
+}
+
+export const INTER_TEAM_TRADE_GROUPS = {
+  outTradeGroups: [INTER_TEAM_TRADE_GROUP_1, INTER_TEAM_TRADE_GROUP_2, INTER_TEAM_TRADE_GROUP_3],
+  inTradeGroups: [INTER_TEAM_TRADE_GROUP_4, INTER_TEAM_TRADE_GROUP_5]
+}
 
 export const TRADES = [
   {

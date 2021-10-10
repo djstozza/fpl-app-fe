@@ -1,8 +1,4 @@
 import { Redirect } from 'react-router-dom'
-import {
-  Theme,
-  makeStyles
-} from '@material-ui/core'
 
 import {
   LEAGUES_URL
@@ -19,45 +15,14 @@ type Props = {
   initializeForm: Function
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  form: {
-    marginTop: theme.spacing(2)
-  },
-  textField: {
-    paddingBottom: theme.spacing(2)
-  },
-  paper: {
-    padding: theme.spacing(3)
-  },
-  formHeader: {
-    paddingBottom: theme.spacing(2)
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  },
-  codeContainer: {
-    display: 'flex',
-    alignItems: 'baseline'
-  },
-  generateButtonContainer: {
-    marginRight: theme.spacing(1)
-  },
-  generateButton: {
-    whiteSpace: 'nowrap'
-  }
-}))
-
 const EditLeagueForm = (props: Props) => {
   const {
     errors = [],
     updateLeague,
-    submitting,
     initializeForm,
-    league: { id, name, code, isOwner }
+    league: { id, isOwner }
   } = props
 
-  const classes = useStyles()
   const returnUrl = `${LEAGUES_URL}/${id}/details`
 
   if (!isOwner) return <Redirect to={returnUrl} />

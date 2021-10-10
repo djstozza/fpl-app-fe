@@ -95,7 +95,7 @@ describe('AvailablePlayersTable', () => {
     expect(updateDraftPick).not.toHaveBeenCalled()
   })
 
-  it('closes the draft dialog when cancel is clicked', () => {
+  it('closes the draft dialog when the backdrop is clicked', () => {
     const updateDraftPick = jest.fn()
     const wrapper = render({ updateDraftPick })
 

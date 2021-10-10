@@ -8,9 +8,9 @@ import {
 } from '@material-ui/core'
 
 import SortTable from 'components/common/sortTable'
-import { initialFilterState } from 'state/players/reducer'
+import { initialFilterState } from 'state/listPosition/reducer'
 import SearchListener from 'components/common/searchListener'
-import { listPositionTableCells } from '../listPositionsTable'
+import { listPositionTableCells } from '../../listPositionsTable'
 import Link from 'components/common/link'
 import {
   FPL_TEAMS_URL

@@ -151,9 +151,7 @@ const TeamTradeTabs = (props: Props) => {
   )
 
   const labelRenderer = ({ round: { name } }: FplTeamList) => name
-  const tabUrl = selectedFplTeamListId
-    ? `${FPL_TEAMS_URL}/${fplTeamId}/teamLists/${selectedFplTeamListId}/teamTrades`
-    : `${FPL_TEAMS_URL}/${fplTeamId}/teamLists/teamTrades`
+  const tabUrl = `${FPL_TEAMS_URL}/${fplTeamId}/teamLists/${selectedFplTeamListId}/teamTrades`
 
   const tradeGroups = action === 'out' ? outTradeGroups : inTradeGroups
 
@@ -305,7 +303,7 @@ const TeamTradeTabs = (props: Props) => {
                                   </Link>
                                 </TableCell>
                                 <TableCell align='center'>
-                                  <TeamCrestLink team={inTeam} />
+                                  <TeamCrestLink team={action === 'out' ? inTeam : outTeam} />
                                 </TableCell>
                                 <TableCell align='center'>
                                   {position}
@@ -460,7 +458,6 @@ const TeamTradeTabs = (props: Props) => {
             onClick={() => handleConfirm()}
             variant='contained'
             color='secondary'
-
           >
             Confirm
           </Button>

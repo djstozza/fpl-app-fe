@@ -104,7 +104,6 @@ const NewWaiverPick = (props: Props) => {
         submitAction={isWaiver ? createWaiverPick : createTrade}
       />
     }
-
     </Fragment>
   )
 }
