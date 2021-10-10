@@ -5,7 +5,7 @@ import { teamsActions } from 'state/teams'
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/teams/reducer'
-import TeamCrestLink from 'components/common/teamCrestLink'
+import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import { TITLE } from 'utilities/constants'
 
 import {
@@ -39,7 +39,7 @@ const TEAMS_TABLE_CELLS = [
     toolTipLabel: 'Name',
     sortParam: 'shortName',
     sticky: true,
-    customRender: (team: TeamSummary, classes) => <TeamCrestLink team={team} />
+    customRender: (team: TeamSummary, classes) => <ContainedTeamCrestLink team={team} />
   },
   { cellId: 'position', label: 'R', toolTipLabel: 'Rank', sortParam: 'position' },
   { cellId: 'played', label: 'MP', toolTipLabel: 'Matches Played', sortParam: 'played' },

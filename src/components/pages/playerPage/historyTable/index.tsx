@@ -6,7 +6,7 @@ import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/player/reducer'
 import { PLAYERS_URL, ROUNDS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
-import TeamCrestLink from 'components/common/teamCrestLink'
+import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 
 import type { History } from 'types'
 
@@ -36,7 +36,7 @@ const HISTORY_TABLE_CELLS = [
     cellId: 'opponent',
     label: 'O',
     toolTipLabel: 'Opponent',
-    customRender: ({ opponent }: History, classes, tab) => <TeamCrestLink team={opponent} />,
+    customRender: ({ opponent }: History, classes, tab) => <ContainedTeamCrestLink team={opponent} />,
     sortParam: 'oppositionTeam.shortName',
   },
 

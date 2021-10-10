@@ -12,7 +12,7 @@ import {
   FPL_TEAMS_URL
 } from 'utilities/constants'
 import Link from 'components/common/link'
-import TeamCrestLink from 'components/common/teamCrestLink'
+import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import TabPanel from 'components/common/tabPanel'
 
 import type { FplTeamListsState } from 'state/fplTeamLists'
@@ -113,7 +113,7 @@ const WaiverPicksTable = (props: Props) => {
       cellId: 'outTeam',
       label: 'OT',
       toolTipLabel: 'Out Team',
-      customRender: ({ outTeam }: WaiverPick, classes) => <TeamCrestLink team={outTeam} />
+      customRender: ({ outTeam }: WaiverPick, classes) => <ContainedTeamCrestLink team={outTeam} />
     },
     inPlayer: {
       cellId: 'inPlayer',
@@ -131,7 +131,7 @@ const WaiverPicksTable = (props: Props) => {
       cellId: 'inTeam',
       label: 'IT',
       toolTipLabel: 'In Team',
-      customRender: ({ inTeam }: WaiverPick, classes) => <TeamCrestLink team={inTeam} />
+      customRender: ({ inTeam }: WaiverPick, classes) => <ContainedTeamCrestLink team={inTeam} />
     },
     status: {
       cellId: 'status',

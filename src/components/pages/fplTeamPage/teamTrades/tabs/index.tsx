@@ -29,7 +29,7 @@ import {
 import Tabs from 'components/common/tabs'
 import TabPanel from 'components/common/tabPanel'
 import ExpandableTableRow from 'components/common/expandableTableRow'
-import TeamCrestLink from 'components/common/teamCrestLink'
+import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import Link from 'components/common/link'
 import { colors } from 'utilities/colors'
 
@@ -291,7 +291,7 @@ const TeamTradeTabs = (props: Props) => {
                                   </Link>
                                 </TableCell>
                                 <TableCell align='center'>
-                                  <TeamCrestLink team={action === 'out' ? outTeam : inTeam} />
+                                  <ContainedTeamCrestLink team={action === 'out' ? outTeam : inTeam} />
                                 </TableCell>
                                 <TableCell align='center'>
                                   <Link to={`${PLAYERS_URL}/${action === 'out' ? inPlayerId : outPlayerId}`}>
@@ -303,7 +303,7 @@ const TeamTradeTabs = (props: Props) => {
                                   </Link>
                                 </TableCell>
                                 <TableCell align='center'>
-                                  <TeamCrestLink team={action === 'out' ? inTeam : outTeam} />
+                                  <ContainedTeamCrestLink team={action === 'out' ? inTeam : outTeam} />
                                 </TableCell>
                                 <TableCell align='center'>
                                   {position}

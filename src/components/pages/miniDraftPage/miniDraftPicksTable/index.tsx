@@ -5,7 +5,7 @@ import SortTable from 'components/common/sortTable'
 import { initialFilterState } from 'state/draftPicks/reducer'
 import SearchListener from 'components/common/searchListener'
 import Link from 'components/common/link'
-import TeamCrestLink from 'components/common/teamCrestLink'
+import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 
 import type { MiniDraftPicksState } from 'state/miniDraftPicks'
 import type { MiniDraftPick } from 'types'
@@ -40,7 +40,7 @@ const MINI_DRAFT_PICKS_TABLE_CELLS = [
     cellId: 'outTeam',
     label: 'OT',
     toolTipLabel: 'Out Team',
-    customRender: ({ outTeam, passed }: MiniDraftPick, classes) => passed ? '-' : <TeamCrestLink team={outTeam} />
+    customRender: ({ outTeam, passed }: MiniDraftPick, classes) => passed ? '-' : <ContainedTeamCrestLink team={outTeam} />
   },
   {
     cellId: 'inPlayer',
@@ -62,7 +62,7 @@ const MINI_DRAFT_PICKS_TABLE_CELLS = [
     cellId: 'inTeam',
     label: 'IT',
     toolTipLabel: 'In Team',
-    customRender: ({ inTeam, passed }: MiniDraftPick, classes) => passed ? '-' : <TeamCrestLink team={inTeam} />
+    customRender: ({ inTeam, passed }: MiniDraftPick, classes) => passed ? '-' : <ContainedTeamCrestLink team={inTeam} />
   },
   {
     cellId: 'positions',

@@ -5,7 +5,7 @@ import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/team/reducer'
 import { ROUNDS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
-import TeamCrestLink from 'components/common/teamCrestLink'
+import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 
 import type { TeamFixture } from 'types'
 
@@ -38,7 +38,7 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'oppositionTeam',
     label: 'O',
     toolTipLabel: 'Opponent',
-    customRender: ({ opponent }: TeamFixture, classes, tab) => <TeamCrestLink team={opponent} tab={tab} />,
+    customRender: ({ opponent }: TeamFixture, classes, tab) => <ContainedTeamCrestLink team={opponent} tab={tab} />,
     sortParam: 'oppositionTeam.shortName',
   },
   { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false, sortParam: 'leg' },

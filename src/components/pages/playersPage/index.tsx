@@ -7,7 +7,7 @@ import SortTable from 'components/common/sortTable'
 import { initialFilterState } from 'state/players/reducer'
 import SearchListener from 'components/common/searchListener'
 import Link from 'components/common/link'
-import TeamCrestLink from 'components/common/teamCrestLink'
+import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import StatusIconMapper from 'components/common/statusIconMapper'
 
 import {
@@ -67,7 +67,7 @@ export const playersTableCells = () => ({
     toolTipLabel: 'Team',
     sortParam: 'teams.shortName',
     filterParam: 'teamId',
-    customRender: ({ team }: PlayerSummary, classes) => <TeamCrestLink team={team} />
+    customRender: ({ team }: PlayerSummary, classes) => <ContainedTeamCrestLink team={team} />
   },
   positions: {
     cellId: 'positions',

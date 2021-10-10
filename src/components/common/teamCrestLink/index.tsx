@@ -11,7 +11,7 @@ import { TEAMS_URL } from 'utilities/constants'
 
 import type { TeamBase } from 'types'
 
-type Props = {
+export type Props = {
   team: TeamBase
   tab?: string,
   size?: string

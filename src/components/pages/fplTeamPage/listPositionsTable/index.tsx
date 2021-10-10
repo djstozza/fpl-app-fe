@@ -5,7 +5,7 @@ import {
 import SortTable from 'components/common/sortTable'
 import { PLAYERS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
-import TeamCrestLink from 'components/common/teamCrestLink'
+import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import StatusIconMapper from 'components/common/statusIconMapper'
 
 import type { ListPosition, CellHash } from 'types'
@@ -52,7 +52,7 @@ export const listPositionTableCells = () => ({
     cellId: 'teams',
     label: 'T',
     toolTipLabel: 'Team',
-    customRender: ({ team }: ListPosition, classes) => <TeamCrestLink team={team} />
+    customRender: ({ team }: ListPosition, classes) => <ContainedTeamCrestLink team={team} />
   },
   position: {
     cellId: 'position',
