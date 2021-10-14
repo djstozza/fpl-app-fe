@@ -58,7 +58,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -80,6 +81,7 @@
   },
   "devDependencies": {
     "enzyme-adapter-react-16": "^1.15.6",
+    "husky": "^7.0.2",
     "react-app-rewire-alias": "^1.0.1",
     "react-app-rewired": "^2.1.8",
     "redux-saga-test-plan": "^4.0.3",
