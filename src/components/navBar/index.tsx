@@ -238,7 +238,7 @@ export const NavBar = (props: Props) => {
       <AppBar position='fixed'>
         <Toolbar>
           <Typography variant='h6' noWrap>
-            Fpl App
+            FPL App
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

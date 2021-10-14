@@ -1,8 +1,8 @@
-# Fpl App Fe
+# FPL App Fe
 
 ## General Info
 
-The React/Redux front-end for Fpl App Api. Users can challenge their friends to see who is the best fantasy football manager by drafting and trading EPL stars. An in-depth look at the rules and logic can be found [here](https://github.com/djstozza/fpl-app-api).
+The React/Redux front-end for FPL App Api. Users can challenge their friends to see who is the best fantasy football manager by drafting and trading EPL stars. An in-depth look at the rules and logic can be found [here](https://github.com/djstozza/fpl-app-api).
 
 
 ## Getting Started
@@ -19,7 +19,7 @@ Note that if the app doesn't run on  `http://localhost:8080`, it won't be able t
 
 To get around this, either point the app to a local copy of the API that allows any domains to connect to it or run the app on  `http://localhost:8080`.
 
-### Fpl App Api
+### FPL App Api
 This frontend app requires an instance of the API to run against.
 
 During development, please pull down and setup an instance of the API by following  [these instructions](https://github.com/djstozza/fpl-app-api).
