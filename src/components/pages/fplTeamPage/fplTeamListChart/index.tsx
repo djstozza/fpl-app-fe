@@ -262,7 +262,7 @@ const FplTeamListChart = (props: Props) => {
   const starting = listPositions.filter(({ roleStr }) => roleStr === 'Starting')
   const substitutes = listPositions.filter(({ roleStr }) => roleStr !== 'Starting')
   // Players may have two fixtures in a round
-  const consolidatedListPositions = (arg: ListPosition[]) => Object.values(arg).reduce((result, listPosition, key) => {
+  const consolidatedListPositions = (arg: ListPosition[]) => Object.values(arg).reduce((result, listPosition) => {
     const { player: { id: playerId }, totalPoints, minutes, opponent, leg } = listPosition
     const existing = result.find(({ player: { id } }) => id === playerId)
 

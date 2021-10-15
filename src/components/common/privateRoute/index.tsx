@@ -9,7 +9,7 @@ import type { User } from 'types'
 
 type Props = {
   user: User,
-  updateSession: Function,
+  updateSession: () => void,
   children: any
 }
 

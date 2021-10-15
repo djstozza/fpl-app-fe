@@ -22,7 +22,7 @@ type Props = {
   token?: string,
   submitting: boolean,
   logIn: Function,
-  initializeAuth: Function,
+  initializeAuth: () => void,
   errors: Error[]
 }
 

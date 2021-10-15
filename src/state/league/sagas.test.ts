@@ -12,8 +12,7 @@ import * as requestActions from 'state/request/actions'
 
 import {
   API_URL,
-  LEAGUES_URL,
-  PLAYERS_URL
+  LEAGUES_URL
 } from 'utilities/constants'
 
 import { LIVE_LEAGUE } from 'test/fixtures'

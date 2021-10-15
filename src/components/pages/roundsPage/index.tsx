@@ -13,8 +13,8 @@ import type { Round, RoundSummary } from 'types'
 type Props = {
   round: Round,
   rounds: RoundSummary[],
-  fetchRounds: Function,
-  fetchRound: Function,
+  fetchRounds: () => void,
+  fetchRound: (string) => void,
   match: { params: { roundId?: string } }
 }
 

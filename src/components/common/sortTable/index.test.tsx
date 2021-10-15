@@ -1,12 +1,10 @@
 import { createMount } from '@material-ui/core/test-utils'
-import { Link } from 'react-router-dom'
 
 import SortTable from '.'
 import { SearchContext } from 'components/common/searchListener'
 import { MockedRouter, blank__ } from 'test/helpers'
-import { PLAYER_SUMMARIES, PLAYER_FACETS } from 'test/fixtures'
+import { PLAYER_FACETS, PLAYER_SUMMARIES } from 'test/fixtures'
 import { playersTableCells } from 'components/pages/playersPage'
-import { PLAYERS_URL } from 'utilities/constants'
 
 const cells = Object.values(playersTableCells())
 const offset = 0
@@ -73,7 +71,7 @@ describe('SortTable', () => {
   describe('sort', () => {
     test('desc -> asc', () => {
       const handleSortChange = jest.fn()
-      let wrapper = render({ handleSortChange })
+      const wrapper = render({ handleSortChange })
 
       sortLabel(wrapper).at(4).simulate('click') // Total points sort label
       expect(handleSortChange).toBeCalledWith({ 'totalPoints': 'asc' })
@@ -113,7 +111,7 @@ describe('SortTable', () => {
     })
 
     test('with a tab', () => {
-      let wrapper = render(
+      const wrapper = render(
         { tab: 'tab' },
         {
           search: { sort: { tab: { totalPoints: 'asc' } } }

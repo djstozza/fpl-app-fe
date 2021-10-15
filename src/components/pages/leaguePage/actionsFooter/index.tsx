@@ -14,7 +14,7 @@ import type { League } from 'types'
 type Props = {
   league: League,
   detailsPage?: boolean,
-  generateDraftPicks: Function,
+  generateDraftPicks: (string) => void,
   createDraft: Function,
   submitting: boolean
 }

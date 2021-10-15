@@ -1,6 +1,5 @@
 import { createMount } from '@material-ui/core/test-utils'
 import { SnackbarProvider } from 'notistack'
-import moment from 'moment'
 import { within } from '@testing-library/react'
 import UserEvent from '@testing-library/user-event'
 
@@ -60,12 +59,10 @@ describe('WaiverPicksTable', () => {
     </MockedRouter>
   )
 
-  const sortTable = wrapper => wrapper.find('SortTable')
   const tableCell = (wrapper, i, j) => (
     wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
   )
   const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const cellNames = wrapper => sortTable(wrapper).props().cells.map(({ cellId }) => cellId)
   const headerCell = wrapper => wrapper.find('HeaderCell')
   const tabPanelTabs = wrapper => wrapper.find('TabPanel').find('WithStyles(ForwardRef(Tab))')
   const snackBarItem = wrapper => wrapper.find('WithStyles(SnackbarItem)')
@@ -103,13 +100,13 @@ describe('WaiverPicksTable', () => {
 
     it('triggers fetchWaiverPicks on render', () => {
       const fetchWaiverPicks = jest.fn()
-      const wrapper = render({ fetchWaiverPicks })
+      render({ fetchWaiverPicks })
 
       expect(fetchWaiverPicks).toHaveBeenCalled()
     })
 
     it('triggers changeWaiverPickOrder when the picknumbers are clicked if before waiverDeadline', () => {
-      const wrapper = render()
+      render()
 
       const selectButtons = document.querySelectorAll('[role=button]')
 
@@ -131,13 +128,6 @@ describe('WaiverPicksTable', () => {
     })
 
     it('does not allow the switching of waiver picks if the round is not current', () => {
-      const fplTeamList = {
-        ...FPL_TEAM_LISTS[0],
-        round: {
-          ...FPL_TEAM_LISTS[0].round,
-          current: false
-        }
-      }
       const wrapper = render({ isOwner: false })
 
       expect(tableCell(wrapper, 1, 0).find('WithStyles(ForwardRef(TextField))')).toHaveLength(0)
@@ -188,7 +178,7 @@ describe('WaiverPicksTable', () => {
 
     it('triggers fetchTrades on render', () => {
       const fetchTrades = jest.fn()
-      const wrapper = render({ fetchTrades })
+      render({ fetchTrades })
 
       expect(fetchTrades).toHaveBeenCalled()
     })

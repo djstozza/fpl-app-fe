@@ -22,7 +22,7 @@ export function * fetchPlayers (action) : Generator<any, any, any> {
   })
 }
 
-export function * fetchFacets (action) : Generator<any, any, any> {
+export function * fetchFacets () : Generator<any, any, any> {
   const url = `${API_URL}${PLAYERS_URL}/facets`
 
   yield put({

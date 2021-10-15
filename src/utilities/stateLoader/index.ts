@@ -1,3 +1,10 @@
+import type { User } from 'types'
+
+type AuthProps = {
+  user?: User,
+  token: string
+}
+
 export const initialAuth = {
   user: null,
   token: '',
@@ -6,11 +13,11 @@ export const initialAuth = {
 export const authKey = 'fplAppAuth'
 
 const StateLoader = {
-  saveAuth: (auth) => {
+  saveAuth: (auth: AuthProps): void => {
     const { token, user } = auth
     localStorage.setItem(authKey, JSON.stringify({ token, user }))
   },
-  getAuth: () => {
+  getAuth: (): undefined => {
     const authKeyValue = localStorage.getItem(authKey)
     const { ...auth } = authKeyValue ? JSON.parse(authKeyValue) : {}
 
@@ -18,7 +25,7 @@ const StateLoader = {
       ...auth
     }
   },
-  deleteAuth: () => {
+  deleteAuth: (): void => {
     localStorage.removeItem(authKey)
   }
 }

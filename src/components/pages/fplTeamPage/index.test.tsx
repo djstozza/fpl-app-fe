@@ -1,13 +1,9 @@
 import { createMount } from '@material-ui/core/test-utils'
 import moment from 'moment'
-import reactRouterDom from 'react-router-dom'
 
 import ConnectedFplTeamPage, { FplTeamPage } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 import { FPL_TEAM_1, FPL_TEAM_LISTS, INITIALIZED_LEAGUE } from 'test/fixtures'
-import {
-  FPL_TEAMS_URL
-} from 'utilities/constants'
 
 const search = ''
 const pathname = '/teamLists'

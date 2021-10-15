@@ -1,5 +1,4 @@
 import { createMount } from '@material-ui/core/test-utils'
-import timezoneMock from 'timezone-mock'
 
 import FplTeamsTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
@@ -22,12 +21,10 @@ describe('FplTeamsTable', () => {
     </MockedRouter>
   )
 
-  const sortTable = wrapper => wrapper.find('SortTable')
   const tableCell = (wrapper, i, j) => (
     wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
   )
   const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const cellNames = wrapper => sortTable(wrapper).props().cells.map(({ cellId }) => cellId)
 
   it('renders the fpl teams table', () => {
     const wrapper = render()
@@ -43,7 +40,7 @@ describe('FplTeamsTable', () => {
 
   it('triggers fetchFplTeams on render', () => {
     const fetchFplTeams = jest.fn()
-    const wrapper = render({ fetchFplTeams })
+    render({ fetchFplTeams })
 
     expect(fetchFplTeams).toHaveBeenCalledWith(initialFilterState)
   })

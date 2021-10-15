@@ -5,7 +5,7 @@ import { success, failure } from 'utilities/actions'
 import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
 
-export function * fetchRounds (action) : Generator<any, any, any> {
+export function * fetchRounds () : Generator<any, any, any> {
   const url = `${API_URL}${ROUNDS_URL}`
 
   yield put({

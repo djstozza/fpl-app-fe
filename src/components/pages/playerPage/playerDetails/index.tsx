@@ -59,7 +59,7 @@ const PlayerDetails = ({ player }: Props) => {
 
   const classes = useStyles({ tableHeight })
 
-  let cells: CellHash = playersTableCells()
+  const cells: CellHash = playersTableCells()
   delete cells.firstName
   delete cells.lastName
   delete cells.teams

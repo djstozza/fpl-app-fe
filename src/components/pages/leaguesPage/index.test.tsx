@@ -3,7 +3,6 @@ import { createMount } from '@material-ui/core/test-utils'
 import ConnectedLeaguesPage, { LeaguesPage } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 import {
-  TITLE,
   PROFILE_URL,
   LEAGUES_URL,
   NEW_LEAGUE_URL,
@@ -73,7 +72,7 @@ describe('LeaguesPage', () => {
 
   it('triggers the fetchLeagues function on load', () => {
     const fetchLeagues = jest.fn()
-    const wrapper = render({ fetchLeagues })
+    render({ fetchLeagues })
 
     expect(fetchLeagues).toHaveBeenCalledWith(initialFilterState)
   })

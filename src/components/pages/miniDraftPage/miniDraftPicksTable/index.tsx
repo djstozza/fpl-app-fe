@@ -24,7 +24,7 @@ const MINI_DRAFT_PICKS_TABLE_CELLS = [
     cellId: 'outPlayer',
     label: 'OP',
     toolTipLabel: 'Out Player',
-    customRender: ({ outPlayer, passed }: MiniDraftPick, classes) => {
+    customRender: ({ outPlayer, passed }: MiniDraftPick) => {
       if (passed) return '-'
 
       const { id, firstName, lastName } = outPlayer
@@ -40,13 +40,13 @@ const MINI_DRAFT_PICKS_TABLE_CELLS = [
     cellId: 'outTeam',
     label: 'OT',
     toolTipLabel: 'Out Team',
-    customRender: ({ outTeam, passed }: MiniDraftPick, classes) => passed ? '-' : <ContainedTeamCrestLink team={outTeam} />
+    customRender: ({ outTeam, passed }: MiniDraftPick) => passed ? '-' : <ContainedTeamCrestLink team={outTeam} />
   },
   {
     cellId: 'inPlayer',
     label: 'IP',
     toolTipLabel: 'In Player',
-    customRender: ({ inPlayer, passed }: MiniDraftPick, classes) => {
+    customRender: ({ inPlayer, passed }: MiniDraftPick) => {
       if (passed) return '-'
 
       const { id, firstName, lastName } = inPlayer
@@ -62,7 +62,7 @@ const MINI_DRAFT_PICKS_TABLE_CELLS = [
     cellId: 'inTeam',
     label: 'IT',
     toolTipLabel: 'In Team',
-    customRender: ({ inTeam, passed }: MiniDraftPick, classes) => passed ? '-' : <ContainedTeamCrestLink team={inTeam} />
+    customRender: ({ inTeam, passed }: MiniDraftPick) => passed ? '-' : <ContainedTeamCrestLink team={inTeam} />
   },
   {
     cellId: 'positions',

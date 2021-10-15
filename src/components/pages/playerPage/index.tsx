@@ -19,7 +19,7 @@ import type { PlayerState } from 'state/player'
 
 type Props = {
   player: PlayerState,
-  fetchPlayer: Function,
+  fetchPlayer: (string) => void,
   fetchPlayerHistory: Function,
   fetchPlayerHistoryPast: Function,
   updatePlayerHistorySort: Function,

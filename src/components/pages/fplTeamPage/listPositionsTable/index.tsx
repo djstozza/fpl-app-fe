@@ -25,7 +25,7 @@ export const listPositionTableCells = () => ({
     label: 'LN',
     toolTipLabel: 'Last Name',
     sticky: true,
-    customRender: ({ player }: ListPosition, classes) => {
+    customRender: ({ player }: ListPosition) => {
       const { id, lastName } = player
 
       return (
@@ -39,7 +39,7 @@ export const listPositionTableCells = () => ({
     cellId: 'firstName',
     label: 'FN',
     toolTipLabel: 'First Name',
-    customRender: ({ player }: ListPosition, classes) => {
+    customRender: ({ player }: ListPosition) => {
       const { id, firstName } = player
 
       return (
@@ -53,7 +53,7 @@ export const listPositionTableCells = () => ({
     cellId: 'teams',
     label: 'T',
     toolTipLabel: 'Team',
-    customRender: ({ team }: ListPosition, classes) => <ContainedTeamCrestLink team={team} />
+    customRender: ({ team }: ListPosition) => <ContainedTeamCrestLink team={team} />
   },
   position: {
     cellId: 'position',
@@ -80,7 +80,7 @@ export const listPositionTableCells = () => ({
     cellId: 'role',
     label: 'R',
     toolTipLabel: 'Role',
-    customRender: ({ roleStr }: ListPosition, classes) => roleStr
+    customRender: ({ roleStr }: ListPosition) => roleStr
   }
 })
 

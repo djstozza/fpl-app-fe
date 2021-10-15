@@ -56,8 +56,7 @@ const App = () => {
             <ErrorDialog />
 
             <Switch>
-              <Route exact path='/' render={(props) => <RoundsPage {...props} />} />
-              <Route exact path={`${ROUNDS_URL}/:roundId?`} render={(props) => <RoundsPage {...props} />} />
+              <Route exact path={['/', `${ROUNDS_URL}/:roundId?`]} render={(props) => <RoundsPage {...props} />} />
               <Route exact path={`${TEAMS_URL}/:teamId/:tab?`} render={(props) => <TeamPage {...props} />} />
               <Route exact path={TEAMS_URL} render={(props) => <TeamsPage {...props} />} />
               <Route exact path={PLAYERS_URL} render={(props) => <PlayersPage {...props} />} />

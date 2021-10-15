@@ -44,7 +44,7 @@ describe('PlayersTable', () => {
 
   it('triggers fetchTeamPlayers on render', () => {
     const fetchTeamPlayers = jest.fn()
-    const wrapper = render({ fetchTeamPlayers })
+    render({ fetchTeamPlayers })
 
     expect(fetchTeamPlayers).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
   })

@@ -178,7 +178,7 @@ export const FplTeamPage = (props: Props) => {
   const [deadline, setDeadline] = useState<Date|undefined>()
   const [isWaiver, setIsWaiver] = useState(false)
   const sanitizedFplTeamListId = (fplTeamListId || '').match(/^\d+$/) ? fplTeamListId : undefined
-  const currentFplTeamList = fplTeamLists.data.find(({ round: { current, name } }) => current)
+  const currentFplTeamList = fplTeamLists.data.find(({ round: { current } }) => current)
   const currentFplTeamListId = (currentFplTeamList || {}).id
   const lastFplTeamListId = fplTeamLists.data[fplTeamLists.data.length - 1]?.id
   const getSelectedFplteamListId = () => sanitizedFplTeamListId || currentFplTeamListId || lastFplTeamListId

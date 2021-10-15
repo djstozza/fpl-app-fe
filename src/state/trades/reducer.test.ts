@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { TRADES } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('Trades reducer handles action', () => {

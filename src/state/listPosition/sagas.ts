@@ -105,7 +105,7 @@ export function * fetchTradeableListPositions (action) : Generator<any, any, any
   })
 }
 
-export function * fetchTradeableListPositionFacets (action) : Generator<any, any, any> {
+export function * fetchTradeableListPositionFacets () : Generator<any, any, any> {
   const { outListPosition: { id } } = yield select(state => state.fplTeamList)
 
   const url = `${API_URL}${API_LIST_POSITIONS_PATH}/${id}/tradeable_list_position_facets`

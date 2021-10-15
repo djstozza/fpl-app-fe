@@ -3,7 +3,6 @@ import { SnackbarProvider } from 'notistack'
 
 import ConnectedDraftPage, { DraftPage } from '.'
 
-import { CABLE_URL, cable } from 'utilities/constants'
 import { LIVE_LEAGUE, PLAYER_SUMMARIES, DRAFT_PICKS } from 'test/fixtures'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 
@@ -80,14 +79,14 @@ describe('DraftPage', () => {
 
   it('triggers fetchLeague on render', () => {
     const fetchLeague = jest.fn()
-    const wrapper = render({ fetchLeague })
+    render({ fetchLeague })
 
     expect(fetchLeague).toHaveBeenCalledWith(LIVE_LEAGUE.id)
   })
 
   it('triggers fetchDraftPicksStatus on render', () => {
     const fetchDraftPicksStatus = jest.fn()
-    const wrapper = render({ fetchDraftPicksStatus })
+    render({ fetchDraftPicksStatus })
 
     expect(fetchDraftPicksStatus).toHaveBeenCalledWith(LIVE_LEAGUE.id)
   })

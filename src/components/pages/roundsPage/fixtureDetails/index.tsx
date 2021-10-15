@@ -58,7 +58,7 @@ const FixtureDetails = (props: Props) => {
     <AccordionDetails className={classes.container}>
       <Table size='small'>
         {
-          orderBy(stats, ({ displayOrder }) => displayOrder).map(({ displayOrder, identifier, home, away }, key) => {
+          orderBy(stats, ({ displayOrder }) => displayOrder).map(({ identifier, home, away }, key) => {
             if (home.length === 0 && away.length === 0) return null
 
             return (

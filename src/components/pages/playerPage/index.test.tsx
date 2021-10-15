@@ -68,7 +68,7 @@ describe('PlayerPage', () => {
 
   it('triggers the fetchPlayer function on load', () => {
     const fetchPlayer = jest.fn()
-    const wrapper = render({ fetchPlayer })
+    render({ fetchPlayer })
 
     expect(fetchPlayer).toHaveBeenCalledWith(PLAYER_SUMMARIES[0].id)
   })

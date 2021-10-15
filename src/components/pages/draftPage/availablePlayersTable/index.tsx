@@ -71,7 +71,7 @@ const AvailablePlayersTable = (props: Props) => {
     label: '',
     toolTipLabel: '',
     sortParam: '',
-    customRender: ({ id, firstName, lastName }: PlayerSummary, classes) => (
+    customRender: ({ id, firstName, lastName }: PlayerSummary) => (
       <Fragment>
         <Button
           disabled={submitting}

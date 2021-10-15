@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { MANCHESTER_UNITED, TEAM_FIXTURES } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('Team reducer handles action', () => {

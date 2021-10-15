@@ -194,8 +194,6 @@ describe('Mini draft picks', () => {
   })
 
   test('fetchTradeablePlayers', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
-
     expectSaga(sagas.fetchTradeablePlayers, actions.fetchTradeablePlayers({ sort, filter, page }))
       .withState({
         league: { data: LIVE_LEAGUE },

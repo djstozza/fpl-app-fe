@@ -72,7 +72,7 @@ const TradeableListPositionsTable = (props: Props) => {
     setInListPosition(undefined)
   }
 
-  let cells: CellHash = listPositionTableCells()
+  const cells: CellHash = listPositionTableCells()
   cells['lastName'].sortParam = 'lastName'
   cells['team'] = {
     ...cells['team'],
@@ -85,7 +85,7 @@ const TradeableListPositionsTable = (props: Props) => {
     toolTipLabel: 'Fpl Team Name',
     sortParam: 'fplTeams.name',
     filterParam: 'fpl_team_id',
-    customRender: ({ fplTeam: { id, name } }: ListPosition, classes) => (
+    customRender: ({ fplTeam: { id, name } }: ListPosition) => (
       <Link to={`${FPL_TEAMS_URL}/${id}`} >
         {name}
       </Link>

@@ -2,8 +2,7 @@ import { Link as ReactRouterLink } from 'react-router-dom'
 import classnames from 'classnames'
 import {
   makeStyles,
-  createStyles,
-  Theme
+  createStyles
 } from '@material-ui/core'
 
 import { colors } from 'utilities/colors'
@@ -15,7 +14,7 @@ type Props = {
   image?: boolean
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     link: {
       textDecoration: 'none',

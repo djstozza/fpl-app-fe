@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { FPL_TEAM_1 } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const state = { ...initialState, fplTeam: FPL_TEAM_1 }
 const errors = [{ failure: true }]
 

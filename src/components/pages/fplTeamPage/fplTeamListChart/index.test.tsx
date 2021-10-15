@@ -38,7 +38,7 @@ describe('FplTeamListChart', () => {
     </MockedRouter>
   )
 
-  const box = (wrapper, i) => wrapper.find('Styled(MuiBox)')
+  const box = (wrapper) => wrapper.find('Styled(MuiBox)')
   const listPositionBox = (wrapper, i, j) => box(wrapper).at(i).find('ListPositionBox').at(j)
   const snackBarItem = wrapper => wrapper.find('WithStyles(SnackbarItem)')
 

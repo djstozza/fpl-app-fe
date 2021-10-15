@@ -13,7 +13,6 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
-  Theme,
   makeStyles,
   createStyles
 } from '@material-ui/core'
@@ -62,7 +61,7 @@ type Props = {
   fplTeamName: string
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     container: {
       maxWidth: '100vw',

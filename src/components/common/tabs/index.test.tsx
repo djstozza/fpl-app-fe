@@ -54,7 +54,7 @@ describe('Tabs', () => {
   })
 
   it('adds the tab label to the document title alond with the titleSubstr', () => {
-    const wrapper = render()
+    render()
 
     expect(document.title).toContain('Fpl App - Substr - Tab 3')
   })

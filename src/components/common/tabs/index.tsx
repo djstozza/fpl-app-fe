@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom'
 import {
   Tabs as MuiTabs,
   Tab,
-  Theme,
   createStyles,
   makeStyles
 } from '@material-ui/core'
@@ -27,7 +26,7 @@ type Props = {
   titleSubstr: string
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     tab: {
       backgroundColor: colors.grey200,

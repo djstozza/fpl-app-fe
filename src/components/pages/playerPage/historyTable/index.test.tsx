@@ -1,5 +1,4 @@
 import { createMount } from '@material-ui/core/test-utils'
-import timezoneMock from 'timezone-mock'
 
 import HistoryTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
@@ -43,7 +42,7 @@ describe('HistoryTable', () => {
 
   it('triggers fetchPlayerHistory on render', () => {
     const fetchPlayerHistory = jest.fn()
-    const wrapper = render({ fetchPlayerHistory })
+    render({ fetchPlayerHistory })
 
     expect(fetchPlayerHistory).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
   })

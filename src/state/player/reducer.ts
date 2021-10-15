@@ -33,7 +33,8 @@ export const initialState = {
 }
 
 const reducer = (state: any = initialState, action: PlayerAction) => {
-  const { data, sort } = action
+  const { data, sort, errors } = action
+
   switch (action.type) {
     case success(actions.API_PLAYERS_SHOW):
       if (data) return { ...state, data }
@@ -43,13 +44,9 @@ const reducer = (state: any = initialState, action: PlayerAction) => {
     case actions.API_PLAYERS_HISTORY_PAST_INDEX:
       return { ...state, fetching: true }
     case success(actions.API_PLAYERS_HISTORY_INDEX):
-      const { data: history } = action
-
-      return { ...state, history, fetching: false }
+      return { ...state, history: data, fetching: false }
     case success(actions.API_PLAYERS_HISTORY_PAST_INDEX):
-      const { data: historyPast } = action
-
-      return { ...state, historyPast, fetching: false }
+      return { ...state, historyPast: data, fetching: false }
     case actions.UPDATE_PLAYER_HISTORY_SORT:
       return { ...state, sort: { ...state.sort, history: sort } }
     case actions.UPDATE_PLAYER_HISTORY_PAST_SORT:
@@ -57,8 +54,6 @@ const reducer = (state: any = initialState, action: PlayerAction) => {
     case failure(actions.API_PLAYERS_SHOW):
     case failure(actions.API_PLAYERS_HISTORY_INDEX):
     case failure(actions.API_PLAYERS_HISTORY_PAST_INDEX):
-      const { errors } = action
-
       return { ...state, errors, fetching: false }
     default:
       return state

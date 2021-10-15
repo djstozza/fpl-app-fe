@@ -39,7 +39,7 @@ const errors = [
 ]
 
 describe('JoinLeague', () => {
-  const render = (props = {}, state = {}) => createMount()(
+  const render = (props = {}) => createMount()(
     <MockedRouterStore>
       <JoinLeague
         initializeForm={blank__}

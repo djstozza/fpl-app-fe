@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { WAIVER_PICKS } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('Waiver picks reducer handles action', () => {

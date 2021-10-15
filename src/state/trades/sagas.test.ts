@@ -10,7 +10,6 @@ import * as fplTeamListActions from 'state/fplTeamList/actions'
 
 import {
   API_URL,
-  FPL_TEAMS_URL,
   API_FPL_TEAM_LISTS_PATH,
   API_LIST_POSITIONS_PATH
 } from 'utilities/constants'

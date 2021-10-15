@@ -61,7 +61,7 @@ describe('TeamPage', () => {
 
   it('triggers the fetchTeams function on load', () => {
     const fetchTeams = jest.fn()
-    const wrapper = render({ fetchTeams })
+    render({ fetchTeams })
 
     expect(fetchTeams).toHaveBeenCalledWith({ sort: { shortName: 'asc' } })
   })

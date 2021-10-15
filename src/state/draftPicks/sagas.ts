@@ -28,7 +28,7 @@ export function * fetchDraftPicks (action) : Generator<any, any, any> {
   })
 }
 
-export function * fetchDraftPickFacets (action) : Generator<any, any, any> {
+export function * fetchDraftPickFacets () : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
 
   const url = `${API_URL}${LEAGUES_URL}/${id}/draft_picks/facets`
@@ -96,7 +96,7 @@ export function * updateDraftPick (action) : Generator<any, any, any> {
   })
 }
 
-export function * updateDraftPickSuccess (action) : Generator<any, any, any> {
+export function * updateDraftPickSuccess () : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
   yield fetchDraftPicksStatus({ leagueId: id })
   yield history.replace(`${LEAGUES_URL}/${id}/draft`)

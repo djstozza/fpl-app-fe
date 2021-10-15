@@ -1,7 +1,7 @@
 import { createMount } from '@material-ui/core/test-utils'
 
 import UserDetails from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { MockedRouter } from 'test/helpers'
 import { USER_1 } from 'test/fixtures'
 import { EDIT_USER_DETAILS_URL, CHANGE_PASSWORD_URL } from 'utilities/constants'
 

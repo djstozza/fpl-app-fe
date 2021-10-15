@@ -45,11 +45,11 @@ export function * signUp (action) : Generator<any, any, any> {
   })
 }
 
-export function * onAuthed (action) : Generator<any, any, any> {
+export function * onAuthed () : Generator<any, any, any> {
   yield history.replace(PROFILE_URL)
 }
 
-export function * updateSession (action): Generator<any, any, any> {
+export function * updateSession (): Generator<any, any, any> {
   const url = `${API_URL}${API_SESSIONS_PATH}`
 
   yield put({
@@ -62,7 +62,7 @@ export function * updateSession (action): Generator<any, any, any> {
   })
 }
 
-export function * logOut (action): Generator<any, any, any> {
+export function * logOut (): Generator<any, any, any> {
   StateLoader.deleteAuth()
   yield history.replace(LOGIN_URL)
 }
@@ -82,7 +82,7 @@ export function * updateUser (action) : Generator<any, any, any> {
   })
 }
 
-export function * updateUserSuccess (action) : Generator<any, any, any> {
+export function * updateUserSuccess () : Generator<any, any, any> {
   yield history.replace(PROFILE_URL)
 }
 

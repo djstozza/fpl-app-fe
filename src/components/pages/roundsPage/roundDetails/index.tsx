@@ -18,7 +18,7 @@ import type { Round, Fixture } from 'types'
 type Props = {
   roundId?: string,
   round?: Round,
-  fetchRound: Function
+  fetchRound: (string) => void
 }
 
 type GroupedFixtures = {
@@ -28,7 +28,7 @@ type GroupedFixtures = {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      
+
     },
     title: {
       padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,

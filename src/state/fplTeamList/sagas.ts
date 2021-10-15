@@ -26,7 +26,7 @@ export function * fetchFplTeamList (action) : Generator<any, any, any> {
 
 export function * fetchListPositions (action) : Generator<any, any, any> {
   const { fplTeamListId, interTeamTradeGroup: { trades = [] } = {} } = action
-  const excludedPlayerIds = trades.map(({ outPlayer: { id } }) => id)
+  const excludedPlayerIds: string[] = trades.map(({ outPlayer: { id } }) => id)
 
   const query = { filter: { excludedPlayerIds } }
 

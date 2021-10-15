@@ -14,14 +14,13 @@ export const initialState = {
 }
 
 const reducer = (state: State = initialState, action: Action) => {
+  const { data = [], errors } = action
+
   switch (action.type) {
     case success(actions.API_ROUNDS_INDEX):
-      const { data = [] } = action
 
       return { ...state, data }
     case failure(actions.API_ROUNDS_INDEX):
-      const { errors } = action
-
       return { ...state, errors }
     default:
       return state

@@ -5,7 +5,6 @@ import moment from 'moment'
 
 import ConnectedMiniDraftPage, { MiniDraftPage } from '.'
 
-import { CABLE_URL, cable } from 'utilities/constants'
 import {
   LIVE_LEAGUE,
   PLAYER_SUMMARIES,
@@ -97,14 +96,14 @@ describe('MiniDraftPage', () => {
 
   it('triggers fetchLeague on render', () => {
     const fetchLeague = jest.fn()
-    const wrapper = render({ fetchLeague })
+    render({ fetchLeague })
 
     expect(fetchLeague).toHaveBeenCalledWith(LIVE_LEAGUE.id)
   })
 
   it('triggers fetchMiniDraftPicksStatus on render', () => {
     const fetchMiniDraftPicksStatus = jest.fn()
-    const wrapper = render({ fetchMiniDraftPicksStatus })
+    render({ fetchMiniDraftPicksStatus })
 
     expect(fetchMiniDraftPicksStatus).toHaveBeenCalledWith(LIVE_LEAGUE.id)
   })
@@ -117,14 +116,14 @@ describe('MiniDraftPage', () => {
 
   it('triggers fetchListPositions on render', () => {
     const fetchListPositions = jest.fn()
-    const wrapper = render({ fetchListPositions })
+    render({ fetchListPositions })
 
     expect(fetchListPositions).toHaveBeenCalledWith(FPL_TEAM_LIST_1.id)
   })
 
   it('does not trigger fetchListPositions if fplTeamListId is undefined', () => {
     const fetchListPositions = jest.fn()
-    const wrapper = render({ fetchListPositions, miniDraftPicks: { data: MINI_DRAFT_PICKS, errors: [] } })
+    render({ fetchListPositions, miniDraftPicks: { data: MINI_DRAFT_PICKS, errors: [] } })
 
     expect(fetchListPositions).not.toHaveBeenCalled()
   })

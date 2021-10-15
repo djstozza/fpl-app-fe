@@ -5,7 +5,7 @@ import { playersTableCells } from 'components/pages/playersPage'
 
 
 import type { PlayersState } from 'state/players'
-import type { TeamPlayer, CellHash } from 'types'
+import type { CellHash } from 'types'
 
 type Props = {
   players: PlayersState,

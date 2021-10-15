@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { ROUND_1 } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('Rounds reducer handles action', () => {

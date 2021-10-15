@@ -1,8 +1,7 @@
 import { Fragment } from 'react'
 import { connect } from 'react-redux'
 import {
-  makeStyles,
-  Theme
+  makeStyles
 } from '@material-ui/core'
 
 import SearchListener from 'components/common/searchListener'
@@ -28,7 +27,7 @@ type Props = {
   fetching: boolean
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   actions: {
     display: 'flex',
     justifyContent: 'flex-end'
@@ -53,7 +52,7 @@ const LEAGUES_TABLE_CELLS = [
     cellId: 'owner',
     label: 'O',
     toolTipLabel: 'Owner',
-    customRender: ({ owner: { username } }: League, classes) => username
+    customRender: ({ owner: { username } }: League) => username
   }
 ]
 

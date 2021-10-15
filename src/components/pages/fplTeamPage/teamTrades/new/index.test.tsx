@@ -5,9 +5,6 @@ import NewTeamTrade from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
 import { LIST_POSITIONS, FPL_TEAM_LIST_1, INTER_TEAM_TRADE_GROUPS } from 'test/fixtures'
 
-const name = 'name'
-const teamTradeId = '10'
-
 const errors = [
   {
     code: 'is invalid',

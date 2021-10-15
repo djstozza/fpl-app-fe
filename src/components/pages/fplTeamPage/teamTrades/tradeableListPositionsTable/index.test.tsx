@@ -2,7 +2,7 @@ import { createMount } from '@material-ui/core/test-utils'
 
 import TradeableListPositionsTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
-import { TITLE, PLAYERS_URL, TEAMS_URL } from 'utilities/constants'
+import { PLAYERS_URL, TEAMS_URL } from 'utilities/constants'
 import { LIST_POSITIONS, LIST_POSITION_FACETS, LIST_POSITION_2, INTER_TEAM_TRADE_GROUP_1 } from 'test/fixtures'
 import { initialFilterState } from 'state/listPosition/reducer'
 import { listPositionTableCells } from 'components/pages/fplTeamPage/listPositionsTable'
@@ -33,9 +33,7 @@ describe('TradeableListPositionsTable', () => {
   )
   const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
   const headerCell = wrapper =>  wrapper.find('HeaderCell')
-  const filterButton = wrapper => headerCell(wrapper).find('button')
   const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
-  const pagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
   const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
 
   it('shows the player rows', () => {
@@ -117,7 +115,8 @@ describe('TradeableListPositionsTable', () => {
   it('triggers the fetchTradeableListPositions and fetchTradeableListPositionFacets function on load', () => {
     const fetchTradeableListPositions = jest.fn()
     const fetchTradeableListPositionFacets = jest.fn()
-    const wrapper = render({ fetchTradeableListPositions, fetchTradeableListPositionFacets })
+
+    render({ fetchTradeableListPositions, fetchTradeableListPositionFacets })
 
     expect(fetchTradeableListPositions).toHaveBeenCalledWith(initialFilterState)
     expect(fetchTradeableListPositionFacets).toHaveBeenCalled()
@@ -159,7 +158,7 @@ describe('TradeableListPositionsTable', () => {
 
   it('includes the inFplTeamListId and excludedPlayerIds filters if an interTeamTradeGroup is present', () => {
     const fetchTradeableListPositions = jest.fn()
-    const wrapper = render({ fetchTradeableListPositions, interTeamTradeGroup: INTER_TEAM_TRADE_GROUP_1 })
+    render({ fetchTradeableListPositions, interTeamTradeGroup: INTER_TEAM_TRADE_GROUP_1 })
 
     expect(fetchTradeableListPositions).toHaveBeenCalledWith({
       ...initialFilterState,

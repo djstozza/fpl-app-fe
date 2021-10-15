@@ -46,7 +46,7 @@ describe('Root reducer', () => {
     round: roundInitialState,
     rounds: roundsInitialState,
     team: teamInitialState,
-    teams: teamInitialState,
+    teams: teamsInitialState,
     trades: tradesInitialState,
     waiverPicks: waiverPicksInitialState,
     loadingBar: loadingBarReducer

@@ -1,7 +1,7 @@
 import { createMount } from '@material-ui/core/test-utils'
 
 import ConnectedErrorDialog, { ErrorDialog } from '.'
-import { MockedStore } from 'test/helpers'
+import { MockedStore, blank__ } from 'test/helpers'
 
 const error404 = {
   errors: [
@@ -115,7 +115,7 @@ describe('ErrorDialog', () => {
       errorCode='500'
       title='Oops, something went wrong'
       message='Something went wrong. The team has been alerted.'
-      clearRequestErrors={() => {}}
+      clearRequestErrors={blank__}
       {...props}
     />
   )

@@ -10,10 +10,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 95.25,
-        "functions": 95.79,
-        "lines": 97.61,
-        "statements": 97.02
+        "branches": 95.31,
+        "functions": 97.31,
+        "lines": 98.12,
+        "statements": 97.47
       }
     },
     "coverageReporters": [
@@ -59,7 +59,13 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --coverage",
     "eject": "react-scripts eject",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "eslint . --ext .ts,.tsx"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint; npm run test"
+    }
   },
   "eslintConfig": {
     "extends": [

@@ -28,9 +28,7 @@ const errors = [
 ]
 
 describe('SignUpPage', () => {
-  const promise = Promise.resolve()
-
-  const render = (props = {}, state = {}) => createMount()(
+  const render = (props = {}) => createMount()(
     <MockedRouterStore>
       <SignUpPage
         initializeAuth={blank__}

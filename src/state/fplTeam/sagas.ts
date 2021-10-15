@@ -42,7 +42,7 @@ export function * updateFplTeam (action): Generator<any, any, any> {
   })
 }
 
-export function * updateFplTeamSuccess (action) : Generator<any, any, any> {
+export function * updateFplTeamSuccess () : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeam)
 
   yield history.replace(`${FPL_TEAMS_URL}/${id}`)

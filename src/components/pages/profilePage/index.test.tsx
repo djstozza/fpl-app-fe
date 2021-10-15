@@ -1,8 +1,7 @@
 import { createMount } from '@material-ui/core/test-utils'
 
-import ConnectedProfilePage, { ProfilePage } from '.'
-import { MockedRouterStore, blank__ } from 'test/helpers'
-import { TITLE } from 'utilities/constants'
+import ConnectedProfilePage from '.'
+import { MockedRouterStore } from 'test/helpers'
 import { USER_1 } from 'test/fixtures'
 
 describe('ProfilePage', () => {

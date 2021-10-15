@@ -26,7 +26,7 @@ const errors = [
 ]
 
 describe('ChangePasswordForm', () => {
-  const render = (props = {}, state = {}) => createMount()(
+  const render = (props = {}) => createMount()(
     <MockedRouter>
       <ChangePasswordForm
         initializeAuth={blank__}

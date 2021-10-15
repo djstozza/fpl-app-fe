@@ -35,7 +35,7 @@ describe('RoundDetails', () => {
   it('fetches the round if a round id is present', () => {
     const fetchRound = jest.fn()
 
-    const wrapper = render({ fetchRound })
+    render({ fetchRound })
 
     expect(fetchRound).toHaveBeenCalledWith(ROUND_1.id)
   })
@@ -43,7 +43,7 @@ describe('RoundDetails', () => {
   it('does not fetch the round if roundId is null', () => {
     const fetchRound = jest.fn()
 
-    const wrapper = render({ roundId: null, fetchRound })
+    render({ roundId: null, fetchRound })
 
     expect(fetchRound).not.toHaveBeenCalled()
   })

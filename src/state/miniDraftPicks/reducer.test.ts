@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { MINI_DRAFT_PICKS, MINI_DRAFT_PICK_FACETS, ROUND_3 } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('Mini draft picks reducer handles action', () => {

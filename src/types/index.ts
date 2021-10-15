@@ -10,8 +10,8 @@ export type Action = {
   type: string,
   errors?: Error[],
   data?: any,
-  sort?: Object,
-  filter?: Object,
+  sort?: Sort,
+  filter?: Filter,
   meta: {
     total?: number
   },
@@ -19,7 +19,7 @@ export type Action = {
     limit: number,
     offset: number
   },
-  searchQuery?: Object
+  searchQuery?: string
 }
 
 export type PlayerBase = {
@@ -203,8 +203,22 @@ export type History = {
   goalsConceded: number
 }
 
+export type QueryParam = { [key: string]: string | string[] } | string | string[]
+
+export type Query = {
+  [key: string]: QueryParam
+}
+
+export type Filter = {
+  [key: string]: string[] | {
+    [key: string]: string[]
+  }
+}
+
 export type Sort = {
-  [key: string]: string
+  [key: string]: string | {
+    [key: string]: string
+  }
 }
 
 export type User = {

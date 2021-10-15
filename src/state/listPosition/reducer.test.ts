@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { LIST_POSITIONS, LIST_POSITION_FACETS } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('List position reducer handles action', () => {
@@ -74,7 +72,7 @@ describe('List position reducer handles action', () => {
 
   test(actions.CLEAR_VALID_SUBSTITUTIONS, () => {
     const state = { ...initialState, validSubstitutions: ['3', '4'] }
-    expect(reducer(initialState, {
+    expect(reducer(state, {
       type: actions.CLEAR_VALID_SUBSTITUTIONS
     }))
       .toEqual({ ...initialState })

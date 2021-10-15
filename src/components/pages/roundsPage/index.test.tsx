@@ -8,7 +8,6 @@ import {
 } from 'test/fixtures'
 import { TITLE } from 'utilities/constants'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
-import { cable } from 'utilities/constants'
 
 describe('RoundsPage', () => {
   const connectedRender = (props = {}, state = {}) => createMount()(
@@ -56,7 +55,7 @@ describe('RoundsPage', () => {
 
   it('triggers the fetchRounds function on load', () => {
     const fetchRounds = jest.fn()
-    const wrapper = render({ fetchRounds })
+    render({ fetchRounds })
 
     expect(fetchRounds).toHaveBeenCalled()
   })
@@ -73,7 +72,7 @@ describe('RoundsPage', () => {
 
   it('calls fetchRound with the current round if there is no roundId in the params', () => {
     const fetchRound = jest.fn()
-    const wrapper = render({ fetchRound, match: { params: { roundId: undefined } } })
+    render({ fetchRound, match: { params: { roundId: undefined } } })
 
     expect(fetchRound).toHaveBeenCalledWith(ROUND_1.id)
   })

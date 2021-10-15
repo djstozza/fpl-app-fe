@@ -27,9 +27,9 @@ type Props = {
   fetchFplTeams: Function,
   updateFplTeamsSort: Function,
   updateLeague: Function,
-  generateDraftPicks: Function,
+  generateDraftPicks: (string) => void,
   createDraft: Function,
-  initializeForm: Function,
+  initializeForm: () => void,
   sort: Object,
   fetching: boolean,
   match: { params: { leagueId: string, tab: string, action: string } }

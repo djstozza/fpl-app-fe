@@ -13,7 +13,7 @@ type Props = {
   fplTeams: FplTeam[],
   league: League,
   fetchFplTeams: Function,
-  generateDraftPicks: Function,
+  generateDraftPicks: (string) => void,
   createDraft: Function,
   submitting: boolean,
   sort: Object,
@@ -63,7 +63,7 @@ const FPL_TEAMS_TABLE_CELLS = {
     cellId: 'owner',
     label: 'O',
     toolTipLabel: 'Owner',
-    customRender: ({ owner: { username } }: FplTeam, classes) => username
+    customRender: ({ owner: { username } }: FplTeam) => username
   }
 }
 

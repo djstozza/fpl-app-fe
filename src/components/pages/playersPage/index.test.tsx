@@ -45,7 +45,6 @@ describe('PlayersPage', () => {
     wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
   )
   const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const filterButton = wrapper => wrapper.find('HeaderCell').find('button')
   const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
   const pagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
 
@@ -69,7 +68,7 @@ describe('PlayersPage', () => {
   it('triggers the fetchPlayers and fetchFacets function on load', () => {
     const fetchPlayers = jest.fn()
     const fetchFacets = jest.fn()
-    const wrapper = render({ fetchPlayers, fetchFacets })
+    render({ fetchPlayers, fetchFacets })
 
     expect(fetchPlayers).toHaveBeenCalledWith(initialFilterState)
     expect(fetchFacets).toHaveBeenCalled()

@@ -15,7 +15,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-export function * fetchLeagues (action): Generator<any, any, any> {
+export function * fetchLeagues (): Generator<any, any, any> {
   const url = `${API_URL}${LEAGUES_URL}`
 
   yield put({
@@ -55,7 +55,7 @@ export function * joinLeague (action): Generator<any, any, any> {
   })
 }
 
-export function * leagueSuccess (action) : Generator<any, any, any> {
+export function * leagueSuccess () : Generator<any, any, any> {
   yield history.replace(`${PROFILE_URL}${LEAGUES_URL}`)
 }
 

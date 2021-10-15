@@ -28,7 +28,7 @@ export function * fetchLeague (action): Generator<any, any, any> {
   })
 }
 
-export function * updateLeagueSuccess (action) : Generator<any, any, any> {
+export function * updateLeagueSuccess () : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
   yield history.replace(`${LEAGUES_URL}/${id}`)
 }
@@ -82,7 +82,7 @@ export function * generateDraftPicks (action) : Generator<any, any, any> {
   })
 }
 
-export function * generateDraftPicksSuccess (action) : Generator<any, any, any> {
+export function * generateDraftPicksSuccess () : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
   const sort = { draft_pick_number: 'asc' }
 

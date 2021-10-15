@@ -14,7 +14,7 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
-export function * fetchFplTeams (action): Generator<any, any, any> {
+export function * fetchFplTeams (): Generator<any, any, any> {
   const url = `${API_URL}${API_FPL_TEAMS_PATH}`
 
   yield put({

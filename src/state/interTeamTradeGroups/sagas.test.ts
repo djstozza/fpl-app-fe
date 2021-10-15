@@ -7,7 +7,6 @@ import interTeamTradeGroupsSagas, * as sagas from './sagas'
 import * as actions from './actions'
 import * as fplTeamListActions from 'state/fplTeamList/actions'
 import * as requestActions from 'state/request/actions'
-import { fetchListPositions, setOutListPosition } from 'state/fplTeamList/actions'
 
 import {
   API_URL,

@@ -19,7 +19,7 @@ type Props = {
   setDeadline: Function,
   deadlineTimeAsTime?: Date,
   deadline?: Date,
-  setIsWaiver: Function,
+  setIsWaiver: (boolean) => void,
   isOwner: boolean,
   setOutListPosition: Function,
   miniDraft: boolean,
@@ -82,19 +82,19 @@ const FplTeamAlert = (props: Props) => {
 
   const substr = miniDraft ? 'mini draft' : 'waiver'
 
-  const renderer = ({ days, hours, minutes, seconds, completed }) => (
+  const renderer = ({ days, hours, minutes, seconds }) => (
     <div className={classes.textContainer}>
       <span>
         {name} {isWaiver ? substr : 'trade'} deadline ends in {
           Boolean(days) &&
           <span className={classes.noWrap}>
-           {days} {pluralize('day', days)}{!Boolean(days) || (!Boolean(hours) && !Boolean(minutes)) ? '' : ', '}
+           {days} {pluralize('day', days)}{!days || (!hours && !minutes) ? '' : ', '}
           </span>
         }
         {
           Boolean(hours) &&
           <span className={classes.noWrap}>
-            {hours} {pluralize('hour', hours)}{!Boolean(hours) || !Boolean(minutes) ? '' : ', '}
+            {hours} {pluralize('hour', hours)}{!hours || !minutes ? '' : ', '}
           </span>
         }
         {

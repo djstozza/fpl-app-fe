@@ -25,7 +25,7 @@ const DRAFT_PICKS_TABLE_CELLS = [
     label: 'LN',
     toolTipLabel: 'Last Name',
     sortParam: 'lastName',
-    customRender: ({ player, miniDraft }: DraftPick, classes) => {
+    customRender: ({ player, miniDraft }: DraftPick) => {
       if (miniDraft) return '-'
       if (!player) return null
 
@@ -43,7 +43,7 @@ const DRAFT_PICKS_TABLE_CELLS = [
     label: 'FN',
     toolTipLabel: 'First Name',
     sortParam: 'firstName',
-    customRender: ({ player, miniDraft }: DraftPick, classes) => {
+    customRender: ({ player, miniDraft }: DraftPick) => {
       if (miniDraft) return '-'
       if (!player) return null
 

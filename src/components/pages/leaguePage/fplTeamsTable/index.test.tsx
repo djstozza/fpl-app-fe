@@ -1,5 +1,4 @@
 import { createMount } from '@material-ui/core/test-utils'
-import timezoneMock from 'timezone-mock'
 
 import FplTeamsTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
@@ -62,7 +61,7 @@ describe('FplTeamsTable', () => {
 
   it('triggers fetchFplTeams on render', () => {
     const fetchFplTeams = jest.fn()
-    const wrapper = render({ fetchFplTeams })
+    render({ fetchFplTeams })
 
     expect(fetchFplTeams).toHaveBeenCalledWith({ id: LIVE_LEAGUE.id, ...initialFilterState })
   })

@@ -12,7 +12,7 @@ type Props = {
   errors: Error[],
   submitting: boolean,
   updateLeague: Function,
-  initializeForm: Function
+  initializeForm: () => void
 }
 
 const EditLeagueForm = (props: Props) => {

@@ -1,29 +1,36 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, RefObject } from 'react'
 import qs from 'qs'
 import { decamelizeKeys } from 'humps'
 
-export const iconLoader = (iconName: string) => (
+import type { QueryParam, Query } from 'types'
+
+type HeightProps = {
+  height: number
+}
+
+export const iconLoader = (iconName: string): string => (
   require(`../images/icons/${iconName}.png`).default
 )
 
-export const teamCrestPathLoader = (shortName: string) => (
+export const teamCrestPathLoader = (shortName: string): string => (
   require(`../images/crests/${shortName.toLowerCase()}.png`).default
 )
 
-export const playerPlaceHolderLoader = () => (
+export const playerPlaceHolderLoader = (): string => (
   require(`../images/player-placeholder.png`).default
 )
 
-export const stadiumCrowdLoader = () => (
+export const stadiumCrowdLoader = (): string => (
   require(`../images/stadium-crowd.jpeg`).default
 )
 
-export const SetElHeight = (ref) => {
+export const SetElHeight = (ref: RefObject<HTMLDivElement | null>): HeightProps => {
   const [height, setHeight] = useState(0)
 
   useEffect(() => {
+    if (ref === null || ref.current === null) return
     const handleResize = () => {
-      setHeight(window.innerHeight - ref.current.offsetTop )
+      setHeight(window.innerHeight - (ref?.current?.offsetTop || 0))
     }
 
     window.addEventListener('resize', handleResize)
@@ -34,35 +41,38 @@ export const SetElHeight = (ref) => {
   return { height }
 }
 
-export const GetElHeight = (ref) => {
+export const GetElHeight = (ref: RefObject<HTMLDivElement | null>): HeightProps => {
   const [height, setHeight] = useState(0)
 
   useEffect(
     () => {
-      setHeight(ref.current.clientHeight)
+      if (!ref || !ref.current) return
+      setHeight(ref?.current?.clientHeight)
     }, [ref]
   )
 
   return { height }
 }
 
-const commaJoinValues = (object: Object) => {
+const commaJoinValues = (object: QueryParam) => {
   const result = {}
   Object.keys(object).forEach(key => {
     const value = object[key]
     result[key] = Array.isArray(value) ? value.join(',') : value
   })
+
   return result
 }
 
-export const stringify = (query) => {
+export const stringify = (query: Query): string => {
   query = decamelizeKeys(query || {})
+
   return qs.stringify({
-    ...decamelizeKeys(query || {}),
+    ...query,
     filter: query.filter && commaJoinValues(query.filter)
   })
 }
 
-export const playerImage = (code: number) => (
+export const playerImage = (code: number): string => (
   `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`
 )

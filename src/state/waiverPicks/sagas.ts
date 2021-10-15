@@ -44,7 +44,7 @@ export function * fetchWaiverPicks (action) : Generator <any, any, any> {
   })
 }
 
-export function * createWaiverPickSuccess (action) : Generator<any, any, any> {
+export function * createWaiverPickSuccess () : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeam)
 
   yield history.replace(`${FPL_TEAMS_URL}/${id}/waiverPicks`)

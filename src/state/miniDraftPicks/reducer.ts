@@ -57,16 +57,14 @@ const reducer = (state: State = initialState, action: Action) => {
     case success(actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE):
     case success(actions.API_LEAGUE_MINI_DRAFT_PICK_PASS):
     case success(actions.API_LEAGUE_MINI_DRAFT_PICKS_STATUS_INDEX):
-      const { data: { canMakeMiniDraftPick, miniDraftFinished, season, round, fplTeamListId } } = action
-
       return {
         ...state,
         errors: [],
-        canMakeMiniDraftPick,
-        miniDraftFinished,
-        season,
-        round,
-        fplTeamListId,
+        canMakeMiniDraftPick: data.canMakeMiniDraftPick,
+        miniDraftFinished: data.miniDraftFinished,
+        season: data.season,
+        round: data.round,
+        fplTeamListId: data.fplTeamListId,
         submitting: false
       }
     case success(actions.API_LEAGUE_MINI_DRAFT_PICKS_FACETS_INDEX):

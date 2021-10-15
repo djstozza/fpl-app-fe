@@ -1,7 +1,6 @@
 import {
   Tooltip,
-  makeStyles,
-  Theme
+  makeStyles
 } from '@material-ui/core'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -13,7 +12,7 @@ import moment from 'moment'
 
 import { colors } from 'utilities/colors'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   available: {
     color: colors.green500
   },

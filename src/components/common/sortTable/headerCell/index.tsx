@@ -2,7 +2,6 @@ import { useState } from 'react'
 import classnames from 'classnames'
 import {
   TableCell,
-  Theme,
   Tooltip,
   TableSortLabel,
   makeStyles,
@@ -28,7 +27,7 @@ type Props = {
   handleFilterChange?: Function
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     noPaddingRight: {
       paddingRight: 0,
@@ -85,9 +84,9 @@ const HeaderCell = (props: Props) => {
   return (
     <TableCell
       align='center'
-      className={classnames({ [classes.mainHeaderCell]: sticky, [classes.noPaddingRight]: Boolean(sortParam) })}
+      className={classnames({ [classes.mainHeaderCell]: sticky, [classes.noPaddingRight]: sortParam })}
     >
-      <Tooltip title={Boolean(filterAnchorEl) ? '' : toolTipLabel}>
+      <Tooltip title={filterAnchorEl ? '' : toolTipLabel}>
         <div className={classes.headerWrapper}>
           {label}
           {
@@ -104,7 +103,7 @@ const HeaderCell = (props: Props) => {
           {
             sortParam &&
             <TableSortLabel
-              hideSortIcon={!Boolean(sortParam)}
+              hideSortIcon={!sortParam}
               onClick={handleSort(sortParam, sortDirection)}
               active={Boolean(sortDirection)}
               direction={sortDirection}

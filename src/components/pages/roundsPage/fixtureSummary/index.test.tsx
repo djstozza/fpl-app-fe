@@ -29,7 +29,6 @@ describe('FixtureSummary', () => {
   )
 
   const link = wrapper => wrapper.find('Link')
-  const typography = wrapper => wrapper.find('Styled(MuiBox)')
   const expandMoreIcon = wrapper => wrapper.find('WithStyles(ForwardRef(IconButton))')
 
   describe('in progress fixtures', () => {

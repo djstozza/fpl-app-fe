@@ -45,7 +45,7 @@ export function * fetchTrades (action) : Generator <any, any, any> {
   })
 }
 
-export function * creatTradeSuccess (action) : Generator<any, any, any> {
+export function * creatTradeSuccess () : Generator<any, any, any> {
   const { data: { id: fplTeamListId } } = yield select(state => state.fplTeamList)
   const { data: { id: fplTeamId } } = yield select(state => state.fplTeam)
 

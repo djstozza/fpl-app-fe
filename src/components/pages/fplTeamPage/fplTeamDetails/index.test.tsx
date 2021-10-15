@@ -2,7 +2,7 @@ import { createMount } from '@material-ui/core/test-utils'
 
 import FplTeamDetails from '.'
 import { FPL_TEAM_1 } from 'test/fixtures'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { MockedRouter } from 'test/helpers'
 import {
   LEAGUES_URL,
   FPL_TEAMS_URL

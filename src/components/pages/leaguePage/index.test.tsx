@@ -2,7 +2,6 @@ import { createMount } from '@material-ui/core/test-utils'
 
 import ConnectedLeaguePage, { LeaguePage } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
-import { TITLE } from 'utilities/constants'
 import { LEAGUES } from 'test/fixtures'
 
 describe('LeaguePage', () => {
@@ -45,7 +44,7 @@ describe('LeaguePage', () => {
 
   it('triggers the fetchLeague function on load', () => {
     const fetchLeague = jest.fn()
-    const wrapper = render({ fetchLeague })
+    render({ fetchLeague })
 
     expect(fetchLeague).toHaveBeenCalledWith(LEAGUES[0].id)
   })

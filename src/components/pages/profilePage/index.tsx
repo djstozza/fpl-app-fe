@@ -37,7 +37,7 @@ type Props = {
   user: User,
   errors: Error[],
   updateUser: Function,
-  initializeAuth: Function,
+  initializeAuth: () => void,
   changePassword: Function,
   fetchFplTeams: Function,
   updateFplTeamsSort: Function,

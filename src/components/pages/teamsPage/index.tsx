@@ -39,7 +39,7 @@ const TEAMS_TABLE_CELLS = [
     toolTipLabel: 'Name',
     sortParam: 'shortName',
     sticky: true,
-    customRender: (team: TeamSummary, classes) => <ContainedTeamCrestLink team={team} />
+    customRender: (team: TeamSummary) => <ContainedTeamCrestLink team={team} />
   },
   { cellId: 'position', label: 'R', toolTipLabel: 'Rank', sortParam: 'position' },
   { cellId: 'played', label: 'MP', toolTipLabel: 'Matches Played', sortParam: 'played' },

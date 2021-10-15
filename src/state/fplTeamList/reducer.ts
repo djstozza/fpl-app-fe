@@ -35,8 +35,7 @@ const reducer = (state: State = initialState, action: FplTeamListAction) => {
       return { ...state, fetching: true }
     case success(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX):
     case success(actions.API_FPL_TEAM_LISTS_UPDATE):
-      const { data: listPositions = [] } = action
-      return { ...state, listPositions, submitting: false, fetching: false }
+      return { ...state, listPositions: data || [], submitting: false, fetching: false }
     case actions.API_FPL_TEAM_LISTS_UPDATE:
       return { ...state, submitting: true }
     case actions.SET_OUT_LIST_POSITION:

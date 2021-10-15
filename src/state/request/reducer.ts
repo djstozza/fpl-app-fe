@@ -2,7 +2,6 @@ import * as actions from './actions'
 
 import { APPLICATION_ERRORS } from 'utilities/constants'
 
-
 type RequestError = {
   url: string,
   status: string,
@@ -27,8 +26,9 @@ export const initialState = {
 
 const isKnownError = (status: string) => APPLICATION_ERRORS.hasOwnProperty(status)
 
-const reducer = (state: State, action: Action) => {
-  if (state === undefined) { state = initialState }
+const reducer = (state: State = initialState, action: Action) => {
+  const { error } = action
+
   switch (action.type) {
     case actions.UNAUTHED_REQUEST:
     case actions.AUTHED_REQUEST:
@@ -41,7 +41,6 @@ const reducer = (state: State, action: Action) => {
         errors: [...state.errors, action.error]
       }
     case actions.ADD_REQUEST_ERROR:
-      const { error } = action
       if (!error || !isKnownError(error.status)) {
         return state
       }

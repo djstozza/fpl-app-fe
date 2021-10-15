@@ -18,7 +18,7 @@ type Props = {
   errors: Error[],
   updateUser: Function,
   submitting: boolean,
-  initializeAuth: Function
+  initializeAuth: () => void
 }
 
 const useStyles = makeStyles((theme: Theme) => ({

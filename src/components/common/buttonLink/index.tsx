@@ -12,7 +12,7 @@ type Props = {
   children: any,
   size?: 'small' | 'medium' | 'large'
   color: 'inherit' | 'default' | 'primary' | 'secondary' | undefined,
-  onClick?: Function,
+  onClick?: () => void,
   rightMargin?: boolean
 }
 

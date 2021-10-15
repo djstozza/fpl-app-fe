@@ -4,10 +4,9 @@ import ActionsFooter from '.'
 
 import { MockedRouter, blank__ } from 'test/helpers'
 import { LIVE_LEAGUE, INITIALIZED_LEAGUE } from 'test/fixtures'
-import { LEAGUES_URL } from 'utilities/constants'
 
 describe('ActionsFooter', () => {
-  const render = (props = {}, state = {}) => createMount()(
+  const render = (props = {}) => createMount()(
     <MockedRouter>
       <ActionsFooter
         league={{ ...LIVE_LEAGUE, canGoToDraft: true }}

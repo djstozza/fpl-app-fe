@@ -47,7 +47,7 @@ describe('FixturesTable', () => {
 
   it('triggers fetchTeamFixtures on render', () => {
     const fetchTeamFixtures = jest.fn()
-    const wrapper = render({ fetchTeamFixtures })
+    render({ fetchTeamFixtures })
 
     expect(fetchTeamFixtures).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
   })

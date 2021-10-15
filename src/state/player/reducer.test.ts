@@ -8,8 +8,6 @@ import {
   PLAYER_HISTORY_PAST
 } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('Player reducer handles action', () => {

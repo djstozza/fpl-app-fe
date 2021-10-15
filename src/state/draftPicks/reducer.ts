@@ -56,9 +56,15 @@ const reducer = (state: State = initialState, action: Action) => {
     case success(actions.API_LEAGUE_DRAFT_PICK_UPDATE):
       return { ...state, errors: [], data, meta, submitting: false }
     case success(actions.API_LEAGUE_DRAFT_PICKS_STATUS_INDEX):
-      const { data: { userCanPick, nextDraftPickId, draftFinished, canMakePlayerPick, canMakeMiniDraftPick } } = action
-
-      return { ...state, errors: [], userCanPick, nextDraftPickId, draftFinished, canMakePlayerPick, canMakeMiniDraftPick }
+      return {
+        ...state,
+        errors: [],
+        userCanPick: data.userCanPick,
+        nextDraftPickId: data.nextDraftPickId,
+        draftFinished: data.draftFinished,
+        canMakePlayerPick: data.canMakePlayerPick,
+        canMakeMiniDraftPick: data.canMakeMiniDraftPick
+      }
     case success(actions.API_LEAGUE_DRAFT_PICKS_FACETS_INDEX):
       return { ...state, facets: action.data }
     case actions.API_LEAGUE_DRAFT_PICK_UPDATE:

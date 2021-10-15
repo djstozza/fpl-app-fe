@@ -1,6 +1,5 @@
 import { expectSaga } from 'redux-saga-test-plan'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
-import { camelizeKeys } from 'humps'
 
 import requestSagas, * as sagas from './sagas'
 import * as actions from './actions'
@@ -212,8 +211,6 @@ describe('Request sagas', () => {
     })
 
     test(actions.REQUEST_DONE, () => {
-      const { status, statusText, body: { errors } } = error
-
       expectSaga(requestSagas)
         .withState({
           request: { inFlight: 1 }

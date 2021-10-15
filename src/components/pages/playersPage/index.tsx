@@ -44,7 +44,7 @@ export const playersTableCells = () => ({
     toolTipLabel: 'Last Name',
     sticky: true,
     sortParam: 'lastName',
-    customRender: ({ lastName, id }: PlayerSummary, classes) => (
+    customRender: ({ lastName, id }: PlayerSummary) => (
       <Link to={`${PLAYERS_URL}/${id}`}>
         {lastName}
       </Link>
@@ -55,7 +55,7 @@ export const playersTableCells = () => ({
     label: 'FN',
     toolTipLabel: 'First Name',
     sortParam: 'firstName',
-    customRender: ({ firstName, id }: PlayerSummary, classes) => (
+    customRender: ({ firstName, id }: PlayerSummary) => (
       <Link to={`${PLAYERS_URL}/${id}`}>
         {firstName}
       </Link>
@@ -67,7 +67,7 @@ export const playersTableCells = () => ({
     toolTipLabel: 'Team',
     sortParam: 'teams.shortName',
     filterParam: 'teamId',
-    customRender: ({ team }: PlayerSummary, classes) => <ContainedTeamCrestLink team={team} />
+    customRender: ({ team }: PlayerSummary) => <ContainedTeamCrestLink team={team} />
   },
   positions: {
     cellId: 'positions',

@@ -34,7 +34,7 @@ export function * fetchMiniDraftPicks (action) : Generator<any, any, any> {
   })
 }
 
-export function * fetchMiniDraftPickFacets (action) : Generator<any, any, any> {
+export function * fetchMiniDraftPickFacets () : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
   const { season } = yield select(state => state.miniDraftPicks)
 
@@ -120,7 +120,7 @@ export function * passMiniDraftPick () : Generator<any, any, any> {
   })
 }
 
-export function * createMiniDraftPickSuccess (action) : Generator<any, any, any> {
+export function * createMiniDraftPickSuccess () : Generator<any, any, any> {
   const { data: { id } } = yield select(state => state.league)
 
   yield all([

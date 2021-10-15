@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { FPL_TEAM_LISTS, LIST_POSITIONS } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('Fpl team list reducer handles action', () => {

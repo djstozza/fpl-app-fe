@@ -44,9 +44,7 @@ const reducer = (state: State = initialState, action: Action) => {
       return { ...initialState, data, submitting: false }
     case success(actions.API_LEAGUE_FPL_TEAMS_INDEX):
     case success(actions.API_LEAGUE_GENERATE_DRAFT_PICKS):
-      const { data: fplTeams = [] } = action
-
-      return { ...state, fplTeams, submitting: false, fetching: false }
+      return { ...state, fplTeams: data || [], submitting: false, fetching: false }
     case actions.UPDATE_LEAGUE_FPL_TEAMS_SORT:
       return { ...state, sort }
     case actions.INITIALIZE_FORM:

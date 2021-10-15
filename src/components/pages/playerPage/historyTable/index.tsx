@@ -26,7 +26,7 @@ const HISTORY_TABLE_CELLS = [
     label: 'R',
     toolTipLabel: 'Round',
     sticky: true,
-    customRender: ({ round: { id, name } }: History, classes, tab) => (
+    customRender: ({ round: { id, name } }: History) => (
       <Link to={`${ROUNDS_URL}/${id}`} noWrap>
         {name}
       </Link>
@@ -37,7 +37,7 @@ const HISTORY_TABLE_CELLS = [
     cellId: 'opponent',
     label: 'O',
     toolTipLabel: 'Opponent',
-    customRender: ({ opponent }: History, classes, tab) => <ContainedTeamCrestLink team={opponent} />,
+    customRender: ({ opponent }: History) => <ContainedTeamCrestLink team={opponent} />,
     sortParam: 'oppositionTeam.shortName',
   },
 

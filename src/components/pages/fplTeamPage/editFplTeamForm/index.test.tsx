@@ -19,7 +19,7 @@ const errors = [
 ]
 
 describe('EditFplTeamForm', () => {
-  const render = (props = {}, state = {}) => createMount()(
+  const render = (props = {}) => createMount()(
     <MockedRouterStore>
       <EditFplTeamForm
         fplTeam={FPL_TEAM_1}

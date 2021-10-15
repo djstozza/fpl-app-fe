@@ -8,7 +8,7 @@ import type { Error } from 'types'
 type Props = {
   errors: Error[],
   joinLeague: Function,
-  initializeForm: Function
+  initializeForm: () => void
 }
 
 export const JoinLeague = (props: Props) => {

@@ -27,7 +27,7 @@ const errors = [
 ]
 
 describe('UserEditForm', () => {
-  const render = (props = {}, state = {}) => createMount()(
+  const render = (props = {}) => createMount()(
     <MockedRouter>
       <UserEditForm
         user={USER_1}

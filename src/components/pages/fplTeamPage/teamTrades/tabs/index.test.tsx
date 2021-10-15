@@ -294,7 +294,7 @@ describe('TeamTradeTabs', () => {
   it('triggers fetchInterTeamTradeGroups on render', () => {
     const fetchInterTeamTradeGroups = jest.fn()
 
-    const wrapper = render({ fetchInterTeamTradeGroups })
+    render({ fetchInterTeamTradeGroups })
 
     expect(fetchInterTeamTradeGroups).toHaveBeenCalledWith(FPL_TEAM_LISTS[0].id)
   })

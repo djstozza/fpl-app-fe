@@ -45,7 +45,7 @@ export const initialState = {
 }
 
 const reducer = (state: any = initialState, action: TeamAction) => {
-  const { data, sort } = action
+  const { data, sort, errors } = action
   switch (action.type) {
     case actions.API_TEAMS_SHOW:
       return { ...state, sort }
@@ -56,16 +56,13 @@ const reducer = (state: any = initialState, action: TeamAction) => {
 
       return state
     case success(actions.API_TEAMS_FIXTURES_INDEX):
-      const { data: fixtures } = action
-      return { ...state, fixtures, fetching: false }
+      return { ...state, fixtures: data, fetching: false }
     case actions.UPDATE_TEAM_FIXTURES_SORT:
       return { ...state, sort: { ...state.sort, fixtures: sort } }
     case actions.UPDATE_TEAM_PLAYERS_SORT:
       return { ...state, sort: { ...state.sort, players: sort } }
     case failure(actions.API_TEAMS_SHOW):
     case failure(actions.API_TEAMS_FIXTURES_INDEX):
-      const { errors } = action
-
       return { ...state, errors, fetching: false }
     default:
       return state

@@ -1,14 +1,10 @@
 import { createMount } from '@material-ui/core/test-utils'
-import timezoneMock from 'timezone-mock'
 
 import DraftPicksTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
 import { DRAFT_PICKS, DRAFT_PICK_FACETS } from 'test/fixtures'
 import { initialFilterState } from 'state/draftPicks/reducer'
-import {
-  PLAYERS_URL,
-  TEAMS_URL
-} from 'utilities/constants'
+import { PLAYERS_URL } from 'utilities/constants'
 
 describe('DraftPicksTable', () => {
   const render = (props = {}) => createMount()(
@@ -24,13 +20,10 @@ describe('DraftPicksTable', () => {
     </MockedRouter>
   )
 
-  const sortTable = wrapper => wrapper.find('SortTable')
   const tableCell = (wrapper, i, j) => (
     wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
   )
   const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const cellNames = wrapper => sortTable(wrapper).props().cells.map(({ cellId }) => cellId)
-  const filterButton = wrapper => wrapper.find('HeaderCell').find('button')
   const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
 
   it('renders the fpl teams table', () => {
@@ -55,14 +48,14 @@ describe('DraftPicksTable', () => {
 
   it('triggers fetchDraftPicks on render', () => {
     const fetchDraftPicks = jest.fn()
-    const wrapper = render({ fetchDraftPicks })
+    render({ fetchDraftPicks })
 
     expect(fetchDraftPicks).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers fetchDraftPickFacets on render', () => {
     const fetchDraftPickFacets = jest.fn()
-    const wrapper = render({ fetchDraftPickFacets })
+    render({ fetchDraftPickFacets })
 
     expect(fetchDraftPickFacets).toHaveBeenCalledWith()
   })

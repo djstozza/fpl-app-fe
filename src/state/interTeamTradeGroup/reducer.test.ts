@@ -4,8 +4,6 @@ import * as actions from './actions'
 
 import { INTER_TEAM_TRADE_GROUP_1 } from 'test/fixtures'
 
-import type { State } from './reducer'
-
 const errors = [{ failure: true }]
 
 describe('Inter team trade group reducer handles action', () => {

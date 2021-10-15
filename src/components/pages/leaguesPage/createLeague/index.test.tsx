@@ -26,7 +26,7 @@ const errors = [
 ]
 
 describe('CreateLeague', () => {
-  const render = (props = {}, state = {}) => createMount()(
+  const render = (props = {}) => createMount()(
     <MockedRouterStore>
       <CreateLeague
         initializeForm={blank__}

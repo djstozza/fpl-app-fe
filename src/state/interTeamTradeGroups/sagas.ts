@@ -47,7 +47,7 @@ export function * createInterTeamTradeGroup (action) : Generator <any, any, any>
   })
 }
 
-export function * interTeamTradeGroupSuccess (action) : Generator <any, any, any> {
+export function * interTeamTradeGroupSuccess () : Generator <any, any, any> {
   const { data: { id } } = yield select(state => state.fplTeam)
 
   yield all([
@@ -151,7 +151,7 @@ export function * removeTrade (action) : Generator <any, any, any> {
   })
 }
 
-export function * approveInterTeamTradeGroupSuccess (action) : Generator <any, any, any> {
+export function * approveInterTeamTradeGroupSuccess () : Generator <any, any, any> {
   const { data: { id: fplTeamListId } } = yield select(state => state.fplTeamList)
 
   yield all([

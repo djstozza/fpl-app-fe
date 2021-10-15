@@ -55,7 +55,7 @@ export function * requestFail (action: any): Generator<any, any, any> {
   yield put({ type: actions.ADD_REQUEST_ERROR, error: { url, status, statusText, errors } })
 }
 
-export function * requestDone (action) : Generator<any, any, any> {
+export function * requestDone () : Generator<any, any, any> {
   const inFlightRequestsNum = yield select(state => state.request.inFlight)
   if (inFlightRequestsNum < 1) yield put(hideLoading())
 }

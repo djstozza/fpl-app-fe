@@ -2,8 +2,8 @@ import { createMount } from '@material-ui/core/test-utils'
 
 import TradeablePlayersTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
-import { TITLE, PLAYERS_URL, TEAMS_URL } from 'utilities/constants'
-import { PLAYER_SUMMARIES, DRAFT_PICK_STATUS, PLAYER_FACETS, LIST_POSITION_2 } from 'test/fixtures'
+import { PLAYERS_URL, TEAMS_URL } from 'utilities/constants'
+import { PLAYER_SUMMARIES, PLAYER_FACETS, LIST_POSITION_2 } from 'test/fixtures'
 import { initialFilterState } from 'state/players/reducer'
 import { playersTableCells } from 'components/pages/playersPage'
 
@@ -33,7 +33,6 @@ describe('TradeablePlayersTable', () => {
   )
   const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
   const headerCell = wrapper =>  wrapper.find('HeaderCell')
-  const filterButton = wrapper => headerCell(wrapper).find('button')
   const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
   const pagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
   const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
@@ -141,7 +140,8 @@ describe('TradeablePlayersTable', () => {
   it('triggers the fetchTradeablePlayers and fetchPlayerFacets function on load', () => {
     const fetchTradeablePlayers = jest.fn()
     const fetchPlayerFacets = jest.fn()
-    const wrapper = render({ fetchTradeablePlayers, fetchPlayerFacets })
+
+    render({ fetchTradeablePlayers, fetchPlayerFacets })
 
     expect(fetchTradeablePlayers).toHaveBeenCalledWith(initialFilterState)
     expect(fetchPlayerFacets).toHaveBeenCalled()

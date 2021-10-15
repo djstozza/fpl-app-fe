@@ -78,7 +78,7 @@ const WaiverPicksTable = (props: Props) => {
       label: 'PN',
       toolTipLabel: 'Pick Number',
       sticky: true,
-      customRender: ({ id, pickNumber }: WaiverPick, classes) => {
+      customRender: ({ id, pickNumber }: WaiverPick) => {
         if (!isWaiver || !current || !isOwner) return pickNumber
 
         return (
@@ -103,7 +103,7 @@ const WaiverPicksTable = (props: Props) => {
       cellId: 'outPlayer',
       label: 'OP',
       toolTipLabel: 'Out Player',
-      customRender: ({ outPlayer: { id, firstName, lastName } }: WaiverPick, classes) => {
+      customRender: ({ outPlayer: { id, firstName, lastName } }: WaiverPick) => {
         return (
           <Link to={`${PLAYERS_URL}/${id}`}>
             {firstName} {lastName}
@@ -115,13 +115,13 @@ const WaiverPicksTable = (props: Props) => {
       cellId: 'outTeam',
       label: 'OT',
       toolTipLabel: 'Out Team',
-      customRender: ({ outTeam }: WaiverPick, classes) => <ContainedTeamCrestLink team={outTeam} />
+      customRender: ({ outTeam }: WaiverPick) => <ContainedTeamCrestLink team={outTeam} />
     },
     inPlayer: {
       cellId: 'inPlayer',
       label: 'IP',
       toolTipLabel: 'In Player',
-      customRender: ({ inPlayer: { id, firstName, lastName } }: WaiverPick, classes) => {
+      customRender: ({ inPlayer: { id, firstName, lastName } }: WaiverPick) => {
         return (
           <Link to={`${PLAYERS_URL}/${id}`}>
             {firstName} {lastName}
@@ -133,7 +133,7 @@ const WaiverPicksTable = (props: Props) => {
       cellId: 'inTeam',
       label: 'IT',
       toolTipLabel: 'In Team',
-      customRender: ({ inTeam }: WaiverPick, classes) => <ContainedTeamCrestLink team={inTeam} />
+      customRender: ({ inTeam }: WaiverPick) => <ContainedTeamCrestLink team={inTeam} />
     },
     status: {
       cellId: 'status',

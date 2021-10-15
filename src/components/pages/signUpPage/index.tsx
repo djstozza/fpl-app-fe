@@ -21,7 +21,7 @@ import type { Error } from 'types'
 type Props = {
   submitting: boolean,
   signUp: Function,
-  initializeAuth: Function,
+  initializeAuth: () => void,
   errors: Error[]
 }
 

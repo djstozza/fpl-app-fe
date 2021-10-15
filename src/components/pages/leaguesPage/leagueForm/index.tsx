@@ -19,7 +19,7 @@ type Props = {
   errors: Error[],
   title: string,
   submitFn: Function,
-  initializeForm: Function,
+  initializeForm: () => void,
   create?: boolean,
   hideFplTeamName?: boolean,
   returnUrl?: string

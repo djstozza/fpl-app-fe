@@ -120,8 +120,8 @@ const SortTable = (props: Props) => {
     } = {}
   } = useContext(SearchContext)
 
-  const paginationRef = useRef(null)
-  const tableRef = useRef(null)
+  const paginationRef = useRef<HTMLDivElement | null>(null)
+  const tableRef = useRef<HTMLDivElement | null>(null)
 
   const { height: paginationHeight } = GetElHeight(paginationRef)
   const { height: tableHeight } = SetElHeight(tableRef)
@@ -135,6 +135,7 @@ const SortTable = (props: Props) => {
   const classes = useStyles({ tableHeight, paginationHeight })
 
   const handleSort = (name, direction) => (event: MouseEvent<unknown>) => {
+    event.preventDefault()
     const newDirection = direction === 'asc' ? 'desc' : 'asc'
     const newSort = {
       [name]: newDirection
@@ -144,6 +145,7 @@ const SortTable = (props: Props) => {
   }
 
   const changePage = (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+    if (event) event.preventDefault()
     handleChangePage && handleChangePage(newPage * limit)
   }
 

@@ -4,10 +4,7 @@ import MiniDraftPicksTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
 import { MINI_DRAFT_PICKS, MINI_DRAFT_PICK_FACETS } from 'test/fixtures'
 import { initialFilterState } from 'state/miniDraftPicks/reducer'
-import {
-  PLAYERS_URL,
-  TEAMS_URL
-} from 'utilities/constants'
+import { PLAYERS_URL } from 'utilities/constants'
 
 const season = 'summer'
 
@@ -30,13 +27,10 @@ describe('MiniDraftPicksTable', () => {
     </MockedRouter>
   )
 
-  const sortTable = wrapper => wrapper.find('SortTable')
   const tableCell = (wrapper, i, j) => (
     wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
   )
   const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const cellNames = wrapper => sortTable(wrapper).props().cells.map(({ cellId }) => cellId)
-  const filterButton = wrapper => wrapper.find('HeaderCell').find('button')
   const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
 
   it('renders the fpl teams table', () => {
@@ -59,14 +53,14 @@ describe('MiniDraftPicksTable', () => {
 
   it('triggers fetchMiniDraftPicks on render', () => {
     const fetchMiniDraftPicks = jest.fn()
-    const wrapper = render({ fetchMiniDraftPicks })
+    render({ fetchMiniDraftPicks })
 
     expect(fetchMiniDraftPicks).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers fetchMiniDraftPickFacets on render', () => {
     const fetchMiniDraftPickFacets = jest.fn()
-    const wrapper = render({ fetchMiniDraftPickFacets })
+    render({ fetchMiniDraftPickFacets })
 
     expect(fetchMiniDraftPickFacets).toHaveBeenCalledWith()
   })

@@ -28,7 +28,7 @@ const FIXTURES_TABLE_CELLS = [
     label: 'R',
     toolTipLabel: 'Round',
     sticky: true,
-    customRender: ({ round: { id, name } }: TeamFixture, classes, tab) => (
+    customRender: ({ round: { id, name } }: TeamFixture) => (
       <Link to={`${ROUNDS_URL}/${id}`} noWrap>
         {name}
       </Link>
@@ -58,7 +58,7 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'minutes',
     label: 'M',
     toolTipLabel: 'Minutes',
-    customRender: ({ started, minutes }: TeamFixture, classses) => {
+    customRender: ({ started, minutes }: TeamFixture) => {
       if (!started) return null
 
       return minutes
@@ -68,7 +68,7 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'score',
     label: 'S',
     toolTipLabel: 'Score',
-    customRender: ({ started, homeTeamScore, awayTeamScore }: TeamFixture, classes, tab) => {
+    customRender: ({ started, homeTeamScore, awayTeamScore }: TeamFixture, classes) => {
       if (!started) return null
 
       return (

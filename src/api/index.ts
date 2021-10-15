@@ -21,7 +21,7 @@ export const getData = (url: string, { body, method, token }: Options) => {
     const { ok, status, statusText } = res
 
     const json = await res.json()
-    let response = {
+    const response = {
       status: status.toString(),
       statusText,
       ok,

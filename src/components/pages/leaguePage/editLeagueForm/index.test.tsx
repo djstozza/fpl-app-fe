@@ -3,14 +3,9 @@ import { createMount } from '@material-ui/core/test-utils'
 import EditLeagueForm from '.'
 import { MockedRouterStore, blank__ } from 'test/helpers'
 import { LIVE_LEAGUE } from 'test/fixtures'
-
-import {
-  PROFILE_URL,
-  LEAGUES_URL
-} from 'utilities/constants'
+import { LEAGUES_URL } from 'utilities/constants'
 
 const name = 'New League Name'
-
 
 const errors = [
   {
@@ -22,7 +17,7 @@ const errors = [
 ]
 
 describe('EditLeagueForm', () => {
-  const render = (props = {}, state = {}) => createMount()(
+  const render = (props = {}) => createMount()(
     <MockedRouterStore>
       <EditLeagueForm
         league={LIVE_LEAGUE}

@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import history from 'state/history'
 
-export const blank__ = () => {}
+export const blank__ = (): void => { return }
 
 type MockedStoreProps = {
   children: any,
