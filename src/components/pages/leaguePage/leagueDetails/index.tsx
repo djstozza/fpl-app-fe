@@ -1,13 +1,12 @@
 import { Fragment } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+  Theme
+} from '@mui/material'
 
 import ActionsFooter from '../actionsFooter'
 import type { League } from 'types'
@@ -28,13 +27,11 @@ const LEAGUE_DETAILS_ROWS = [
   }
 ]
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    table: {
-      marginBottom: theme.spacing(2)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  table: {
+    marginBottom: theme.spacing(2)
+  }
+}))
 
 const LeagueDetails = (props: Props) => {
   const {
@@ -43,7 +40,7 @@ const LeagueDetails = (props: Props) => {
     createDraft,
     submitting
   } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Fragment>

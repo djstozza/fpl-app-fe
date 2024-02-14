@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState  } from 'react'
+import { makeStyles } from 'tss-react/mui';
 import {
   Theme,
-  makeStyles,
   createStyles
-} from '@material-ui/core'
+} from '@mui/material'
 
 import { playerPlaceHolderLoader, playerImage } from 'utilities/helpers'
 
@@ -13,22 +13,20 @@ type Props = {
   maxHeight: number
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    playerImage: {
-      width: theme.spacing(27.5),
-      height: theme.spacing(35),
-      [theme.breakpoints.up('sm')]: {
-        maxHeight: ({ maxHeight }:{ maxHeight: number }) => maxHeight,
-        maxWidth: ({ maxHeight }:{ maxHeight: number}) => 0.79 * maxHeight
-      }
+const useStyles = makeStyles()((theme: Theme) => createStyles({
+  playerImage: {
+    width: theme.spacing(27.5),
+    height: theme.spacing(35),
+    [theme.breakpoints.up('sm')]: {
+      maxHeight: ({ maxHeight }:{ maxHeight: number }) => maxHeight,
+      maxWidth: ({ maxHeight }:{ maxHeight: number}) => 0.79 * maxHeight
     }
-  })
-)
+  }
+}));
 
 const PlayerImage = (props: Props) => {
   const { code, lastName, maxHeight } = props
-  const classes = useStyles({ maxHeight })
+  const { classes } = useStyles({ maxHeight })
   const src = playerImage(code)
   const [imgSrc, setSrc] = useState(playerPlaceHolderLoader())
 

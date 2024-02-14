@@ -5,7 +5,7 @@ import {
   DialogActions,
   DialogContent,
   Button
-} from '@material-ui/core'
+} from '@mui/material'
 
 import SortTable from 'components/common/sortTable'
 import { initialFilterState } from 'state/listPosition/reducer'

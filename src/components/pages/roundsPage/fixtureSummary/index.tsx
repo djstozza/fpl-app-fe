@@ -1,15 +1,13 @@
-import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import { makeStyles } from 'tss-react/mui'
 import {
   AccordionSummary,
   Typography,
   Grid,
   Theme,
-  Box,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+  Box
+} from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
@@ -22,33 +20,35 @@ type Props = {
   fixture: Fixture
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    summary: {
-      textAlign: 'center',
-      backgroundColor: colors.grey200,
-      border: `0.5px solid ${colors.grey300}`
-    },
-    disabled: {
-      paddingRight: theme.spacing(6),
-      pointerEvents: 'none',
-      '& a': {
-        pointerEvents: 'all'
-      }
-    },
-    crest: {
-      maxWidth: theme.spacing(6),
-      maxHeight: theme.spacing(6)
-    },
-    teamLink: {
-      textDecoration: 'none',
-      color: colors.linkBlue
-    },
-    inProgressTeamLink: {
-      color: colors.white
+const useStyles = makeStyles()((theme: Theme) => ({
+  summary: {
+    textAlign: 'center',
+    backgroundColor: colors.grey200,
+    border: `0.5px solid ${colors.grey300}`
+  },
+
+  disabled: {
+    paddingRight: theme.spacing(6),
+    pointerEvents: 'none',
+    '& a': {
+      pointerEvents: 'all'
     }
-  })
-)
+  },
+
+  crest: {
+    maxWidth: theme.spacing(6),
+    maxHeight: theme.spacing(6)
+  },
+
+  teamLink: {
+    textDecoration: 'none',
+    color: colors.linkBlue
+  },
+
+  inProgressTeamLink: {
+    color: colors.white
+  }
+}))
 
 const SummaryInfo = ({ inProgress, children }:{ inProgress?: boolean, children: any }) => (
   <Typography component='div'>
@@ -73,14 +73,14 @@ const FixtureSummary = (props: Props) => {
     }
   } = props
 
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
   const inProgress = started && !finished
 
   const teamDetailsGrid = (teamId, shortName) => (
     <Grid item xs={4} md={4} lg={4}>
       <Link
         to={`${TEAMS_URL}/${teamId}`}
-        className={classnames(classes.teamLink)}
+        className={cx(classes.teamLink)}
       >
         <img src={teamCrestPathLoader(shortName)} className={classes.crest} alt={shortName} />
         <SummaryInfo inProgress={inProgress}>
@@ -93,7 +93,7 @@ const FixtureSummary = (props: Props) => {
   return (
     <AccordionSummary
       className={
-        classnames(
+        cx(
           classes.summary,
           {
             [classes.disabled]: !started
@@ -124,7 +124,7 @@ const FixtureSummary = (props: Props) => {
         {teamDetailsGrid(awayTeamId, awayTeamName)}
       </Grid>
     </AccordionSummary>
-  )
+  );
 }
 
 export default FixtureSummary

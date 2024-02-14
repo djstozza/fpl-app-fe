@@ -1,11 +1,11 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
-  Theme,
-  makeStyles
-} from '@material-ui/core'
+  Theme
+} from '@mui/material'
 
 import { playerActions } from 'state/player'
 import Tabs from 'components/common/tabs'
@@ -33,7 +33,7 @@ const TABS = {
   historyPast: { label: 'Past Seasons', value: 'historyPast', display: true }
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     display: 'flex',
     alignItems: 'center',
@@ -63,7 +63,7 @@ export const PlayerPage = (props: Props) => {
     updatePlayerHistoryPastSort,
     match: { params: { playerId, tab = 'details' } }
   } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   useEffect(
     () => {
@@ -95,7 +95,7 @@ export const PlayerPage = (props: Props) => {
         id={playerId}
         titleSubstr={`${firstName} ${lastName}`}
       />
-      <Switch>
+      <Routes>
         <Route
           exact
           path={[
@@ -135,7 +135,7 @@ export const PlayerPage = (props: Props) => {
             fetching={fetching}
           />
         </Route>
-      </Switch>
+      </Routes>
     </Fragment>
   )
 }

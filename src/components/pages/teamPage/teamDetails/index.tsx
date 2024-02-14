@@ -3,7 +3,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import { Team } from 'types'
 

@@ -1,12 +1,12 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import qs from 'qs'
+import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
-  Theme,
-  makeStyles
-} from '@material-ui/core'
+  Theme
+} from '@mui/material';
 
 import { teamsActions } from 'state/teams'
 import { teamActions } from 'state/team'
@@ -36,7 +36,7 @@ type Props = {
   match: { params: { teamId: string, tab: string } }
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   crest: {
     marginRight: theme.spacing(0.5),
     maxHeight: theme.spacing(4)
@@ -87,7 +87,7 @@ export const TeamPage = (props: Props) => {
   const search = window.location.search.substring(1)
   const sortQuery = qs.parse(search).sort || sort
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const labelRenderer = (teamSummary: TeamSummary) => {
     const { shortName } = teamSummary
@@ -138,7 +138,7 @@ export const TeamPage = (props: Props) => {
         id={teamId}
         titleSubstr={name}
       />
-      <Switch>
+      <Routes>
         <Route
           exact
           path={
@@ -179,7 +179,7 @@ export const TeamPage = (props: Props) => {
             updateTeamPlayersSort={updateTeamPlayersSort}
           />
         </Route>
-      </Switch>
+      </Routes>
     </Fragment>
   )
 }

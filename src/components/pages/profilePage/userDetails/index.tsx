@@ -1,13 +1,12 @@
 import { Fragment } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+  Theme
+} from '@mui/material'
 
 import ButtonLink from 'components/common/buttonLink'
 
@@ -24,22 +23,21 @@ const USER_DETAILS_ROWS = [
   { rowId: 'username', label: 'Username' }
 ]
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    table: {
-      marginBottom: theme.spacing(2)
-    },
-    actions: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center'
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  table: {
+    marginBottom: theme.spacing(2)
+  },
+
+  actions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  }
+}))
 
 const UserDetails = (props: Props) => {
   const { user } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Fragment>

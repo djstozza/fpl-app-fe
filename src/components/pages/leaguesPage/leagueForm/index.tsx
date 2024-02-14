@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import {
   Paper,
   Theme,
   TextField,
   Button,
-  Typography,
-  makeStyles
-} from '@material-ui/core'
+  Typography
+} from '@mui/material'
 import {
   PROFILE_URL,
   LEAGUES_URL
@@ -29,7 +29,7 @@ interface Params {
   [key: string]: string
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   form: {
     marginTop: theme.spacing(2)
   },
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const LeagueForm = (props: Props) => {
   const { title, errors, submitFn, initializeForm, create, hideFplTeamName = false, returnUrl } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   useEffect(
     () => {

@@ -1,12 +1,8 @@
 import { Fragment } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { connect } from 'react-redux'
-import {
-  Theme,
-  Typography,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
+import { Theme, Typography } from '@mui/material'
 import { capitalize } from 'lodash'
 
 import { authActions } from 'state/auth'
@@ -46,13 +42,11 @@ type Props = {
   match: { params: { tab: string, action: string } }
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      padding: theme.spacing(1)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  title: {
+    padding: theme.spacing(1)
+  }
+}))
 
 const TABS = {
   details: { label: 'Details', value: 'details', display: true },
@@ -74,7 +68,7 @@ export const ProfilePage = (props: Props) => {
     match: { params: { tab = 'details', action } }
   } = props
   const { username } = user
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   TABS.details['extraTitleInfo'] = capitalize(action)
 
@@ -90,7 +84,7 @@ export const ProfilePage = (props: Props) => {
         url={PROFILE_URL}
         titleSubstr={username}
       />
-      <Switch>
+      <Routes>
         <Route
           exact
           path={[
@@ -151,7 +145,7 @@ export const ProfilePage = (props: Props) => {
             updateFplTeamsSort={updateFplTeamsSort}
           />
         </Route>
-      </Switch>
+      </Routes>
     </Fragment>
   )
 }

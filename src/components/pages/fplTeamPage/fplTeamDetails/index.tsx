@@ -1,13 +1,12 @@
 import { Fragment } from 'react'
+import { makeStyles } from 'tss-react/mui';
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+  Theme
+} from '@mui/material'
 
 import ButtonLink from 'components/common/buttonLink'
 import Link from 'components/common/link'
@@ -43,24 +42,23 @@ const FPL_TEAM_DETAILS_ROWS = [
   }
 ]
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    table: {
-      marginBottom: theme.spacing(2)
-    },
-    actions: {
-      display: 'flex',
-      justifyContent: 'flex-end'
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  table: {
+    marginBottom: theme.spacing(2)
+  },
+
+  actions: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  }
+}))
 
 const FplTeamDetails = (props: Props) => {
   const {
     fplTeam
   } = props
   const { id, isOwner } = fplTeam
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Fragment>

@@ -1,13 +1,12 @@
 import { useEffect, useState, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import { makeStyles } from 'tss-react/mui';
 import {
   Typography,
-  Theme,
-  createStyles,
-  makeStyles
-} from '@material-ui/core'
+  Theme
+} from '@mui/material'
 
 import { leagueActions } from 'state/league'
 import { playersActions } from 'state/players'
@@ -49,13 +48,11 @@ type Props = {
   match: { params: { leagueId: string, tab: string } }
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      padding: theme.spacing(1)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  title: {
+    padding: theme.spacing(1)
+  }
+}))
 
 const TABS = [
   { label: 'Tradeable List Positions', value: 'miniDraft/tradeableListPositions', display: true },
@@ -86,7 +83,7 @@ export const MiniDraftPage = (props: Props) => {
     match: { params: { leagueId, tab = 'miniDraftPicks' } }
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const [miniDraftPickUpdatedAt, setMiniDraftPickUpdatedAt] = useState(0)
   const [deadline, setDeadline] = useState<Date|undefined>()
@@ -183,7 +180,7 @@ export const MiniDraftPage = (props: Props) => {
         substr='mini draft'
         showAlert={!deadline || miniDraftFinished}
       />
-      <Switch>
+      <Routes>
         <Route
           exact
           path={[
@@ -221,7 +218,7 @@ export const MiniDraftPage = (props: Props) => {
             createMiniDraftPick={createMiniDraftPick}
           />
         </Route>
-      </Switch>
+      </Routes>
     </Fragment>
   )
 }

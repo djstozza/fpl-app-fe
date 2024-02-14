@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 
 import { startCase, orderBy } from 'lodash'
+import { makeStyles } from 'tss-react/mui'
 import {
   AccordionDetails,
   Theme,
@@ -8,10 +9,8 @@ import {
   TableHead,
   TableBody,
   TableCell,
-  TableRow,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+  TableRow
+} from '@mui/material'
 
 import Link from 'components/common/link'
 import { PLAYERS_URL } from 'utilities/constants'
@@ -23,28 +22,29 @@ type Props = {
   fixture: Fixture
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles()((theme: Theme) =>
+  ({
     container: {
       padding: 0
     },
+
     headerCell: {
       backgroundColor: colors.grey200,
       '&:last-child': {
         paddingRight: theme.spacing(6.5)
       }
     },
+
     detailsCell: {
       width: '50%',
       paddingRight: theme.spacing(12.5)
     }
-  })
-)
+  }));
 
 const FixtureDetails = (props: Props) => {
   const { fixture: { stats } } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const playerStatsDisplay = (statGroup) => (
     orderBy(statGroup, ({ value }) => value, 'desc').map(({ value, player: { id, lastName } }, key) => (

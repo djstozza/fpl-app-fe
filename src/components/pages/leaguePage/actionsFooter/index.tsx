@@ -1,10 +1,5 @@
-import classnames from 'classnames'
-import {
-  Button,
-  Theme,
-  createStyles,
-  makeStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
+import { Button, Theme } from '@mui/material'
 
 import ButtonLink from 'components/common/buttonLink'
 import { LEAGUES_URL } from 'utilities/constants'
@@ -19,18 +14,17 @@ type Props = {
   submitting: boolean
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    actions: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center'
-    },
-    rightMargin: {
-      marginRight: theme.spacing(1)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  actions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+
+  rightMargin: {
+    marginRight: theme.spacing(1)
+  }
+}))
 
 const ActionsFooter = (props: Props) => {
   const {
@@ -48,7 +42,7 @@ const ActionsFooter = (props: Props) => {
     detailsPage
   } = props
 
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
 
   const setColor = (index) => index === 0 || index % 2 === 0 ? 'primary' : 'default'
 
@@ -75,7 +69,7 @@ const ActionsFooter = (props: Props) => {
           color={setColor(index)}
           onClick={() => generateDraftPicks(id)}
           disabled={submitting}
-          className={classnames({ [classes.rightMargin]: addRightMargin })}
+          className={cx({ [classes.rightMargin]: addRightMargin })}
         >
           Generate draft picks
         </Button>
@@ -90,7 +84,7 @@ const ActionsFooter = (props: Props) => {
           color={setColor(index)}
           onClick={() => createDraft(id)}
           disabled={submitting}
-          className={classnames({ [classes.rightMargin]: addRightMargin })}
+          className={cx({ [classes.rightMargin]: addRightMargin })}
         >
           Create draft
         </Button>

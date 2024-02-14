@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   TextField,
   Button,
   Theme,
   Paper,
-  makeStyles
-} from '@material-ui/core'
+  createStyles
+} from '@mui/material'
 
 import Link from 'components/common/link'
 import { SetElHeight } from 'utilities/helpers'
@@ -26,7 +27,8 @@ type Props = {
   errors: Error[]
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+// TODO jss-to-tss-react codemod: Unable to handle style definition reliably. ArrowFunctionExpression in CSS prop.
+const useStyles = makeStyles()((theme: Theme) => createStyles({
   background: {
     width: '100vw',
     height: ({ height }:{ height: number }) => height,
@@ -65,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   noWrap: {
     whiteSpace: 'nowrap'
   }
-}))
+}));
 
 export const LoginPage = (props: Props) => {
   const { logIn, errors = [], submitting, initializeAuth } = props
@@ -91,7 +93,7 @@ export const LoginPage = (props: Props) => {
     initializeAuth()
   }, [initializeAuth])
 
-  const classes = useStyles({ height })
+  const { classes } = useStyles({ height })
 
   document.title = `${TITLE} - Log In`
 

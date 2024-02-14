@@ -8,12 +8,11 @@ import { initialFilterState } from 'state/teams/reducer'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import { TITLE } from 'utilities/constants'
 
+import { makeStyles } from 'tss-react/mui';
 import {
   Theme,
-  Typography,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+  Typography
+} from '@mui/material'
 
 import type { TeamsState } from 'state/teams'
 import type { TeamSummary } from 'types'
@@ -24,13 +23,11 @@ type Props = {
   updateSort: Function
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      padding: theme.spacing(1)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  title: {
+    padding: theme.spacing(1)
+  }
+}))
 
 const TEAMS_TABLE_CELLS = [
   {
@@ -61,7 +58,7 @@ export const TeamsPage = (props: Props) => {
     updateSort
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   document.title = `${TITLE} - Teams`
 

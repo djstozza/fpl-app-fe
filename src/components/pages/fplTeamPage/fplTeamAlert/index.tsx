@@ -1,9 +1,6 @@
 import { Fragment } from 'react'
-import {
-  Theme,
-  makeStyles
-} from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { makeStyles } from 'tss-react/mui'
+import { Theme, Alert } from '@mui/material'
 import Countdown from 'react-countdown'
 import pluralize from 'pluralize'
 
@@ -26,7 +23,7 @@ type Props = {
   leagueId: string
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     flexGrow: 1,
     width: '100%',
@@ -74,7 +71,7 @@ const FplTeamAlert = (props: Props) => {
     leagueId
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   if (!deadline || !round) return null
 

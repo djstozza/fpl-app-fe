@@ -1,8 +1,6 @@
 import { Fragment } from 'react'
 import { connect } from 'react-redux'
-import {
-  makeStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
 
 import SearchListener from 'components/common/searchListener'
 import SortTable from 'components/common/sortTable'
@@ -27,7 +25,7 @@ type Props = {
   fetching: boolean
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   actions: {
     display: 'flex',
     justifyContent: 'flex-end'
@@ -58,7 +56,7 @@ const LEAGUES_TABLE_CELLS = [
 
 export const LeaguesPage = (props: Props) => {
   const { leagues = [], fetchLeagues, updateSort, fetching } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Fragment>

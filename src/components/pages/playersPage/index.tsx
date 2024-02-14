@@ -10,12 +10,8 @@ import Link from 'components/common/link'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import StatusIconMapper from 'components/common/statusIconMapper'
 
-import {
-  Theme,
-  Typography,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
+import { Theme, Typography } from '@mui/material'
 
 import type { PlayersState } from 'state/players'
 import type { PlayerSummary } from 'types'
@@ -29,13 +25,11 @@ type Props = {
   updatePage: Function
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      padding: theme.spacing(1)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  title: {
+    padding: theme.spacing(1)
+  }
+}))
 
 export const playersTableCells = () => ({
   lastName: {
@@ -119,7 +113,7 @@ export const PlayersPage = (props: Props) => {
     updatePage
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   useEffect(
     () => {

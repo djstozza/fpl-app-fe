@@ -1,13 +1,12 @@
 import { useEffect, Fragment } from 'react'
 import moment from 'moment'
 import { groupBy } from 'lodash'
+import { makeStyles } from 'tss-react/mui'
 import {
   Accordion,
   Typography,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+  Theme
+} from '@mui/material'
 
 import FixtureSummary from '../fixtureSummary'
 import FixtureDetails from '../fixtureDetails'
@@ -25,33 +24,35 @@ type GroupedFixtures = {
   [key: string]: Fixture[]
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
+const useStyles = makeStyles()((theme: Theme) => ({
+  root: {
 
-    },
-    title: {
-      padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
-    },
-    summary: {
-      textAlign: 'center',
-      backgroundColor: colors.grey200,
-      border: `0.5px solid ${colors.grey300}`
-    },
-    disabled: {
-      paddingRight: theme.spacing(6)
-    },
-    statsContainer: {
-      width: '100%',
-      paddingRight: theme.spacing(3)
-    }
-  })
-)
+  },
+
+  title: {
+    padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
+  },
+
+  summary: {
+    textAlign: 'center',
+    backgroundColor: colors.grey200,
+    border: `0.5px solid ${colors.grey300}`
+  },
+
+  disabled: {
+    paddingRight: theme.spacing(6)
+  },
+
+  statsContainer: {
+    width: '100%',
+    paddingRight: theme.spacing(3)
+  }
+}))
 
 const RoundDetails = (props: Props) => {
   const { roundId, round, fetchRound } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   useEffect(
     () => {

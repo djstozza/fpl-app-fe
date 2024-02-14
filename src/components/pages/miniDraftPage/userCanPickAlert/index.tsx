@@ -1,13 +1,13 @@
 import { useState, useEffect, Fragment } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  Theme,
-  makeStyles
-} from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+  Theme
+} from '@mui/material'
 import { Link } from 'react-router-dom'
 
 import type { MiniDraftPicksState } from 'state/miniDraftPicks'
@@ -21,7 +21,7 @@ type Props = {
   deadline?: Date
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   alertContainer: {
     display: 'flex',
     alignItems: 'center'
@@ -44,7 +44,7 @@ const UserCanPickAlert = (props: Props) => {
     deadline
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [dialogOpen, setDialogOpen] = useState(false)
   const handleConfirmDraftPick = () => {
     setDialogOpen(false)

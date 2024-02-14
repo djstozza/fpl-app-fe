@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   TextField,
   Button,
   Theme,
-  Paper,
-  makeStyles
-} from '@material-ui/core'
+  Paper
+} from '@mui/material'
 
 import { PROFILE_URL } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
@@ -21,7 +21,7 @@ type Props = {
   initializeAuth: () => void
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   form: {
     marginTop: theme.spacing(2)
   },
@@ -49,7 +49,7 @@ const UserEditForm = (props: Props) => {
     initializeAuth
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const [newEmail, setNewEmail] = useState(email)
   const [newUsername, setNewUsername] = useState(username)

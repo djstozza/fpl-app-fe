@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import {
   Table,
   TableBody,
@@ -6,9 +7,8 @@ import {
   TableRow,
   Grid,
   Theme,
-  makeStyles,
   createStyles
-} from '@material-ui/core'
+} from '@mui/material'
 
 import { SetElHeight } from 'utilities/helpers'
 import PlayerImage from '../playerImage'
@@ -24,26 +24,26 @@ type HeightProps = {
   tableHeight: number
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      maxWidth: '100vw',
-      overflow: 'scroll',
-      [theme.breakpoints.up('sm')]: {
-        maxHeight: ({ tableHeight }: HeightProps) => tableHeight
-      },
+const useStyles = makeStyles()((theme: Theme) => createStyles({
+  container: {
+    maxWidth: '100vw',
+    overflow: 'scroll',
+    [theme.breakpoints.up('sm')]: {
       maxHeight: ({ tableHeight }: HeightProps) => tableHeight
     },
-    playerImageContainer: {
-      textAlign: 'center'
-    },
-    playerImage: {
-      [theme.breakpoints.up('sm')]: {
-        maxHeight: ({ tableHeight }: HeightProps) => tableHeight
-      }
+    maxHeight: ({ tableHeight }: HeightProps) => tableHeight
+  },
+
+  playerImageContainer: {
+    textAlign: 'center'
+  },
+
+  playerImage: {
+    [theme.breakpoints.up('sm')]: {
+      maxHeight: ({ tableHeight }: HeightProps) => tableHeight
     }
-  })
-)
+  }
+}))
 
 const PlayerDetails = ({ player }: Props) => {
   const tableRef = useRef(null)
@@ -57,7 +57,7 @@ const PlayerDetails = ({ player }: Props) => {
     }
   }, [tableHeight])
 
-  const classes = useStyles({ tableHeight })
+  const { classes } = useStyles({ tableHeight })
 
   const cells: CellHash = playersTableCells()
   delete cells.firstName

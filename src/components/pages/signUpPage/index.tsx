@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   TextField,
   Button,
   Theme,
   Paper,
-  makeStyles
-} from '@material-ui/core'
+  createStyles
+} from '@mui/material'
 
 import { SetElHeight } from 'utilities/helpers'
 
@@ -25,7 +26,7 @@ type Props = {
   errors: Error[]
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => createStyles({
   background: {
     width: '100vw',
     height: ({ height }:{ height: number }) => height,
@@ -88,7 +89,7 @@ export const SignUpPage = (props: Props) => {
     initializeAuth()
   }, [initializeAuth])
 
-  const classes = useStyles({ height })
+  const { classes } = useStyles({ height })
 
   document.title = `${TITLE} - Sign Up`
 

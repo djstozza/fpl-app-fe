@@ -1,6 +1,6 @@
 import {
   Button
-} from '@material-ui/core'
+} from '@mui/material'
 
 import SortTable from 'components/common/sortTable'
 import { PLAYERS_URL } from 'utilities/constants'

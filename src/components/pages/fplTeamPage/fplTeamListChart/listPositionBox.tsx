@@ -1,10 +1,6 @@
 import { useRef } from 'react'
-import classnames from 'classnames'
-import {
-  makeStyles,
-  createStyles,
-  Theme
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
+import { Theme } from '@mui/material'
 
 import { colors } from 'utilities/colors'
 import { teamCrestPathLoader } from 'utilities/helpers'
@@ -25,62 +21,70 @@ type Props = {
   clearValidSubstitutions: Function
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    crest: {
-      maxHeight: theme.spacing(4)
-    },
-    large: {
-      maxHeight: theme.spacing(4)
-    },
-    startingContainer: {
-      display: 'flex',
-      alignItems: 'start',
-      justifyContent: 'center'
-    },
-    substitutesContainer: {
-      display: 'flex',
-      alignItems: 'start',
-      justifyContent: 'space-evenly',
-      [theme.breakpoints.up('sm')]: {
-        flexDirection: 'column'
-      }
-    },
-    playerContainer: {
-      display: 'flex',
-      textAlign: 'center',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: theme.spacing(20),
-      height: theme.spacing(12),
-      color: colors.white
-    },
-    substitute: {
-      backgroundColor: colors.grey700,
-      border: `1px solid ${colors.white}`,
-    },
-    selected: {
-      backgroundColor: colors.red,
-      border: `1px solid ${colors.white}`,
-    },
-    validSubstitution: {
-      backgroundColor: colors.blue700,
-      border: `1px solid ${colors.white}`
-    },
-    canSelect: {
-      cursor: 'pointer'
-    },
-    player: {
-      zIndex: 2
-    },
-    playerInfo: {
-      border: `1px solid ${colors.black}`,
-      borderRadius: theme.spacing(0.5),
-      backgroundColor: colors.black,
-      fontSize: 12
+const useStyles = makeStyles()((theme: Theme) => ({
+  crest: {
+    maxHeight: theme.spacing(4)
+  },
+
+  large: {
+    maxHeight: theme.spacing(4)
+  },
+
+  startingContainer: {
+    display: 'flex',
+    alignItems: 'start',
+    justifyContent: 'center'
+  },
+
+  substitutesContainer: {
+    display: 'flex',
+    alignItems: 'start',
+    justifyContent: 'space-evenly',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'column'
     }
-  })
-)
+  },
+
+  playerContainer: {
+    display: 'flex',
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: theme.spacing(20),
+    height: theme.spacing(12),
+    color: colors.white
+  },
+
+  substitute: {
+    backgroundColor: colors.grey700,
+    border: `1px solid ${colors.white}`,
+  },
+
+  selected: {
+    backgroundColor: colors.red,
+    border: `1px solid ${colors.white}`,
+  },
+
+  validSubstitution: {
+    backgroundColor: colors.blue700,
+    border: `1px solid ${colors.white}`
+  },
+
+  canSelect: {
+    cursor: 'pointer'
+  },
+
+  player: {
+    zIndex: 2
+  },
+
+  playerInfo: {
+    border: `1px solid ${colors.black}`,
+    borderRadius: theme.spacing(0.5),
+    backgroundColor: colors.black,
+    fontSize: 12
+  }
+}))
 
 const ListPositionBox = (props: Props) => {
   const {
@@ -105,7 +109,7 @@ const ListPositionBox = (props: Props) => {
     clearValidSubstitutions
   } = props
 
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
   const playerRef = useRef<null | HTMLDivElement>(null)
 
   const isSelected = selectedListPositionId === id
@@ -134,7 +138,7 @@ const ListPositionBox = (props: Props) => {
     <div
       onClick={handleClick}
       className={
-        classnames(classes.playerContainer,
+        cx(classes.playerContainer,
         {
           [classes.substitute]: substitute,
           [classes.selected]: isSelected,
@@ -166,7 +170,7 @@ const ListPositionBox = (props: Props) => {
         <div ref={playerRef} />
       </div>
     </div>
-  )
+  );
 }
 
 export default ListPositionBox

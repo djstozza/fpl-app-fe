@@ -1,13 +1,9 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { capitalize } from 'lodash'
-import {
-  Typography,
-  Theme,
-  createStyles,
-  makeStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
+import { Typography, Theme } from '@mui/material'
 
 import { leagueActions } from 'state/league'
 import Tabs from 'components/common/tabs'
@@ -35,13 +31,11 @@ type Props = {
   match: { params: { leagueId: string, tab: string, action: string } }
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      padding: theme.spacing(1)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  title: {
+    padding: theme.spacing(1)
+  }
+}))
 
 const TABS = {
   details: { label: 'Details', value: 'details', display: true },
@@ -65,7 +59,7 @@ export const LeaguePage = (props: Props) => {
     fetching,
     match: { params: { leagueId, tab = 'details', action } }
   } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   useEffect(
     () => {
@@ -91,7 +85,7 @@ export const LeaguePage = (props: Props) => {
         id={leagueId}
         titleSubstr={name}
       />
-      <Switch>
+      <Routes>
         <Route
           exact
           path={`${LEAGUES_URL}/:leagueId`}
@@ -144,7 +138,7 @@ export const LeaguePage = (props: Props) => {
             fetching={fetching}
           />
         </Route>
-      </Switch>
+      </Routes>
     </Fragment>
   )
 }

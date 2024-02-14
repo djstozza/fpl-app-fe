@@ -1,9 +1,9 @@
+import { makeStyles } from 'tss-react/mui'
 import {
   Paper,
   Theme,
-  IconButton,
-  makeStyles
-} from '@material-ui/core'
+  IconButton
+} from '@mui/material'
 import { useLocation } from 'react-router-dom'
 import ForwardIcon from '@mui/icons-material/Forward'
 import CloseIcon from '@mui/icons-material/Close'
@@ -19,7 +19,7 @@ type Props = {
   setOutListPosition: Function
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   container: {
     display: 'flex',
     alignItems: 'center',
@@ -45,7 +45,7 @@ const OutListPosition = (props: Props) => {
     setOutListPosition
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
   const { pathname } = useLocation()
 
   const clearOutListPosition = () => {

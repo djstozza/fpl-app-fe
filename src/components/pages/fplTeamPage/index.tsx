@@ -1,12 +1,8 @@
 import { useEffect, useState, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
-import {
-  Typography,
-  Theme,
-  createStyles,
-  makeStyles
-} from '@material-ui/core'
+import { Route, Routes } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
+import { Typography, Theme } from '@mui/material'
 import { capitalize } from 'lodash'
 import pluralize from 'pluralize'
 
@@ -89,13 +85,11 @@ type Props = {
   match: { params: { fplTeamId: string, tab: string, fplTeamListId: string, action: string, teamTradeId: string } }
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      padding: theme.spacing(1)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  title: {
+    padding: theme.spacing(1)
+  }
+}))
 
 const TABS = {
   details: { label: 'Details', value: 'details', display: true },
@@ -172,7 +166,7 @@ export const FplTeamPage = (props: Props) => {
     removeTrade,
     match: { params: { fplTeamId, tab = 'details', fplTeamListId, action, teamTradeId } }
   } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [deadlineTimeAsTime, setDeadlineTimeAsTime] = useState<Date|undefined>()
   const [waiverDeadlineAsTime, setWaiverDeadlineAsTime] = useState<Date|undefined>()
   const [deadline, setDeadline] = useState<Date|undefined>()
@@ -286,7 +280,7 @@ export const FplTeamPage = (props: Props) => {
         miniDraft={miniDraft}
         leagueId={leagueId}
       />
-      <Switch>
+      <Routes>
         <Route
           exact
           path={
@@ -463,7 +457,7 @@ export const FplTeamPage = (props: Props) => {
             name={name}
           />
         </Route>
-      </Switch>
+      </Routes>
     </Fragment>
   )
 }

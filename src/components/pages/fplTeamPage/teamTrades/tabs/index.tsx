@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Link as DomLink } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
 import {
   Table,
   TableHead,
@@ -13,9 +14,8 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+} from '@mui/material'
+
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import SendIcon from '@mui/icons-material/Send'
@@ -61,26 +61,28 @@ type Props = {
   fplTeamName: string
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      maxWidth: '100vw',
-      overflow: 'scroll'
-    },
-    noPadding: {
-      padding: 0
-    },
-    cancel: {
-      color: colors.red
-    },
-    add: {
-      color: colors.green500
-    },
-    send: {
-      color: colors.blue700
-    }
-  })
-)
+const useStyles = makeStyles()(() => ({
+  container: {
+    maxWidth: '100vw',
+    overflow: 'scroll'
+  },
+
+  noPadding: {
+    padding: 0
+  },
+
+  cancel: {
+    color: colors.red
+  },
+
+  add: {
+    color: colors.green500
+  },
+
+  send: {
+    color: colors.blue700
+  }
+}))
 
 const TABS = {
   out: {
@@ -112,7 +114,7 @@ const TeamTradeTabs = (props: Props) => {
     fplTeamName
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [interTeamTradeGroup, setInterTeamTradeGroup] = useState<undefined | InterTeamTradeGroup>()
   const [trade, setTrade] = useState<undefined | Trade>()

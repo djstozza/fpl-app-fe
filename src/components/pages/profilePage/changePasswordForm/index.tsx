@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   TextField,
   Button,
   Theme,
-  Paper,
-  makeStyles
-} from '@material-ui/core'
+  Paper
+} from '@mui/material'
 
 import { PROFILE_URL } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
@@ -20,7 +20,7 @@ type Props = {
   initializeAuth: () => void
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   form: {
     marginTop: theme.spacing(2)
   },
@@ -47,7 +47,7 @@ const ChangePasswordForm = (props: Props) => {
      initializeAuth
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const [password, setPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')

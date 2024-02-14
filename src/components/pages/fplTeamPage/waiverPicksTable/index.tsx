@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react'
 import {
   TextField,
   MenuItem
-} from '@material-ui/core'
+} from '@mui/material'
 import { range } from 'lodash'
 import { useSnackbar } from 'notistack'
 
