@@ -1,4 +1,4 @@
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 import {
   LEAGUES_URL
@@ -25,7 +25,7 @@ const EditLeagueForm = (props: Props) => {
 
   const returnUrl = `${LEAGUES_URL}/${id}/details`
 
-  if (!isOwner) return <Redirect to={returnUrl} />
+  if (!isOwner) return <Navigate to={returnUrl} />
 
   return (
     <LeagueForm

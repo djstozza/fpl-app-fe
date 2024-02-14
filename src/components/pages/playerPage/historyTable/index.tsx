@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
@@ -69,7 +69,7 @@ const HISTORY_TABLE_CELLS = [
 const HistoryTable = (props: Props) => {
   const { history = [], playerId, tab, fetchPlayerHistory, updatePlayerHistorySort, hasHistory, fetching } = props
 
-  if (!hasHistory) return <Redirect to={`${PLAYERS_URL}/${playerId}`} />
+  if (!hasHistory) return <Navigate to={`${PLAYERS_URL}/${playerId}`} />
 
   return (
     <SearchListener id={playerId} fetchAction={fetchPlayerHistory} initialFilterState={initialFilterState}>

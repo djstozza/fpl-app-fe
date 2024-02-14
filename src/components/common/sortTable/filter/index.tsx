@@ -1,4 +1,6 @@
 import { useState, Fragment, MouseEvent } from 'react'
+import { makeStyles } from 'tss-react/mui';
+
 import {
   Menu,
   IconButton,
@@ -8,11 +10,9 @@ import {
   Checkbox,
   Button,
   Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+} from '@mui/material';
 
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 
 import type { Facet } from 'types'
 
@@ -25,15 +25,14 @@ type Props = {
   filterSelection?: string[]
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles()((theme: Theme) =>
+  ({
     facetList: {
       maxHeight: theme.spacing(50),
       overflow: 'auto',
       paddingLeft: 0
     }
-  })
-)
+  }));
 
 const Filter = (props: Props) => {
   const {
@@ -44,7 +43,7 @@ const Filter = (props: Props) => {
     applyFilter,
     filterSelection = []
   } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const [selected, setSelected] = useState<string[]>([])
 

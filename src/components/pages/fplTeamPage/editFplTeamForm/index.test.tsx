@@ -65,6 +65,6 @@ describe('EditFplTeamForm', () => {
 
   it('redirects to the details page if isOwner = false', () => {
     const wrapper = render({ fplTeam: { ...FPL_TEAM_1, isOwner: false } })
-    expect(wrapper.find('Redirect').props().to).toEqual(`${FPL_TEAMS_URL}/${FPL_TEAM_1.id}/details`)
+    expect(wrapper.find('Navigate').props().to).toEqual(`${FPL_TEAMS_URL}/${FPL_TEAM_1.id}/details`)
   })
 })

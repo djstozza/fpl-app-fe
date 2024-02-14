@@ -1,13 +1,9 @@
 import { useEffect, useState, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import {
-  Typography,
-  Theme,
-  createStyles,
-  makeStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
+import { Typography, Theme } from '@mui/material'
 
 import { leagueActions } from 'state/league'
 import { playersActions } from 'state/players'
@@ -43,13 +39,11 @@ type Props = {
   match: { params: { leagueId: string, tab: string } }
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      padding: theme.spacing(1)
-    }
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  title: {
+    padding: theme.spacing(1)
+  }
+}))
 
 const TABS = [
   { label: 'Available Players', value: 'draft/availablePlayers', display: true },
@@ -76,7 +70,7 @@ export const DraftPage = (props: Props) => {
     match: { params: { leagueId, tab = 'draftPicks' } }
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const [draftPickUpdatedAt, setDraftPickUpdatedAt] = useState(0)
 
@@ -150,7 +144,7 @@ export const DraftPage = (props: Props) => {
         substr='draft'
         showAlert={draftFinished}
       />
-      <Switch>
+      <Routes>
         <Route
           exact
           path={[
@@ -183,7 +177,7 @@ export const DraftPage = (props: Props) => {
             updateDraftPick={updateDraftPick}
           />
         </Route>
-      </Switch>
+      </Routes>
     </Fragment>
   )
 }

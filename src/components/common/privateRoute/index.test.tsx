@@ -34,7 +34,7 @@ describe('PrivateRoute', () => {
 
     const wrapper = render()
 
-    expect(wrapper.find('Redirect').props().to).toEqual(LOGIN_URL)
+    expect(wrapper.find('Navigate').props().to).toEqual(LOGIN_URL)
     expect(window.location.pathname).toEqual(LOGIN_URL)
   })
 

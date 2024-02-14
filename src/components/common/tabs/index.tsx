@@ -1,10 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
-import {
-  Tabs as MuiTabs,
-  Tab,
-  createStyles,
-  makeStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui';
+import { Tabs as MuiTabs, Tab } from '@mui/material';
 import { findIndex } from 'lodash'
 
 import { TITLE } from 'utilities/constants'
@@ -26,17 +22,15 @@ type Props = {
   titleSubstr: string
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    tab: {
-      backgroundColor: colors.grey200,
-      border: `0.5px solid ${colors.grey300}`
-    }
-  })
-)
+const useStyles = makeStyles()(() => ({
+  tab: {
+    backgroundColor: colors.grey200,
+    border: `0.5px solid ${colors.grey300}`
+  }
+}));
 
 const Tabs = ({ currentTab, url, id, tabs, titleSubstr }: Props) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const { pathname } = useLocation()
 
   const activeTabs = tabs.filter(({ display }) => display)

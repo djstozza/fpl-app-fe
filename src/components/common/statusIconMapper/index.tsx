@@ -1,18 +1,16 @@
-import {
-  Tooltip,
-  makeStyles
-} from '@material-ui/core'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle'
-import CancelIcon from '@material-ui/icons/Cancel'
-import LocalHospitalIcon from '@material-ui/icons/LocalHospital'
-import FlightIcon from '@material-ui/icons/Flight'
-import HelpIcon from '@material-ui/icons/Help'
-import GavelIcon from '@material-ui/icons/Gavel'
+import { makeStyles } from 'tss-react/mui'
+import { Tooltip } from '@mui/material'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
+import FlightIcon from '@mui/icons-material/Flight'
+import HelpIcon from '@mui/icons-material/Help'
+import GavelIcon from '@mui/icons-material/Gavel'
 import moment from 'moment'
 
 import { colors } from 'utilities/colors'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   available: {
     color: colors.green500
   },
@@ -22,7 +20,7 @@ const useStyles = makeStyles(() => ({
   unavailable: {
     color: colors.red
   }
-}))
+}));
 
 type Props = {
   status: string,
@@ -32,7 +30,7 @@ type Props = {
 }
 
 const StatusIconMapper = ({ status, news, newsAdded, chance = 0 }: Props) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const icons = {
     'a': <CheckCircleIcon className={classes.available} />,
     'd': <HelpIcon className={classes.doubtful} />,

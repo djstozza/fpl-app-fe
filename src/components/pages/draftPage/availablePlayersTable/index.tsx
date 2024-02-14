@@ -10,7 +10,7 @@ import {
   DialogActions,
   DialogContent,
   Button
-} from '@material-ui/core'
+} from '@mui/material'
 
 import type { DraftPicksState } from 'state/draftPicks'
 import type { PlayersState } from 'state/players'

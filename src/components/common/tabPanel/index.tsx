@@ -1,10 +1,5 @@
-import {
-  AppBar,
-  Tabs,
-  Tab,
-  Theme,
-  makeStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui';
+import { AppBar, Tabs, Tab, Theme } from '@mui/material';
 import history from 'state/history'
 
 import type { RoundSummary, TeamSummary, FplTeamList } from 'types'
@@ -24,7 +19,7 @@ const scrollProps = (index: number) => {
   };
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     flexGrow: 1,
     width: '100%',
@@ -34,11 +29,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'row',
     display: 'flex'
   }
-}))
+}));
 
 const TabPanel = (props: Props) => {
   const { collection, collectionId, labelRenderer, url, tab } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const index = collection.findIndex(({ id }) => id === collectionId)
 

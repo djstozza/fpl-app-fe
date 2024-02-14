@@ -1,9 +1,6 @@
 import { Link as ReactRouterLink } from 'react-router-dom'
-import classnames from 'classnames'
-import {
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui';
+import classNames from 'classnames';
 
 import { colors } from 'utilities/colors'
 
@@ -14,21 +11,22 @@ type Props = {
   image?: boolean
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
+const useStyles = makeStyles()(() =>
+  ({
     link: {
       textDecoration: 'none',
       color: colors.linkBlue
     },
+
     noWrap: {
       whiteSpace: 'nowrap'
     },
+
     imageContainer: {
       display: 'flex',
       alignItems: 'center'
     }
-  })
-)
+  }));
 
 const Link = (props: Props) => {
   const {
@@ -37,13 +35,13 @@ const Link = (props: Props) => {
     image,
     children
   } = props
-  const classes= useStyles()
+  const { classes }= useStyles()
 
   return (
     <ReactRouterLink
       to={to}
       className={
-        classnames(
+        classNames(
           classes.link,
           {
             [classes.noWrap]: noWrap,
@@ -54,7 +52,7 @@ const Link = (props: Props) => {
     >
      {children}
     </ReactRouterLink>
-  )
+  );
 }
 
 export default Link

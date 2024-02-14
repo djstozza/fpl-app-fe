@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Alert } from '@material-ui/lab'
+import { Alert } from '@mui/material'
 
 type Props = {
   substr: string,

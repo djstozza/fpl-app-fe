@@ -16,10 +16,10 @@ import {
   makeStyles,
   createStyles
 } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import CloseIcon from '@material-ui/icons/Close'
-import SendIcon from '@material-ui/icons/Send'
-import CheckIcon from '@material-ui/icons/Check'
+import AddIcon from '@mui/icons-material/Add'
+import CloseIcon from '@mui/icons-material/Close'
+import SendIcon from '@mui/icons-material/Send'
+import CheckIcon from '@mui/icons-material/Check'
 
 import {
   FPL_TEAMS_URL,

@@ -10,7 +10,7 @@ import {
   makeStyles,
   createStyles
 } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'

@@ -83,6 +83,6 @@ describe('EditLeagueForm', () => {
 
   it('redirects to the details page if isOwner = false', () => {
     const wrapper = render({ league: { ...LIVE_LEAGUE, isOwner: false } })
-    expect(wrapper.find('Redirect').props().to).toEqual(`${LEAGUES_URL}/${LIVE_LEAGUE.id}/details`)
+    expect(wrapper.find('Navigate').props().to).toEqual(`${LEAGUES_URL}/${LIVE_LEAGUE.id}/details`)
   })
 })

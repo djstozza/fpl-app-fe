@@ -1,4 +1,4 @@
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
@@ -45,7 +45,7 @@ const HistoryPastTable = (props: Props) => {
     fetching
   } = props
 
-  if (!hasHistoryPast) return <Redirect to={`${PLAYERS_URL}/${playerId}`} />
+  if (!hasHistoryPast) return <Navigate to={`${PLAYERS_URL}/${playerId}`} />
 
   return (
     <SearchListener id={playerId} fetchAction={fetchPlayerHistoryPast} initialFilterState={initialFilterState}>

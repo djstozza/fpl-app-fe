@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom'
-import classnames from 'classnames'
-import {
-  Button,
-  makeStyles,
-  createStyles,
-  Theme
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
+import { Button, Theme } from '@mui/material'
+import classNames from 'classnames'
 
 type Props = {
   to: string,
@@ -16,13 +12,12 @@ type Props = {
   rightMargin?: boolean
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles()((theme: Theme) =>
+  ({
     rightMargin: {
       marginRight: theme.spacing(1)
     }
-  })
-)
+  }));
 
 const ButtonLink = (props: Props) => {
   const {
@@ -33,7 +28,7 @@ const ButtonLink = (props: Props) => {
     onClick,
     children
   } = props
-  const classes= useStyles()
+  const { classes }= useStyles()
 
   return (
     <Button
@@ -42,12 +37,12 @@ const ButtonLink = (props: Props) => {
       to={to}
       size={size}
       color={color}
-      className={classnames({ [classes.rightMargin]: rightMargin })}
+      className={classNames({ [classes.rightMargin]: rightMargin })}
       onClick={onClick}
     >
       {children}
     </Button>
-  )
+  );
 }
 
 export default ButtonLink

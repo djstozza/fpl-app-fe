@@ -1,12 +1,7 @@
 import { useState } from 'react'
-import classnames from 'classnames'
-import {
-  TableCell,
-  Tooltip,
-  TableSortLabel,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui';
+import { TableCell, Tooltip, TableSortLabel } from '@mui/material';
+import classNames from 'classnames';
 
 import Filter from '../filter'
 import { colors } from 'utilities/colors'
@@ -27,30 +22,32 @@ type Props = {
   handleFilterChange?: Function
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
+const useStyles = makeStyles()(() =>
+  ({
     noPaddingRight: {
       paddingRight: 0,
       '&:last-child': {
         paddingRight: 0
       }
     },
+
     mainHeaderCell: {
       zIndex: 3
     },
+
     mainCell: {
       position: 'sticky',
       left: 0,
       backgroundColor: colors.white,
       zIndex: 2
     },
+
     headerWrapper: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center'
     }
-  })
-)
+  }));
 
 const HeaderCell = (props: Props) => {
   const {
@@ -67,7 +64,7 @@ const HeaderCell = (props: Props) => {
     handleFilterChange
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
   const sortDirection = sort[sortParam]
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null)
   const applyFilter = (filterName, selection) => {
@@ -84,7 +81,7 @@ const HeaderCell = (props: Props) => {
   return (
     <TableCell
       align='center'
-      className={classnames({ [classes.mainHeaderCell]: sticky, [classes.noPaddingRight]: sortParam })}
+      className={classNames({ [classes.mainHeaderCell]: sticky, [classes.noPaddingRight]: sortParam })}
     >
       <Tooltip title={filterAnchorEl ? '' : toolTipLabel}>
         <div className={classes.headerWrapper}>
@@ -112,7 +109,7 @@ const HeaderCell = (props: Props) => {
         </div>
       </Tooltip>
     </TableCell>
-  )
+  );
 }
 
 export default HeaderCell

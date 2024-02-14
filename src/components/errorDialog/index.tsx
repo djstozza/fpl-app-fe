@@ -1,4 +1,6 @@
 import { connect } from 'react-redux'
+import { makeStyles } from 'tss-react/mui'
+
 import {
   Button,
   Dialog,
@@ -7,9 +9,8 @@ import {
   DialogContentText,
   DialogTitle,
   Typography,
-  makeStyles,
-  Theme
-} from '@material-ui/core'
+  Theme,
+} from '@mui/material'
 
 import { requestActions } from 'state/request'
 
@@ -28,15 +29,15 @@ type Props = {
   onClose?: Function
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     fontFamily: theme.typography.caption.fontFamily
   }
-}))
+}));
 
 export const ErrorDialog = (props: Props) => {
   const { errorCode, title, message, clearRequestErrors, rateLimitError, onClose } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   if (!errorCode) return null
 

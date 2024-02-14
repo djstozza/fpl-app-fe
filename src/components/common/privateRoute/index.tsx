@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Redirect, useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 
 import { authActions } from 'state/auth'
 import { LOGIN_URL } from 'utilities/constants'
@@ -24,7 +24,7 @@ export const PrivateRoute = (props: Props) => {
     }, [updateSession, pathname]
   )
 
-  if (!user) return <Redirect to={LOGIN_URL} />
+  if (!user) return <Navigate to={LOGIN_URL} />
   return children
 }
 

@@ -5,8 +5,8 @@ import {
   makeStyles
 } from '@material-ui/core'
 import { useLocation } from 'react-router-dom'
-import ForwardIcon from '@material-ui/icons/Forward'
-import CloseIcon from '@material-ui/icons/Close'
+import ForwardIcon from '@mui/icons-material/Forward'
+import CloseIcon from '@mui/icons-material/Close'
 
 import { colors } from 'utilities/colors'
 import { teamCrestPathLoader } from 'utilities/helpers'

@@ -1,11 +1,8 @@
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
-import {
-  MuiThemeProvider,
-  CssBaseline,
-  makeStyles,
-  Theme
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider, Theme } from '@mui/material/styles';
 
 import {
   ROUNDS_URL,
@@ -35,19 +32,19 @@ import NavBar from 'components/navBar'
 import ErrorDialog from 'components/errorDialog'
 import theme from './theme'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   container: {
     [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing(8)
     },
     marginTop: theme.spacing(7)
   }
-}))
+}));
 
 const App = () => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
-    <MuiThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline>
         <SnackbarProvider maxSnack={3}>
           <NavBar />
@@ -55,7 +52,7 @@ const App = () => {
             <LoadingBar showFastActions />
             <ErrorDialog />
 
-            <Switch>
+            <Routes>
               <Route exact path={['/', `${ROUNDS_URL}/:roundId?`]} render={(props) => <RoundsPage {...props} />} />
               <Route exact path={`${TEAMS_URL}/:teamId/:tab?`} render={(props) => <TeamPage {...props} />} />
               <Route exact path={TEAMS_URL} render={(props) => <TeamsPage {...props} />} />
@@ -64,7 +61,7 @@ const App = () => {
               <Route exact path={SIGN_UP_URL} render={(props) => <SignUpPage {...props} />} />
               <Route exact path={LOGIN_URL} render={(props) => <LoginPage {...props} />} />
               <PrivateRoute>
-                <Switch>
+                <Routes>
                   <Route
                     exact
                     path={
@@ -100,13 +97,13 @@ const App = () => {
                     ]}
                     render={(props) => <FplTeamPage {...props} />}
                   />
-                </Switch>
+                </Routes>
               </PrivateRoute>
-            </Switch>
+            </Routes>
           </div>
         </SnackbarProvider>
       </CssBaseline>
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 }
 

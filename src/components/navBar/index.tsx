@@ -1,26 +1,15 @@
 import { Fragment, MouseEvent, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import classnames from 'classnames'
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Tooltip,
-  Theme,
-  Menu,
-  MenuItem,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+import { makeStyles } from 'tss-react/mui'
+import { AppBar, Toolbar, IconButton, Typography, Tooltip, Theme, Menu, MenuItem } from '@mui/material'
 
 import { authActions } from 'state/auth'
-import MoreIcon from '@material-ui/icons/MoreVert'
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
-import PersonAddIcon from '@material-ui/icons/PersonAdd'
-import PersonIcon from '@material-ui/icons/Person'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import MoreIcon from '@mui/icons-material/MoreVert'
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import PersonIcon from '@mui/icons-material/Person'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { iconLoader } from 'utilities/helpers'
 import {
   ROUNDS_URL,
@@ -40,38 +29,42 @@ type Props = {
   logOut: Function
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles()((theme: Theme) =>
+  ({
     grow: {
       flexGrow: 1,
     },
+
     menuButton: {
       marginRight: theme.spacing(2),
     },
+
     icon: {
       width: theme.spacing(3.5)
     },
+
     sectionDesktop: {
       display: 'none',
       [theme.breakpoints.up('md')]: {
         display: 'flex',
       },
     },
+
     sectionMobile: {
       display: 'flex',
       [theme.breakpoints.up('md')]: {
         display: 'none',
       },
     },
+
     active: {
       backgroundColor: theme.palette.secondary.main
     }
-  }),
-)
+  }));
 
 export const NavBar = (props: Props) => {
   const { user, logOut } = props
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -102,7 +95,7 @@ export const NavBar = (props: Props) => {
         component={Link}
         to={ROUNDS_URL}
         onClick={handleMobileMenuClose}
-        className={classnames({ [classes.active]: pathname === ROUNDS_URL })}
+        className={cx({ [classes.active]: pathname === ROUNDS_URL })}
       >
         <IconButton
           size='small'
@@ -117,7 +110,7 @@ export const NavBar = (props: Props) => {
         component={Link}
         to={TEAMS_URL}
         onClick={handleMobileMenuClose}
-        className={classnames({ [classes.active]: pathname === TEAMS_URL })}
+        className={cx({ [classes.active]: pathname === TEAMS_URL })}
       >
         <IconButton
           size='small'
@@ -132,7 +125,7 @@ export const NavBar = (props: Props) => {
         component={Link}
         to={PLAYERS_URL}
         onClick={handleMobileMenuClose}
-        className={classnames({ [classes.active]: pathname === PLAYERS_URL })}
+        className={cx({ [classes.active]: pathname === PLAYERS_URL })}
       >
         <IconButton
           size='small'
@@ -194,7 +187,7 @@ export const NavBar = (props: Props) => {
               color='inherit'
               component={Link}
               to={SIGN_UP_URL}
-              className={classnames({ [classes.active]: pathname.includes(SIGN_UP_URL) })}
+              className={cx({ [classes.active]: pathname.includes(SIGN_UP_URL) })}
             >
               <PersonAddIcon className={classes.icon} />
             </IconButton>
@@ -205,7 +198,7 @@ export const NavBar = (props: Props) => {
               color='inherit'
               component={Link}
               to={LOGIN_URL}
-              className={classnames({ [classes.active]: pathname.includes(LOGIN_URL) })}
+              className={cx({ [classes.active]: pathname.includes(LOGIN_URL) })}
             >
               <PersonIcon className={classes.icon} />
             </IconButton>
@@ -222,7 +215,7 @@ export const NavBar = (props: Props) => {
               aria-haspopup='true'
               color='inherit'
               onClick={handleAccountMenuOpen}
-              className={classnames({ [classes.active]: pathname.includes(PROFILE_URL) })}
+              className={cx({ [classes.active]: pathname.includes(PROFILE_URL) })}
             >
               <AccountCircleIcon />
             </IconButton>
@@ -249,7 +242,7 @@ export const NavBar = (props: Props) => {
                 aria-label='Rounds'
                 component={Link}
                 to={ROUNDS_URL}
-                className={classnames({ [classes.active]: pathname.includes(ROUNDS_URL) })}
+                className={cx({ [classes.active]: pathname.includes(ROUNDS_URL) })}
               >
                 <FormatListNumberedIcon className={classes.icon} />
               </IconButton>
@@ -260,7 +253,7 @@ export const NavBar = (props: Props) => {
                 color='inherit'
                 component={Link}
                 to={TEAMS_URL}
-                className={classnames({ [classes.active]: pathname.includes(TEAMS_URL) })}
+                className={cx({ [classes.active]: pathname.includes(TEAMS_URL) })}
               >
                 <img src={iconLoader('team-jersey-white')} alt='Teams' className={classes.icon} />
               </IconButton>
@@ -271,7 +264,7 @@ export const NavBar = (props: Props) => {
                 color='inherit'
                 component={Link}
                 to={`${PLAYERS_URL}`}
-                className={classnames({ [classes.active]: pathname.includes(PLAYERS_URL) })}
+                className={cx({ [classes.active]: pathname.includes(PLAYERS_URL) })}
               >
                 <img src={iconLoader('player-white')} alt='Teams' className={classes.icon} />
               </IconButton>
@@ -294,7 +287,7 @@ export const NavBar = (props: Props) => {
       </AppBar>
       {renderMobileMenu}
     </div>
-  )
+  );
 }
 
 const mapStateToProps = (state) => {

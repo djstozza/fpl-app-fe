@@ -1,5 +1,5 @@
 import { MouseEvent, Fragment, useEffect, useRef, useContext } from 'react'
-import classnames from 'classnames'
+import { makeStyles } from 'tss-react/mui';
 import {
   Table,
   TableBody,
@@ -9,10 +9,10 @@ import {
   TablePagination,
   Typography,
   Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core'
+} from '@mui/material';
+import { createStyles } from '@mui/material/styles'
 import HeaderCell from './headerCell'
+import classNames from 'classnames';
 
 import { SearchContext } from 'components/common/searchListener'
 import { colors } from 'utilities/colors'
@@ -72,31 +72,34 @@ type HeightProps = {
   paginationHeight: number
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles()((theme: Theme) => createStyles({
     container: {
       maxWidth: '100vw',
       overflow: 'scroll',
       maxHeight: ({ tableHeight, paginationHeight }: HeightProps) => tableHeight - paginationHeight
     },
+
     table: {
       margin: '0 auto'
     },
+
     noWrap: {
       whiteSpace: 'nowrap'
     },
+
     crest: {
       maxHeight: theme.spacing(3),
       marginRight: theme.spacing(1)
     },
+
     mainCell: {
       position: 'sticky',
       left: 0,
       backgroundColor: colors.white,
       zIndex: 2
-    },
+    }
   })
-)
+);
 
 const SortTable = (props: Props) => {
   const {
@@ -132,7 +135,7 @@ const SortTable = (props: Props) => {
     }
   }, [tableHeight, paginationHeight])
 
-  const classes = useStyles({ tableHeight, paginationHeight })
+  const { classes } = useStyles({ tableHeight, paginationHeight })
 
   const handleSort = (name, direction) => (event: MouseEvent<unknown>) => {
     event.preventDefault()
@@ -201,7 +204,7 @@ const SortTable = (props: Props) => {
                           <TableCell
                             align='center'
                             key={cellKey}
-                            className={classnames({ [classes.mainCell]: sticky })}
+                            className={classNames({ [classes.mainCell]: sticky })}
                           >
                             {customRender ? customRender(record, classes, tab) : record[cellId]}
                           </TableCell>
@@ -224,7 +227,7 @@ const SortTable = (props: Props) => {
         onChangePage={changePage}
       />
     </Fragment>
-  )
+  );
 }
 
 export default SortTable

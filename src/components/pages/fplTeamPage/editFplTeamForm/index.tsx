@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui';
 import {
   Paper,
   Theme,
   TextField,
   Button,
-  Typography,
-  makeStyles
-} from '@material-ui/core'
+  Typography
+} from '@mui/material'
 
 import {
   FPL_TEAMS_URL
@@ -23,7 +23,7 @@ type Props = {
   updateFplTeam: Function
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   form: {
     marginTop: theme.spacing(2)
   },
@@ -50,11 +50,11 @@ const EditFplTeamForm = (props: Props) => {
     fplTeam: { id, name, isOwner }
   } = props
 
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const [newName, setName] = useState(name)
 
-  if (!isOwner) return <Redirect to={`${FPL_TEAMS_URL}/${id}/details`} />
+  if (!isOwner) return <Navigate to={`${FPL_TEAMS_URL}/${id}/details`} />
 
   const handleSubmit = (e) => {
     e.preventDefault()

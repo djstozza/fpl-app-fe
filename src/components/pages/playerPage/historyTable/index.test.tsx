@@ -30,7 +30,7 @@ describe('HistoryTable', () => {
   it('redirects to the player details page if hasHistory = false', () => {
     const wrapper = render({ hasHistory: false, history: undefined })
 
-    expect(wrapper.find('Redirect').props().to).toEqual(`${PLAYERS_URL}/${playerId}`)
+    expect(wrapper.find('Navigate').props().to).toEqual(`${PLAYERS_URL}/${playerId}`)
   })
 
   it('renders the team fixtures table', () => {
