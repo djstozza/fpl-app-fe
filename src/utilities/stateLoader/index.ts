@@ -2,7 +2,12 @@ import type { User } from 'types'
 
 type AuthProps = {
   user?: User,
-  token?: string
+  token?: string,
+  errors?: any[],
+  submitting?: boolean,
+  data?: {
+    token?: string,
+  }
 }
 
 export const initialAuth = {
@@ -17,12 +22,13 @@ const StateLoader = {
     const { token, user } = auth
     localStorage.setItem(authKey, JSON.stringify({ token, user }))
   },
-  getAuth: (): undefined => {
+  getAuth: () => {
     const authKeyValue = localStorage.getItem(authKey)
-    const { ...auth } = authKeyValue ? JSON.parse(authKeyValue) : {}
+    const { user = null, token = '' } = authKeyValue ? JSON.parse(authKeyValue) : {}
 
     return {
-      ...auth
+      user,
+      token
     }
   },
   deleteAuth: (): void => {

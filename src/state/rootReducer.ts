@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from '@reduxjs/toolkit'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
 import auth from './auth'
