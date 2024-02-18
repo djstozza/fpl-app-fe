@@ -1,5 +1,4 @@
-import { Fragment } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { makeStyles } from 'tss-react/mui'
 import { Theme, Typography } from '@mui/material'
@@ -38,8 +37,7 @@ type Props = {
   fetchFplTeams: Function,
   updateFplTeamsSort: Function,
   fplTeams: FplTeamsState,
-  submitting: boolean,
-  match: { params: { tab: string, action: string } }
+  submitting: boolean
 }
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -64,16 +62,21 @@ export const ProfilePage = (props: Props) => {
     initializeAuth,
     fetchFplTeams,
     updateFplTeamsSort,
-    fplTeams,
-    match: { params: { tab = 'details', action } }
+    fplTeams
   } = props
   const { username } = user
   const { classes } = useStyles()
+  const { tab = 'details', action } = useParams()
 
   TABS.details['extraTitleInfo'] = capitalize(action)
 
+  const detailsPaths = [
+    USER_DETAILS_URL,
+    PROFILE_URL
+  ]
+
   return (
-    <Fragment>
+    <div data-testid='ProfilePage'>
       <Typography variant='h4' className={classes.title}>
         {username}
       </Typography>
@@ -85,68 +88,63 @@ export const ProfilePage = (props: Props) => {
         titleSubstr={username}
       />
       <Routes>
+        {
+          detailsPaths.map(path => (
+            <Route
+              key={path}
+              path={path}
+              element={<UserDetails user={user} />}
+            />
+          ))
+        }
+        
         <Route
-          exact
-          path={[
-            USER_DETAILS_URL,
-            PROFILE_URL
-          ]}
-        >
-          <UserDetails user={user} />
-        </Route>
-        <Route
-          exact
           path={EDIT_USER_DETAILS_URL}
-        >
-          <UserEditForm
-            user={user}
-            errors={errors}
-            updateUser={updateUser}
-            submitting={submitting}
-            initializeAuth={initializeAuth}
-          />
-        </Route>
+          element={
+            <UserEditForm
+              user={user}
+              errors={errors}
+              updateUser={updateUser}
+              submitting={submitting}
+              initializeAuth={initializeAuth}
+            />
+          }
+        />
         <Route
-          exact
           path={CHANGE_PASSWORD_URL}
-        >
-          <ChangePasswordForm
-            errors={errors}
-            changePassword={changePassword}
-            submitting={submitting}
-            initializeAuth={initializeAuth}
-          />
-        </Route>
+          element={
+            <ChangePasswordForm
+              errors={errors}
+              changePassword={changePassword}
+              submitting={submitting}
+              initializeAuth={initializeAuth}
+            />
+          }
+        />
         <Route
-          exact
           path={`${PROFILE_URL}${LEAGUES_URL}`}
-        >
-          <LeaguesPage />
-        </Route>
+          element={<LeaguesPage />}
+        />
         <Route
-          exact
           path={`${PROFILE_URL}${NEW_LEAGUE_URL}`}
-        >
-          <CreateLeague />
-        </Route>
+          element={<CreateLeague />}
+        />
         <Route
-          exact
           path={`${PROFILE_URL}${JOIN_LEAGUE_URL}`}
-        >
-          <JoinLeague />
-        </Route>
+          element={<JoinLeague />}
+        />
         <Route
-          exact
           path={`${PROFILE_URL}${FPL_TEAMS_URL}`}
-        >
-          <FplTeamsTable
-            fplTeams={fplTeams}
-            fetchFplTeams={fetchFplTeams}
-            updateFplTeamsSort={updateFplTeamsSort}
-          />
-        </Route>
+          element={
+            <FplTeamsTable
+              fplTeams={fplTeams}
+              fetchFplTeams={fetchFplTeams}
+              updateFplTeamsSort={updateFplTeamsSort}
+            />
+          }
+        />
       </Routes>
-    </Fragment>
+    </div>
   )
 }
 

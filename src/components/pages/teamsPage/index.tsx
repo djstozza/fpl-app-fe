@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { teamsActions } from 'state/teams'
@@ -63,7 +62,7 @@ export const TeamsPage = (props: Props) => {
   document.title = `${TITLE} - Teams`
 
   return (
-    <Fragment>
+    <div data-testid='TeamsPage'>
       <Typography variant='h4' className={classes.title}>
         Team Ladder
       </Typography>
@@ -76,7 +75,7 @@ export const TeamsPage = (props: Props) => {
           name='teams'
         />
       </SearchListener>
-    </Fragment>
+    </div >
   )
 }
 

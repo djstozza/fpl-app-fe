@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
 import { makeStyles } from 'tss-react/mui';
@@ -43,6 +44,21 @@ const useStyles = makeStyles()((theme: Theme) => ({
 
 const App = () => {
   const { classes } = useStyles()
+  const roundsPaths = ['/', `${ROUNDS_URL}/:roundId?`]
+
+  const profilePaths = [
+    `${PROFILE_URL}/*`,
+    `${PROFILE_URL}/:tab`,
+    `${PROFILE_URL}/:tab/:action`
+  ]
+
+  const fplTeamPaths = [
+    `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:fplTeamListId(\\d+)?/*`,
+    `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:action?/*`,
+    `${FPL_TEAMS_URL}/:fplTeamId/:tab/:teamTradeId(\\d+)/addPlayer`,
+    `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId(\\d+)?/:tab?/:action?/*`
+  ]
+ 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
@@ -51,54 +67,64 @@ const App = () => {
           <div className={classes.container}>
             <LoadingBar showFastActions />
             <ErrorDialog />
-
             <Routes>
-              <Route exact path={['/', `${ROUNDS_URL}/:roundId?`]} render={(props) => <RoundsPage {...props} />} />
-              <Route exact path={`${TEAMS_URL}/:teamId/:tab?`} render={(props) => <TeamPage {...props} />} />
-              <Route exact path={TEAMS_URL} render={(props) => <TeamsPage {...props} />} />
-              <Route exact path={PLAYERS_URL} render={(props) => <PlayersPage {...props} />} />
-              <Route exact path={`${PLAYERS_URL}/:playerId/:tab?`} render={(props) => <PlayerPage {...props} />} />
-              <Route exact path={SIGN_UP_URL} render={(props) => <SignUpPage {...props} />} />
-              <Route exact path={LOGIN_URL} render={(props) => <LoginPage {...props} />} />
-              <PrivateRoute>
-                <Routes>
+              {roundsPaths.map(path => <Route key={path} path={path} element={<RoundsPage />} />)}
+              <Route path={`${TEAMS_URL}/:teamId/*`} element={<TeamPage />} />
+              <Route path={TEAMS_URL} element={<TeamsPage />} />
+              <Route path={PLAYERS_URL} element={<PlayersPage />} />
+              <Route path={`${PLAYERS_URL}/:playerId/:tab?/*`} element={<PlayerPage />} />
+              <Route path={SIGN_UP_URL} element={<SignUpPage />} />
+              <Route path={LOGIN_URL} element={<LoginPage />} />
+              {
+                profilePaths.map(path => (
                   <Route
-                    exact
-                    path={
-                      [
-                        PROFILE_URL,
-                        `${PROFILE_URL}/:tab`,
-                        `${PROFILE_URL}/:tab/:action`
-                      ]
+                    key={path}
+                    path={path}
+                    element={
+                      <PrivateRoute>
+                        <ProfilePage />
+                      </PrivateRoute>
                     }
-                    render={(props) => <ProfilePage {...props} />}
                   />
+                ))
+              }
+              <Route
+                path={`${LEAGUES_URL}/:leagueId/draft/:tab?/*`}
+                element={
+                  <PrivateRoute>
+                    <DraftPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={`${LEAGUES_URL}/:leagueId/miniDraft/:tab?/*`}
+                element={
+                  <PrivateRoute>
+                    <MiniDraftPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={`${LEAGUES_URL}/:leagueId/:tab?/:action?/*`}
+                element={
+                  <PrivateRoute>
+                    <LeaguePage />
+                  </PrivateRoute>
+                }
+              />
+              {
+                fplTeamPaths.map(path => (
                   <Route
-                    exact
-                    path={`${LEAGUES_URL}/:leagueId/draft/:tab?`}
-                    render={(props) => <DraftPage {...props} />}
+                    key={path}
+                    path={path}
+                    element={
+                      <PrivateRoute>
+                        <FplTeamPage />
+                      </PrivateRoute>
+                    }
                   />
-                  <Route
-                    exact
-                    path={`${LEAGUES_URL}/:leagueId/miniDraft/:tab?`}
-                    render={(props) => <MiniDraftPage {...props} />}
-                  />
-                  <Route
-                    path={`${LEAGUES_URL}/:leagueId/:tab?/:action?`}
-                    render={(props) => <LeaguePage {...props} />}
-                  />
-                  <Route
-                    exact
-                    path={[
-                      `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:fplTeamListId(\\d+)?`,
-                      `${FPL_TEAMS_URL}/:fplTeamId/:tab?/:action?`,
-                      `${FPL_TEAMS_URL}/:fplTeamId/:tab/:teamTradeId(\\d+)/addPlayer`,
-                      `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId(\\d+)?/:tab?/:action?`
-                    ]}
-                    render={(props) => <FplTeamPage {...props} />}
-                  />
-                </Routes>
-              </PrivateRoute>
+                ))
+              }
             </Routes>
           </div>
         </SnackbarProvider>

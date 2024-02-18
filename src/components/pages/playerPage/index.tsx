@@ -1,6 +1,6 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
@@ -23,8 +23,12 @@ type Props = {
   fetchPlayerHistory: Function,
   fetchPlayerHistoryPast: Function,
   updatePlayerHistorySort: Function,
-  updatePlayerHistoryPastSort: Function,
-  match: { params: { playerId: string, tab: string } }
+  updatePlayerHistoryPastSort: Function
+}
+
+type PlayerParams = {
+  playerId: string,
+  tab?: string
 }
 
 const TABS = {
@@ -60,10 +64,10 @@ export const PlayerPage = (props: Props) => {
     fetchPlayerHistory,
     fetchPlayerHistoryPast,
     updatePlayerHistorySort,
-    updatePlayerHistoryPastSort,
-    match: { params: { playerId, tab = 'details' } }
+    updatePlayerHistoryPastSort
   } = props
   const { classes } = useStyles()
+  const { playerId, tab = 'details' } = useParams<PlayerParams>()
 
   useEffect(
     () => {
@@ -71,14 +75,20 @@ export const PlayerPage = (props: Props) => {
     }, [fetchPlayer, playerId]
   )
 
+  if (!playerId) return null
   if (!player) return null
 
   const { firstName, lastName, hasHistory, hasHistoryPast, team } = player
   TABS.history.display = hasHistory
   TABS.historyPast.display = hasHistoryPast
 
+  const detailsPaths = [
+    `${PLAYERS_URL}/:playerId`,
+    `${PLAYERS_URL}/:playerId/details`
+  ]
+
   return (
-    <Fragment>
+    <div data-testid='PlayerPage'>
       <Typography variant='h4' className={classes.title}>
         {firstName} {lastName}
         <div className={classes.crestContainer}>
@@ -96,47 +106,47 @@ export const PlayerPage = (props: Props) => {
         titleSubstr={`${firstName} ${lastName}`}
       />
       <Routes>
+        {
+          detailsPaths.map(path => (
+            <Route
+              key={path}
+              path={path}
+              element={<PlayerDetails key={playerId} player={player} />}
+            />
+          ))
+        }
         <Route
-          exact
-          path={[
-            `${PLAYERS_URL}/:playerId`,
-            `${PLAYERS_URL}/:playerId/details`
-          ]}
-        >
-          <PlayerDetails key={playerId} player={player} />
-        </Route>
-        <Route
-          exact
           path={`${PLAYERS_URL}/:playerId/history`}
-        >
-          <HistoryTable
-            key={playerId}
-            playerId={playerId}
-            history={history}
-            fetchPlayerHistory={fetchPlayerHistory}
-            tab={tab}
-            updatePlayerHistorySort={updatePlayerHistorySort}
-            hasHistory={hasHistory}
-            fetching={fetching}
-          />
-        </Route>
+          element={
+            <HistoryTable
+              key={playerId}
+              playerId={playerId}
+              history={history}
+              fetchPlayerHistory={fetchPlayerHistory}
+              tab={tab}
+              updatePlayerHistorySort={updatePlayerHistorySort}
+              hasHistory={hasHistory}
+              fetching={fetching}
+            />
+          }
+        />
         <Route
-          exact
           path={`${PLAYERS_URL}/:playerId/historyPast`}
-        >
-          <HistoryPastTable
-            key={playerId}
-            playerId={playerId}
-            historyPast={historyPast}
-            fetchPlayerHistoryPast={fetchPlayerHistoryPast}
-            updatePlayerHistoryPastSort={updatePlayerHistoryPastSort}
-            tab={tab}
-            hasHistoryPast={hasHistoryPast}
-            fetching={fetching}
-          />
-        </Route>
+          element={
+            <HistoryPastTable
+              key={playerId}
+              playerId={playerId}
+              historyPast={historyPast}
+              fetchPlayerHistoryPast={fetchPlayerHistoryPast}
+              updatePlayerHistoryPastSort={updatePlayerHistoryPastSort}
+              tab={tab}
+              hasHistoryPast={hasHistoryPast}
+              fetching={fetching}
+            />
+          }
+        />
       </Routes>
-    </Fragment>
+    </div>
   )
 }
 

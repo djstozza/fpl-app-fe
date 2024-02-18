@@ -2,7 +2,7 @@ import type { User } from 'types'
 
 type AuthProps = {
   user?: User,
-  token: string
+  token?: string
 }
 
 export const initialAuth = {

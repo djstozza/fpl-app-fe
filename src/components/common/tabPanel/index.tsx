@@ -24,10 +24,6 @@ const useStyles = makeStyles()((theme: Theme) => ({
     flexGrow: 1,
     width: '100%',
     backgroundColor: theme.palette.background.paper
-  },
-  wrapper: {
-    flexDirection: 'row',
-    display: 'flex'
   }
 }));
 
@@ -52,11 +48,11 @@ const TabPanel = (props: Props) => {
           {
             collection.map((item, key) => (
               <Tab
-                classes={{ wrapper: classes.wrapper }}
                 key={item['id']}
                 label={labelRenderer(item)}
                 onClick={() => handleChange(item['id'])}
                 {...scrollProps(key)}
+                wrapped
               />
             ))
           }

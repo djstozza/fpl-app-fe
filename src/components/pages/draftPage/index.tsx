@@ -1,6 +1,6 @@
-import { useEffect, useState, Fragment, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { makeStyles } from 'tss-react/mui'
 import { Typography, Theme } from '@mui/material'
@@ -35,8 +35,7 @@ type Props = {
   updateAvailablePlayersPage: Function,
   fetchDraftPickFacets: Function,
   fetchPlayerFacets: Function,
-  fetchDraftPicksStatus: Function,
-  match: { params: { leagueId: string, tab: string } }
+  fetchDraftPicksStatus: Function
 }
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -66,13 +65,13 @@ export const DraftPage = (props: Props) => {
     updateAvailablePlayersPage,
     fetchPlayerFacets,
     updateDraftPick,
-    fetchDraftPicksStatus,
-    match: { params: { leagueId, tab = 'draftPicks' } }
+    fetchDraftPicksStatus
   } = props
 
   const { classes } = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const [draftPickUpdatedAt, setDraftPickUpdatedAt] = useState(0)
+  const { leagueId, tab = 'draftPicks' } = useParams()
 
   useEffect(
     () => {
@@ -121,9 +120,13 @@ export const DraftPage = (props: Props) => {
 
   const { name } = league
   const key = `${leagueId}-${draftPickUpdatedAt}`
+  const draftPaths = [
+    `${LEAGUES_URL}/:leagueId/draft`,
+    `${LEAGUES_URL}/:leagueId/draft/draftPicks`
+  ]
 
   return (
-    <Fragment>
+    <div data-testid='DraftPage'>
       <Typography variant='h4' className={classes.title}>
         {name} Draft
       </Typography>
@@ -145,40 +148,42 @@ export const DraftPage = (props: Props) => {
         showAlert={draftFinished}
       />
       <Routes>
+        {
+          draftPaths.map(path => (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <DraftPicksTable
+                  key={key}
+                  draftPicks={draftPicks}
+                  fetchDraftPicks={fetchDraftPicks}
+                  updateDraftPicksSort={updateDraftPicksSort}
+                  updateDraftPicksFilter={updateDraftPicksFilter}
+                  fetchDraftPickFacets={fetchDraftPickFacets}
+                />
+              }
+            />
+          ))
+        }
         <Route
-          exact
-          path={[
-            `${LEAGUES_URL}/:leagueId/draft`,
-            `${LEAGUES_URL}/:leagueId/draft/draftPicks`
-          ]}
-        >
-          <DraftPicksTable
-            key={key}
-            draftPicks={draftPicks}
-            fetchDraftPicks={fetchDraftPicks}
-            updateDraftPicksSort={updateDraftPicksSort}
-            updateDraftPicksFilter={updateDraftPicksFilter}
-            fetchDraftPickFacets={fetchDraftPickFacets}
-          />
-        </Route>
-        <Route
-          exact
           path={`${LEAGUES_URL}/:leagueId/draft/availablePlayers`}
-        >
-          <AvailablePlayersTable
-            key={key}
-            draftPicks={draftPicks}
-            players={players}
-            fetchAvailablePlayers={fetchAvailablePlayers}
-            updateAvailablePlayersSort={updateAvailablePlayersSort}
-            updateAvailablePlayersFilter={updateAvailablePlayersFilter}
-            updateAvailablePlayersPage={updateAvailablePlayersPage}
-            fetchPlayerFacets={fetchPlayerFacets}
-            updateDraftPick={updateDraftPick}
-          />
-        </Route>
+          element={
+            <AvailablePlayersTable
+              key={key}
+              draftPicks={draftPicks}
+              players={players}
+              fetchAvailablePlayers={fetchAvailablePlayers}
+              updateAvailablePlayersSort={updateAvailablePlayersSort}
+              updateAvailablePlayersFilter={updateAvailablePlayersFilter}
+              updateAvailablePlayersPage={updateAvailablePlayersPage}
+              fetchPlayerFacets={fetchPlayerFacets}
+              updateDraftPick={updateDraftPick}
+            />
+          }
+        />
       </Routes>
-    </Fragment>
+    </div>
   )
 }
 

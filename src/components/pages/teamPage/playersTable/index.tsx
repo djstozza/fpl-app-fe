@@ -10,10 +10,7 @@ import type { CellHash } from 'types'
 type Props = {
   players: PlayersState,
   fetchTeamPlayers: Function,
-  sort: {
-    players: Object,
-    fixtures: Object
-  },
+  sort: Object,
   teamId: string,
   tab: string,
   updateTeamPlayersSort: Function

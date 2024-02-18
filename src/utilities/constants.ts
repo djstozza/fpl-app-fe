@@ -1,4 +1,4 @@
-import ActionCable from 'actioncable'
+import { createConsumer } from '@rails/actioncable'
 
 export const API_URL = process.env.REACT_APP_API_URL
 export const CABLE_URL = process.env.REACT_APP_CABLE_URL
@@ -27,7 +27,7 @@ export const API_WAIVER_PICKS_PATH = '/waiver_picks'
 
 export const TITLE = 'Fpl App'
 
-export const cable = ActionCable.createConsumer(CABLE_URL)
+export const cable = createConsumer(CABLE_URL)
 
 export const APPLICATION_ERRORS = {
   '404': {

@@ -7,7 +7,7 @@ type Props = {
   to: string,
   children: any,
   size?: 'small' | 'medium' | 'large'
-  color: 'inherit' | 'default' | 'primary' | 'secondary' | undefined,
+  color: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning' | undefined,
   onClick?: () => void,
   rightMargin?: boolean
 }

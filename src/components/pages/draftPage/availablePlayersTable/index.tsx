@@ -113,7 +113,6 @@ const AvailablePlayersTable = (props: Props) => {
         <DialogActions>
           <Button
             variant='contained'
-            color='default'
             onClick={() => setDialogOpen(false)}
           >
             Cancel

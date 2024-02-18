@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import createSagaMiddleware from 'redux-saga'
 
@@ -9,11 +9,11 @@ import * as rootActions from './rootActions'
 
 const sagaMiddleware = createSagaMiddleware()
 
-const store = createStore(
-  rootReducer,
-  { auth: StateLoader.getAuth() },
-  composeWithDevTools(applyMiddleware(sagaMiddleware))
-)
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
+  preloadedState: { auth: StateLoader.getAuth() }
+})
 
 sagaMiddleware.run(rootSaga)
 

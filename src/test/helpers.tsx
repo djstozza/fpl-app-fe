@@ -1,6 +1,7 @@
-import { createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
+import rootReducer from 'state/rootReducer'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import history from 'state/history'
 
 export const blank__ = (): void => { return }
@@ -11,11 +12,11 @@ type MockedStoreProps = {
 }
 
 export const MockedStore = ({ children, defaultState = {} }: MockedStoreProps) => (
-  <Provider store={createStore(() => defaultState)}>{children}</Provider>
+  <Provider store={configureStore({ reducer: rootReducer, preloadedState: defaultState })}>{children}</Provider>
 )
 
 export const MockedRouter = ({ initialEntries = ['/'], children }:{ initialEntries: string[], children: any }) => (
-  <Router initialEntries={initialEntries} history={history}>
+  <Router>
     {children}
   </Router>
 )
@@ -25,7 +26,7 @@ export const MockedRouterStore = ({
   defaultState = { rounds: { data: [] }, auth: {}, loadingBar: { default: 0 } }
 }: MockedStoreProps) => (
   <MockedStore defaultState={defaultState}>
-    <Router history={history}>
+    <Router>
       {children}
     </Router>
   </MockedStore>

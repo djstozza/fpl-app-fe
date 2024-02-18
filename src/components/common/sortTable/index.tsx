@@ -10,7 +10,6 @@ import {
   Typography,
   Theme,
 } from '@mui/material';
-import { createStyles } from '@mui/material/styles'
 import HeaderCell from './headerCell'
 import classNames from 'classnames';
 
@@ -72,11 +71,12 @@ type HeightProps = {
   paginationHeight: number
 }
 
-const useStyles = makeStyles()((theme: Theme) => createStyles({
+const useStyles = makeStyles<HeightProps>()((theme: Theme, { tableHeight, paginationHeight }: HeightProps) =>
+  ({
     container: {
       maxWidth: '100vw',
       overflow: 'scroll',
-      maxHeight: ({ tableHeight, paginationHeight }: HeightProps) => tableHeight - paginationHeight
+      maxHeight: tableHeight - paginationHeight
     },
 
     table: {
@@ -98,8 +98,7 @@ const useStyles = makeStyles()((theme: Theme) => createStyles({
       backgroundColor: colors.white,
       zIndex: 2
     }
-  })
-);
+  }));
 
 const SortTable = (props: Props) => {
   const {
@@ -224,7 +223,7 @@ const SortTable = (props: Props) => {
         rowsPerPage={noOffset ? collection.length : limit}
         rowsPerPageOptions={[limit]}
         page={offset / limit}
-        onChangePage={changePage}
+        onPageChange={changePage}
       />
     </Fragment>
   );

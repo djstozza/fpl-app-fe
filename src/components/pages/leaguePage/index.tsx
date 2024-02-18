@@ -1,6 +1,6 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import { capitalize } from 'lodash'
 import { makeStyles } from 'tss-react/mui'
 import { Typography, Theme } from '@mui/material'
@@ -27,8 +27,13 @@ type Props = {
   createDraft: Function,
   initializeForm: () => void,
   sort: Object,
-  fetching: boolean,
-  match: { params: { leagueId: string, tab: string, action: string } }
+  fetching: boolean
+}
+
+type LeagueParams = {
+  leagueId: string,
+  tab?: string,
+  action?: string
 }
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -56,10 +61,10 @@ export const LeaguePage = (props: Props) => {
     errors,
     submitting,
     sort,
-    fetching,
-    match: { params: { leagueId, tab = 'details', action } }
+    fetching
   } = props
   const { classes } = useStyles()
+  const { leagueId, tab = 'details', action } = useParams<LeagueParams>()
 
   useEffect(
     () => {
@@ -67,14 +72,20 @@ export const LeaguePage = (props: Props) => {
     }, [fetchLeague, leagueId]
   )
 
+  if (!leagueId) return null
   if (!league) return null
 
   const { name } = league
 
   TABS.details['extraTitleInfo'] = capitalize(action)
 
+  const detailsPaths = [
+    `${LEAGUES_URL}/:leagueId`,
+    `${LEAGUES_URL}/:leagueId/details`
+  ]
+
   return (
-    <Fragment>
+    <div data-testid='LeaguePage'>
       <Typography variant='h4' className={classes.title}>
         {name}
       </Typography>
@@ -86,60 +97,54 @@ export const LeaguePage = (props: Props) => {
         titleSubstr={name}
       />
       <Routes>
+        {
+          detailsPaths.map(path => (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <LeagueDetails
+                  league={league}
+                  generateDraftPicks={generateDraftPicks}
+                  createDraft={createDraft}
+                  submitting={submitting}
+                />
+              }
+            />
+          ))
+        }
         <Route
-          exact
-          path={`${LEAGUES_URL}/:leagueId`}
-        >
-          <LeagueDetails
-            league={league}
-            generateDraftPicks={generateDraftPicks}
-            createDraft={createDraft}
-            submitting={submitting}
-          />
-        </Route>
-        <Route
-          exact
-          path={`${LEAGUES_URL}/:leagueId/details`}
-        >
-          <LeagueDetails
-            league={league}
-            generateDraftPicks={generateDraftPicks}
-            createDraft={createDraft}
-            submitting={submitting}
-          />
-        </Route>
-        <Route
-          exact
           path={`${LEAGUES_URL}/:leagueId/details/edit`}
-        >
-          <EditLeagueForm
-            league={league}
-            updateLeague={updateLeague}
-            errors={errors}
-            submitting={submitting}
-            initializeForm={initializeForm}
-          />
-        </Route>
+          element={
+            <EditLeagueForm
+              league={league}
+              updateLeague={updateLeague}
+              errors={errors}
+              submitting={submitting}
+              initializeForm={initializeForm}
+            />
+          }
+        />
         <Route
-          exact
           path={`${LEAGUES_URL}/:leagueId/fplTeams`}
-        >
-          <FplTeamsTable
-            league={league}
-            leagueId={leagueId}
-            fplTeams={fplTeams}
-            fetchFplTeams={fetchFplTeams}
-            updateFplTeamsSort={updateFplTeamsSort}
-            generateDraftPicks={generateDraftPicks}
-            createDraft={createDraft}
-            submitting={submitting}
-            sort={sort}
-            errors={errors}
-            fetching={fetching}
-          />
-        </Route>
+          element={
+            <FplTeamsTable
+              league={league}
+              leagueId={leagueId}
+              fplTeams={fplTeams}
+              fetchFplTeams={fetchFplTeams}
+              updateFplTeamsSort={updateFplTeamsSort}
+              generateDraftPicks={generateDraftPicks}
+              createDraft={createDraft}
+              submitting={submitting}
+              sort={sort}
+              errors={errors}
+              fetching={fetching}
+            />
+          }
+        />
       </Routes>
-    </Fragment>
+    </div>
   )
 }
 

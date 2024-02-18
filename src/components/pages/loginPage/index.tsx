@@ -6,8 +6,7 @@ import {
   TextField,
   Button,
   Theme,
-  Paper,
-  createStyles
+  Paper
 } from '@mui/material'
 
 import Link from 'components/common/link'
@@ -27,11 +26,14 @@ type Props = {
   errors: Error[]
 }
 
-// TODO jss-to-tss-react codemod: Unable to handle style definition reliably. ArrowFunctionExpression in CSS prop.
-const useStyles = makeStyles()((theme: Theme) => createStyles({
+type StyleProps = {
+  height: number
+}
+
+const useStyles = makeStyles<StyleProps>()((theme: Theme, { height }) => ({
   background: {
     width: '100vw',
-    height: ({ height }:{ height: number }) => height,
+    height: height,
     display: 'block',
     backgroundImage: `url(${stadiumCrowdLoader()})`,
     backgroundSize: 'cover',
@@ -98,7 +100,11 @@ export const LoginPage = (props: Props) => {
   document.title = `${TITLE} - Log In`
 
   return (
-    <div ref={backgroundRef} className={classes.background}>
+    <div
+      data-testid='LoginPage'
+      ref={backgroundRef}
+      className={classes.background}
+    >
       <form onSubmit={handleSubmit} className={classes.form}>
         <Paper className={classes.paper}>
           <Typography variant='h5' className={classes.textField}>

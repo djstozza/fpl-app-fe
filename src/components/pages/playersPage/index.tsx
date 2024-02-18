@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { playersActions } from 'state/players'
@@ -124,7 +124,7 @@ export const PlayersPage = (props: Props) => {
   document.title = `${TITLE} - Players`
 
   return (
-    <Fragment>
+    <div data-testid='PlayersPage'>
       <Typography variant='h4' className={classes.title}>
         Players
       </Typography>
@@ -141,7 +141,7 @@ export const PlayersPage = (props: Props) => {
           name='players'
         />
       </SearchListener>
-    </Fragment>
+    </div>
   )
 }
 

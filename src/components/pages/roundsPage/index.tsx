@@ -1,5 +1,6 @@
-import { useEffect, useState, useMemo, Fragment, useCallback } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 import { roundActions } from 'state/round'
 import { roundsActions } from 'state/rounds'
@@ -14,8 +15,11 @@ type Props = {
   round: Round,
   rounds: RoundSummary[],
   fetchRounds: () => void,
-  fetchRound: (string) => void,
-  match: { params: { roundId?: string } }
+  fetchRound: (string) => void
+}
+
+type RoundParams = {
+  roundId?: string
 }
 
 export const labelRenderer = (roundSummary: RoundSummary) => roundSummary.name
@@ -25,14 +29,14 @@ export const RoundsPage = (props: Props) => {
     round,
     rounds,
     fetchRound,
-    fetchRounds,
-    match: { params: { roundId } }
+    fetchRounds
   } = props
   const [selectedRounId, setSelectedRoundId] = useState<string | undefined>()
   const [lastUpdatedAt, setLastUpdatedAt] = useState(0)
 
   const currentRoundId = rounds.find(({ current }) => current)?.id
   const lastRoundId = rounds[rounds.length - 1]?.id
+  const { roundId } = useParams<RoundParams>()
 
   const handleReceived = useCallback(
     ({ updatedAt }) => {
@@ -72,7 +76,7 @@ export const RoundsPage = (props: Props) => {
   if (round) document.title = `${TITLE} - ${round.name}`
 
   return (
-    <Fragment>
+    <div data-testid='RoundsPage'>
       <TabPanel
         collection={rounds}
         collectionId={selectedRounId}
@@ -84,7 +88,7 @@ export const RoundsPage = (props: Props) => {
         round={round}
         fetchRound={fetchRound}
       />
-    </Fragment>
+    </div>
   )
 }
 
@@ -97,6 +101,5 @@ const matchDispatchToProps = {
   fetchRound: roundActions.fetchRound,
   fetchRounds: roundsActions.fetchRounds
 }
-
 
 export default connect(mapStateToProps, matchDispatchToProps)(RoundsPage)

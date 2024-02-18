@@ -1,6 +1,6 @@
 import { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import qs from 'qs'
 import { makeStyles } from 'tss-react/mui'
 import {
@@ -32,8 +32,12 @@ type Props = {
   fetchTeamPlayers: Function,
   fetchTeamFixtures: Function,
   updateTeamFixturesSort: Function,
-  updateTeamPlayersSort: Function,
-  match: { params: { teamId: string, tab: string } }
+  updateTeamPlayersSort: Function
+}
+
+type TeamParams = {
+  teamId: string,
+  tab?: string
 }
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -74,8 +78,9 @@ export const TeamPage = (props: Props) => {
     fetchTeamFixtures,
     updateTeamPlayersSort,
     updateTeamFixturesSort,
-    match: { params: { teamId, tab = 'details' } }
   } = props
+
+  const { teamId, tab = 'details' } = useParams<TeamParams>()
 
   const {
     data,
@@ -113,11 +118,17 @@ export const TeamPage = (props: Props) => {
   )
 
   if (!data) return null
+  if (!teamId) return null
 
   const { name, shortName } = data
 
+  const detailsPaths = [
+    `${TEAMS_URL}/:teamId`,
+    `${TEAMS_URL}/:teamId/details`
+  ]
+ 
   return (
-    <Fragment>
+    <div data-testid='TeamPage'>
       <TabPanel
         collection={teams}
         collectionId={teamId}
@@ -139,48 +150,48 @@ export const TeamPage = (props: Props) => {
         titleSubstr={name}
       />
       <Routes>
+        {
+          detailsPaths.map(path => (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <TeamDetails team={data} />
+              }
+            />
+          ))
+        }
         <Route
-          exact
-          path={
-            [
-              `${TEAMS_URL}/:teamId`,
-              `${TEAMS_URL}/:teamId/details`
-            ]
-          }
-        >
-          <TeamDetails team={data} />
-        </Route>
-        <Route
-          exact
           path={`${TEAMS_URL}/:teamId/fixtures`}
-        >
-          <FixturesTable
-            key={teamId}
-            teamId={teamId}
-            fixtures={fixtures}
-            fetchTeamFixtures={fetchTeamFixtures}
-            sort={sortQuery}
-            tab={tab}
-            updateTeamFixturesSort={updateTeamFixturesSort}
-            fetching={fetching}
-          />
-        </Route>
+          element={
+            <FixturesTable
+              key={teamId}
+              teamId={teamId}
+              fixtures={fixtures}
+              fetchTeamFixtures={fetchTeamFixtures}
+              sort={sortQuery}
+              tab={tab}
+              updateTeamFixturesSort={updateTeamFixturesSort}
+              fetching={fetching}
+            />
+          }
+        />
         <Route
-          exact
           path={`${TEAMS_URL}/:teamId/players`}
-        >
-          <PlayersTable
-            key={teamId}
-            players={players}
-            fetchTeamPlayers={fetchTeamPlayers}
-            sort={sortQuery}
-            teamId={teamId}
-            tab={tab}
-            updateTeamPlayersSort={updateTeamPlayersSort}
-          />
-        </Route>
+          element={
+            <PlayersTable
+              key={teamId}
+              players={players}
+              fetchTeamPlayers={fetchTeamPlayers}
+              sort={sortQuery}
+              teamId={teamId}
+              tab={tab}
+              updateTeamPlayersSort={updateTeamPlayersSort}
+            />
+          }
+        />
       </Routes>
-    </Fragment>
+    </div>
   )
 }
 
