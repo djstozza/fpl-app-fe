@@ -22,8 +22,6 @@ import { initialState as teamInitialState } from './team/reducer'
 import { initialState as teamsInitialState } from './teams/reducer'
 import { initialState as tradesInitialState } from './trades/reducer'
 import { initialState as waiverPicksInitialState } from './waiverPicks/reducer'
-import { loadingBarReducer } from 'react-redux-loading-bar'
-
 import { USER_1 } from 'test/fixtures'
 
 describe('Root reducer', () => {
@@ -48,8 +46,7 @@ describe('Root reducer', () => {
     team: teamInitialState,
     teams: teamsInitialState,
     trades: tradesInitialState,
-    waiverPicks: waiverPicksInitialState,
-    loadingBar: loadingBarReducer
+    waiverPicks: waiverPicksInitialState
   }
   const exampleLoggedInState = {
     ...blankAppState,

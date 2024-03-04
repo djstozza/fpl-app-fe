@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { Theme } from '@mui/material'
+import classNames from 'classnames'
 
 import { colors } from 'utilities/colors'
 import { teamCrestPathLoader } from 'utilities/helpers'
@@ -138,13 +139,15 @@ const ListPositionBox = (props: Props) => {
     <div
       onClick={handleClick}
       className={
-        cx(classes.playerContainer,
-        {
-          [classes.substitute]: substitute,
-          [classes.selected]: isSelected,
-          [classes.validSubstitution]: !fetching && selectedListPositionId && validSubstitution,
-          [classes.canSelect]: canSubstitute && (!selectedListPositionId || isSelected || validSubstitution)
-        })
+        classNames(
+          classes.playerContainer,
+          {
+            [classes.substitute]: substitute,
+            [classes.selected]: isSelected,
+            [classes.validSubstitution]: !fetching && selectedListPositionId && validSubstitution,
+            [classes.canSelect]: canSubstitute && (!selectedListPositionId || isSelected || validSubstitution)
+          }
+        )
       }
     >
       <div className={classes.player}>

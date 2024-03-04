@@ -135,7 +135,7 @@ const TradeablePlayersTable = (props: Props) => {
         <DialogActions>
           <Button
             variant='contained'
-            color='default'
+            color='inherit'
             onClick={() => setDialogOpen(false)}
             disabled={submitting}
           >

@@ -1,4 +1,5 @@
 import { useEffect, useState, Fragment } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
 import SortTable from 'components/common/sortTable'
 import { initialFilterState } from 'state/players/reducer'
@@ -12,22 +13,10 @@ import {
   Button
 } from '@mui/material'
 
-import type { DraftPicksState } from 'state/draftPicks'
-import type { PlayersState } from 'state/players'
+import type { DraftContext } from '..'
 import type { PlayerSummary, CellHash } from 'types'
 
-type Props = {
-  players: PlayersState,
-  draftPicks: DraftPicksState,
-  fetchAvailablePlayers: Function,
-  fetchPlayerFacets: Function,
-  updateAvailablePlayersFilter: Function,
-  updateAvailablePlayersSort: Function,
-  updateAvailablePlayersPage: Function,
-  updateDraftPick: Function
-}
-
-const AvailablePlayersTable = (props: Props) => {
+const AvailablePlayersTable = () => {
   const {
     players: { data: players, facets = {}, meta: { total }, fetching },
     draftPicks,
@@ -36,8 +25,9 @@ const AvailablePlayersTable = (props: Props) => {
     updateAvailablePlayersFilter,
     updateAvailablePlayersSort,
     updateAvailablePlayersPage,
-    updateDraftPick
-  } = props
+    updateDraftPick,
+    setTab
+  } = useOutletContext<DraftContext>()
 
   const { userCanPick, nextDraftPickId, submitting } = draftPicks
 
@@ -45,11 +35,15 @@ const AvailablePlayersTable = (props: Props) => {
   const [playerName, setPlayerName] = useState('')
   const [playerId, setPlayerId] = useState('')
 
-  useEffect(
-    () => {
+  const tab = 'availablePlayers'
+
+  useEffect(() => {
+    setTab(tab)
+  }, [])
+
+  useEffect(() => {
       fetchPlayerFacets()
-    }, [fetchPlayerFacets]
-  )
+  }, [fetchPlayerFacets])
 
   const handleOpenDialog = (playerId, firstName, lastName) => {
     setPlayerId(playerId)

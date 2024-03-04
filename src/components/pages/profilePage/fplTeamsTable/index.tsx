@@ -1,3 +1,6 @@
+import { useContext } from 'react'
+
+import { AuthContext } from '..'
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/fplTeams/reducer'
@@ -55,12 +58,12 @@ const FPL_TEAMS_TABLE_CELLS = [
   }
 ]
 
-const HistoryPastTable = (props: Props) => {
+const FplTeamsTable = () => {
   const {
     fplTeams: { data: fplTeams, fetching },
     fetchFplTeams,
     updateFplTeamsSort
-  } = props
+  } = useContext(AuthContext)
 
   return (
     <SearchListener fetchAction={fetchFplTeams} initialFilterState={initialFilterState}>
@@ -75,4 +78,4 @@ const HistoryPastTable = (props: Props) => {
   )
 }
 
-export default HistoryPastTable
+export default FplTeamsTable

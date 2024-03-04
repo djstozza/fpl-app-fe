@@ -1,10 +1,12 @@
 import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 
 import ListPositionsTable from '../../listPositionsTable'
 import OutListPosition from '../../outListPosition'
 import TradeableListPositionsTable from '../tradeableListPositionsTable'
 
+import type { FplTeamContext } from '../..'
 import type { ListPositionState } from 'state/listPosition'
 import type { FplTeamListState } from 'state/fplTeamList'
 import type { InterTeamTradeGroupsState } from 'state/interTeamTradeGroups'
@@ -28,14 +30,13 @@ type Props = {
   fetchTradeableListPositionFacets: Function
 }
 
-const NewTeamTrade = (props: Props) => {
+const NewTeamTrade = () => {
   const {
-    isOwner,
     currentFplTeamList,
-    fplTeamList: { listPositions, fetching },
+    fplTeam: { isOwner },
+    fplTeamList: { listPositions, fetching, outListPosition },
     fetchListPositions,
     deadline,
-    outListPosition,
     setOutListPosition,
     listPosition,
     createInterTeamTradeGroup,
@@ -44,7 +45,7 @@ const NewTeamTrade = (props: Props) => {
     updateTradeableListPositionsSort,
     updateTradeableListPositionsFilter,
     fetchTradeableListPositionFacets
-  } = props
+  } = useOutletContext<FplTeamContext>()
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(

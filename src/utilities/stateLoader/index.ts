@@ -22,13 +22,12 @@ const StateLoader = {
     const { token, user } = auth
     localStorage.setItem(authKey, JSON.stringify({ token, user }))
   },
-  getAuth: () => {
+  getAuth: (): undefined => {
     const authKeyValue = localStorage.getItem(authKey)
-    const { user = null, token = '' } = authKeyValue ? JSON.parse(authKeyValue) : {}
+    const { ...auth } = authKeyValue ? JSON.parse(authKeyValue) : {}
 
     return {
-      user,
-      token
+     ...auth
     }
   },
   deleteAuth: (): void => {

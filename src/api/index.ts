@@ -19,14 +19,15 @@ export const getData = (url: string, { body, method, token }: Options) => {
 
   return fetch(url, options).then(async (res) => {
     const { ok, status, statusText } = res
+  
+    const json = status === 401 ? '' :  await res.json()
 
-    const json = await res.json()
     const response = {
       status: status.toString(),
       statusText,
       ok,
       body: json
     }
-    return response
-  })
+    return response  
+  })  
 }

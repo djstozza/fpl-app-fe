@@ -1,4 +1,5 @@
-import { Fragment } from 'react'
+import { Fragment, useContext, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
@@ -8,6 +9,7 @@ import { FPL_TEAMS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
 
 import type { League, FplTeam, Error, CellHash } from 'types'
+import type { LeagueContext } from '..'
 
 type Props = {
   fplTeams: FplTeam[],
@@ -67,7 +69,7 @@ const FPL_TEAMS_TABLE_CELLS = {
   }
 }
 
-const FplTeamsTable = (props: Props) => {
+const FplTeamsTable = () => {
   const {
     leagueId,
     league,
@@ -77,13 +79,17 @@ const FplTeamsTable = (props: Props) => {
     createDraft,
     submitting,
     updateFplTeamsSort,
-    fetching
-  } = props
+    fetching,
+    setTab,
+    setAction
+  } =useOutletContext<LeagueContext>()
 
   const {
     showDraftPickColumn,
     showLiveColumns
   } = league
+
+  const tab = 'fplTeams'
 
   const cells: CellHash = { ...FPL_TEAMS_TABLE_CELLS }
 
@@ -93,6 +99,11 @@ const FplTeamsTable = (props: Props) => {
     delete cells['totalScore']
     delete cells['miniDraftPickNumber']
   }
+
+  useEffect(() => {
+    setTab(tab)
+    setAction()
+  }, [])
 
   return (
     <Fragment>

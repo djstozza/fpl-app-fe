@@ -79,7 +79,7 @@ export const LeaguesPage = (props: Props) => {
         </ButtonLink>
         <ButtonLink
           to={`${PROFILE_URL}${JOIN_LEAGUE_URL}`}
-          color='default'
+          color='inherit'
         >
           Join a League
         </ButtonLink>

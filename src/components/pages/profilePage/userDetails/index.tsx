@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useContext } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import {
   Table,
@@ -8,15 +8,10 @@ import {
   Theme
 } from '@mui/material'
 
+import { AuthContext } from '..'
 import ButtonLink from 'components/common/buttonLink'
 
 import { EDIT_USER_DETAILS_URL, CHANGE_PASSWORD_URL } from 'utilities/constants'
-
-import type { User } from 'types'
-
-type Props = {
-  user: User
-}
 
 const USER_DETAILS_ROWS = [
   { rowId: 'email', label: 'Email' },
@@ -35,8 +30,8 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const UserDetails = (props: Props) => {
-  const { user } = props
+const UserDetails = () => {
+  const { user } = useContext(AuthContext)
   const { classes } = useStyles()
 
   return (
@@ -70,7 +65,7 @@ const UserDetails = (props: Props) => {
         </ButtonLink>
         <ButtonLink
           to={CHANGE_PASSWORD_URL}
-          color='default'
+          color='inherit'
         >
           Change Password
         </ButtonLink>

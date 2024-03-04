@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import {
   TextField,
   MenuItem
@@ -15,29 +16,11 @@ import Link from 'components/common/link'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import TabPanel from 'components/common/tabPanel'
 
-import type { FplTeamListsState } from 'state/fplTeamLists'
-import type { FplTeamListState } from 'state/fplTeamList'
-import type { WaiverPicksState } from 'state/waiverPicks'
-import type { TradesState } from 'state/trades'
+import type { FplTeamContext } from '..'
 import type { WaiverPick, FplTeamList, CellHash } from 'types'
 
-type Props = {
-  isOwner: boolean,
-  isWaiver: boolean,
-  waiverPicks: WaiverPicksState,
-  trades: TradesState,
-  fplTeamList: FplTeamListState,
-  selectedFplTeamListId?: string,
-  fetchWaiverPicks: Function,
-  changeWaiverPickOrder: Function,
-  fplTeamLists: FplTeamListsState,
-  fplTeamId: string,
-  fetchTrades: Function
-}
-
-const WaiverPicksTable = (props: Props) => {
+const WaiverPicksTable = () => {
   const {
-    isOwner,
     isWaiver,
     waiverPicks: { data: waiverPicks, submitting, errors, fetching: waiverPicksFetching },
     fplTeamList: { data: { round: { current = false } = {} } = {} },
@@ -47,14 +30,23 @@ const WaiverPicksTable = (props: Props) => {
     fplTeamLists: { data: fplTeamLists },
     fplTeamId,
     fetchTrades,
-    trades: { data: trades, fetching: tradesFetching }
-  } = props
+    fplTeam: { isOwner },
+    trades: { data: trades, fetching: tradesFetching },
+    setTab,
+    setAction
+  } = useOutletContext<FplTeamContext>()
   const { enqueueSnackbar } = useSnackbar()
 
   const showTrades = window.location.pathname.includes('trades')
   const fetchAction = showTrades ? fetchTrades : fetchWaiverPicks
   const fetching = showTrades ? tradesFetching : waiverPicksFetching
   const name = showTrades ? 'trades' : 'waiver picks'
+  const tab = showTrades ? 'trades' : 'waiverPicks'
+
+  useEffect(() => {
+    setTab(tab)
+    setAction()
+  }, [])
 
   useEffect(
     () => {

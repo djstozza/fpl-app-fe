@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
+import { useOutletContext, useParams } from 'react-router-dom'
 import { Link as DomLink } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import {
@@ -32,33 +33,16 @@ import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import Link from 'components/common/link'
 import { colors } from 'utilities/colors'
 
+import { FplTeamContext } from '../..'
 import type { FplTeamList, InterTeamTradeGroup, Trade } from 'types'
-import type { FplTeamListState } from 'state/fplTeamList'
-import type { FplTeamListsState } from 'state/fplTeamLists'
-import type { InterTeamTradeGroupsState } from 'state/interTeamTradeGroups'
+
+type Action = 'out' | 'in' | undefined 
+type Params = { action: Action }
 
 type OpenDialogProps = {
   interTeamTradeGroup?: InterTeamTradeGroup,
   trade?: Trade,
   str: string
-}
-
-type Props = {
-  isOwner: boolean,
-  interTeamTradeGroups: InterTeamTradeGroupsState,
-  fetchInterTeamTradeGroups: Function,
-  fplTeamList: FplTeamListState,
-  fplTeamLists: FplTeamListsState,
-  deadline?: Date,
-  selectedFplTeamListId?: string,
-  fplTeamId: string,
-  action: string,
-  cancelInterTeamTradeGroup: Function,
-  submitInterTeamTradeGroup: Function,
-  approveInterTeamTradeGroup: Function,
-  declineInterTeamTradeGroup: Function,
-  removeTrade: Function,
-  fplTeamName: string
 }
 
 const useStyles = makeStyles()(() => ({
@@ -88,20 +72,19 @@ const TABS = {
   out: {
     label: 'Out',
     value: 'out',
-
     display: true
   },
   in: {
     label: 'In',
     value: 'in',
-
     display: true
   }
 }
 
-const TeamTradeTabs = (props: Props) => {
+const TeamTradeTabs = () => {
+  const context = useOutletContext<FplTeamContext>()
   const {
-    isOwner,
+    fplTeam: { isOwner, name: fplTeamName },
     interTeamTradeGroups: { data: { outTradeGroups = [], inTradeGroups = [] } },
     fetchInterTeamTradeGroups,
     fplTeamList: { data: fplTeamList },
@@ -109,10 +92,12 @@ const TeamTradeTabs = (props: Props) => {
     deadline,
     selectedFplTeamListId,
     fplTeamId,
-    action = 'out',
     removeTrade,
-    fplTeamName
-  } = props
+    setTab
+  } = context
+  const { action = 'out' } = useParams<Params>()
+
+  const tab = 'teamTrades'
 
   const { classes } = useStyles()
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -131,7 +116,7 @@ const TeamTradeTabs = (props: Props) => {
 
   const handleConfirm = () => {
     setDialogOpen(false)
-    trade ? removeTrade(trade.id) : props[`${str.toLowerCase()}InterTeamTradeGroup`](interTeamTradeGroupId)
+    trade ? removeTrade(trade.id) : context[`${str.toLowerCase()}InterTeamTradeGroup`](interTeamTradeGroupId)
     setStr('')
     setInterTeamTradeGroup(undefined)
     setTrade(undefined)
@@ -142,6 +127,12 @@ const TeamTradeTabs = (props: Props) => {
     setInterTeamTradeGroup(undefined)
     setTrade(undefined)
   }
+
+  useEffect(
+    () => {
+      setTab(tab)
+    }, []
+  )
 
   useEffect(
     () => {
@@ -449,7 +440,7 @@ const TeamTradeTabs = (props: Props) => {
         <DialogActions>
           <Button
             variant='contained'
-            color='default'
+            color='inherit'
             onClick={() => cancel()}
 
           >

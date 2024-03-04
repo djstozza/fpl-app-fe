@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { useOutletContext } from 'react-router-dom'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
@@ -7,17 +8,9 @@ import { ROUNDS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 
+import type { TeamContext } from '..'
 import type { TeamFixture } from 'types'
-
-type Props = {
-  teamId: string,
-  tab: string,
-  fixtures: TeamFixture[],
-  fetchTeamFixtures: Function,
-  sort: Object,
-  updateTeamFixturesSort: Function,
-  fetching: boolean
-}
+import { useEffect } from 'react'
 
 const FIXTURES_TABLE_CELLS = [
   {
@@ -79,9 +72,21 @@ const FIXTURES_TABLE_CELLS = [
   { cellId: 'strength', label: 'Str', toolTipLabel: 'Strength', sortParam: 'strength' }
 ]
 
-const FixturesTable = (props: Props) => {
-  const { fixtures, teamId, tab, fetchTeamFixtures, updateTeamFixturesSort, fetching } = props
-  console.log("BLAAAAHJ")
+const FixturesTable = () => {
+  const {
+    team: { fixtures, fetching },
+    teamId,
+    fetchTeamFixtures,
+    updateTeamFixturesSort,
+    setTab
+  } = useOutletContext<TeamContext>()
+
+  const tab = 'fixtures'
+
+  useEffect(() => {
+    setTab(tab)
+  }, [])
+
   return (
     <SearchListener id={teamId} fetchAction={fetchTeamFixtures} initialFilterState={initialFilterState}>
       <SortTable

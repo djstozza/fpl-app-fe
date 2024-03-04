@@ -1,47 +1,21 @@
 import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 
 import ListPositionsTable from '../listPositionsTable'
 import OutListPosition from '../outListPosition'
 import TradeablePlayersTable from '../tradeablePlayersTable'
 
-import type { PlayersState } from 'state/players'
-import type { FplTeamListState } from 'state/fplTeamList'
-import type { WaiverPicksState } from 'state/waiverPicks'
-import type { TradesState } from 'state/trades'
-import type { FplTeamList, ListPosition } from 'types'
+import type { FplTeamContext } from '..'
 
-type Props = {
-  isOwner: boolean,
-  isWaiver: boolean,
-  fplTeamList: FplTeamListState,
-  currentFplTeamList?: FplTeamList,
-  fetchListPositions: Function,
-  deadline?: Date,
-  outListPosition?: ListPosition,
-  setOutListPosition: Function,
-  fetchTradeablePlayers: Function,
-  updateTradeablePlayersFilter: Function,
-  updateTradeablePlayersSort: Function,
-  updateTradeablePlayersPage: Function,
-  players: PlayersState,
-  fetchPlayerFacets: Function,
-  createWaiverPick: Function,
-  selectedFplTeamListId?: string,
-  waiverPicks: WaiverPicksState,
-  trades: TradesState,
-  createTrade: Function,
-}
-
-const NewWaiverPick = (props: Props) => {
+const NewWaiverPick = () => {
   const {
-    isOwner,
     isWaiver,
     currentFplTeamList,
-    fplTeamList: { listPositions, fetching },
+    fplTeam: { isOwner },
+    fplTeamList: { listPositions, fetching, outListPosition },
     fetchListPositions,
     deadline,
-    outListPosition,
     setOutListPosition,
     fetchTradeablePlayers,
     updateTradeablePlayersSort,
@@ -52,9 +26,18 @@ const NewWaiverPick = (props: Props) => {
     createWaiverPick,
     createTrade,
     waiverPicks: { errors: waiverErrors, submitting: waiverPickSubmitting },
-    trades: { errors: tradeErrors, submitting: tradeSubmitting }
-  } = props
+    trades: { errors: tradeErrors, submitting: tradeSubmitting },
+    setTab,
+    setAction
+  } = useOutletContext<FplTeamContext>()
   const { enqueueSnackbar } = useSnackbar()
+  const tab = isWaiver ? 'waiverPicks' : 'trades'
+  const action = 'new'
+  
+  useEffect(() => {
+    setTab(tab)
+    setAction(action)
+  })
 
   useEffect(
     () => {

@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, createContext, useState } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes, useParams } from 'react-router-dom'
+import { useParams, useLocation, Outlet } from 'react-router-dom'
 import { capitalize } from 'lodash'
 import { makeStyles } from 'tss-react/mui'
 import { Typography, Theme } from '@mui/material'
@@ -8,9 +8,6 @@ import { Typography, Theme } from '@mui/material'
 import { leagueActions } from 'state/league'
 import Tabs from 'components/common/tabs'
 import { LEAGUES_URL } from 'utilities/constants'
-import LeagueDetails from './leagueDetails'
-import EditLeagueForm from './editLeagueForm'
-import FplTeamsTable from './fplTeamsTable'
 
 import type { League, FplTeam, Error } from 'types'
 
@@ -31,10 +28,16 @@ type Props = {
 }
 
 type LeagueParams = {
-  leagueId: string,
-  tab?: string,
-  action?: string
+  leagueId: string
 }
+
+type Tab = 'details' | 'fplTeams'
+
+export type LeagueContext = {
+  leagueId: string,
+  setTab: (string: Tab) => void,
+  setAction: (string?: string) => void
+} & Props
 
 const useStyles = makeStyles()((theme: Theme) => ({
   title: {
@@ -50,21 +53,13 @@ const TABS = {
 export const LeaguePage = (props: Props) => {
   const {
     league,
-    fplTeams,
-    fetchLeague,
-    fetchFplTeams,
-    updateLeague,
-    updateFplTeamsSort,
-    generateDraftPicks,
-    createDraft,
-    initializeForm,
-    errors,
-    submitting,
-    sort,
-    fetching
+    fetchLeague
   } = props
   const { classes } = useStyles()
-  const { leagueId, tab = 'details', action } = useParams<LeagueParams>()
+  const { leagueId } = useParams<LeagueParams>()
+  const { pathname } = useLocation()
+  const [tab, setTab] = useState<Tab>('details')
+  const [action, setAction] = useState<string>()
 
   useEffect(
     () => {
@@ -79,10 +74,12 @@ export const LeaguePage = (props: Props) => {
 
   TABS.details['extraTitleInfo'] = capitalize(action)
 
-  const detailsPaths = [
-    `${LEAGUES_URL}/:leagueId`,
-    `${LEAGUES_URL}/:leagueId/details`
-  ]
+  const value: LeagueContext = {
+    ...props,
+    leagueId,
+    setTab,
+    setAction
+  }
 
   return (
     <div data-testid='LeaguePage'>
@@ -96,54 +93,7 @@ export const LeaguePage = (props: Props) => {
         id={leagueId}
         titleSubstr={name}
       />
-      <Routes>
-        {
-          detailsPaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <LeagueDetails
-                  league={league}
-                  generateDraftPicks={generateDraftPicks}
-                  createDraft={createDraft}
-                  submitting={submitting}
-                />
-              }
-            />
-          ))
-        }
-        <Route
-          path={`${LEAGUES_URL}/:leagueId/details/edit`}
-          element={
-            <EditLeagueForm
-              league={league}
-              updateLeague={updateLeague}
-              errors={errors}
-              submitting={submitting}
-              initializeForm={initializeForm}
-            />
-          }
-        />
-        <Route
-          path={`${LEAGUES_URL}/:leagueId/fplTeams`}
-          element={
-            <FplTeamsTable
-              league={league}
-              leagueId={leagueId}
-              fplTeams={fplTeams}
-              fetchFplTeams={fetchFplTeams}
-              updateFplTeamsSort={updateFplTeamsSort}
-              generateDraftPicks={generateDraftPicks}
-              createDraft={createDraft}
-              submitting={submitting}
-              sort={sort}
-              errors={errors}
-              fetching={fetching}
-            />
-          }
-        />
-      </Routes>
+      <Outlet context={value} />
     </div>
   )
 }

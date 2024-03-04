@@ -1,34 +1,37 @@
-import { Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Navigate, useOutletContext } from 'react-router-dom'
 
-import {
-  LEAGUES_URL
-} from 'utilities/constants'
+import { LEAGUES_URL } from 'utilities/constants'
 import LeagueForm from 'components/pages/leaguesPage/leagueForm'
 
-import type { League, Error } from 'types'
+import type { LeagueContext } from '..'
 
-type Props = {
-  league: League,
-  errors: Error[],
-  submitting: boolean,
-  updateLeague: Function,
-  initializeForm: () => void
-}
-
-const EditLeagueForm = (props: Props) => {
+const EditLeagueForm = () => {
   const {
+    league,
     errors = [],
     updateLeague,
     initializeForm,
-    league: { id, isOwner }
-  } = props
+    league: { id, isOwner },
+    setTab,
+    setAction
+  } = useOutletContext<LeagueContext>()
+
+  const tab = 'details'
+  const action = 'edit'
 
   const returnUrl = `${LEAGUES_URL}/${id}/details`
 
   if (!isOwner) return <Navigate to={returnUrl} />
 
+  useEffect(() => {
+    setTab(tab)
+    setAction(action)
+  }, [])
+
   return (
     <LeagueForm
+      league={league}
       title='Edit details'
       errors={errors}
       submitFn={updateLeague}

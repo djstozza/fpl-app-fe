@@ -4,9 +4,9 @@ import { success, failure } from 'utilities/actions'
 import type { Action, Player, History, HistoryPast, Sort } from 'types'
 
 export type State = {
-  data?: Player,
-  history?: History[],
-  historyPast?: HistoryPast[],
+  data: Player,
+  history: History[],
+  historyPast: HistoryPast[],
   sort: Sort,
   fetching: boolean
 }

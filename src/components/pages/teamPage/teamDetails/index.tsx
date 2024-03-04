@@ -1,15 +1,13 @@
+import { useEffect } from 'react'
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
 } from '@mui/material'
+import { useOutletContext } from 'react-router-dom'
 
-import { Team } from 'types'
-
-type Props = {
-  team: Team
-}
+import type { TeamContext } from '..'
 
 const TEAM_DETAILS_ROWS = [
   { rowId: 'position', label: 'Rank' },
@@ -22,27 +20,39 @@ const TEAM_DETAILS_ROWS = [
   { rowId: 'goalDifference', label: 'Goal Difference' },
   { rowId: 'cleanSheets', label: 'Clean Sheets' },
   { rowId: 'points', label: 'Points' },
-  { rowId: 'currentForm', label: 'Last 5' }
+{ rowId: 'currentForm', label: 'Last 5' }
 ]
 
-const TeamDetails = ({ team }: Props) => (
-  <Table size='small'>
-    <TableBody>
-      {
-        TEAM_DETAILS_ROWS.map(({ rowId, label }) => (
-          <TableRow key={rowId}>
-            <TableCell align='center'>
-              {label}
-            </TableCell>
-            <TableCell align='center'>
-              {team[rowId]}
-            </TableCell>
-          </TableRow>
-        ))
-      }
-    </TableBody>
-  </Table>
-)
+const TeamDetails = () => {
+  const {
+    team: { data: team },
+    setTab
+  } = useOutletContext<TeamContext>()
 
+  const tab = 'details'
+
+  useEffect(() => {
+    setTab(tab)
+  }, [])
+
+  return (
+    <Table size='small'>
+      <TableBody>
+        {
+          TEAM_DETAILS_ROWS.map(({ rowId, label }) => (
+            <TableRow key={rowId}>
+              <TableCell align='center'>
+                {label}
+              </TableCell>
+              <TableCell align='center'>
+                {team[rowId]}
+              </TableCell>
+            </TableRow>
+          ))
+        }
+      </TableBody>
+    </Table>
+  )
+}
 
 export default TeamDetails

@@ -9,19 +9,19 @@ type HeightProps = {
 }
 
 export const iconLoader = (iconName: string): string => (
-  require(`../images/icons/${iconName}.png`).default
+  require(`../images/icons/${iconName}.png`)
 )
 
 export const teamCrestPathLoader = (shortName: string): string => (
-  require(`../images/crests/${shortName.toLowerCase()}.png`).default
+  require(`../images/crests/${shortName.toLowerCase()}.png`)
 )
 
 export const playerPlaceHolderLoader = (): string => (
-  require(`../images/player-placeholder.png`).default
+  require(`../images/player-placeholder.png`)
 )
 
 export const stadiumCrowdLoader = (): string => (
-  require(`../images/stadium-crowd.jpeg`).default
+  require(`../images/stadium-crowd.jpeg`)
 )
 
 export const SetElHeight = (ref: RefObject<HTMLDivElement | null>): HeightProps => {

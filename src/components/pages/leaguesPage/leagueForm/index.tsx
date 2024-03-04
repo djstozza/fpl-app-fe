@@ -13,9 +13,10 @@ import {
 } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
 
-import type { Error } from 'types'
+import type { Error, League } from 'types'
 
 type Props = {
+  league?: League,
   errors: Error[],
   title: string,
   submitFn: Function,
@@ -62,7 +63,16 @@ const useStyles = makeStyles()((theme: Theme) => ({
 }))
 
 const LeagueForm = (props: Props) => {
-  const { title, errors, submitFn, initializeForm, create, hideFplTeamName = false, returnUrl } = props
+  const {
+    league: { name = '', code = '' } = {},
+    title,
+    errors,
+    submitFn,
+    initializeForm,
+    create,
+    hideFplTeamName = false,
+    returnUrl
+  } = props
 
   const { classes } = useStyles()
 
@@ -72,8 +82,8 @@ const LeagueForm = (props: Props) => {
     }, [initializeForm]
   )
 
-  const [name, setName] = useState('')
-  const [code, setCode] = useState('')
+  const [newName, setNewName] = useState(name)
+  const [newCode, setNewCode] = useState(code)
   const [fplTeamName, setFplTeamName] = useState('')
 
   const handleSubmit = (e) => {
@@ -84,6 +94,13 @@ const LeagueForm = (props: Props) => {
   }
 
   const baseErrors = errors.filter(({ source }) => source === 'base')
+
+  const disableSubmit = (
+    !name ||
+    !code ||
+    (!hideFplTeamName && !fplTeamName) ||
+    (newName === name && newCode === code)
+  )
 
   return (
     <form onSubmit={handleSubmit} className={classes.form}>
@@ -112,8 +129,8 @@ const LeagueForm = (props: Props) => {
           label='Name'
           name='name'
           type='text'
-          onChange={({ target: { value }}) => setName(value)}
-          value={name}
+          onChange={({ target: { value }}) => setNewName(value)}
+          value={newName}
           error={Boolean(errors.find(({ source }) => source === 'name'))}
           helperText={errors.find(({ source }) => source === 'name')?.detail}
         />
@@ -125,7 +142,7 @@ const LeagueForm = (props: Props) => {
                 variant='contained'
                 color='primary'
                 name='generateCode'
-                onClick={() => setCode(Math.random().toString(36).slice(2, 10))}
+                onClick={() => setNewCode(Math.random().toString(36).slice(2, 10))}
                 className={classes.generateButton}
               >
                 Generate Code
@@ -141,8 +158,8 @@ const LeagueForm = (props: Props) => {
             name='code'
             type='text'
             disabled={create}
-            value={code}
-            onChange={({ target: { value }}) => !create && setCode(value)}
+            value={newCode}
+            onChange={({ target: { value }}) => !create && setNewCode(value)}
             error={Boolean(errors.find(({ source }) => source === 'code'))}
             helperText={errors.find(({ source }) => source === 'code')?.detail}
           />
@@ -166,14 +183,14 @@ const LeagueForm = (props: Props) => {
         <div className={classes.actions}>
           <ButtonLink
             to={returnUrl || `${PROFILE_URL}${LEAGUES_URL}`}
-            color='default'
+            color='inherit'
             rightMargin
           >
             Cancel
           </ButtonLink>
           <Button
             type='submit'
-            disabled={!name || !code || (!hideFplTeamName && !fplTeamName)}
+            disabled={disableSubmit}
             variant='contained'
             color='primary'
           >

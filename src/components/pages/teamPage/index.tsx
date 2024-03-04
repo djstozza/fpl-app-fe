@@ -1,12 +1,12 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect, Fragment, useState } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes, useParams } from 'react-router-dom'
+import { useParams, useLocation, Outlet } from 'react-router-dom'
 import qs from 'qs'
 import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   Theme
-} from '@mui/material';
+} from '@mui/material'
 
 import { teamsActions } from 'state/teams'
 import { teamActions } from 'state/team'
@@ -15,9 +15,6 @@ import { TEAMS_URL } from 'utilities/constants'
 
 import Tabs from 'components/common/tabs'
 import TabPanel from 'components/common/tabPanel'
-import TeamDetails from './teamDetails'
-import FixturesTable from './fixturesTable'
-import PlayersTable from './playersTable'
 
 import type { PlayersState } from 'state/players'
 import type { TeamState } from 'state/team'
@@ -36,21 +33,18 @@ type Props = {
 }
 
 type TeamParams = {
-  teamId: string,
-  tab?: string
+  teamId: string
 }
+
+type Tab = 'details' | 'fixtures' | 'players'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   crest: {
-    marginRight: theme.spacing(0.5),
+    marginRight: theme.spacing(0.75),
     maxHeight: theme.spacing(4)
   },
-  wrapper: {
-    flexDirection: 'row',
-    display: 'flex'
-  },
   titleWrapper: {
-    padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
+    padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
     flexDirection: 'row',
     display: 'flex',
     alignItems: 'center'
@@ -59,6 +53,10 @@ const useStyles = makeStyles()((theme: Theme) => ({
     marginRight: theme.spacing(0.5),
     maxHeight: theme.spacing(5)
   },
+  tabTextWrapper: {
+    display: 'flex',
+    alignItems: 'center'
+  }
 }))
 
 const TABS = [
@@ -67,40 +65,40 @@ const TABS = [
   { label: 'Players', value: 'players', display: true }
 ]
 
+export type TeamContext = {
+  teamId: string,
+  sort: Object,
+  setTab: (string: Tab) => void
+} & Props
+
 export const TeamPage = (props: Props) => {
   const {
     team,
     teams,
     fetchTeam,
-    fetchTeams,
-    fetchTeamPlayers,
-    players,
-    fetchTeamFixtures,
-    updateTeamPlayersSort,
-    updateTeamFixturesSort,
+    fetchTeams
   } = props
 
-  const { teamId, tab = 'details' } = useParams<TeamParams>()
-
+  const { teamId } = useParams<TeamParams>()
+  const { search } = useLocation()
+  const [tab, setTab] = useState<Tab>('details')
+ 
   const {
     data,
     sort,
-    fixtures,
-    fetching
   } = team
 
-  const search = window.location.search.substring(1)
-  const sortQuery = qs.parse(search).sort || sort
+  const sortQuery = qs.parse(search.substring(1)).sort || sort
 
   const { classes } = useStyles()
 
   const labelRenderer = (teamSummary: TeamSummary) => {
     const { shortName } = teamSummary
     return (
-      <Fragment>
+      <div className={classes.tabTextWrapper}>
         <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
         <Typography>{shortName}</Typography>
-      </Fragment>
+      </div>
     )
   }
 
@@ -122,10 +120,12 @@ export const TeamPage = (props: Props) => {
 
   const { name, shortName } = data
 
-  const detailsPaths = [
-    `${TEAMS_URL}/:teamId`,
-    `${TEAMS_URL}/:teamId/details`
-  ]
+  const value: TeamContext = {
+    ...props,
+    teamId,
+    sort: sortQuery,
+    setTab
+  }
  
   return (
     <div data-testid='TeamPage'>
@@ -149,48 +149,7 @@ export const TeamPage = (props: Props) => {
         id={teamId}
         titleSubstr={name}
       />
-      <Routes>
-        {
-          detailsPaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <TeamDetails team={data} />
-              }
-            />
-          ))
-        }
-        <Route
-          path={`${TEAMS_URL}/:teamId/fixtures`}
-          element={
-            <FixturesTable
-              key={teamId}
-              teamId={teamId}
-              fixtures={fixtures}
-              fetchTeamFixtures={fetchTeamFixtures}
-              sort={sortQuery}
-              tab={tab}
-              updateTeamFixturesSort={updateTeamFixturesSort}
-              fetching={fetching}
-            />
-          }
-        />
-        <Route
-          path={`${TEAMS_URL}/:teamId/players`}
-          element={
-            <PlayersTable
-              key={teamId}
-              players={players}
-              fetchTeamPlayers={fetchTeamPlayers}
-              sort={sortQuery}
-              teamId={teamId}
-              tab={tab}
-              updateTeamPlayersSort={updateTeamPlayersSort}
-            />
-          }
-        />
-      </Routes>
+      <Outlet context={value} />
     </div>
   )
 }

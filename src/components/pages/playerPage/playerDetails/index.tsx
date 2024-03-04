@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import {
   Table,
@@ -6,32 +7,28 @@ import {
   TableCell,
   TableRow,
   Grid,
-  Theme,
-  createStyles
+  Theme
 } from '@mui/material'
 
 import { SetElHeight } from 'utilities/helpers'
 import PlayerImage from '../playerImage'
 import { playersTableCells } from 'components/pages/playersPage'
 
-import { Player, CellHash } from 'types'
-
-type Props = {
-  player: Player
-}
+import { CellHash } from 'types'
+import type { PlayerContext } from '..'
 
 type HeightProps = {
   tableHeight: number
 }
 
-const useStyles = makeStyles()((theme: Theme) => createStyles({
+const useStyles = makeStyles<HeightProps>()((theme: Theme, { tableHeight }) => ({
   container: {
     maxWidth: '100vw',
     overflow: 'scroll',
     [theme.breakpoints.up('sm')]: {
-      maxHeight: ({ tableHeight }: HeightProps) => tableHeight
+      maxHeight: tableHeight
     },
-    maxHeight: ({ tableHeight }: HeightProps) => tableHeight
+    maxHeight: tableHeight
   },
 
   playerImageContainer: {
@@ -40,16 +37,21 @@ const useStyles = makeStyles()((theme: Theme) => createStyles({
 
   playerImage: {
     [theme.breakpoints.up('sm')]: {
-      maxHeight: ({ tableHeight }: HeightProps) => tableHeight
+      maxHeight: tableHeight
     }
   }
 }))
 
-const PlayerDetails = ({ player }: Props) => {
+const PlayerDetails = () => {
   const tableRef = useRef(null)
+  const { player: { data: player }, setTab } = useOutletContext<PlayerContext>()
   const { code, lastName } = player
-
+  const tab = 'details'
   const { height: tableHeight } = SetElHeight(tableRef)
+
+  useEffect(() => {
+    setTab(tab)
+  }, [])
 
   useEffect(() => {
     if (!tableHeight) {
@@ -65,7 +67,7 @@ const PlayerDetails = ({ player }: Props) => {
   delete cells.teams
 
   return (
-    <Grid container >
+    <Grid container>
       <Grid item md={3} sm={5} xs={12}>
         <div className={classes.playerImageContainer}>
           <PlayerImage

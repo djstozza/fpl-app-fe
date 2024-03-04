@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes, useParams } from 'react-router-dom'
+import { useParams, Outlet } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { makeStyles } from 'tss-react/mui'
 import { Typography, Theme } from '@mui/material'
@@ -9,8 +9,6 @@ import { leagueActions } from 'state/league'
 import { playersActions } from 'state/players'
 import { draftPicksActions } from 'state/draftPicks'
 import Tabs from 'components/common/tabs'
-import DraftPicksTable from './draftPicksTable'
-import AvailablePlayersTable from './availablePlayersTable'
 import UserCanPickAlert from './userCanPickAlert'
 import DraftCompletedAlert from 'components/common/draftCompletedAlert'
 import { LEAGUES_URL, cable } from 'utilities/constants'
@@ -38,6 +36,13 @@ type Props = {
   fetchDraftPicksStatus: Function
 }
 
+type Tab = 'draftPicks' | 'availablePlayers'
+
+export type DraftContext = {
+  leagueId: string,
+  setTab: (string: Tab) => void
+} & Props
+
 const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     padding: theme.spacing(1)
@@ -53,17 +58,7 @@ export const DraftPage = (props: Props) => {
   const {
     league,
     draftPicks,
-    players,
     fetchLeague,
-    fetchDraftPicks,
-    fetchDraftPickFacets,
-    updateDraftPicksSort,
-    updateDraftPicksFilter,
-    fetchAvailablePlayers,
-    updateAvailablePlayersSort,
-    updateAvailablePlayersFilter,
-    updateAvailablePlayersPage,
-    fetchPlayerFacets,
     updateDraftPick,
     fetchDraftPicksStatus
   } = props
@@ -71,7 +66,8 @@ export const DraftPage = (props: Props) => {
   const { classes } = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const [draftPickUpdatedAt, setDraftPickUpdatedAt] = useState(0)
-  const { leagueId, tab = 'draftPicks' } = useParams()
+  const { leagueId } = useParams()
+  const [tab, setTab] = useState<Tab>('draftPicks')
 
   useEffect(
     () => {
@@ -116,14 +112,17 @@ export const DraftPage = (props: Props) => {
     }, [enqueueSnackbar, errors]
   )
 
+  if (!leagueId) return null
   if (!league) return null
 
   const { name } = league
   const key = `${leagueId}-${draftPickUpdatedAt}`
-  const draftPaths = [
-    `${LEAGUES_URL}/:leagueId/draft`,
-    `${LEAGUES_URL}/:leagueId/draft/draftPicks`
-  ]
+
+  const value: DraftContext = {
+    ...props,
+    leagueId,
+    setTab
+  }
 
   return (
     <div data-testid='DraftPage'>
@@ -147,42 +146,7 @@ export const DraftPage = (props: Props) => {
         substr='draft'
         showAlert={draftFinished}
       />
-      <Routes>
-        {
-          draftPaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <DraftPicksTable
-                  key={key}
-                  draftPicks={draftPicks}
-                  fetchDraftPicks={fetchDraftPicks}
-                  updateDraftPicksSort={updateDraftPicksSort}
-                  updateDraftPicksFilter={updateDraftPicksFilter}
-                  fetchDraftPickFacets={fetchDraftPickFacets}
-                />
-              }
-            />
-          ))
-        }
-        <Route
-          path={`${LEAGUES_URL}/:leagueId/draft/availablePlayers`}
-          element={
-            <AvailablePlayersTable
-              key={key}
-              draftPicks={draftPicks}
-              players={players}
-              fetchAvailablePlayers={fetchAvailablePlayers}
-              updateAvailablePlayersSort={updateAvailablePlayersSort}
-              updateAvailablePlayersFilter={updateAvailablePlayersFilter}
-              updateAvailablePlayersPage={updateAvailablePlayersPage}
-              fetchPlayerFacets={fetchPlayerFacets}
-              updateDraftPick={updateDraftPick}
-            />
-          }
-        />
-      </Routes>
+      <Outlet key={key} context={value} />
     </div>
   )
 }

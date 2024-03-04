@@ -1,4 +1,5 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import {
   Table,
@@ -9,14 +10,8 @@ import {
 } from '@mui/material'
 
 import ActionsFooter from '../actionsFooter'
+import type { LeagueContext } from '..'
 import type { League } from 'types'
-
-type Props = {
-  league: League,
-  submitting: boolean,
-  generateDraftPicks: (string) => void,
-  createDraft: Function
-}
 
 const LEAGUE_DETAILS_ROWS = [
   { rowId: 'status', label: 'Status' },
@@ -33,14 +28,23 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const LeagueDetails = (props: Props) => {
+const LeagueDetails = () => {
   const {
     league,
     generateDraftPicks,
     createDraft,
-    submitting
-  } = props
+    submitting,
+    setTab,
+    setAction
+  } = useOutletContext<LeagueContext>()
   const { classes } = useStyles()
+
+  const tab = 'details'
+  
+  useEffect(() => {
+    setTab(tab)
+    setAction()
+  }, [])
 
   return (
     <Fragment>

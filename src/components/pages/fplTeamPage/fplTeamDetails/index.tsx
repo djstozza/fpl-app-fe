@@ -1,4 +1,5 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui';
 import {
   Table,
@@ -15,11 +16,8 @@ import {
   FPL_TEAMS_URL
 } from 'utilities/constants'
 
+import type { FplTeamContext } from '..'
 import type { FplTeam } from 'types'
-
-type Props = {
-  fplTeam: FplTeam
-}
 
 const FPL_TEAM_DETAILS_ROWS = [
   {
@@ -53,12 +51,20 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const FplTeamDetails = (props: Props) => {
+const FplTeamDetails = () => {
   const {
-    fplTeam
-  } = props
+    fplTeam,
+    setTab,
+    setAction
+  } = useOutletContext<FplTeamContext>()
   const { id, isOwner } = fplTeam
   const { classes } = useStyles()
+  const tab = 'details'
+
+  useEffect(() => {
+    setTab(tab)
+    setAction()
+  }, [])
 
   return (
     <Fragment>

@@ -1,4 +1,5 @@
-import { Route, Routes, useParams } from 'react-router-dom'
+import { createContext } from 'react'
+import { useParams, Outlet, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { makeStyles } from 'tss-react/mui'
 import { Theme, Typography } from '@mui/material'
@@ -7,22 +8,9 @@ import { capitalize } from 'lodash'
 import { authActions } from 'state/auth'
 import { fplTeamsActions } from 'state/fplTeams'
 import Tabs from 'components/common/tabs'
-import UserDetails from './userDetails'
-import UserEditForm from './userEditForm'
-import ChangePasswordForm from './changePasswordForm'
-import LeaguesPage from 'components/pages/leaguesPage'
-import CreateLeague from 'components/pages/leaguesPage/createLeague'
-import JoinLeague from 'components/pages/leaguesPage/joinLeague'
-import FplTeamsTable from './fplTeamsTable'
+
 import {
-  PROFILE_URL,
-  USER_DETAILS_URL,
-  EDIT_USER_DETAILS_URL,
-  CHANGE_PASSWORD_URL,
-  LEAGUES_URL,
-  NEW_LEAGUE_URL,
-  JOIN_LEAGUE_URL,
-  FPL_TEAMS_URL
+  PROFILE_URL
 } from 'utilities/constants'
 
 import type { User, Error } from 'types'
@@ -52,6 +40,8 @@ const TABS = {
   fplTeams: { label: 'Fpl Teams', value: 'fplTeams', display: true }
 }
 
+export const AuthContext = createContext<any>({})
+
 export const ProfilePage = (props: Props) => {
   const {
     user,
@@ -66,15 +56,24 @@ export const ProfilePage = (props: Props) => {
   } = props
   const { username } = user
   const { classes } = useStyles()
-  const { tab = 'details', action } = useParams()
+  const { pathname } = useLocation()
+  const matchedPath = pathname.match(/\/profile\/(\w+)(\/.*)?/) || []
+  const tab = Object.keys(TABS).find(key => matchedPath[1] === key) || 'details'
+  const { action } = useParams()
 
   TABS.details['extraTitleInfo'] = capitalize(action)
 
-  const detailsPaths = [
-    USER_DETAILS_URL,
-    PROFILE_URL
-  ]
-
+  const value = {
+    user,
+    updateUser,
+    changePassword,
+    errors,
+    submitting,
+    initializeAuth,
+    fetchFplTeams,
+    updateFplTeamsSort,
+    fplTeams
+  }
   return (
     <div data-testid='ProfilePage'>
       <Typography variant='h4' className={classes.title}>
@@ -87,63 +86,9 @@ export const ProfilePage = (props: Props) => {
         url={PROFILE_URL}
         titleSubstr={username}
       />
-      <Routes>
-        {
-          detailsPaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={<UserDetails user={user} />}
-            />
-          ))
-        }
-        
-        <Route
-          path={EDIT_USER_DETAILS_URL}
-          element={
-            <UserEditForm
-              user={user}
-              errors={errors}
-              updateUser={updateUser}
-              submitting={submitting}
-              initializeAuth={initializeAuth}
-            />
-          }
-        />
-        <Route
-          path={CHANGE_PASSWORD_URL}
-          element={
-            <ChangePasswordForm
-              errors={errors}
-              changePassword={changePassword}
-              submitting={submitting}
-              initializeAuth={initializeAuth}
-            />
-          }
-        />
-        <Route
-          path={`${PROFILE_URL}${LEAGUES_URL}`}
-          element={<LeaguesPage />}
-        />
-        <Route
-          path={`${PROFILE_URL}${NEW_LEAGUE_URL}`}
-          element={<CreateLeague />}
-        />
-        <Route
-          path={`${PROFILE_URL}${JOIN_LEAGUE_URL}`}
-          element={<JoinLeague />}
-        />
-        <Route
-          path={`${PROFILE_URL}${FPL_TEAMS_URL}`}
-          element={
-            <FplTeamsTable
-              fplTeams={fplTeams}
-              fetchFplTeams={fetchFplTeams}
-              updateFplTeamsSort={updateFplTeamsSort}
-            />
-          }
-        />
-      </Routes>
+      <AuthContext.Provider value={value}>
+        <Outlet />
+      </AuthContext.Provider>
     </div>
   )
 }

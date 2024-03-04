@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Navigate, useOutletContext } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui';
 import {
   Paper,
@@ -9,19 +9,11 @@ import {
   Typography
 } from '@mui/material'
 
-import {
-  FPL_TEAMS_URL
-} from 'utilities/constants'
+import { FPL_TEAMS_URL } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
 
-import type { FplTeam, Error } from 'types'
+import type { FplTeamContext } from '..'
 
-type Props = {
-  fplTeam: FplTeam,
-  errors: Error[],
-  submitting: boolean,
-  updateFplTeam: Function
-}
 
 const useStyles = makeStyles()((theme: Theme) => ({
   form: {
@@ -42,17 +34,27 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const EditFplTeamForm = (props: Props) => {
+const EditFplTeamForm = () => {
   const {
     errors = [],
     updateFplTeam,
     submitting,
-    fplTeam: { id, name, isOwner }
-  } = props
+    fplTeam: { id, name, isOwner },
+    setTab,
+    setAction
+  } = useOutletContext<FplTeamContext>()
 
   const { classes } = useStyles()
 
   const [newName, setName] = useState(name)
+
+  const tab = 'details'
+  const action = 'edit'
+
+  useEffect(() => {
+    setTab(tab)
+    setAction(action)
+  }, [])
 
   if (!isOwner) return <Navigate to={`${FPL_TEAMS_URL}/${id}/details`} />
 
@@ -86,14 +88,14 @@ const EditFplTeamForm = (props: Props) => {
         <div className={classes.actions}>
           <ButtonLink
             to={`${FPL_TEAMS_URL}/${id}/details`}
-            color='default'
+            color='inherit'
             rightMargin
           >
             Cancel
           </ButtonLink>
           <Button
             type='submit'
-            disabled={!newName || submitting}
+            disabled={!newName || submitting || name === newName}
             variant='contained'
             color='primary'
           >

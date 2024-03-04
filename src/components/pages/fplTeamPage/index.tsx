@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes, useParams } from 'react-router-dom'
+import { useParams, Outlet } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import { Typography, Theme } from '@mui/material'
 import { capitalize } from 'lodash'
@@ -19,17 +19,9 @@ import { interTeamTradeGroupsActions } from 'state/interTeamTradeGroups'
 import {
   FPL_TEAMS_URL
 } from 'utilities/constants'
-import FplTeamDetails from './fplTeamDetails'
-import EditFplTeamForm from './editFplTeamForm'
-import FplTeamListChart from './fplTeamListChart'
 import FplTeamAlert from './fplTeamAlert'
-import NewWaiverPick from './newWaiverPick'
-import WaiverPicksTable from './waiverPicksTable'
-import NewTeamTrade from './teamTrades/new'
-import TeamTradeTabs from './teamTrades/tabs'
-import AddPlayer from './teamTrades/addPlayer'
 
-import type { FplTeam, InterTeamTradeGroup, Error } from 'types'
+import type { FplTeam, FplTeamList, InterTeamTradeGroup, Error } from 'types'
 import type { FplTeamListState } from 'state/fplTeamList'
 import type { FplTeamListsState } from 'state/fplTeamLists'
 import type { ListPositionState } from 'state/listPosition'
@@ -84,6 +76,20 @@ type Props = {
   removeTrade: Function
 }
 
+type Tab = 'details' | 'teamLists' | 'waiverPicks' | 'trades' | 'teamTrades'
+
+export type FplTeamContext = {
+  fplTeamId: string,
+  fplTeamListId: string | undefined,
+  teamTradeId: string | undefined,
+  selectedFplTeamListId: string,
+  currentFplTeamList: FplTeamList | undefined,
+  deadline: Date | undefined,
+  isWaiver: boolean,
+  setTab: (tab: Tab) => void,
+  setAction: (action?: string) => void
+} & Props
+
 const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     padding: theme.spacing(1)
@@ -95,25 +101,22 @@ const TABS = {
   teamLists: {
     label: 'Lists',
     value: 'teamLists',
-    matcher: /teamLists((\/\d+)?\/)?$/,
+
     display: true
   },
   waiverPicks: {
     label: 'Waiver',
     value: 'waiverPicks',
-    matcher: /(teamLists\/\d+\/)?waiverPicks/,
     display: true
   },
   trades: {
     label: 'Free',
     value: 'trades',
-    matcher: /(teamLists\/\d+\/)?trades/,
     display: true
   },
   teamTrades: {
     label: 'Trades',
     value: 'teamTrades',
-    matcher: /(teamLists\/\d+\/)?teamTrades/,
     display: true
   }
 }
@@ -121,55 +124,23 @@ const TABS = {
 export const FplTeamPage = (props: Props) => {
   const {
     fplTeam,
-    errors = [],
-    submitting,
     fetchFplTeam,
-    updateFplTeam,
     fplTeamLists,
     fplTeamList,
-    listPosition,
     fetchFplTeamLists,
     fetchFplTeamList,
-    fetchValidSubstitutions,
-    processSubstitution,
-    clearValidSubstitutions,
     fetchListPositions,
-    setOutListPosition,
-    fetchTradeablePlayers,
-    updateTradeablePlayersSort,
-    updateTradeablePlayersFilter,
-    updateTradeablePlayersPage,
-    players,
-    fetchPlayerFacets,
-    createWaiverPick,
-    fetchWaiverPicks,
-    waiverPicks,
-    changeWaiverPickOrder,
-    fetchTrades,
-    createTrade,
-    trades,
-    fetchTradeableListPositions,
-    createInterTeamTradeGroup,
-    interTeamTradeGroups,
-    updateTradeableListPositionsFilter,
-    updateTradeableListPositionsSort,
-    fetchTradeableListPositionFacets,
-    fetchInterTeamTradeGroups,
-    addToInterTeamTradeGroup,
-    cancelInterTeamTradeGroup,
-    submitInterTeamTradeGroup,
-    approveInterTeamTradeGroup,
-    declineInterTeamTradeGroup,
-    fetchInterTeamTradeGroup,
-    interTeamTradeGroup,
-    removeTrade
+    setOutListPosition
   } = props
   const { classes } = useStyles()
-  const { fplTeamId, tab = 'details', fplTeamListId, action, teamTradeId } = useParams()
+  const { fplTeamId, fplTeamListId, teamTradeId } = useParams()
   const [deadlineTimeAsTime, setDeadlineTimeAsTime] = useState<Date|undefined>()
   const [waiverDeadlineAsTime, setWaiverDeadlineAsTime] = useState<Date|undefined>()
   const [deadline, setDeadline] = useState<Date|undefined>()
   const [isWaiver, setIsWaiver] = useState(false)
+  const [tab, setTab] = useState<Tab>('details')
+  const [action, setAction] = useState<string>()
+
   const sanitizedFplTeamListId = (fplTeamListId || '').match(/^\d+$/) ? fplTeamListId : undefined
   const currentFplTeamList = fplTeamLists.data.find(({ round: { current } }) => current)
   const currentFplTeamListId = (currentFplTeamList || {}).id
@@ -177,8 +148,6 @@ export const FplTeamPage = (props: Props) => {
   const getSelectedFplteamListId = () => sanitizedFplTeamListId || currentFplTeamListId || lastFplTeamListId
 
   const selectedFplTeamListId = getSelectedFplteamListId()
-
-  const { outListPosition } = fplTeamList
 
   useEffect(
     () => {
@@ -247,31 +216,18 @@ export const FplTeamPage = (props: Props) => {
     return value
   }).filter(Boolean)
 
-  const detailsPaths = [
-    `${FPL_TEAMS_URL}/:fplTeamId`,
-    `${FPL_TEAMS_URL}/:fplTeamId/details`
-  ]
-
-  const waiverPickPaths = [
-    `${FPL_TEAMS_URL}/:fplTeamId/waiverPicks`,
-    `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/waiverPicks`,
-    `${FPL_TEAMS_URL}/:fplTeamId/trades`,
-    `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/trades`
-  ]
-
-  const newWaiverPickPaths = [
-    `${FPL_TEAMS_URL}/:fplTeamId/waiverPicks/new`,
-    `${FPL_TEAMS_URL}/:fplTeamId/trades/new`
-  ]
-
-  const teamTradePaths = [
-    `${FPL_TEAMS_URL}/:fplTeamId/teamTrades`,
-    `${FPL_TEAMS_URL}/:fplTeamId/teamTrades/out`,
-    `${FPL_TEAMS_URL}/:fplTeamId/teamTrades/in`,
-    `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/teamTrades`,
-    `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/teamTrades/out`,
-    `${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId/teamTrades/in`
-  ]
+  const value: FplTeamContext = {
+    ...props,
+    fplTeamId,
+    fplTeamListId,
+    teamTradeId,
+    selectedFplTeamListId,
+    currentFplTeamList,
+    deadline,
+    isWaiver,
+    setTab,
+    setAction
+  }
 
   return (
     <div data-testid='FplTeamPage'>
@@ -306,178 +262,7 @@ export const FplTeamPage = (props: Props) => {
         miniDraft={miniDraft}
         leagueId={leagueId}
       />
-      <Routes>
-        {
-          detailsPaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={<FplTeamDetails fplTeam={fplTeam} />}
-            />
-          ))
-        }
-        <Route
-          path={`${FPL_TEAMS_URL}/:fplTeamId/details/edit`}
-          element={
-            <EditFplTeamForm
-              fplTeam={fplTeam}
-              submitting={submitting}
-              errors={errors}
-              updateFplTeam={updateFplTeam}
-            />
-          }
-        />
-        <Route
-          path={`${FPL_TEAMS_URL}/:fplTeamId/teamLists/:fplTeamListId?`}
-          element={
-            <FplTeamListChart
-              isOwner={isOwner}
-              fplTeamId={fplTeamId}
-              fplTeamLists={fplTeamLists}
-              fplTeamList={fplTeamList}
-              listPosition={listPosition}
-              fetchValidSubstitutions={fetchValidSubstitutions}
-              processSubstitution={processSubstitution}
-              clearValidSubstitutions={clearValidSubstitutions}
-              selectedFplTeamListId={selectedFplTeamListId}
-              fetchFplTeamList={fetchFplTeamList}
-            />
-          }
-        />
-        {
-          waiverPickPaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <WaiverPicksTable
-                  isOwner={isOwner}
-                  isWaiver={isWaiver}
-                  waiverPicks={waiverPicks}
-                  trades={trades}
-                  selectedFplTeamListId={selectedFplTeamListId}
-                  fetchWaiverPicks={fetchWaiverPicks}
-                  changeWaiverPickOrder={changeWaiverPickOrder}
-                  fetchTrades={fetchTrades}
-                  fplTeamList={fplTeamList}
-                  fplTeamLists={fplTeamLists}
-                  fplTeamId={fplTeamId}
-                />
-              }
-            />
-          ))
-        }
-        {
-          newWaiverPickPaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <NewWaiverPick
-                  isOwner={isOwner}
-                  currentFplTeamList={currentFplTeamList}
-                  fetchListPositions={fetchListPositions}
-                  fplTeamList={fplTeamList}
-                  isWaiver={isWaiver}
-                  deadline={deadline}
-                  outListPosition={outListPosition}
-                  setOutListPosition={setOutListPosition}
-                  fetchTradeablePlayers={fetchTradeablePlayers}
-                  updateTradeablePlayersFilter={updateTradeablePlayersFilter}
-                  updateTradeablePlayersSort={updateTradeablePlayersSort}
-                  updateTradeablePlayersPage={updateTradeablePlayersPage}
-                  players={players}
-                  fetchPlayerFacets={fetchPlayerFacets}
-                  createWaiverPick={createWaiverPick}
-                  selectedFplTeamListId={selectedFplTeamListId}
-                  waiverPicks={waiverPicks}
-                  trades={trades}
-                  createTrade={createTrade}
-                />
-              }
-            />
-          ))
-        }
-        <Route
-          path={`${FPL_TEAMS_URL}/:fplTeamId/teamTrades/new`}
-          element={
-            <NewTeamTrade
-              isOwner={isOwner}
-              currentFplTeamList={currentFplTeamList}
-              fetchListPositions={fetchListPositions}
-              fplTeamList={fplTeamList}
-              deadline={deadline}
-              outListPosition={outListPosition}
-              setOutListPosition={setOutListPosition}
-              fetchTradeableListPositions={fetchTradeableListPositions}
-              createInterTeamTradeGroup={createInterTeamTradeGroup}
-              selectedFplTeamListId={selectedFplTeamListId}
-              listPosition={listPosition}
-              interTeamTradeGroups={interTeamTradeGroups}
-              updateTradeableListPositionsFilter={updateTradeableListPositionsFilter}
-              updateTradeableListPositionsSort={updateTradeableListPositionsSort}
-              fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
-            />
-          }
-        />
-        {
-          action &&
-          teamTradePaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <TeamTradeTabs
-                  isOwner={isOwner}
-                  interTeamTradeGroups={interTeamTradeGroups}
-                  fetchInterTeamTradeGroups={fetchInterTeamTradeGroups}
-                  fplTeamList={fplTeamList}
-                  fplTeamLists={fplTeamLists}
-                  deadline={deadline}
-                  fplTeamId={fplTeamId}
-                  selectedFplTeamListId={selectedFplTeamListId}
-                  action={action}
-                  cancelInterTeamTradeGroup={cancelInterTeamTradeGroup}
-                  submitInterTeamTradeGroup={submitInterTeamTradeGroup}
-                  approveInterTeamTradeGroup={approveInterTeamTradeGroup}
-                  declineInterTeamTradeGroup={declineInterTeamTradeGroup}
-                  removeTrade={removeTrade}
-                  fplTeamName={name}
-                />
-              }
-            />
-          ))
-        }
-        {
-          teamTradeId &&
-          <Route
-            path={`${FPL_TEAMS_URL}/:fplTeamId/teamTrades/:teamTradeId/addPlayer`}
-            element={
-              <AddPlayer
-                isOwner={isOwner}
-                currentFplTeamList={currentFplTeamList}
-                selectedFplTeamListId={selectedFplTeamListId}
-                teamTradeId={teamTradeId}
-                fetchInterTeamTradeGroup={fetchInterTeamTradeGroup}
-                interTeamTradeGroup={interTeamTradeGroup}
-                fetchListPositions={fetchListPositions}
-                outListPosition={outListPosition}
-                setOutListPosition={setOutListPosition}
-                deadline={deadline}
-                fetchTradeableListPositions={fetchTradeableListPositions}
-                listPosition={listPosition}
-                fplTeamList={fplTeamList}
-                interTeamTradeGroups={interTeamTradeGroups}
-                updateTradeableListPositionsFilter={updateTradeableListPositionsFilter}
-                updateTradeableListPositionsSort={updateTradeableListPositionsSort}
-                fetchTradeableListPositionFacets={fetchTradeableListPositionFacets}
-                addToInterTeamTradeGroup={addToInterTeamTradeGroup}
-                name={name}
-              />
-            }
-          />
-        }
-      </Routes>
+      <Outlet context={value} />
     </div>
   )
 }

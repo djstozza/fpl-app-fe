@@ -44,7 +44,7 @@ const ActionsFooter = (props: Props) => {
 
   const { classes, cx } = useStyles()
 
-  const setColor = (index) => index === 0 || index % 2 === 0 ? 'primary' : 'default'
+  const setColor = (index) => index === 0 || index % 2 === 0 ? 'primary' : 'inherit'
 
   const buttons = [
     {

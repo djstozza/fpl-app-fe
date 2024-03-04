@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import moment from 'moment'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useOutletContext } from 'react-router-dom'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
@@ -9,16 +10,7 @@ import Link from 'components/common/link'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 
 import type { History } from 'types'
-
-type Props = {
-  playerId: string,
-  tab: string,
-  history: History[],
-  fetchPlayerHistory: Function,
-  updatePlayerHistorySort: Function,
-  hasHistory: boolean,
-  fetching: boolean
-}
+import type { PlayerContext } from '..'
 
 const HISTORY_TABLE_CELLS = [
   {
@@ -40,7 +32,6 @@ const HISTORY_TABLE_CELLS = [
     customRender: ({ opponent }: History) => <ContainedTeamCrestLink team={opponent} />,
     sortParam: 'oppositionTeam.shortName',
   },
-
   {
     cellId: 'kickoffTime',
     label: 'K',
@@ -66,8 +57,20 @@ const HISTORY_TABLE_CELLS = [
   { cellId: 'ownGoals', label: 'OG', toolTipLabel: 'Own Goals', sortParam: 'ownGoals' }
 ]
 
-const HistoryTable = (props: Props) => {
-  const { history = [], playerId, tab, fetchPlayerHistory, updatePlayerHistorySort, hasHistory, fetching } = props
+const HistoryTable = () => {
+  const {
+    player: { data: { hasHistory }, history = [], fetching },
+    playerId,
+    fetchPlayerHistory,
+    updatePlayerHistorySort,
+    setTab
+  } = useOutletContext<PlayerContext>()
+  
+  const tab = 'history'
+  
+  useEffect(() => {
+    if(hasHistory) setTab(tab)
+  }, [])
 
   if (!hasHistory) return <Navigate to={`${PLAYERS_URL}/${playerId}`} />
 

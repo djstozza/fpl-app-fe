@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { Route, Routes, useParams } from 'react-router-dom'
+import { useParams, Outlet } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
@@ -9,9 +9,6 @@ import {
 
 import { playerActions } from 'state/player'
 import Tabs from 'components/common/tabs'
-import PlayerDetails from './playerDetails'
-import HistoryTable from './historyTable'
-import HistoryPastTable from './historyPastTable'
 import { PLAYERS_URL } from 'utilities/constants'
 import TeamCrestLink from 'components/common/teamCrestLink'
 
@@ -26,11 +23,6 @@ type Props = {
   updatePlayerHistoryPastSort: Function
 }
 
-type PlayerParams = {
-  playerId: string,
-  tab?: string
-}
-
 const TABS = {
   details: { label: 'Details', value: 'details', display: true },
   history: { label: 'History', value: 'history', display: true },
@@ -41,7 +33,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     display: 'flex',
     alignItems: 'center',
-    padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
+    padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-between'
     },
@@ -57,18 +49,22 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
+type Tab = 'details' | 'history' | 'historyPast'
+
+export type PlayerContext = {
+  playerId: string,
+  setTab: (string: Tab) => void
+} & Props
+
 export const PlayerPage = (props: Props) => {
   const {
-    player: { data: player, history = [], historyPast = [], fetching },
-    fetchPlayer,
-    fetchPlayerHistory,
-    fetchPlayerHistoryPast,
-    updatePlayerHistorySort,
-    updatePlayerHistoryPastSort
+    player: { data: player },
+    fetchPlayer
   } = props
   const { classes } = useStyles()
-  const { playerId, tab = 'details' } = useParams<PlayerParams>()
-
+  const { playerId } = useParams()
+  const [tab, setTab] = useState<Tab>('details')
+  
   useEffect(
     () => {
       fetchPlayer(playerId)
@@ -81,11 +77,12 @@ export const PlayerPage = (props: Props) => {
   const { firstName, lastName, hasHistory, hasHistoryPast, team } = player
   TABS.history.display = hasHistory
   TABS.historyPast.display = hasHistoryPast
-
-  const detailsPaths = [
-    `${PLAYERS_URL}/:playerId`,
-    `${PLAYERS_URL}/:playerId/details`
-  ]
+  
+  const value: PlayerContext = {
+    ...props,
+    playerId,
+    setTab
+  }
 
   return (
     <div data-testid='PlayerPage'>
@@ -105,47 +102,7 @@ export const PlayerPage = (props: Props) => {
         id={playerId}
         titleSubstr={`${firstName} ${lastName}`}
       />
-      <Routes>
-        {
-          detailsPaths.map(path => (
-            <Route
-              key={path}
-              path={path}
-              element={<PlayerDetails key={playerId} player={player} />}
-            />
-          ))
-        }
-        <Route
-          path={`${PLAYERS_URL}/:playerId/history`}
-          element={
-            <HistoryTable
-              key={playerId}
-              playerId={playerId}
-              history={history}
-              fetchPlayerHistory={fetchPlayerHistory}
-              tab={tab}
-              updatePlayerHistorySort={updatePlayerHistorySort}
-              hasHistory={hasHistory}
-              fetching={fetching}
-            />
-          }
-        />
-        <Route
-          path={`${PLAYERS_URL}/:playerId/historyPast`}
-          element={
-            <HistoryPastTable
-              key={playerId}
-              playerId={playerId}
-              historyPast={historyPast}
-              fetchPlayerHistoryPast={fetchPlayerHistoryPast}
-              updatePlayerHistoryPastSort={updatePlayerHistoryPastSort}
-              tab={tab}
-              hasHistoryPast={hasHistoryPast}
-              fetching={fetching}
-            />
-          }
-        />
-      </Routes>
+      <Outlet context={value} />
     </div>
   )
 }

@@ -1,21 +1,11 @@
-import { Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Navigate, useOutletContext } from 'react-router-dom'
 
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/player/reducer'
 import { PLAYERS_URL } from 'utilities/constants'
-
-import type { HistoryPast } from 'types'
-
-type Props = {
-  playerId: string,
-  tab: string,
-  historyPast: HistoryPast[],
-  fetchPlayerHistoryPast: Function,
-  updatePlayerHistoryPastSort: Function,
-  hasHistoryPast: boolean,
-  fetching: boolean
-}
+import type { PlayerContext } from '..'
 
 const HISTORY_PAST_TABLE_CELLS = [
   { cellId: 'seasonName', label: 'S', toolTipLabel: 'Season', sticky: true, sortParam: 'seasonName' },
@@ -34,16 +24,20 @@ const HISTORY_PAST_TABLE_CELLS = [
   { cellId: 'ownGoals', label: 'OG', toolTipLabel: 'Own Goals', sortParam: 'ownGoals' }
 ]
 
-const HistoryPastTable = (props: Props) => {
+const HistoryPastTable = () => {
   const {
-    historyPast = [],
     playerId,
-    tab,
-    hasHistoryPast,
+    player: { data: { hasHistoryPast }, historyPast = [], fetching },
     fetchPlayerHistoryPast,
     updatePlayerHistoryPastSort,
-    fetching
-  } = props
+    setTab
+  } = useOutletContext<PlayerContext>()
+
+  const tab = 'historyPast'
+  
+  useEffect(() => {
+    if(hasHistoryPast) setTab(tab)
+  }, [])
 
   if (!hasHistoryPast) return <Navigate to={`${PLAYERS_URL}/${playerId}`} />
 

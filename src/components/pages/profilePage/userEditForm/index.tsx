@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
@@ -8,18 +8,9 @@ import {
   Paper
 } from '@mui/material'
 
+import { AuthContext } from '..'
 import { PROFILE_URL } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
-
-import type { User, Error } from 'types'
-
-type Props = {
-  user: User,
-  errors: Error[],
-  updateUser: Function,
-  submitting: boolean,
-  initializeAuth: () => void
-}
 
 const useStyles = makeStyles()((theme: Theme) => ({
   form: {
@@ -40,14 +31,16 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const UserEditForm = (props: Props) => {
+
+
+const UserEditForm = () => {
   const {
     user: { email, username },
     errors = [],
     updateUser,
     submitting,
     initializeAuth
-  } = props
+  } = useContext(AuthContext)
 
   const { classes } = useStyles()
 
@@ -64,6 +57,13 @@ const UserEditForm = (props: Props) => {
     e.preventDefault()
     updateUser({ user: { email: newEmail, username: newUsername } })
   }
+
+  const disableSubmit = (
+    !email ||
+    !username ||
+    submitting ||
+    (email.toLowerCase() == newEmail.toLowerCase() && username.toLowerCase() == newUsername.toLowerCase())
+  )
 
   return (
     <form onSubmit={handleSubmit} className={classes.form}>
@@ -104,14 +104,14 @@ const UserEditForm = (props: Props) => {
         <div className={classes.actions}>
           <ButtonLink
             to={PROFILE_URL}
-            color='default'
+            color='inherit'
             rightMargin
           >
             Cancel
           </ButtonLink>
           <Button
             type='submit'
-            disabled={!email || !username || submitting}
+            disabled={disableSubmit}
             variant='contained'
             color='primary'
           >

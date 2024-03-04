@@ -30,7 +30,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 
   title: {
-    padding: `${theme.spacing(1)}px ${theme.spacing(3)}px`,
+    padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
   },
 
   summary: {

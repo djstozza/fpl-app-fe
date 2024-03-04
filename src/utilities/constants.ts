@@ -30,6 +30,14 @@ export const TITLE = 'Fpl App'
 export const cable = createConsumer(CABLE_URL)
 
 export const APPLICATION_ERRORS = {
+  '401': {
+    description: 'Unauthorized',
+    title: 'Unauthorized',
+    message: 'You must be logged in to view this page',
+    action: {
+      label: 'OK'
+    }
+  },
   '404': {
     description: 'Not Found',
     title: 'Requested resource not found',

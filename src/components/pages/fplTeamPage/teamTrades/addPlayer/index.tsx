@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 
 import ListPositionsTable from '../../listPositionsTable'
@@ -6,45 +7,19 @@ import OutListPosition from '../../outListPosition'
 import TradeableListPositionsTable from '../tradeableListPositionsTable'
 import { TITLE } from 'utilities/constants'
 
-import type { InterTeamTradeGroup, FplTeamList, ListPosition } from 'types'
-import type { FplTeamListState } from 'state/fplTeamList'
-import type { ListPositionState } from 'state/listPosition'
-import type { InterTeamTradeGroupsState } from 'state/interTeamTradeGroups'
+import type { FplTeamContext } from '../..'
 
-type Props = {
-  isOwner: boolean,
-  currentFplTeamList?: FplTeamList,
-  interTeamTradeGroup: InterTeamTradeGroup,
-  fetchInterTeamTradeGroup: Function,
-  teamTradeId: string,
-  selectedFplTeamListId?: string,
-  outListPosition?: ListPosition,
-  setOutListPosition: Function,
-  fetchTradeableListPositions: Function,
-  listPosition: ListPositionState,
-  fetchListPositions: Function,
-  deadline?: Date,
-  fplTeamList: FplTeamListState,
-  interTeamTradeGroups: InterTeamTradeGroupsState,
-  updateTradeableListPositionsFilter: Function,
-  updateTradeableListPositionsSort: Function,
-  fetchTradeableListPositionFacets: Function,
-  addToInterTeamTradeGroup: Function,
-  name: string
-}
-
-const AddPlayer = (props: Props) => {
+const AddPlayer = () => {
   const {
-    isOwner,
     currentFplTeamList,
     interTeamTradeGroup,
     fetchInterTeamTradeGroup,
     teamTradeId,
     selectedFplTeamListId,
-    fplTeamList: { listPositions, fetching },
+    fplTeam: { isOwner, name },
+    fplTeamList: { listPositions, fetching, outListPosition },
     fetchListPositions,
     deadline,
-    outListPosition,
     setOutListPosition,
     listPosition,
     fetchTradeableListPositions,
@@ -53,8 +28,7 @@ const AddPlayer = (props: Props) => {
     fetchTradeableListPositionFacets,
     addToInterTeamTradeGroup,
     interTeamTradeGroups: { errors, submitting },
-    name
-  } = props
+  } = useOutletContext<FplTeamContext>()
 
   const { enqueueSnackbar } = useSnackbar()
 

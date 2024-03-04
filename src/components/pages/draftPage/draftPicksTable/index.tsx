@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
@@ -7,16 +8,8 @@ import { initialFilterState } from 'state/draftPicks/reducer'
 import SearchListener from 'components/common/searchListener'
 import Link from 'components/common/link'
 
-import type { DraftPicksState } from 'state/draftPicks'
+import type { DraftContext } from '..'
 import type { DraftPick } from 'types'
-
-type Props = {
-  draftPicks: DraftPicksState,
-  fetchDraftPicks: Function,
-  updateDraftPicksFilter: Function,
-  updateDraftPicksSort: Function,
-  fetchDraftPickFacets: Function
-}
 
 const DRAFT_PICKS_TABLE_CELLS = [
   { cellId: 'pickNumber', label: 'PN', toolTipLabel: 'Pick Number', sortParam: 'pickNumber', sticky: true },
@@ -115,14 +108,21 @@ const DRAFT_PICKS_TABLE_CELLS = [
   }
 ]
 
-const DraftPicksTable = (props: Props) => {
+const DraftPicksTable = () => {
   const {
     draftPicks,
     fetchDraftPicks,
     updateDraftPicksSort,
     updateDraftPicksFilter,
-    fetchDraftPickFacets
-  } = props
+    fetchDraftPickFacets,
+    setTab
+  } = useOutletContext<DraftContext>()
+
+  const tab = 'draftPicks'
+
+  useEffect(() => {
+    setTab(tab)
+  }, [])
 
   useEffect(
     () => {

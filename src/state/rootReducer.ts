@@ -1,5 +1,4 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import { loadingBarReducer } from 'react-redux-loading-bar'
 
 import auth from './auth'
 import draftPicks from './draftPicks'
@@ -44,8 +43,7 @@ const rootReducer = combineReducers({
   team,
   teams,
   trades,
-  waiverPicks,
-  loadingBar: loadingBarReducer
+  waiverPicks
 })
 
 export default rootReducer

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState  } from 'react'
 import { makeStyles } from 'tss-react/mui';
 import {
   Theme,
-  createStyles
 } from '@mui/material'
 
 import { playerPlaceHolderLoader, playerImage } from 'utilities/helpers'
@@ -13,13 +12,17 @@ type Props = {
   maxHeight: number
 }
 
-const useStyles = makeStyles()((theme: Theme) => createStyles({
+type HeightProps = {
+  maxHeight: number,
+}
+
+const useStyles = makeStyles<HeightProps>()((theme: Theme, { maxHeight }) => ({
   playerImage: {
     width: theme.spacing(27.5),
     height: theme.spacing(35),
     [theme.breakpoints.up('sm')]: {
-      maxHeight: ({ maxHeight }:{ maxHeight: number }) => maxHeight,
-      maxWidth: ({ maxHeight }:{ maxHeight: number}) => 0.79 * maxHeight
+      maxHeight: maxHeight,
+      maxWidth: 0.79 * maxHeight
     }
   }
 }));

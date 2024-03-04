@@ -1,23 +1,29 @@
+import { useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
+
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/team/reducer'
 import { playersTableCells } from 'components/pages/playersPage'
 
 
-import type { PlayersState } from 'state/players'
+import type { TeamContext } from '..'
 import type { CellHash } from 'types'
 
-type Props = {
-  players: PlayersState,
-  fetchTeamPlayers: Function,
-  sort: Object,
-  teamId: string,
-  tab: string,
-  updateTeamPlayersSort: Function
-}
+const PlayersTable = () => {
+  const {
+    teamId,
+    players: { data: players, fetching },
+    fetchTeamPlayers,
+    updateTeamPlayersSort,
+    setTab
+  } = useOutletContext<TeamContext>()
 
-const PlayersTable = (props: Props) => {
-  const { teamId, players: { data: players, fetching }, tab, fetchTeamPlayers, updateTeamPlayersSort } = props
+  const tab = 'players'
+
+  useEffect(() => {
+    setTab(tab)
+  }, [])
 
   const cellHash: CellHash = playersTableCells()
   delete cellHash['teams']

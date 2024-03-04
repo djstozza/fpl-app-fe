@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
 import { PLAYERS_URL } from 'utilities/constants'
 import SortTable from 'components/common/sortTable'
@@ -7,16 +8,8 @@ import SearchListener from 'components/common/searchListener'
 import Link from 'components/common/link'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 
-import type { MiniDraftPicksState } from 'state/miniDraftPicks'
+import type { MiniDraftContext } from '..'
 import type { MiniDraftPick } from 'types'
-
-type Props = {
-  miniDraftPicks: MiniDraftPicksState,
-  fetchMiniDraftPicks: Function,
-  updateMiniDraftPicksFilter: Function,
-  updateMiniDraftPicksSort: Function,
-  fetchMiniDraftPickFacets: Function
-}
 
 const MINI_DRAFT_PICKS_TABLE_CELLS = [
   { cellId: 'pickNumber', label: 'PN', toolTipLabel: 'Pick Number', sortParam: 'pickNumber', sticky: true },
@@ -100,16 +93,24 @@ const MINI_DRAFT_PICKS_TABLE_CELLS = [
   }
 ]
 
-const MiniDraftPicksTable = (props: Props) => {
+const MiniDraftPicksTable = () => {
   const {
     miniDraftPicks,
     fetchMiniDraftPicks,
     updateMiniDraftPicksSort,
     updateMiniDraftPicksFilter,
-    fetchMiniDraftPickFacets
-  } = props
+    fetchMiniDraftPickFacets,
+    setTab
+  } = useOutletContext<MiniDraftContext>()
 
   const { data, facets = {}, meta: { total }, season, fetching } = miniDraftPicks
+  const tab = 'miniDraftPicks'
+
+  useEffect(
+    () => {
+      setTab(tab)
+    }, []
+  )
 
   useEffect(
     () => {

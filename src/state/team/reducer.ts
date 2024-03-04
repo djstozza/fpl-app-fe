@@ -4,7 +4,7 @@ import { success, failure } from 'utilities/actions'
 import type { Action, Team, TeamFixture, TeamPlayer } from 'types'
 
 export type State = {
-  data?: Team,
+  data: Team,
   fixtures: TeamFixture[],
   players: TeamPlayer[],
   errors: Object[],

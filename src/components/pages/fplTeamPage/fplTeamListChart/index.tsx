@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect, useCallback } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { groupBy } from 'lodash'
 import { makeStyles } from 'tss-react/mui'
@@ -12,23 +13,8 @@ import {
   cable
 } from 'utilities/constants'
 
-import type { FplTeamListsState } from 'state/fplTeamLists'
-import type { FplTeamListState } from 'state/fplTeamList'
-import type { ListPositionState } from 'state/listPosition'
+import type { FplTeamContext } from '..'
 import type { ListPosition, FplTeamList, ListPositionChartDisplay } from 'types'
-
-type Props = {
-  fplTeamId: string,
-  fplTeamLists: FplTeamListsState,
-  fplTeamList: FplTeamListState,
-  listPosition: ListPositionState,
-  fetchValidSubstitutions: Function,
-  processSubstitution: Function,
-  clearValidSubstitutions: Function,
-  isOwner: boolean,
-  selectedFplTeamListId?: string,
-  fetchFplTeamList: Function
-}
 
 interface GroupedListPositions {
   [key: string]: ListPositionChartDisplay[]
@@ -47,7 +33,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column'
     }
   },
@@ -109,7 +95,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     marginRight: 'audo',
     border: `1px solid ${colors.white}`,
     zIndex: 1,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
   },
 
   goalkeeperBoxTop: {
@@ -123,12 +109,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
     marginRight: 'audo',
     border: `1px solid ${colors.white}`,
     zIndex: 1,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
   },
 
   halfWayLine: {
     position: 'absolute',
-    bottom: '50%',
+    bottom: '49.7%',
     width: `100%`,
     border: `1px solid ${colors.white}`,
     zIndex: 1
@@ -145,7 +131,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     borderTopRightRadius: theme.spacing(11),
     border: `1px solid ${colors.white}`,
     zIndex: 1,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
   },
 
   penaltyBoxSemiCircleTop: {
@@ -159,7 +145,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     border: `1px solid ${colors.white}`,
     zIndex: 1,
     transform: `translate(-50%, 0)`,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
   },
 
   centerCircle: {
@@ -172,7 +158,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     borderRadius: '50%',
     border: `1px solid ${colors.white}`,
     zIndex: 0,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)}px ${theme.spacing(2.5)}px`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
   },
 
   penaltySpotTop: {
@@ -204,7 +190,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   centerSpot: {
     position: 'absolute',
     transform: `translate(-50%, 0)`,
-    bottom: '49.5%',
+    bottom: '49.2%',
     left: '50%',
     backgroundColor: colors.white,
     width: theme.spacing(0.75),
@@ -215,26 +201,34 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const FplTeamListChart = (props: Props) => {
+const FplTeamListChart = () => {
   const {
     fplTeamId,
+    fplTeam: { isOwner },
     fplTeamLists: { data: fplTeamLists },
     fplTeamList: { data: fplTeamList, listPositions, submitting, errors },
     listPosition,
     fetchValidSubstitutions,
     processSubstitution,
     clearValidSubstitutions,
-    isOwner,
     selectedFplTeamListId,
-    fetchFplTeamList
-  } = props
+    fetchFplTeamList,
+    setTab,
+    setAction
+  } = useOutletContext<FplTeamContext>()
   const [selectedListPositionId, setSelectedListPositionId] = useState()
   const [fplTeamListUpdatedAt, setFplTeamListUpdatedAt] = useState(0)
   const { enqueueSnackbar } = useSnackbar()
+  const tab = 'teamLists'
 
   const { validSubstitutions, fetching } = listPosition
 
   const { classes } = useStyles()
+
+  useEffect(() => {
+    setTab(tab)
+    setAction()
+  }, [])
 
   const handleReceived = useCallback(
     ({ updatedAt }) => {

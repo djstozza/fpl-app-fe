@@ -1,39 +1,18 @@
 import { Fragment, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 
 import ListPositionsTable from 'components/pages/fplTeamPage/listPositionsTable'
 import OutListPosition from 'components/pages/fplTeamPage/outListPosition'
 import TradeablePlayersTable from 'components/pages/fplTeamPage/tradeablePlayersTable'
 
-import type { PlayersState } from 'state/players'
-import type { FplTeamListState } from 'state/fplTeamList'
-import type { MiniDraftPicksState } from 'state/miniDraftPicks'
-import type { ListPosition } from 'types'
+import type { MiniDraftContext } from '..'
 
-type Props = {
-  isWaiver: boolean,
-  fplTeamList: FplTeamListState,
-  fetchListPositions: Function,
-  deadline?: Date,
-  outListPosition?: ListPosition,
-  setOutListPosition: Function,
-  fetchTradeablePlayers: Function,
-  updateTradeablePlayersFilter: Function,
-  updateTradeablePlayersSort: Function,
-  updateTradeablePlayersPage: Function,
-  players: PlayersState,
-  fetchPlayerFacets: Function,
-  miniDraftPicks: MiniDraftPicksState,
-  createMiniDraftPick: Function
-}
-
-const NewMiniDraftPick = (props: Props) => {
+const NewMiniDraftPick = () => {
   const {
-    isWaiver,
-    fplTeamList: { listPositions, fetching },
+    fplTeamList: { listPositions, fetching, outListPosition },
     fetchListPositions,
     deadline,
-    outListPosition,
     setOutListPosition,
     fetchTradeablePlayers,
     updateTradeablePlayersSort,
@@ -42,10 +21,19 @@ const NewMiniDraftPick = (props: Props) => {
     players,
     fetchPlayerFacets,
     createMiniDraftPick,
-    miniDraftPicks
-  } = props
+    miniDraftPicks,
+    setTab
+  } = useOutletContext<MiniDraftContext>()
   const { enqueueSnackbar } = useSnackbar()
   const { errors, submitting, fplTeamListId, canMakeMiniDraftPick } = miniDraftPicks
+  const isWaiver = false
+  const tab = 'tradeableListPositions'
+
+  useEffect(
+    () => {
+      setTab(tab)
+    }, []
+  )
 
   useEffect(
     () => {
