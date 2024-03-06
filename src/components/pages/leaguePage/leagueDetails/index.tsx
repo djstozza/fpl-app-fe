@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import {
@@ -47,7 +47,7 @@ const LeagueDetails = () => {
   }, [])
 
   return (
-    <Fragment>
+    <div data-testid='LeagueDetails'>
       <Table
         className={classes.table}
         size='small'
@@ -74,7 +74,7 @@ const LeagueDetails = () => {
         submitting={submitting}
         detailsPage
       />
-    </Fragment>
+    </div>
   )
 }
 

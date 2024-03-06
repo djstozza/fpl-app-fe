@@ -81,8 +81,6 @@ export const MiniDraftPage = (props: Props) => {
   const [tab, setTab] = useState<Tab>('miniDraftPicks')
   const { leagueId } = useParams()
 
-  console.log(tab)
-
   const { round: { waiverDeadline } = {}, fplTeamListId, miniDraftFinished } = miniDraftPicks
 
   useEffect(

@@ -30,16 +30,18 @@ const EditLeagueForm = () => {
   }, [])
 
   return (
-    <LeagueForm
-      league={league}
-      title='Edit details'
-      errors={errors}
-      submitFn={updateLeague}
-      initializeForm={initializeForm}
-      create
-      hideFplTeamName
-      returnUrl={returnUrl}
-    />
+    <div data-testid='EditLeagueForm'>
+      <LeagueForm
+        league={league}
+        title='Edit details'
+        errors={errors}
+        submitFn={updateLeague}
+        initializeForm={initializeForm}
+        create
+        hideFplTeamName
+        returnUrl={returnUrl}
+      />
+    </div>
   )
 }
 

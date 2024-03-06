@@ -82,7 +82,7 @@ const AvailablePlayersTable = () => {
   if (nextDraftPickId && userCanPick) cells = { ...cells, draftPlayerColumn }
 
   return (
-    <Fragment>
+    <div data-testid='AvailablePlayersTable'>
       <SearchListener fetchAction={fetchAvailablePlayers} initialFilterState={initialFilterState}>
         <SortTable
           collection={players}
@@ -121,7 +121,7 @@ const AvailablePlayersTable = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Fragment>
+    </div>
   )
 }
 

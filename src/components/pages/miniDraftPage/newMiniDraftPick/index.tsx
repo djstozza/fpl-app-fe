@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 
@@ -52,7 +52,7 @@ const NewMiniDraftPick = () => {
   if (!listPositions.length) return null
 
   return (
-    <Fragment>
+    <div data-testid='NewMiniDraftPick'>
     {
       !outListPosition &&
       <ListPositionsTable
@@ -84,7 +84,7 @@ const NewMiniDraftPick = () => {
         submitAction={createMiniDraftPick}
       />
     }
-    </Fragment>
+    </div>
   )
 }
 

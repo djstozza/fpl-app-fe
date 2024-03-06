@@ -126,10 +126,8 @@ const App = () => {
                 }
               >
                 <Route index element={<UserDetails />} />
-                <Route path='details' element={<UserDetails />}>
-                  <Route index element={<UserDetails />} />
-                  <Route path='edit' element={<UserEditForm />} />
-                </Route>
+                <Route path='details/edit' element={<UserEditForm />} />
+                <Route path='details' element={<UserDetails />} />
                 <Route path='leagues'>
                   <Route index element={<LeaguesPage />} />
                   <Route path='new' element={<CreateLeague />} /> 
@@ -162,7 +160,7 @@ const App = () => {
                 }
               >
                 <Route index element={<FplTeamDetails />} />
-                <Route path='details' >
+                <Route path='details'>
                   <Route index element={<FplTeamDetails />} />
                   <Route path='edit' element={<EditFplTeamForm />} />
                 </Route>

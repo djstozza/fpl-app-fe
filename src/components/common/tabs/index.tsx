@@ -34,7 +34,7 @@ const Tabs = ({ currentTab, url, id, tabs, titleSubstr }: Props) => {
   const { pathname } = useLocation()
 
   const activeTabs = tabs.filter(({ display }) => display)
-  console.log(currentTab, url, id, tabs, titleSubstr)
+
   let tabIndex = findIndex(activeTabs, ({ value, matcher }) => {
     return matcher ? pathname.match(matcher) : value === currentTab
   })

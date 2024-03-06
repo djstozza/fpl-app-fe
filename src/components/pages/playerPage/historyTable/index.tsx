@@ -75,16 +75,22 @@ const HistoryTable = () => {
   if (!hasHistory) return <Navigate to={`${PLAYERS_URL}/${playerId}`} />
 
   return (
-    <SearchListener id={playerId} fetchAction={fetchPlayerHistory} initialFilterState={initialFilterState}>
-      <SortTable
-        collection={history}
-        handleSortChange={(newSort) => updatePlayerHistorySort({ tab, sort: newSort })}
-        cells={HISTORY_TABLE_CELLS}
-        tab={tab}
-        fetching={fetching}
-        name='history'
-      />
-    </SearchListener>
+    <div data-testid='HistoryTable'>
+      <SearchListener
+        id={playerId}
+        fetchAction={fetchPlayerHistory}
+        initialFilterState={initialFilterState}
+      >
+        <SortTable
+          collection={history}
+          handleSortChange={(newSort) => updatePlayerHistorySort({ tab, sort: newSort })}
+          cells={HISTORY_TABLE_CELLS}
+          tab={tab}
+          fetching={fetching}
+          name='history'
+        />
+      </SearchListener>
+    </div>
   )
 }
 

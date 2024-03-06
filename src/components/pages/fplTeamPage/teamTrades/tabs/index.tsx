@@ -159,7 +159,7 @@ const TeamTradeTabs = () => {
   }
 
   return (
-    <Fragment>
+    <div data-testid='TeamTradeTabs'>
       <TabPanel
         collection={fplTeamLists.data}
         collectionId={selectedFplTeamListId}
@@ -455,7 +455,7 @@ const TeamTradeTabs = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Fragment>
+    </div>
   )
 }
 

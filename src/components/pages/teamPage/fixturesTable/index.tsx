@@ -88,16 +88,18 @@ const FixturesTable = () => {
   }, [])
 
   return (
-    <SearchListener id={teamId} fetchAction={fetchTeamFixtures} initialFilterState={initialFilterState}>
-      <SortTable
-        collection={fixtures}
-        handleSortChange={(newSort) => updateTeamFixturesSort({ tab, sort: newSort })}
-        cells={FIXTURES_TABLE_CELLS}
-        tab={tab}
-        fetching={fetching}
-        name='fixtures'
-      />
-    </SearchListener>
+    <div data-testid='FixturesTable'>
+      <SearchListener id={teamId} fetchAction={fetchTeamFixtures} initialFilterState={initialFilterState}>
+        <SortTable
+          collection={fixtures}
+          handleSortChange={(newSort) => updateTeamFixturesSort({ tab, sort: newSort })}
+          cells={FIXTURES_TABLE_CELLS}
+          tab={tab}
+          fetching={fetching}
+          name='fixtures'
+        />
+      </SearchListener>
+    </div>
   )
 }
 

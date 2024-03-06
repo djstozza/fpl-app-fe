@@ -64,7 +64,11 @@ const EditFplTeamForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={classes.form}>
+    <form
+      data-testid='EditFplTeamForm'
+      onSubmit={handleSubmit}
+      className={classes.form}
+    >
       <Paper className={classes.paper}>
         <Typography
           variant='h5'

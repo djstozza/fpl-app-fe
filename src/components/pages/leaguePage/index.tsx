@@ -1,6 +1,6 @@
-import { useEffect, createContext, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useParams, useLocation, Outlet } from 'react-router-dom'
+import { useParams, Outlet } from 'react-router-dom'
 import { capitalize } from 'lodash'
 import { makeStyles } from 'tss-react/mui'
 import { Typography, Theme } from '@mui/material'
@@ -57,7 +57,6 @@ export const LeaguePage = (props: Props) => {
   } = props
   const { classes } = useStyles()
   const { leagueId } = useParams<LeagueParams>()
-  const { pathname } = useLocation()
   const [tab, setTab] = useState<Tab>('details')
   const [action, setAction] = useState<string>()
 

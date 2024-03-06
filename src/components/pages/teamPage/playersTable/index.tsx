@@ -30,16 +30,18 @@ const PlayersTable = () => {
   const cells = Object.values(cellHash).map(cell => ({ ...cell, filterParam: '' }))
 
   return (
-    <SearchListener id={teamId} fetchAction={fetchTeamPlayers} initialFilterState={initialFilterState}>
-      <SortTable
-        collection={players}
-        handleSortChange={(newSort) => updateTeamPlayersSort({ tab, sort: newSort })}
-        cells={cells}
-        tab={tab}
-        fetching={fetching}
-        name='players'
-      />
-    </SearchListener>
+    <div data-testid='PlayersTable'>
+      <SearchListener id={teamId} fetchAction={fetchTeamPlayers} initialFilterState={initialFilterState}>
+        <SortTable
+          collection={players}
+          handleSortChange={(newSort) => updateTeamPlayersSort({ tab, sort: newSort })}
+          cells={cells}
+          tab={tab}
+          fetching={fetching}
+          name='players'
+        />
+      </SearchListener>
+    </div>
   )
 }
 

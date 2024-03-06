@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 
 import SortTable from 'components/common/sortTable'
@@ -8,22 +8,8 @@ import { initialFilterState } from 'state/league/reducer'
 import { FPL_TEAMS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
 
-import type { League, FplTeam, Error, CellHash } from 'types'
+import type { FplTeam, CellHash } from 'types'
 import type { LeagueContext } from '..'
-
-type Props = {
-  fplTeams: FplTeam[],
-  league: League,
-  fetchFplTeams: Function,
-  generateDraftPicks: (string) => void,
-  createDraft: Function,
-  submitting: boolean,
-  sort: Object,
-  leagueId: string,
-  updateFplTeamsSort: Function,
-  errors: Error[],
-  fetching: boolean
-}
 
 const FPL_TEAMS_TABLE_CELLS = {
   name: {
@@ -106,7 +92,7 @@ const FplTeamsTable = () => {
   }, [])
 
   return (
-    <Fragment>
+    <div data-testid='LeagueFplTeamsTable'>
       <SearchListener id={leagueId} fetchAction={fetchFplTeams} initialFilterState={initialFilterState}>
         <SortTable
           collection={fplTeams}
@@ -122,7 +108,7 @@ const FplTeamsTable = () => {
         createDraft={createDraft}
         submitting={submitting}
       />
-    </Fragment>
+    </div>
   )
 }
 

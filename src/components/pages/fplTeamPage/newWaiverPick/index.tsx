@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 
@@ -56,7 +56,7 @@ const NewWaiverPick = () => {
   if (!listPositions.length) return null
 
   return (
-    <Fragment>
+    <div data-testid='NewWaiverPick'>
     {
       !outListPosition &&
       <ListPositionsTable
@@ -88,7 +88,7 @@ const NewWaiverPick = () => {
         submitAction={isWaiver ? createWaiverPick : createTrade}
       />
     }
-    </Fragment>
+    </div>
   )
 }
 

@@ -67,7 +67,7 @@ const PlayerDetails = () => {
   delete cells.teams
 
   return (
-    <Grid container>
+    <Grid data-testid='PlayerDetails' container>
       <Grid item md={3} sm={5} xs={12}>
         <div className={classes.playerImageContainer}>
           <PlayerImage

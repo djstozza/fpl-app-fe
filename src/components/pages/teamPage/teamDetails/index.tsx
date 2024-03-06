@@ -36,7 +36,7 @@ const TeamDetails = () => {
   }, [])
 
   return (
-    <Table size='small'>
+    <Table data-testid='TeamDetails' size='small'>
       <TableBody>
         {
           TEAM_DETAILS_ROWS.map(({ rowId, label }) => (

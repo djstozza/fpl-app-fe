@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 
@@ -7,28 +7,6 @@ import OutListPosition from '../../outListPosition'
 import TradeableListPositionsTable from '../tradeableListPositionsTable'
 
 import type { FplTeamContext } from '../..'
-import type { ListPositionState } from 'state/listPosition'
-import type { FplTeamListState } from 'state/fplTeamList'
-import type { InterTeamTradeGroupsState } from 'state/interTeamTradeGroups'
-import type { FplTeamList, ListPosition } from 'types'
-
-type Props = {
-  isOwner: boolean,
-  fplTeamList: FplTeamListState,
-  currentFplTeamList?: FplTeamList,
-  fetchListPositions: Function,
-  deadline?: Date,
-  outListPosition?: ListPosition,
-  setOutListPosition: Function,
-  fetchTradeableListPositions: Function,
-  listPosition: ListPositionState,
-  createInterTeamTradeGroup: Function,
-  selectedFplTeamListId?: string,
-  interTeamTradeGroups: InterTeamTradeGroupsState,
-  updateTradeableListPositionsFilter: Function,
-  updateTradeableListPositionsSort: Function,
-  fetchTradeableListPositionFacets: Function
-}
 
 const NewTeamTrade = () => {
   const {
@@ -65,7 +43,7 @@ const NewTeamTrade = () => {
   if (!listPositions.length) return null
 
   return (
-    <Fragment>
+    <div data-testid='NewTeamTrade'>
     {
       !outListPosition &&
       <ListPositionsTable
@@ -95,7 +73,7 @@ const NewTeamTrade = () => {
         submitting={submitting}
       />
     }
-    </Fragment>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 
 import { PLAYERS_URL } from 'utilities/constants'
@@ -122,7 +122,7 @@ const MiniDraftPicksTable = () => {
   if (!season) return null
 
   return (
-    <Fragment>
+    <div data-testid='MiniDraftPicksTable'>
       <SearchListener fetchAction={fetchMiniDraftPicks} initialFilterState={initialFilterState}>
         <SortTable
           collection={data}
@@ -136,7 +136,7 @@ const MiniDraftPicksTable = () => {
           noOffset
         />
       </SearchListener>
-    </Fragment>
+    </div>
   )
 }
 

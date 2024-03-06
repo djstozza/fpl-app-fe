@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { groupBy } from 'lodash'
@@ -297,7 +297,7 @@ const FplTeamListChart = () => {
   if (!selectedFplTeamListId) return null
 
   return (
-    <Fragment>
+    <div data-testid='FplTeamListChart'>
       <TabPanel
         collection={fplTeamLists}
         collectionId={selectedFplTeamListId}
@@ -378,7 +378,7 @@ const FplTeamListChart = () => {
           }
         </Box>
       </div>
-    </Fragment>
+    </div>
   )
 }
 

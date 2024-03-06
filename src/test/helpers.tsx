@@ -15,7 +15,7 @@ export const MockedStore = ({ children, defaultState = {} }: MockedStoreProps) =
   <Provider store={configureStore({ reducer: rootReducer, preloadedState: defaultState })}>{children}</Provider>
 )
 
-export const MockedRouter = ({ initialEntries = ['/'], children }:{ initialEntries: string[], children: any }) => (
+export const MockedRouter = ({ children }:{ children: any }) => (
   <Router>
     {children}
   </Router>
@@ -23,7 +23,7 @@ export const MockedRouter = ({ initialEntries = ['/'], children }:{ initialEntri
 
 export const MockedRouterStore = ({
   children,
-  defaultState = { rounds: { data: [] }, auth: {}, loadingBar: { default: 0 } }
+  defaultState = { rounds: { data: [] }, auth: {} }
 }: MockedStoreProps) => (
   <MockedStore defaultState={defaultState}>
     <Router>

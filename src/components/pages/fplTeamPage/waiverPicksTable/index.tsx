@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import {
   TextField,
@@ -142,7 +142,7 @@ const WaiverPicksTable = () => {
   if (!selectedFplTeamListId) return null
 
   return (
-    <Fragment>
+    <div data-testid='WaiverPicksTable'>
       <TabPanel
         collection={fplTeamLists}
         collectionId={selectedFplTeamListId}
@@ -156,7 +156,7 @@ const WaiverPicksTable = () => {
         fetching={fetching}
         name={name}
       />
-    </Fragment>
+    </div>
   )
 }
 

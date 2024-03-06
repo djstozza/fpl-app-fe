@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
@@ -133,7 +133,7 @@ const DraftPicksTable = () => {
   const { data, facets, meta: { total }, fetching } = draftPicks
 
   return (
-    <Fragment>
+    <div data-testid='DraftPicksTable'>
       <SearchListener fetchAction={fetchDraftPicks} initialFilterState={initialFilterState}>
         <SortTable
           collection={data}
@@ -147,7 +147,7 @@ const DraftPicksTable = () => {
           noOffset
         />
       </SearchListener>
-    </Fragment>
+    </div>
   )
 }
 

@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from 'tss-react/mui'
 
@@ -59,7 +58,7 @@ export const LeaguesPage = (props: Props) => {
   const { classes } = useStyles()
 
   return (
-    <Fragment>
+    <div data-testid='LeaguesPage'>
       <SearchListener fetchAction={fetchLeagues} initialFilterState={initialFilterState}>
         <SortTable
           collection={leagues}
@@ -84,7 +83,7 @@ export const LeaguesPage = (props: Props) => {
           Join a League
         </ButtonLink>
       </div>
-    </Fragment>
+    </div>
   )
 }
 

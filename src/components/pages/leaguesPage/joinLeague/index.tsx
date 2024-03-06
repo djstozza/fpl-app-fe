@@ -15,12 +15,14 @@ export const JoinLeague = (props: Props) => {
   const { errors = [], joinLeague, initializeForm } = props
 
   return (
-    <LeagueForm
-      title='Join a League'
-      errors={errors}
-      submitFn={joinLeague}
-      initializeForm={initializeForm}
-    />
+    <div data-testid='JoinLeague'>
+      <LeagueForm
+        title='Join a League'
+        errors={errors}
+        submitFn={joinLeague}
+        initializeForm={initializeForm}
+      />
+    </div>
   )
 }
 

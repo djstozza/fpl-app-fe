@@ -58,8 +58,11 @@ const ChangePasswordForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={classes.form}>
-
+    <form
+      data-testid='ChangePasswordForm'
+      onSubmit={handleSubmit}
+      className={classes.form}
+    >
       <Paper className={classes.paper}>
         <Typography
           variant='h5'

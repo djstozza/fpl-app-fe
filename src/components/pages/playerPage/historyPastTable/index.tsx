@@ -42,16 +42,18 @@ const HistoryPastTable = () => {
   if (!hasHistoryPast) return <Navigate to={`${PLAYERS_URL}/${playerId}`} />
 
   return (
-    <SearchListener id={playerId} fetchAction={fetchPlayerHistoryPast} initialFilterState={initialFilterState}>
-      <SortTable
-        collection={historyPast}
-        cells={HISTORY_PAST_TABLE_CELLS}
-        handleSortChange={(newSort) => updatePlayerHistoryPastSort({ tab, sort: newSort })}
-        tab={tab}
-        fetching={fetching}
-        name='past seasons'
-      />
-    </SearchListener>
+    <div data-testid='HistoryPastTable'>
+      <SearchListener id={playerId} fetchAction={fetchPlayerHistoryPast} initialFilterState={initialFilterState}>
+        <SortTable
+          collection={historyPast}
+          cells={HISTORY_PAST_TABLE_CELLS}
+          handleSortChange={(newSort) => updatePlayerHistoryPastSort({ tab, sort: newSort })}
+          tab={tab}
+          fetching={fetching}
+          name='past seasons'
+        />
+      </SearchListener>
+    </div>
   )
 }
 

@@ -11,13 +11,6 @@ import {
 } from 'utilities/constants'
 
 import type { FplTeam } from 'types'
-import type { FplTeamsState } from 'state/fplTeams'
-
-type Props = {
-  fplTeams: FplTeamsState,
-  fetchFplTeams: Function,
-  updateFplTeamsSort: Function
-}
 
 const FPL_TEAMS_TABLE_CELLS = [
   {
@@ -66,15 +59,17 @@ const FplTeamsTable = () => {
   } = useContext(AuthContext)
 
   return (
-    <SearchListener fetchAction={fetchFplTeams} initialFilterState={initialFilterState}>
-      <SortTable
-        collection={fplTeams}
-        cells={FPL_TEAMS_TABLE_CELLS}
-        handleSortChange={(newSort) => updateFplTeamsSort({ sort: newSort })}
-        fetching={fetching}
-        name='Fpl teams'
-      />
-    </SearchListener>
+    <div data-testid='FplTeamsTable'>
+      <SearchListener fetchAction={fetchFplTeams} initialFilterState={initialFilterState}>
+        <SortTable
+          collection={fplTeams}
+          cells={FPL_TEAMS_TABLE_CELLS}
+          handleSortChange={(newSort) => updateFplTeamsSort({ sort: newSort })}
+          fetching={fetching}
+          name='Fpl teams'
+        />
+      </SearchListener>
+    </div>
   )
 }
 
