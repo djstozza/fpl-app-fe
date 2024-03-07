@@ -1,35 +1,37 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen } from '@testing-library/react'
 
 import ButtonLink from '.'
 import { MockedRouter } from 'test/helpers'
 
 describe('User Login Form', () => {
-  const render = (props = {}) => createMount()(
+  const name = 'This is a link'
+  
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <ButtonLink
         to='foo/1'
-        children='This is a link'
+        children={name}
+        color='inherit'
         {...props}
       />
     </MockedRouter>
   )
 
-  const button = wrapper => wrapper.find('WithStyles(ForwardRef(Button))')
-  const link = wrapper => button(wrapper).find('Link')
-
   it('renders the button link', () => {
-    const wrapper = render({ color: 'primary', size: 'small' })
-
-    expect(link(wrapper).text()).toEqual('This is a link')
-    expect(link(wrapper).props().to).toEqual('foo/1')
-    expect(button(wrapper).props().variant).toEqual('contained')
-    expect(button(wrapper).props().size).toEqual('small')
-    expect(button(wrapper).props().color).toEqual('primary')
+    customRender({ color: 'primary', size: 'small' })
+    
+    const link = screen.getByRole('link')
+    expect(link).toHaveAttribute('href', '/foo/1')
+    expect(link).toHaveClass('MuiButton-contained')
+    expect(link).toHaveClass('MuiButton-sizeSmall')
+    expect(link).toHaveClass('MuiButton-containedPrimary')
+    expect(link).toHaveTextContent(name)
   })
 
   it('adds a right margin if rightMargin = true', () => {
-    const wrapper = render({ rightMargin: true })
+    customRender({ rightMargin: true })
 
-    expect(button(wrapper).props().className).toContain('rightMargin')
+    const link = screen.getByRole('link')
+    expect(link.className).toContain('rightMargin')
   })
 })

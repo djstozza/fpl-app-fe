@@ -1,22 +1,25 @@
-import { createMount } from '@material-ui/core/test-utils'
-import { TableCell } from '@material-ui/core'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { TableCell } from '@mui/material'
 
 import ExpandableTableRow from '.'
+import exp from 'constants'
 
 describe('ExpandableTableRow', () => {
+  const childComponentText = 'Child component'
+  const expandedComponentText = 'Expanded component'
   const children = (
     <TableCell>
-      Child component
+      {childComponentText}
     </TableCell>
   )
 
   const expandComponent = (
-    <TableCell colSpan='2'>
-      Expanded component
+    <TableCell>
+      {expandedComponentText}
     </TableCell>
   )
 
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <table>
       <tbody>
         <ExpandableTableRow
@@ -28,27 +31,32 @@ describe('ExpandableTableRow', () => {
     </table>
   )
 
-  const button = wrapper => wrapper.find('button')
-  const tableRow = wrapper => wrapper.find('WithStyles(ForwardRef(TableRow))')
-  const tableCell = wrapper => wrapper.find('WithStyles(ForwardRef(TableCell))')
+  // const button = wrapper => wrapper.find('button')
+  // const tableRow = wrapper => wrapper.find('WithStyles(ForwardRef(TableRow))')
+  // const tableCell = wrapper => wrapper.find('WithStyles(ForwardRef(TableCell))')
+
+  const expandButton = () => screen.getByRole('button')
+  const child = () => screen.queryByText(childComponentText, { selector: 'td' })
+  const expand = () => screen.queryByText(expandedComponentText, { selector: 'td' })
+  const keyboardArrowDownIcon = () => screen.queryByTestId('KeyboardArrowDownIcon')
+  const keyboardArrowUpIcon = () => screen.queryByTestId('KeyboardArrowUpIcon')
+  const tr = () => screen.queryAllByRole('row')
 
   it('shows the expanded component if the expand button has been clicked', () => {
-    const wrapper = render()
-    expect(tableRow(wrapper)).toHaveLength(1)
-    expect(button(wrapper).find('ForwardRef(KeyboardArrowDownIcon)')).toHaveLength(1)
-    expect(button(wrapper).find('ForwardRef(KeyboardArrowUpIcon)')).toHaveLength(0)
-    expect(tableCell(wrapper)).toHaveLength(2)
+    customRender()
 
-    button(wrapper).simulate('click')
-    expect(button(wrapper).find('ForwardRef(KeyboardArrowUpIcon)')).toHaveLength(1)
-    expect(button(wrapper).find('ForwardRef(KeyboardArrowDownIcon)')).toHaveLength(0)
-    expect(tableRow(wrapper)).toHaveLength(2)
-    expect(tableCell(wrapper)).toHaveLength(3)
-    expect(tableCell(wrapper).at(2).text()).toEqual('Expanded component')
+    expect(child()).toBeInTheDocument()
+    expect(expand()).not.toBeInTheDocument()
+    expect(tr().length).toEqual(1)
+    expect(keyboardArrowDownIcon()).toBeInTheDocument()
+    expect(keyboardArrowUpIcon()).not.toBeInTheDocument()
 
-    button(wrapper).simulate('click')
-    expect(button(wrapper).find('ForwardRef(KeyboardArrowDownIcon)')).toHaveLength(1)
-    expect(button(wrapper).find('ForwardRef(KeyboardArrowUpIcon)')).toHaveLength(0)
-    expect(tableCell(wrapper)).toHaveLength(2)
+    fireEvent.click(expandButton())
+
+    expect(child()).toBeInTheDocument()
+    expect(expand()).toBeInTheDocument()
+    expect(tr().length).toEqual(2)
+    expect(keyboardArrowDownIcon()).not.toBeInTheDocument()
+    expect(keyboardArrowUpIcon()).toBeInTheDocument()
   })
 })

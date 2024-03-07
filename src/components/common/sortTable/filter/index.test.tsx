@@ -1,83 +1,90 @@
-import React from 'react'
-import { createMount } from '@material-ui/core/test-utils'
+  import React from 'react'
+  import { render, screen, fireEvent, within } from '@testing-library/react'
 
-import Filter from '.'
-import { blank__ } from 'test/helpers'
-import { POSITION_FACETS } from 'test/fixtures'
+  import Filter from '.'
+  import { blank__ } from 'test/helpers'
+  import { POSITION_FACETS } from 'test/fixtures'
 
-const anchorEl = document.createElement('div')
-const filterSelection = ['1', '2']
+  const anchorEl = document.createElement('div')
+  const filterSelection = ['1', '2']
 
-describe('Filter', () => {
-  const render = (props = {}) => createMount()(
-    <Filter
-      facetValues={POSITION_FACETS}
-      filterParam='filterParam'
-      setAnchorEl={blank__}
-      applyFilter={blank__}
-      filterSelection={[]}
-      {...props}
-    />
-  )
+  describe('Filter', () => {
+    const customRender = (props = {}) => render(
+      <Filter
+        facetValues={POSITION_FACETS}
+        filterParam='filterParam'
+        setAnchorEl={blank__}
+        applyFilter={blank__}
+        filterSelection={[]}
+        anchorEl={null}
+        {...props}
+      />
+    )
 
-  const button = wrapper => wrapper.find('button')
-  const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
-  const checkbox = wrapper => wrapper.find('WithStyles(ForwardRef(Checkbox))')
+    const menuItem = () => screen.getAllByRole('menuitem')
+    const button = (text) => screen.getByText(text, { selector: 'button' })
+    const checkbox = (pos, checked) => within(menuItem()[pos]).getByRole('checkbox', { checked })
 
-  it('renders the dropdown if the anchor element is present and triggers applyFilter when apply is clicked', () => {
-    const applyFilter = jest.fn()
+    it('renders the dropdown if the anchor element is present and triggers applyFilter when apply is clicked', () => {
+      const applyFilter = jest.fn()
 
-    const wrapper = render({ applyFilter, anchorEl })
+      customRender({ applyFilter, anchorEl })
 
-    expect(menuItem(wrapper)).toHaveLength(4)
+      expect(menuItem()).toHaveLength(4)
+      
+      expect(checkbox(1, false)).toBeInTheDocument()
+      fireEvent.click(menuItem()[1])
+      expect(checkbox(1, true)).toBeInTheDocument()
+      
+      expect(checkbox(2, false)).toBeInTheDocument()
+      fireEvent.click(menuItem()[2])
+      expect(checkbox(2, true)).toBeInTheDocument()
 
-    menuItem(wrapper).at(1).simulate('click')
-    expect(checkbox(wrapper).at(1).props().checked).toEqual(true)
+      fireEvent.click(button('Apply'))
 
-    menuItem(wrapper).at(2).simulate('click')
-    expect(checkbox(wrapper).at(2).props().checked).toEqual(true)
+      expect(applyFilter).toHaveBeenCalledWith('filterParam', ['2', '3'])
+    })
 
-    button(wrapper).at(2).simulate('click') // The apply button
+    it('clears the selection when the "Clear all" button is clicked', () => {
+      const applyFilter = jest.fn()
+      
+      customRender({ anchorEl, filterSelection, applyFilter })
 
-    expect(applyFilter).toHaveBeenCalledWith('filterParam', ['2', '3'])
+      expect(checkbox(0, true)).toBeInTheDocument()
+      expect(checkbox(1, true)).toBeInTheDocument()
+
+      fireEvent.click(checkbox(0, true)) // Uncheck first checkbox
+
+      expect(checkbox(0, false)).toBeInTheDocument()
+      expect(checkbox(1, true)).toBeInTheDocument()
+
+      fireEvent.click(button('Clear all'))
+
+      expect(checkbox(0, false)).toBeInTheDocument()
+      expect(checkbox(1, false)).toBeInTheDocument()
+
+      fireEvent.click(button('Apply'))
+
+      expect(applyFilter).toHaveBeenCalledWith('filterParam', [])
+    })
+
+    it('clears the anchorEl when the menu is closed', () => {
+      const setAnchorEl = jest.fn()
+      customRender({ anchorEl, setAnchorEl })
+
+      const firstChild = screen.getByRole('presentation').firstChild // Close the menu
+      if (firstChild) fireEvent.click(firstChild)
+   
+      expect(setAnchorEl).toHaveBeenCalledWith(null)
+    })
+
+    it('triggers setAnchorEl the button is clicked', () => {
+      const setAnchorEl = jest.fn()
+
+      customRender({ setAnchorEl })
+
+      fireEvent.click(screen.getByRole('button'))
+
+      expect(setAnchorEl).toHaveBeenCalledWith(document.querySelector('button'))
+    })
   })
-
-  it('clears the selection when the "Clear all" button is clicked', () => {
-    const wrapper = render({ anchorEl, filterSelection })
-    button(wrapper).at(0).simulate('click') // Open modal button
-
-    expect(checkbox(wrapper).at(0).props().checked).toEqual(true)
-    expect(checkbox(wrapper).at(1).props().checked).toEqual(true)
-
-    checkbox(wrapper).at(0).simulate('click') // Uncheck checkbox
-    expect(checkbox(wrapper).at(0).props().checked).toEqual(false)
-    expect(checkbox(wrapper).at(1).props().checked).toEqual(true)
-
-    button(wrapper).at(1).simulate('click') // Clear all button
-    expect(checkbox(wrapper).at(0).props().checked).toEqual(false)
-    expect(checkbox(wrapper).at(1).props().checked).toEqual(false)
-  })
-
-  it('clears the anchorEl when the menu is closed', () => {
-    const setAnchorEl = jest.fn()
-    const wrapper = render({ anchorEl, setAnchorEl })
-
-    wrapper.find('WithStyles(ForwardRef(Menu))').props().onClose()
-
-    expect(setAnchorEl).toHaveBeenCalledWith(null)
-  })
-
-  it('triggers setAnchorEl and setSelected when the button is clicked', () => {
-    const setAnchorEl = jest.fn()
-    const setState = jest.fn()
-    const useStateSpy = jest.spyOn(React, 'useState')
-    useStateSpy.mockImplementation((init) => [init, setState])
-
-    const wrapper = render({ setAnchorEl, filterSelection })
-
-    button(wrapper).simulate('click')
-
-    expect(setAnchorEl).toBeCalledWith(document.querySelector('button'))
-    expect(setState).toHaveBeenCalledWith(['1', '2'])
-  })
-})

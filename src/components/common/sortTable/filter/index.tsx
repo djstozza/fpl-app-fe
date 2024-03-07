@@ -45,10 +45,9 @@ const Filter = (props: Props) => {
   } = props
   const { classes } = useStyles()
 
-  const [selected, setSelected] = useState<string[]>([])
+  const [selected, setSelected] = useState<string[]>(filterSelection)
 
   const handleClick = ({ currentTarget }: MouseEvent<HTMLElement>) => {
-    setSelected(filterSelection)
     setAnchorEl(currentTarget)
   }
 

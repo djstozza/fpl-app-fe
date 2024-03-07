@@ -8,7 +8,7 @@ import { LOGIN_URL } from 'utilities/constants'
 import type { User } from 'types'
 
 type Props = {
-  user: User,
+  user?: User,
   updateSession: () => void,
   children: any
 }

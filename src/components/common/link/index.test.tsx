@@ -1,33 +1,37 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen } from '@testing-library/react'
 
 import Link from '.'
 import { MockedRouter } from 'test/helpers'
 
 describe('Link', () => {
-  const render = (props = {}) => createMount()(
+  const text = 'This is a link'
+  const route = '/foo/1'
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <Link
-        to='/foo/1'
+        to={route}
         {...props}
       >
-        This is a link
+        {text}
       </Link>
     </MockedRouter>
   )
 
-  const link = wrapper => wrapper.find('Link').at(1)
+  // const link = wrapper => wrapper.find('Link').at(1)
+
+  const link = () => screen.getByRole('link')
 
   it('renders a link wih the team crest', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(link(wrapper).text()).toEqual('This is a link')
-    expect(link(wrapper).props().to).toEqual('/foo/1')
+    expect(link()).toHaveTextContent(text)
+    expect(link().getAttribute('href')).toEqual(route)
   })
 
   it('adds the noWrap and imageContainer', () => {
-    const wrapper = render({ noWrap: true, image: true })
+    customRender({ noWrap: true, image: true })
 
-    expect(link(wrapper).props().className).toContain('noWrap')
-    expect(link(wrapper).props().className).toContain('imageContainer')
+    expect(link().className).toContain('noWrap')
+    expect(link().className).toContain('imageContainer')
   })
 })

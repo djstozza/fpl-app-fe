@@ -1,4 +1,4 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render } from '@testing-library/react'
 
 import SearchListener from '.'
 import { blank__ } from 'test/helpers'
@@ -13,12 +13,8 @@ jest.mock('react-router-dom', () => ({
   useLocation: () => ({ pathname, search })
 }))
 
-delete window.location
-global.window = Object.create(window)
-global.window.location = { pathname }
-
 describe('searchListener', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <SearchListener
       initialFilterState={{}}
       fetchAction={blank__}
@@ -29,9 +25,10 @@ describe('searchListener', () => {
       </div>
     </SearchListener>
   )
+
   it('triggers the fetch action based on the search query and the initial filter state', () => {
     const fetchAction = jest.fn()
-    render({ fetchAction, initialFilterState: { sort } })
+    customRender({ fetchAction, initialFilterState: { sort } })
 
     expect(fetchAction).toHaveBeenCalledWith({ sort, filter: { positionId: ['1', '4'] } })
   })
