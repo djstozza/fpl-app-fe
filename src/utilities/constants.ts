@@ -41,7 +41,7 @@ export const APPLICATION_ERRORS = {
   '404': {
     description: 'Not Found',
     title: 'Requested resource not found',
-    message: 'We couldn’t find what you’re looking for.',
+    message: "We couldn't find what you're looking for.",
     action: {
       label: 'Back Home',
       path: '/'

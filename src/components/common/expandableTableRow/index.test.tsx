@@ -2,7 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { TableCell } from '@mui/material'
 
 import ExpandableTableRow from '.'
-import exp from 'constants'
 
 describe('ExpandableTableRow', () => {
   const childComponentText = 'Child component'
@@ -30,10 +29,6 @@ describe('ExpandableTableRow', () => {
       </tbody>
     </table>
   )
-
-  // const button = wrapper => wrapper.find('button')
-  // const tableRow = wrapper => wrapper.find('WithStyles(ForwardRef(TableRow))')
-  // const tableCell = wrapper => wrapper.find('WithStyles(ForwardRef(TableCell))')
 
   const expandButton = () => screen.getByRole('button')
   const child = () => screen.queryByText(childComponentText, { selector: 'td' })

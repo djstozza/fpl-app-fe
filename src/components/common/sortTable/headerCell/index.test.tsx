@@ -1,11 +1,12 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen, within, fireEvent } from '@testing-library/react'
 
 import HeaderCell from '.'
 import { blank__ } from 'test/helpers'
 import { PLAYER_FACETS } from 'test/fixtures'
 
 describe('HeaderCell', () => {
-  const render = (props = {}) => createMount()(
+  const label = 'T'
+  const customRender = (props = {}) => render(
     <table>
       <tbody>
         <tr>
@@ -15,7 +16,7 @@ describe('HeaderCell', () => {
             filterParam='teamId'
             handleFilterChange={blank__}
             handleSort={blank__}
-            label='T'
+            label={label}
             sortParam='teams.shortName'
             sort={{ 'teams.shortName': 'desc' }}
             toolTipLabel='Team'
@@ -26,47 +27,57 @@ describe('HeaderCell', () => {
     </table>
   )
 
-  const button = wrapper => wrapper.find('button')
-  const menu = wrapper => wrapper.find('WithStyles(ForwardRef(Menu))')
-  const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
-  const checkbox = wrapper => wrapper.find('WithStyles(ForwardRef(Checkbox))')
-  const sortLabel = wrapper => wrapper.find('WithStyles(ForwardRef(TableSortLabel))')
-  const tableCell = wrapper => wrapper.find('WithStyles(ForwardRef(TableCell))')
+  const filterButton = () => screen.getByLabelText('filter')
+  const checkboxes = () => screen.queryAllByRole('checkbox')
+  const modal = () => screen.queryByRole('presentation')
+  const buttons = () => screen.getAllByRole('button')
+  const sortDirection = () => screen.getByTestId('ArrowDownwardIcon')
+  const tableCell = () => screen.getByRole('cell')
 
   const filter = { teamId: ['1', '2'], positionId: ['4'] }
 
-  it('adds the mainHeaderCell class if sticky = true', () => {
-    let wrapper = render({ sticky: true })
+  describe('mainHeaderCell', () => {
+    it('does not have mainHeadercell if sticky != true', () => {
+      customRender()
+      expect(tableCell().className).not.toContain('mainHeaderCell')
+    })
+  
+    it('adds the mainHeaderCell class if sticky = true', () => {
+      customRender({ sticky: true })
+      expect(tableCell().className).toContain('mainHeaderCell')
+    })
+  })
 
-    expect(tableCell(wrapper).props().className).toContain('mainHeaderCell')
-
-    wrapper = render()
-    expect(tableCell(wrapper).props().className).not.toContain('mainHeaderCell')
+  describe('when the cellId does not have any facets', () => {
+    it('does not render the filter', () => {
+      customRender({ cellId: 'ownGoals' })
+      expect(screen.queryByLabelText('Filter')).not.toBeInTheDocument()
+    })
   })
 
   describe('filtering', () => {
     it('triggers handleFilterChange with the set filters', ()=> {
       const handleFilterChange = jest.fn()
 
-      const wrapper = render({ handleFilterChange, filter })
-      expect(menu(wrapper).props().open).toEqual(false)
+      customRender({ handleFilterChange, filter }) // Open filter
+      
+      expect(modal()).not.toBeInTheDocument()
+      expect(checkboxes().length).toEqual(0)
 
-      button(wrapper).at(0).simulate('click') // Open filter
+      fireEvent.click(filterButton())
+      expect(modal()).toBeInTheDocument()
+      expect(checkboxes().length).toEqual(PLAYER_FACETS['teams'].length)
+      
+      expect(checkboxes()[0]).toBeChecked()
+      expect(checkboxes()[1]).toBeChecked()
 
-      expect(menu(wrapper).props().open).toEqual(true)
-      expect(menuItem(wrapper).length).toEqual(20)
+      fireEvent.click(checkboxes()[0])
+      expect(checkboxes()[0]).not.toBeChecked()
 
-      expect(checkbox(wrapper).at(0).props().checked).toEqual(true)
-      expect(checkbox(wrapper).at(1).props().checked).toEqual(true)
+      fireEvent.click(checkboxes()[4])
+      expect(checkboxes()[4]).toBeChecked()
 
-      menuItem(wrapper).at(0).simulate('click')
-      expect(checkbox(wrapper).at(0).props().checked).toEqual(false)
-
-      expect(checkbox(wrapper).at(4).props().checked).toEqual(false)
-      menuItem(wrapper).at(4).simulate('click')
-      expect(checkbox(wrapper).at(4).props().checked).toEqual(true)
-
-      button(wrapper).at(2).simulate('click') // Apply filter
+      fireEvent.click(screen.getByRole('button', { name: /apply/i }))
 
       expect(handleFilterChange).toHaveBeenCalledWith(
         {
@@ -75,73 +86,81 @@ describe('HeaderCell', () => {
         }
       )
 
-      expect(menu(wrapper).props().open).toEqual(false)
+      expect(modal()).not.toBeInTheDocument()
+      expect(checkboxes().length).toEqual(0)
     })
 
     it('removes empty filters when handleFilterChange is called', () => {
       const handleFilterChange = jest.fn()
 
-      const wrapper = render({ handleFilterChange, filter })
+      customRender({ handleFilterChange, filter })
 
-      button(wrapper).at(0).simulate('click') // Open filter
+      expect(modal()).not.toBeInTheDocument()
 
-      expect(checkbox(wrapper).at(0).props().checked).toEqual(true)
-      expect(checkbox(wrapper).at(1).props().checked).toEqual(true)
+      fireEvent.click(filterButton())
 
-      button(wrapper).at(1).simulate('click') // Clear selection
+      expect(modal()).toBeInTheDocument()
 
-      expect(checkbox(wrapper).at(0).props().checked).toEqual(false)
-      expect(checkbox(wrapper).at(1).props().checked).toEqual(false)
+      fireEvent.click(checkboxes()[0])
+      fireEvent.click(checkboxes()[1])
 
-      button(wrapper).at(2).simulate('click') // Apply filter
+      fireEvent.click(screen.getByRole('button', { name: 'Apply' }))
 
       expect(handleFilterChange).toHaveBeenCalledWith({ positionId: ['4'] })
-      expect(menu(wrapper).props().open).toEqual(false)
+
+      expect(modal()).not.toBeInTheDocument()
     })
 
     it('does not render the filter if there is no filterParam', () => {
-      const wrapper = render({ filterParam: undefined, facets: undefined })
+      customRender({ filterParam: undefined, facets: undefined })
 
-      expect(wrapper.find('Filter')).toHaveLength(0)
+      expect(screen.queryByLabelText('Filter')).not.toBeInTheDocument()
     })
   })
 
   describe('sorting', () => {
-    it('has the noPaddingRight class if the sortParam is present', () => {
-      let wrapper = render()
-      expect(tableCell(wrapper).props().className).toContain('noPaddingRight')
+    describe('noPaddingRight', () => {
+      it('has the noPaddingRight class if the sortParam is present', () => {
+        customRender()
+        expect(tableCell().className).toContain('noPaddingRight')
+      })
 
-      wrapper = render({ sortParam: undefined })
-      expect(tableCell(wrapper).props().className).not.toContain('noPaddingRight')
+      it('does not have noPaddingRight if the sortParam is not present', () => {
+        customRender({ sortParam: undefined })
+        expect(tableCell().className).not.toContain('noPaddingRight')
+      })
     })
 
     it('triggers handleSort when clicked', () => {
       const handleSort = jest.fn()
-      const wrapper = render({ handleSort })
+      
+      customRender({ handleSort })
 
-      expect(sortLabel(wrapper).props().direction).toEqual('desc')
-      sortLabel(wrapper).simulate('click')
+      expect(buttons()[1].className).toContain('Mui-active')
+      expect(sortDirection().classList.toString()).toContain('MuiTableSortLabel-iconDirectionDesc')
+      
+      fireEvent.click(buttons()[1])
 
-      expect(handleSort).toBeCalledWith('teams.shortName', 'desc')
+      expect(handleSort).toHaveBeenCalledWith('teams.shortName', 'desc')
     })
 
     it('shows active = false if there is no sortDirection', () => {
       const sort = { 'position.name': 'asc' }
       const handleSort = jest.fn()
-      const wrapper = render({ handleSort, sort })
+      customRender({ handleSort, sort })
 
-      expect(sortLabel(wrapper).props().direction).toEqual(undefined)
-      expect(sortLabel(wrapper).props().active).toEqual(false)
+      expect(buttons()[1].className).not.toContain('Mui-active')
+      expect(sortDirection().classList.toString()).toContain('MuiTableSortLabel-iconDirectionAsc')
 
-      sortLabel(wrapper).simulate('click')
+      fireEvent.click(buttons()[1])
 
-      expect(handleSort).toBeCalledWith('teams.shortName', undefined)
+      expect(handleSort).toHaveBeenCalledWith('teams.shortName', undefined)
     })
 
     it('does not render the TableSortLabel if sortParam is undefined', () => {
-      const wrapper = render({ sortParam: undefined })
+      customRender({ sortParam: undefined })
 
-      expect(sortLabel(wrapper)).toHaveLength(0)
+      expect(buttons().length).toEqual(1)
     })
   })
 })

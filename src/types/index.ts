@@ -73,7 +73,6 @@ type RoundBase = {
 
 export type RoundSummary = {
   current: boolean,
-  finsihed: boolean,
   isCurrent: boolean,
   isNext: boolean,
   isPrevious: boolean,
@@ -81,7 +80,7 @@ export type RoundSummary = {
   miniDraft: boolean,
   dataChecked: boolean,
   deadlineTime: string,
-  waiverDeadline: string
+  waiverDeadline?: string
 } & RoundBase
 
 export type Round = { fixtures: Fixture[] } & RoundSummary

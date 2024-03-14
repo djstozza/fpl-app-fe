@@ -8,7 +8,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
   Theme,
 } from '@mui/material'
 
@@ -22,7 +21,6 @@ type RateLimitError = {
 
 type Props = {
   errorCode?: string,
-  title?: string,
   message?: string,
   rateLimitError?: RateLimitError,
   clearRequestErrors: Function,
@@ -36,7 +34,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
 }));
 
 export const ErrorDialog = (props: Props) => {
-  const { errorCode, title, message, clearRequestErrors, rateLimitError, onClose } = props
+  const { errorCode, message, clearRequestErrors, rateLimitError, onClose } = props
   const { classes } = useStyles()
 
   if (!errorCode) return null
@@ -46,7 +44,8 @@ export const ErrorDialog = (props: Props) => {
   if (!error) return null
   const { action: { label, path } } = error
 
-  const handleClose = () => {
+  const handleClose = (event: Event, reason: string) => {
+    if (reason === 'backdropClick') return event.stopPropagation()
     clearRequestErrors()
     onClose && onClose()
   }
@@ -83,17 +82,14 @@ export const ErrorDialog = (props: Props) => {
   const dialogProps = {
     open: true,
     disableEscapeKeyDown: true,
-    disableBackdropClick: true,
     fullWidth: true,
     onClose: handleClose
   }
 
   return (
     <Dialog {...dialogProps}>
-      <DialogTitle disableTypography>
-        <Typography variant='h6' className={classes.title}>
-          {title || error.title}
-        </Typography>
+      <DialogTitle className={classes.title}>
+        {error.title}
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -106,23 +102,20 @@ export const ErrorDialog = (props: Props) => {
 }
 
 const rateLimitError = (e) => {
-  const error = (e.errors || []).find(err => err.status === '429')
+  const error = e.errors?.find(err => err.status === '429')
 
   return error && error.meta
 }
 
 const mapStateToProps = (state) => {
-  const {
-    request: { errors = [] } = {}
-  } = state
+  const { request } = state
 
-  if (errors && errors.length) {
-    const error = errors[0]
-    const { status: errorCode, title, message, onClose } = error
+  if (request?.errors && request?.errors?.length) {
+    const error = request.errors[0]
+    const { status: errorCode, message, onClose } = error
 
     return {
       errorCode,
-      title,
       message,
       onClose,
       rateLimitError: rateLimitError(error)

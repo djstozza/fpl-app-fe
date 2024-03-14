@@ -147,7 +147,7 @@ const SortTable = (props: Props) => {
   }
 
   const changePage = (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    if (event) event.preventDefault()
+    event?.preventDefault()
     handleChangePage && handleChangePage(newPage * limit)
   }
 
@@ -155,6 +155,7 @@ const SortTable = (props: Props) => {
     <Fragment>
       <div ref={tableRef} className={classes.container}>
         <Table
+          data-testid='SortTable'
           size='small'
           stickyHeader
         >
@@ -217,6 +218,7 @@ const SortTable = (props: Props) => {
         </Table>
       </div>
       <TablePagination
+        data-testid='SortTablePagination'
         ref={paginationRef}
         component='div'
         count={total || collection.length}

@@ -1,4 +1,4 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen, fireEvent } from '@testing-library/react'
 
 import history from 'state/history'
 import TabPanel from '.'
@@ -7,7 +7,7 @@ import { ROUNDS } from 'test/fixtures'
 import { labelRenderer } from 'components/pages/roundsPage'
 
 describe('TabPanel', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <TabPanel
         collectionId='2'
@@ -19,38 +19,41 @@ describe('TabPanel', () => {
     </MockedRouter>
   )
 
-  const tab = wrapper => wrapper.find('WithStyles(ForwardRef(Tab))')
+  const tabs = () => screen.getAllByRole('tab')
+  // const tab = wrapper => wrapper.find('WithStyles(ForwardRef(Tab))')
 
   it('renders the tabs', () => {
-    const wrapper = render()
+    customRender()
+    expect(tabs()).toHaveLength(3)
+    
+    expect(tabs()[0]).toHaveTextContent(ROUNDS[0].name)
+    expect(tabs()[0].getAttribute('aria-selected')).toEqual('false')
 
-    expect(tab(wrapper)).toHaveLength(3)
+    expect(tabs()[1]).toHaveTextContent(ROUNDS[1].name)
+    expect(tabs()[1].getAttribute('aria-selected')).toEqual('true')
 
-    expect(tab(wrapper).at(0).text()).toEqual(ROUNDS[0].name)
-    expect(tab(wrapper).at(0).props().selected).toEqual(false)
-
-    expect(tab(wrapper).at(1).text()).toEqual(ROUNDS[1].name)
-    expect(tab(wrapper).at(1).props().selected).toEqual(true)
-
-    expect(tab(wrapper).at(2).text()).toEqual(ROUNDS[2].name)
-    expect(tab(wrapper).at(2).props().selected).toEqual(false)
+    expect(tabs()[2]).toHaveTextContent(ROUNDS[2].name)
+    expect(tabs()[2].getAttribute('aria-selected')).toEqual('false')
   })
 
   it('updates history when a new tab is clicked', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(history.location.pathname).not.toEqual('/rounds/1/')
+    expect(history.location.pathname).not.toEqual(`/rounds/${ROUNDS[0].id}/`)
 
-    tab(wrapper).at(0).find('button').simulate('click')
-    expect(history.location.pathname).toEqual('/rounds/1/')
+    fireEvent.click(tabs()[0])
+    
+    expect(history.location.pathname).toEqual(`/rounds/${ROUNDS[0].id}/`)
   })
 
   it('adds the tab if present on click', () => {
-    const wrapper = render({ tab: 'foo' })
+    const tab = 'foo'
+    const path = `/rounds/${ROUNDS[0].id}/${tab}`
+    customRender({ tab })
 
-    expect(history.location.pathname).not.toEqual('/rounds/1/foo')
+    expect(history.location.pathname).not.toEqual(path)
 
-    tab(wrapper).at(0).find('button').simulate('click')
-    expect(history.location.pathname).toEqual('/rounds/1/foo')
+    fireEvent.click(tabs()[0])
+    expect(history.location.pathname).toEqual(path)
   })
 })

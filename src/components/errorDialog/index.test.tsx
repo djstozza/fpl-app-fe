@@ -1,7 +1,9 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen } from '@testing-library/react'
 
+import { APPLICATION_ERRORS } from 'utilities/constants'
 import ConnectedErrorDialog, { ErrorDialog } from '.'
 import { MockedStore, blank__ } from 'test/helpers'
+
 
 const error404 = {
   errors: [
@@ -16,6 +18,8 @@ const error404 = {
   url: 'example.com'
 }
 
+const retryAfter = 10
+
 const error429 = {
   errors: [
     {
@@ -23,7 +27,7 @@ const error429 = {
       status: '429',
       title: 'Too many requests',
       meta: {
-        retryAfter: 10
+        retryAfter
       }
     }
   ],
@@ -97,12 +101,8 @@ const error422 = {
   url: 'example.com'
 }
 
-const h6 = wrapper => wrapper.find('h6')
-const p = wrapper => wrapper.find('p')
-const button = wrapper => wrapper.find('WithStyles(ForwardRef(Button))')
-
 describe('ErrorDialog', () => {
-  const mockedStoreRender = (state = {}) => createMount()(
+  const mockedStoreRender = (state = {}) => render(
     <MockedStore
        defaultState={{ request: { errors: [error404] }, ...state }}
     >
@@ -110,10 +110,9 @@ describe('ErrorDialog', () => {
     </MockedStore>
   )
 
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <ErrorDialog
       errorCode='500'
-      title='Oops, something went wrong'
       message='Something went wrong. The team has been alerted.'
       clearRequestErrors={blank__}
       {...props}
@@ -121,57 +120,91 @@ describe('ErrorDialog', () => {
   )
 
   it('renders rate limit error message', () => {
-    const wrapper = mockedStoreRender()
+    mockedStoreRender()
 
-    expect(h6(wrapper).text()).toEqual('Requested resource not found')
-    expect(p(wrapper).text()).toEqual("We couldn’t find what you’re looking for.")
-    expect(button(wrapper).text()).toEqual('Back Home')
-    expect(button(wrapper).props().href).toEqual('/')
+    const error = APPLICATION_ERRORS['404']
+
+    expect(screen.getByRole('heading')).toHaveTextContent(error.title)
+    expect(screen.getByText(error.message)).toBeInTheDocument()
+    expect(screen.getByRole('link')).toHaveTextContent(error.action.label)
+    expect(screen.getByRole('link')).toHaveAttribute('href', error.action.path)
   })
 
   it('renders the rate limit error message with substituted retry after string', () => {
-    const wrapper = mockedStoreRender({ request: { errors: [error429] } })
+    mockedStoreRender({ request: { errors: [error429] } })
 
-    expect(h6(wrapper).text()).toEqual('Too many requests')
-    expect(p(wrapper).text()).toEqual('Please try again after 10 seconds.')
-    expect(button(wrapper).text()).toEqual('OK')
-    expect(button(wrapper).props().href).toBeUndefined()
+    const error = APPLICATION_ERRORS['429']
+
+    expect(screen.getByRole('heading')).toHaveTextContent(error.title)
+    expect(screen.getByText(error.message.replace('{retryAfter}', retryAfter.toString()))).toBeInTheDocument()
+    expect(screen.getByRole('button')).toHaveTextContent(error.action.label)
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 
   it('renders the internal server error message', () => {
-    const wrapper = mockedStoreRender({ request: { errors: [error500] } })
+    mockedStoreRender({ request: { errors: [error500] } })
 
-    expect(h6(wrapper).text()).toEqual('Oops, something went wrong')
-    expect(p(wrapper).text()).toEqual('Something went wrong. The team has been alerted.')
-    expect(button(wrapper).text()).toEqual('OK')
-    expect(button(wrapper).props().href).toBeUndefined()
+    const error = APPLICATION_ERRORS['500']
+
+    expect(screen.getByRole('heading')).toHaveTextContent(error.title)
+    expect(screen.getByText(error.message)).toBeInTheDocument()
+    expect(screen.getByRole('button')).toHaveTextContent(error.action.label)
+    expect(screen.queryByRole('link')).not.toBeInTheDocument() 
   })
 
-  it('renders the service unavailable message', () => {
-    [error502, error503, errorFailedToFetch].forEach(error => {
-      const wrapper = mockedStoreRender({ request: { errors: [error] } })
+  it('renders the service unavailable message for a 502', () => {
+    mockedStoreRender({ request: { errors: [error502] } })
 
-      expect(h6(wrapper).text()).toEqual('Service Unavailable')
-      expect(p(wrapper).text()).toEqual('The service is temporarily unavailable. Please try again later.')
-      expect(button(wrapper).text()).toEqual('OK')
-      expect(button(wrapper).props().href).toBeUndefined()
-    })
+    const error = APPLICATION_ERRORS['502']
+
+    expect(screen.getByRole('heading')).toHaveTextContent(error.title)
+    expect(screen.getByText(error.message)).toBeInTheDocument()
+    expect(screen.getByRole('button')).toHaveTextContent(error.action.label)
+    expect(screen.queryByRole('link')).not.toBeInTheDocument() 
+  })
+
+  it('renders the service unavailable message for a 503', () => {
+    mockedStoreRender({ request: { errors: [error503] } })
+
+    const error = APPLICATION_ERRORS['503']
+
+    expect(screen.getByRole('heading')).toHaveTextContent(error.title)
+    expect(screen.getByText(error.message)).toBeInTheDocument()
+    expect(screen.getByRole('button')).toHaveTextContent(error.action.label)
+    expect(screen.queryByRole('link')).not.toBeInTheDocument() 
+  })
+
+  it('renders the service unavailable message for failed_to_fetch', () => {
+    mockedStoreRender({ request: { errors: [errorFailedToFetch] } })
+
+    const error = APPLICATION_ERRORS['failed_to_fetch']
+
+    expect(screen.getByRole('heading')).toHaveTextContent(error.title)
+    expect(screen.getByText(error.message)).toBeInTheDocument()
+    expect(screen.getByRole('button')).toHaveTextContent(error.action.label)
+    expect(screen.queryByRole('link')).not.toBeInTheDocument() 
   })
 
   it('triggers clearRequestErrors and onClose', () => {
     const clearRequestErrors = jest.fn()
     const onClose = jest.fn()
 
-    const wrapper = render({ clearRequestErrors, onClose })
+    customRender({ clearRequestErrors, onClose })
 
-    button(wrapper).simulate('click')
+    fireEvent.click(screen.getByRole('button'))
     expect(onClose).toHaveBeenCalled()
     expect(clearRequestErrors).toHaveBeenCalled()
   })
 
   it('does not render anything if the error code is not one that has been specified in the constants', () => {
-    const wrapper = mockedStoreRender({ request: { errors: [error422] } })
+    mockedStoreRender({ request: { errors: [error422] } })
 
-    expect(wrapper.html()).toEqual('')
+    expect(screen.queryByRole('presentation')).not.toBeInTheDocument()
+  })
+
+  it('does not render anything if errors is null', () => {
+    mockedStoreRender({ request: { errors: null } })
+
+    expect(screen.queryByRole('presentation')).not.toBeInTheDocument()
   })
 })

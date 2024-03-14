@@ -2,7 +2,7 @@ import { Fragment, MouseEvent, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
-import { AppBar, Toolbar, IconButton, Typography, Tooltip, Theme, Menu, MenuItem } from '@mui/material'
+import { AppBar, Toolbar, IconButton, Typography, Tooltip, Theme, Menu, MenuItem, useMediaQuery, useTheme } from '@mui/material'
 
 import { authActions } from 'state/auth'
 import MoreIcon from '@mui/icons-material/MoreVert'
@@ -25,7 +25,7 @@ import {
 import type { User } from 'types'
 
 type Props = {
-  user: User,
+  user?: User,
   logOut: Function
 }
 
@@ -43,18 +43,8 @@ const useStyles = makeStyles()((theme: Theme) =>
       width: theme.spacing(3.5)
     },
 
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
+    section: {
+      display: 'flex'
     },
 
     active: {
@@ -65,6 +55,8 @@ const useStyles = makeStyles()((theme: Theme) =>
 export const NavBar = (props: Props) => {
   const { user, logOut } = props
   const { classes, cx } = useStyles()
+  const theme = useTheme()
+  const showSectionMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -234,58 +226,63 @@ export const NavBar = (props: Props) => {
             FPL App
           </Typography>
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <Tooltip title='Rounds'>
-              <IconButton
-                size='small'
-                color='inherit'
-                aria-label='Rounds'
-                component={Link}
-                to={ROUNDS_URL}
-                className={cx({ [classes.active]: pathname.includes(ROUNDS_URL) })}
-              >
-                <FormatListNumberedIcon className={classes.icon} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title='Teams'>
-              <IconButton
-                size='small'
-                color='inherit'
-                component={Link}
-                to={TEAMS_URL}
-                className={cx({ [classes.active]: pathname.includes(TEAMS_URL) })}
-              >
-                <img src={iconLoader('team-jersey-white')} alt='Teams' className={classes.icon} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title='Players'>
-              <IconButton
-                size='small'
-                color='inherit'
-                component={Link}
-                to={`${PLAYERS_URL}`}
-                className={cx({ [classes.active]: pathname.includes(PLAYERS_URL) })}
-              >
-                <img src={iconLoader('player-white')} alt='Teams' className={classes.icon} />
-              </IconButton>
-            </Tooltip>
-
-          </div>
+          {
+            !showSectionMobile &&
+            <div className={classes.section}>
+              <Tooltip title='Rounds'>
+                <IconButton
+                  size='small'
+                  color='inherit'
+                  aria-label='Rounds'
+                  component={Link}
+                  to={ROUNDS_URL}
+                  className={cx({ [classes.active]: pathname.includes(ROUNDS_URL) })}
+                >
+                  <FormatListNumberedIcon className={classes.icon} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title='Teams'>
+                <IconButton
+                  size='small'
+                  color='inherit'
+                  component={Link}
+                  to={TEAMS_URL}
+                  className={cx({ [classes.active]: pathname.includes(TEAMS_URL) })}
+                >
+                  <img src={iconLoader('team-jersey-white')} alt='Teams' className={classes.icon} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title='Players'>
+                <IconButton
+                  size='small'
+                  color='inherit'
+                  component={Link}
+                  to={`${PLAYERS_URL}`}
+                  className={cx({ [classes.active]: pathname.includes(PLAYERS_URL) })}
+                >
+                  <img src={iconLoader('player-white')} alt='Teams' className={classes.icon} />
+                </IconButton>
+              </Tooltip>
+            </div>
+          }
           {renderAccountSection}
-          <div className={classes.sectionMobile}>
-            <IconButton
-              size='small'
-              aria-label='show more'
-              aria-haspopup='true'
-              onClick={handleMobileMenuOpen}
-              color='inherit'
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
+          {
+            showSectionMobile &&
+            <div className={classes.section}>
+              <IconButton
+                size='small'
+                aria-label='show more'
+                aria-haspopup='true'
+                onClick={handleMobileMenuOpen}
+                color='inherit'
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
+          }
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
+      {showSectionMobile && renderMobileMenu}
     </div>
   );
 }

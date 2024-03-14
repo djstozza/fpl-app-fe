@@ -1,4 +1,4 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen } from '@testing-library/react'
 
 import Tabs from '.'
 import { MockedRouter } from 'test/helpers'
@@ -17,7 +17,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('Tabs', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <Tabs
         currentTab='tab3'
@@ -29,32 +29,31 @@ describe('Tabs', () => {
     </MockedRouter>
   )
 
-  const tab = wrapper => wrapper.find('WithStyles(ForwardRef(Tab))')
+  const tabs = () => screen.getAllByRole('tab')
 
   it('only shows tabs with display = true and shows which one is selected', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(tab(wrapper)).toHaveLength(2)
-    expect(tab(wrapper).at(0).text()).toEqual('Tab 1')
-    expect(tab(wrapper).at(1).text()).toEqual('Tab 3')
-    expect(tab(wrapper).at(0).props()).toMatchObject({
-      selected: false,
-      to: 'pathname/tab1'
-    })
-    expect(tab(wrapper).at(1).props()).toMatchObject({
-      selected: true,
-      to: 'pathname/tab3'
-    })
+    expect(tabs()).toHaveLength(2)
+
+    expect(tabs()[0]).toHaveTextContent('Tab 1')
+    expect(tabs()[0].getAttribute('href')).toEqual('/pathname/tab1')
+    expect(tabs()[0].getAttribute('aria-selected')).toEqual('false')
+
+    expect(tabs()[1]).toHaveTextContent('Tab 3')
+    expect(tabs()[1].getAttribute('href')).toEqual('/pathname/tab3')
+    expect(tabs()[1].getAttribute('aria-selected')).toEqual('true')
   })
 
   it('adds the id to the tab paths', () => {
-    const wrapper = render({ id: '1' })
-    expect(tab(wrapper).at(0).props().to).toEqual('pathname/1/tab1')
-    expect(tab(wrapper).at(1).props().to).toEqual('pathname/1/tab3')
+    customRender({ id: '1' })
+
+    expect(tabs()[0].getAttribute('href')).toEqual('/pathname/1/tab1')
+    expect(tabs()[1].getAttribute('href')).toEqual('/pathname/1/tab3')
   })
 
   it('adds the tab label to the document title alond with the titleSubstr', () => {
-    render()
+    customRender()
 
     expect(document.title).toContain('Fpl App - Substr - Tab 3')
   })
@@ -68,19 +67,13 @@ describe('Tabs', () => {
       }
     }
 
-    render({ tabs: Object.values(tabs) })
+    customRender({ tabs: Object.values(tabs) })
 
     expect(document.title).toEqual('Fpl App - Substr - Tab 3 - Extra Info')
   })
 
-  it('shows which tab is selected', () => {
-    const wrapper = render()
-
-    expect(tab(wrapper).at(1).props().selected).toEqual(true)
-  })
-
   it('uses the regex matcher if present', () => {
-    const tabs = {
+    const tabsHash = {
       ...TABS,
       tab1: {
         ...TABS['tab1'],
@@ -92,9 +85,17 @@ describe('Tabs', () => {
       }
     }
 
-    const wrapper = render({ tabs: Object.values(tabs) })
+    customRender({ tabs: Object.values(tabsHash) })
 
-    expect(tab(wrapper).at(0).props().selected).toEqual(true)
+    expect(tabs()[0].getAttribute('aria-selected')).toEqual('true')
     expect(document.title).toContain('Substr - Tab 1')
+  })
+
+  describe('when tabIndex === -1', () => {
+    it('returns the first tab' , () => {
+      customRender({ currentTab: 'invalid' })
+
+      expect(tabs()[0].getAttribute('aria-selected')).toEqual('true')
+    })
   })
 })

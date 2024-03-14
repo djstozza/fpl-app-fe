@@ -1,5 +1,5 @@
-import { makeStyles } from 'tss-react/mui';
-import { AppBar, Tabs, Tab, Theme } from '@mui/material';
+import { makeStyles } from 'tss-react/mui'
+import { AppBar, Tabs, Tab, Theme } from '@mui/material'
 import history from 'state/history'
 
 import type { RoundSummary, TeamSummary, FplTeamList } from 'types'

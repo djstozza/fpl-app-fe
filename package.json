@@ -85,6 +85,7 @@
     ]
   },
   "devDependencies": {
+    "css-mediaquery": "^0.1.2",
     "husky": "^7.0.2",
     "react-app-rewire-alias": "^1.1.7",
     "react-app-rewired": "^2.2.1",

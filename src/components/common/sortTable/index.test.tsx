@@ -1,4 +1,4 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen, within, fireEvent } from '@testing-library/react'
 
 import SortTable from '.'
 import { SearchContext } from 'components/common/searchListener'
@@ -11,7 +11,7 @@ const offset = 0
 const limit = 3
 
 describe('SortTable', () => {
-  const render = (props = {}, context = {}) => createMount()(
+  const customRender = (props = {}, context = {}) => render(
     <MockedRouter>
       <SearchContext.Provider
         value={{
@@ -37,50 +37,50 @@ describe('SortTable', () => {
     </MockedRouter>
   )
 
-  const sortLabel = wrapper => wrapper.find('WithStyles(ForwardRef(TableSortLabel))')
-  const tableBodyRows = (wrapper, row) => {
-    const base = wrapper.find('WithStyles(ForwardRef(TableBody))').find('WithStyles(ForwardRef(TableRow))')
-     return row !== undefined ? base.at(row) : base
-  }
-  const tableCell = (wrapper, row) => tableBodyRows(wrapper, row).find('WithStyles(ForwardRef(TableCell))')
-  const headerCell = wrapper => wrapper.find('HeaderCell')
-  const tablePagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
-  const button = wrapper => wrapper.find('button')
+  const sortTable = () => screen.getByTestId('SortTable')
+  
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
 
+  const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
+  const sortDirection = (text) => within(sortButton(text)).getByTestId('ArrowDownwardIcon')
+  
+  const tablePagination = () => screen.getByTestId('SortTablePagination')
+  
   it('shows the no results found message if the collection is empty', () => {
-    const wrapper = render({ collection: [] })
-
-    expect(tableCell(wrapper).text()).toEqual('No results found')
+    customRender({ collection: [] })
+  
+    expect(tableCell(1, 0)).toHaveTextContent('No results found')
   })
 
   it('shows the fetching message if fetching = true and the collection is empty', () => {
-    const wrapper = render({ collection: [], fetching: true })
-
-    expect(tableCell(wrapper).text()).toEqual('Loading collection...')
+    customRender({ collection: [], fetching: true })
+    expect(tableCell(1, 0)).toHaveTextContent('Loading collection...')
   })
 
   it('renders the table rows and cells', () => {
-    const wrapper = render()
-    expect(headerCell(wrapper)).toHaveLength(cells.length)
-    expect(tableBodyRows(wrapper)).toHaveLength(PLAYER_SUMMARIES.length)
-    expect(tableCell(wrapper, 0)).toHaveLength(cells.length)
-
-    expect(tableCell(wrapper, 3).at(3).html()).toContain(PLAYER_SUMMARIES[3].position.singularNameShort)
+    customRender()
+    
+    expect(tableRows()).toHaveLength(PLAYER_SUMMARIES.length + 1)
+    expect(tableCells(1)).toHaveLength(cells.length)
+    expect(tableCell(4, 3)).toHaveTextContent(PLAYER_SUMMARIES[3].position.singularNameShort)
   })
 
   describe('sort', () => {
     test('desc -> asc', () => {
       const handleSortChange = jest.fn()
-      const wrapper = render({ handleSortChange })
+      customRender({ handleSortChange })
 
-      sortLabel(wrapper).at(4).simulate('click') // Total points sort label
-      expect(handleSortChange).toBeCalledWith({ 'totalPoints': 'asc' })
+      fireEvent.click(sortButton('TP'))
+      expect(handleSortChange).toHaveBeenCalledWith({ 'totalPoints': 'asc' })
     })
 
     test('asc -> desc', () => {
       const handleSortChange = jest.fn()
 
-      const wrapper = render(
+      customRender(
         { handleSortChange },
         {
           search: {
@@ -90,14 +90,14 @@ describe('SortTable', () => {
         }
       )
 
-      sortLabel(wrapper).at(4).simulate('click') // Total points sort label
-      expect(handleSortChange).toBeCalledWith({ totalPoints: 'desc' })
+      fireEvent.click(sortButton('TP'))
+      expect(handleSortChange).toHaveBeenCalledWith({ 'totalPoints': 'desc' })
     })
 
     test('none -> asc', () => {
       const handleSortChange = jest.fn()
 
-      const wrapper = render(
+      customRender(
         { handleSortChange },
         {
           search: {
@@ -106,18 +106,23 @@ describe('SortTable', () => {
         }
       )
 
-      sortLabel(wrapper).at(4).simulate('click') // Total points sort label
-      expect(handleSortChange).toBeCalledWith({ totalPoints: 'asc' })
+      fireEvent.click(sortButton('TP'))
+      expect(handleSortChange).toHaveBeenCalledWith({ 'totalPoints': 'asc' })
     })
 
     test('with a tab', () => {
-      const wrapper = render(
-        { tab: 'tab' },
+      customRender(
+        { tab: 'tab', collection: [] },
         {
-          search: { sort: { tab: { totalPoints: 'asc' } } }
+          search: { sort: { tab: { totalPoints: 'desc' } } }
         }
       )
-      expect(wrapper.find('HeaderCell').at(4).props().sort).toEqual({ totalPoints: 'asc' })
+      
+      expect(sortButton('FN').className).not.toContain('Mui-active')
+      expect(sortDirection('FN').classList.toString()).toContain('MuiTableSortLabel-iconDirectionAsc')
+      
+      expect(sortButton('TP').className).toContain('Mui-active')      
+      expect(sortDirection('TP').classList.toString()).toContain('MuiTableSortLabel-iconDirectionDesc')
     })
   })
 
@@ -125,27 +130,28 @@ describe('SortTable', () => {
     it('trggers changes in pagaination', () => {
       const handleChangePage = jest.fn()
 
-      const wrapper = render({ handleChangePage })
-      expect(tablePagination(wrapper).text()).toEqual(`${1 + offset}-${offset + limit} of ${PLAYER_SUMMARIES.length}`)
-      button(wrapper).at(4).simulate('click')
-      expect(handleChangePage).toHaveBeenCalledWith(3)
+      customRender({ handleChangePage })
+      
+      expect(tablePagination()).toHaveTextContent(`${1 + offset}–${offset + limit} of ${PLAYER_SUMMARIES.length}`)
+      
+      fireEvent.click(screen.getByTitle('Go to next page'))
+      expect(handleChangePage).toHaveBeenCalledWith(offset + limit)
     })
 
     it('disables pagination if noOffset is true', () => {
-      const wrapper = render({ noOffset: true })
+      customRender({ noOffset: true })
 
-      expect(tablePagination(wrapper).text())
-        .toEqual(`1-${offset + PLAYER_SUMMARIES.length} of ${PLAYER_SUMMARIES.length}`)
+      expect(tablePagination()).toHaveTextContent(`1–${PLAYER_SUMMARIES.length} of ${PLAYER_SUMMARIES.length}`)
+      expect(screen.getByTitle('Go to next page').className).toContain('Mui-disabled')
     })
 
     it('uses the default pagination if none provided', () => {
-      const wrapper = render(
+      customRender(
         {},
         { search: undefined }
       )
 
-      expect(tablePagination(wrapper).text())
-        .toEqual(`1-${offset + PLAYER_SUMMARIES.length} of ${PLAYER_SUMMARIES.length}`)
+      expect(tablePagination()).toHaveTextContent(`1–${offset + PLAYER_SUMMARIES.length} of ${PLAYER_SUMMARIES.length}`)
     })
   })
 })

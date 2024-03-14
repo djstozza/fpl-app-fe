@@ -1,59 +1,50 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen, within } from '@testing-library/react'
 import timezoneMock from 'timezone-mock'
 
 import StatusIconMapper from '.'
 
 describe('StatusIconMapper', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <StatusIconMapper
       status='a'
       {...props}
     />
   )
 
-  const checkCircleIcon = wrapper => wrapper.find('ForwardRef(CheckCircleIcon)')
-  const helpIcon = wrapper => wrapper.find('ForwardRef(HelpIcon)')
-  const gavelIcon = wrapper => wrapper.find('ForwardRef(GavelIcon)')
-  const flightIcon = wrapper => wrapper.find('ForwardRef(FlightIcon)')
-  const cancelIcon = wrapper => wrapper.find('ForwardRef(CancelIcon)')
-  const localHospitalIcon = wrapper => wrapper.find('ForwardRef(LocalHospitalIcon)')
-  const tooltip = wrapper => wrapper.find('WithStyles(ForwardRef(Tooltip))')
-
   it('renders the CheckCircleIcon when status = a', () => {
-    const wrapper = render({ chance: 100 })
-    expect(checkCircleIcon(wrapper)).toHaveLength(1)
+    customRender({ chance: 100 })
+    expect(screen.getByTestId('CheckCircleIcon')).toBeInTheDocument()
   })
 
   it('renders the HelpIcon when status = d', () => {
-    const wrapper = render({ status: 'd' })
-    expect(helpIcon(wrapper)).toHaveLength(1)
+    customRender({ status: 'd' })
+    expect(screen.getByTestId('HelpIcon')).toBeInTheDocument()
   })
 
   it('renders the GavelIcon when status = s', () => {
-    const wrapper = render({ status: 's' })
-    expect(gavelIcon(wrapper)).toHaveLength(1)
+    customRender({ status: 's' })
+    expect(screen.getByTestId('GavelIcon')).toBeInTheDocument()
   })
 
   it('renders the FlightIcon when status = s', () => {
-    const wrapper = render({ status: 'n' })
-    expect(flightIcon(wrapper)).toHaveLength(1)
+    customRender({ status: 'n' })
+    expect(screen.getByTestId('FlightIcon')).toBeInTheDocument()
   })
 
   it('renders the CancelIcon when status = u', () => {
-    const wrapper = render({ status: 'u' })
-    expect(cancelIcon(wrapper)).toHaveLength(1)
+    customRender({ status: 'u' })
+    expect(screen.getByTestId('CancelIcon')).toBeInTheDocument()
   })
 
   it('renders the LocalHospitalIcon when status = i', () => {
-    const wrapper = render({ status: 'i' })
-    expect(localHospitalIcon(wrapper)).toHaveLength(1)
+    customRender({ status: 'i' })
+    expect(screen.getByTestId('LocalHospitalIcon')).toBeInTheDocument()
   })
 
   it('renders chance percentage if present', () => {
-    const wrapper = render({ status: 'd', chance: 25 })
-
-    expect(helpIcon(wrapper)).toHaveLength(0)
-    expect(wrapper.text()).toEqual('25%')
+    customRender({ status: 'd', chance: 25 })
+    expect(screen.queryByTestId('HelpIcon')).not.toBeInTheDocument()
+    expect(screen.getByText('25%')).toBeInTheDocument()
   })
 
   it('renders the news and the newsAdded if both present', () => {
@@ -61,15 +52,15 @@ describe('StatusIconMapper', () => {
 
     const news = 'Calf injury. 75% chance of playing'
     const newsAdded = '2021-08-29T23:00:12.36461'
-    const wrapper = render({ status: 'd', news, newsAdded })
+    customRender({ status: 'd', news, newsAdded })
 
-    expect(tooltip(wrapper).props().title).toEqual(`${news}. News added: 29/08/21 23:00`)
+    expect(screen.getByLabelText(`${news}. News added: 29/08/21 23:00`)).toBeInTheDocument()
   })
 
   it('only the news if no newsAdded is present', () => {
     const news = 'Calf injury. 75% chance of playing'
-    const wrapper = render({ status: 'd', news })
+    customRender({ status: 'd', news })
 
-    expect(tooltip(wrapper).props().title).toEqual(news)
+    expect(screen.getByLabelText(news)).toBeInTheDocument()
   })
 })
