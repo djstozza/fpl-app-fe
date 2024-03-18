@@ -1,7 +1,7 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import AvailablePlayersTable from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
 import { PLAYERS_URL, TEAMS_URL } from 'utilities/constants'
 import { PLAYER_SUMMARIES, DRAFT_PICK_STATUS, PLAYER_FACETS } from 'test/fixtures'
 import { initialFilterState } from 'state/players/reducer'
@@ -11,66 +11,76 @@ const players = { data: PLAYER_SUMMARIES, meta: { total: PLAYER_SUMMARIES.length
 const cellNumber = Object.values(playersTableCells()).length
 
 describe('AvailablePlayersTable', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <AvailablePlayersTable
-        players={players}
-        draftPicks={{ ...DRAFT_PICK_STATUS }}
-        fetchAvailablePlayers={blank__}
-        fetchPlayerFacets={blank__}
-        updateAvailablePlayersFilter={blank__}
-        updateAvailablePlayersSort={blank__}
-        updateAvailablePlayersPage={blank__}
-        updateDraftPick={blank__}
-        {...props}
-      />
-    </MockedRouter>
-  )
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
+  const customRender = (context = {}) => {
+    const baseContext = {
+      players: players,
+      draftPicks: { ...DRAFT_PICK_STATUS },
+      fetchAvailablePlayers: blank__,
+      fetchPlayerFacets: blank__,
+      updateAvailablePlayersFilter: blank__,
+      updateAvailablePlayersSort: blank__,
+      updateAvailablePlayersPage: blank__,
+      updateDraftPick: blank__,
+      setTab: blank__,
+      ...context
+    }
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <AvailablePlayersTable />
+      </RouteWithOutletContext>
+    )
+  }
+  
+  // const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
   const headerCell = wrapper =>  wrapper.find('HeaderCell')
   const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
   const pagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
-  const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
+  // const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
 
+  const sortTable = () => screen.getByTestId('SortTable')
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const columnHeaders = () => screen.getAllByRole('columnheader')
+  const presentation = () => screen.queryAllByRole('presentation')
+  const dialog = () => presentation()[1]
+  const checkboxes = () => screen.queryAllByRole('checkbox')
+  const tablePagination = () => screen.getByTestId('SortTablePagination')
 
   it('shows the player rows', () => {
-    const wrapper = render({ draftPicks: { ...DRAFT_PICK_STATUS, userCanPick: false } })
+    customRender({ draftPicks: { ...DRAFT_PICK_STATUS, userCanPick: false } })
 
-    expect(wrapper.find('WithStyles(ForwardRef(TableRow))')).toHaveLength(PLAYER_SUMMARIES.length + 1)
-    expect(link(wrapper, 2, 0).props().to).toEqual(`${PLAYERS_URL}/${PLAYER_SUMMARIES[1].id}`)
-    expect(link(wrapper, 2, 0).text()).toEqual(PLAYER_SUMMARIES[1].lastName)
+    expect(tableRows()).toHaveLength(PLAYER_SUMMARIES.length + 1)
+    expect(columnHeaders().length).toEqual(cellNumber)
 
-    expect(link(wrapper, 1, 1).props().to).toEqual(`${PLAYERS_URL}/${PLAYER_SUMMARIES[0].id}`)
-    expect(link(wrapper, 1, 1).text()).toEqual(PLAYER_SUMMARIES[0].firstName)
+    expect(link(1, 1)).toHaveAttribute('href', `${PLAYERS_URL}/${PLAYER_SUMMARIES[0].id}`)
+    expect(link(1, 1)).toHaveTextContent(PLAYER_SUMMARIES[0].firstName)
 
-    expect(link(wrapper, 3, 2).props().to).toEqual(`${TEAMS_URL}/${PLAYER_SUMMARIES[2].team.id}/`)
-    expect(link(wrapper, 3, 2).text()).toEqual(PLAYER_SUMMARIES[2].team.shortName)
-    expect(link(wrapper, 3, 2).find('img').props().alt).toEqual(PLAYER_SUMMARIES[2].team.shortName)
+    expect(link(2, 0)).toHaveAttribute('href', `${PLAYERS_URL}/${PLAYER_SUMMARIES[1].id}`)
+    expect(link(2, 0)).toHaveTextContent(PLAYER_SUMMARIES[1].lastName)
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber)
+    expect(link(3, 2)).toHaveAttribute('href', `${TEAMS_URL}/${PLAYER_SUMMARIES[2].team.id}/`)
+    expect(link(3, 2)).toHaveTextContent(PLAYER_SUMMARIES[2].team.shortName)
+    expect(within(link(3, 2)).getByRole('img')).toHaveAttribute('alt', PLAYER_SUMMARIES[2].team.shortName)
   })
 
   it('allows the user to draft a player if userCanPick = true', () => {
     const updateDraftPick = jest.fn()
-    const wrapper = render({ updateDraftPick })
+    customRender({ updateDraftPick })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation().length).toEqual(0)
+    
+    expect(columnHeaders().length).toEqual(cellNumber + 1)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(within(tableCell(1, cellNumber)).getByText('Draft'))
+    expect(dialog().style.opacity).toEqual('1')
 
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
+    expect(dialog()).toHaveTextContent(`Are you wish to draft ${PLAYER_SUMMARIES[0].firstName} ${PLAYER_SUMMARIES[0].lastName}?`)
+    fireEvent.click(within(dialog()).getByText('Confirm'))
 
-    expect(dialog(wrapper).props().open).toEqual(true)
-    expect(dialog(wrapper).text())
-      .toContain(`Are you wish to draft ${PLAYER_SUMMARIES[0].firstName} ${PLAYER_SUMMARIES[0].lastName}?`)
-
-    dialog(wrapper).find('button').at(1).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(dialog().style.opacity).toEqual('0') // Dialog closed
 
     expect(updateDraftPick)
       .toHaveBeenCalledWith({ nextDraftPickId: DRAFT_PICK_STATUS.nextDraftPickId, playerId: PLAYER_SUMMARIES[0].id })
@@ -78,35 +88,41 @@ describe('AvailablePlayersTable', () => {
 
   it('closes the draft dialog when cancel is clicked', () => {
     const updateDraftPick = jest.fn()
-    const wrapper = render({ updateDraftPick })
+    customRender({ updateDraftPick })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation().length).toEqual(0)
+    
+    expect(columnHeaders().length).toEqual(cellNumber + 1)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(within(tableCell(1, cellNumber)).getByText('Draft'))
 
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
+    expect(dialog()).toHaveTextContent(`Are you wish to draft ${PLAYER_SUMMARIES[0].firstName} ${PLAYER_SUMMARIES[0].lastName}?`)
+    fireEvent.click(within(dialog()).getByText('Cancel'))
 
-    expect(dialog(wrapper).props().open).toEqual(true)
-    dialog(wrapper).find('button').at(0).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(dialog().style.opacity).toEqual('0') // Dialog closed
 
     expect(updateDraftPick).not.toHaveBeenCalled()
   })
 
   it('closes the draft dialog when the backdrop is clicked', () => {
     const updateDraftPick = jest.fn()
-    const wrapper = render({ updateDraftPick })
+    customRender({ updateDraftPick })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation().length).toEqual(0)
+    
+    expect(columnHeaders().length).toEqual(cellNumber + 1)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(within(tableCell(1, cellNumber)).getByText('Draft'))
 
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
+    const backdrop = document.querySelector('.MuiBackdrop-root')
 
-    wrapper.find('WithStyles(ForwardRef(Backdrop))').simulate('click')
+    if (backdrop) {
+      fireEvent.click(backdrop)
+    } else {
+      throw new Error('.MuiBackdrop-root not found')
+    }
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(updateDraftPick).not.toHaveBeenCalled()
   })
@@ -115,7 +131,7 @@ describe('AvailablePlayersTable', () => {
     const fetchAvailablePlayers = jest.fn()
     const fetchPlayerFacets = jest.fn()
 
-    render({ fetchAvailablePlayers, fetchPlayerFacets })
+    customRender({ fetchAvailablePlayers, fetchPlayerFacets })
 
     expect(fetchAvailablePlayers).toHaveBeenCalledWith(initialFilterState)
     expect(fetchPlayerFacets).toHaveBeenCalled()
@@ -123,21 +139,20 @@ describe('AvailablePlayersTable', () => {
 
   it('triggers updateAvailablePlayersSort', () => {
     const updateAvailablePlayersSort = jest.fn()
-    const wrapper = render({ updateAvailablePlayersSort })
+    customRender({ updateAvailablePlayersSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(within(columnHeaders()[0]).getByTestId('ArrowDownwardIcon'))
     expect(updateAvailablePlayersSort).toHaveBeenCalledWith({ lastName: 'asc' })
   })
 
   it('triggers updateAvailablePlayersFilter', () => {
     const updateAvailablePlayersFilter = jest.fn()
-    const wrapper = render({ updateAvailablePlayersFilter})
+    customRender({ updateAvailablePlayersFilter })
 
-    wrapper.find('HeaderCell').at(2).find('button').simulate('click')
-
-    menuItem(wrapper).at(0).simulate('click')
-    menuItem(wrapper).at(3).simulate('click')
-    wrapper.find('li').find('button').at(1).simulate('click')
+    fireEvent.click(within(columnHeaders()[2]).getByLabelText('filter'))
+    fireEvent.click(checkboxes()[0])
+    fireEvent.click(checkboxes()[3])
+    fireEvent.click(screen.getByRole('button', { name: /apply/i }))
 
     expect(updateAvailablePlayersFilter)
       .toHaveBeenCalledWith({ teamId: [PLAYER_FACETS.teams[0].value, PLAYER_FACETS.teams[3].value] })
@@ -148,13 +163,13 @@ describe('AvailablePlayersTable', () => {
     const { page: { offset, limit } } = initialFilterState
     const playersArr = Array(limit + 1).fill(PLAYER_SUMMARIES[0])
 
-    const wrapper = render({
+    customRender({
       players: { data: playersArr, meta: { total: playersArr.length } },
       updateAvailablePlayersPage
     })
 
-    expect(pagination(wrapper).text()).toEqual(`1-${limit} of ${playersArr.length}`)
-    pagination(wrapper).find('button').at(1).simulate('click')
+    expect(tablePagination()).toHaveTextContent(`1–${limit} of ${playersArr.length}`)
+    fireEvent.click(screen.getByTitle('Go to next page'))
     expect(updateAvailablePlayersPage).toHaveBeenCalledWith(offset + limit)
   })
 })

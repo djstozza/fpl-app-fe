@@ -87,6 +87,7 @@
   "devDependencies": {
     "css-mediaquery": "^0.1.2",
     "husky": "^7.0.2",
+    "jest-websocket-mock": "^2.5.0",
     "react-app-rewire-alias": "^1.1.7",
     "react-app-rewired": "^2.2.1",
     "redux-saga-test-plan": "^4.0.6",

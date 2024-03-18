@@ -1,69 +1,70 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import UserCanPickAlert from '.'
 import { DRAFT_PICK_STATUS } from 'test/fixtures'
 import { MockedRouter, blank__ } from 'test/helpers'
+import { initialState as draftInitialState } from 'state/draftPicks/reducer'
 
 const leagueId = '4'
 
 describe('UserCanPickAlert', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
-      <UserCanPickAlert
+      <UserCanPickAlert 
         leagueId={leagueId}
-        draftPicks={{ ...DRAFT_PICK_STATUS }}
+        draftPicks={{ ...draftInitialState,...DRAFT_PICK_STATUS }}
         updateDraftPick={blank__}
         {...props}
       />
     </MockedRouter>
   )
-
-  const draftLink = wrapper => wrapper.find('WithStyles(ForwardRef(Alert))').find('Link')
-  const miniDraftButton = wrapper => wrapper.find('WithStyles(ForwardRef(Alert))').find('button')
-  const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
+  
+  const miniDraftText = /mini draft pick/i
+  const draftText = /draft a player/i
+  
+  const draftLink = () => screen.getByRole('link', { name: draftText })
+  const miniDraftButton = () => screen.getByRole('button', { name: miniDraftText })
+  const presentation = () => screen.queryAllByRole('presentation')
+  const dialog = () => presentation()[1]
 
   it('returns nothing if userCanPick = false', () => {
-    const wrapper = render({ draftPicks: { ...DRAFT_PICK_STATUS, userCanPick: false } })
+    customRender({ draftPicks: { ...DRAFT_PICK_STATUS, userCanPick: false } })
 
-    expect(wrapper.html()).toEqual('')
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
   it('shows both the draftLink and miniDraftButton if canMakePlayerPick = true and canMakeMiniDraftPick = true', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(draftLink(wrapper)).toHaveLength(1)
-    expect(miniDraftButton(wrapper)).toHaveLength(1)
+    expect(draftLink()).toBeInTheDocument()
+    expect(miniDraftButton()).toBeInTheDocument()
   })
 
   it('only shows both the draftLink if canMakePlayerPick = true and canMakeMiniDraftPick = false', () => {
-    const wrapper = render({ draftPicks: { ...DRAFT_PICK_STATUS, canMakeMiniDraftPick: false } })
+    customRender({ draftPicks: { ...DRAFT_PICK_STATUS, canMakeMiniDraftPick: false } })
 
-    expect(draftLink(wrapper)).toHaveLength(1)
-    expect(miniDraftButton(wrapper)).toHaveLength(0)
+    expect(draftLink()).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: miniDraftText })).not.toBeInTheDocument()
   })
 
   it('only shows the miniDraftButton if canMakePlayerPick = false and canMakeMiniDraftPick = true', () => {
-    const wrapper = render({ draftPicks: { ...DRAFT_PICK_STATUS, canMakePlayerPick: false } })
+    customRender({ draftPicks: { ...DRAFT_PICK_STATUS, canMakePlayerPick: false } })
 
-    expect(draftLink(wrapper)).toHaveLength(0)
-    expect(miniDraftButton(wrapper)).toHaveLength(1)
+    expect(screen.queryByRole('link', { name: miniDraftText })).not.toBeInTheDocument()
+    expect(miniDraftButton()).toBeInTheDocument()
   })
 
   it('allows the user to select a mini draft pick if userCanPick = true', () => {
     const updateDraftPick = jest.fn()
-    const wrapper = render({ updateDraftPick })
+    
+    customRender({ updateDraftPick })
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(miniDraftButton())
 
-    miniDraftButton(wrapper).simulate('click')
+    expect(dialog()).toHaveTextContent('Are you wish to make a mini draft pick?')
 
-    expect(dialog(wrapper).props().open).toEqual(true)
-    expect(dialog(wrapper).text())
-      .toContain('Are you wish to make a mini draft pick?')
-
-    dialog(wrapper).find('button').at(1).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(within(dialog()).getByText('Confirm'))
+    expect(dialog().style.opacity).toEqual('0') // Dialog closed
 
     expect(updateDraftPick)
       .toHaveBeenCalledWith({ nextDraftPickId: DRAFT_PICK_STATUS.nextDraftPickId, miniDraft: true })
@@ -71,32 +72,34 @@ describe('UserCanPickAlert', () => {
 
   it('closes the draft dialog when cancel is clicked', () => {
     const updateDraftPick = jest.fn()
-    const wrapper = render({ updateDraftPick })
+    customRender({ updateDraftPick })
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(miniDraftButton())
 
-    miniDraftButton(wrapper).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(true)
-    dialog(wrapper).find('button').at(0).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(within(dialog()).getByText('Cancel'))
+    
+    expect(dialog().style.opacity).toEqual('0') // Dialog closed
 
     expect(updateDraftPick).not.toHaveBeenCalled()
   })
 
-  it('closes the draft dialog when cancel is clicked', () => {
+  it('closes the draft dialog when clicking out', () => {
     const updateDraftPick = jest.fn()
-    const wrapper = render({ updateDraftPick })
+    
+    customRender({ updateDraftPick })
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    
+    fireEvent.click(miniDraftButton())
 
-    miniDraftButton(wrapper).simulate('click')
+    const backdrop = document.querySelector('.MuiBackdrop-root')
 
-    wrapper.find('WithStyles(ForwardRef(Backdrop))').simulate('click')
+    if (backdrop) {
+      fireEvent.click(backdrop)
+    } else {
+      throw new Error('.MuiBackdrop-root not found')
+    }
 
-    expect(dialog(wrapper).props().open).toEqual(false)
-
+    expect(dialog().style.opacity).toEqual('0') // Dialog closed
     expect(updateDraftPick).not.toHaveBeenCalled()
   })
 })

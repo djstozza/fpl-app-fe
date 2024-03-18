@@ -401,27 +401,27 @@ export const PLAYER_BASES = [
 ]
 
 export const PLAYER_SUMMARIES = [
-  {
-    assists: 14,
-    bonus: 40,
-    chanceOfPlayingNextRound: 100,
-    chanceOfPlayingThisRound: 100,
-    cleanSheets: 12,
-    externalId: '357',
-    goalsScored: 23,
-    minutes: 3083,
-    ownGoals: 0,
-    penaltiesMissed: 0,
-    penaltiesSaved: 0,
-    position: FORWARD,
-    redCards: 0,
-    saves: 0,
-    status: 'a',
-    team: SPURS_TEAM_BASE,
-    totalPoints: 242,
-    yellowCards: 1,
-    ...PLAYER_BASES[0]
-  },
+    {
+      assists: 14,
+      bonus: 40,
+      chanceOfPlayingNextRound: 100,
+      chanceOfPlayingThisRound: 100,
+      cleanSheets: 12,
+      externalId: '357',
+      goalsScored: 23,
+      minutes: 3083,
+      ownGoals: 0,
+      penaltiesMissed: 0,
+      penaltiesSaved: 0,
+      position: FORWARD,
+      redCards: 0,
+      saves: 0,
+      status: 'a',
+      team: SPURS_TEAM_BASE,
+      totalPoints: 242,
+      yellowCards: 1,
+      ...PLAYER_BASES[0]
+    },
   {
     assists: 0,
     bonus: 3,
@@ -1486,11 +1486,13 @@ export const LIVE_LEAGUE = {
   status: 'live',
   canGenerateDraftPicks: true,
   canCreateDraft: true,
+  canGoToDraft: true,
   canGoToMiniDraft: true,
   showDraftPickColumn: true,
   showLiveColumns: true,
   isOwner: true,
-  owner: USER_1
+  owner: USER_1,
+  fplTeams: []
 }
 
 export const INITIALIZED_LEAGUE = {
@@ -1500,10 +1502,12 @@ export const INITIALIZED_LEAGUE = {
   status: 'initialized',
   canGenerateDraftPicks: false,
   canCreateDraft: false,
+  canGoToDraft: false,
   canGoToMiniDraft: false,
   showLiveColumns: false,
   isOwner: true,
-  owner: USER_1
+  owner: USER_1,
+  fplTeams: []
 }
 
 export const LEAGUES = [

@@ -1,7 +1,8 @@
+import { ReactNode } from 'react'
 import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from 'state/rootReducer'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
 import history from 'state/history'
 
 export const blank__ = (): void => { return }
@@ -30,4 +31,34 @@ export const MockedRouterStore = ({
       {children}
     </Router>
   </MockedStore>
+)
+
+export const MockedRouterStoreWithRoute = ({
+  children,
+  defaultState = { rounds: { data: [] }, auth: {} }
+}: MockedStoreProps) => (
+  <MockedStore defaultState={defaultState}>
+    <Router>
+      <Routes>
+        <Route path='/' element={children}>
+          <Route index element={<div></div>} />
+        </Route>
+      </Routes>
+    </Router>
+  </MockedStore>
+)
+
+interface RouteWithOutletContextProps<T = any> {
+  context: T;
+  children: ReactNode;
+}
+
+export const RouteWithOutletContext = <T,>({ context, children }: RouteWithOutletContextProps<T>) => (
+  <Router>
+    <Routes>
+      <Route path="/"element={<Outlet context={context as T} />}>
+        <Route index element={children} />
+      </Route>
+    </Routes>
+  </Router>
 )

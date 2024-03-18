@@ -1,82 +1,89 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import DraftPicksTable from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
-import { DRAFT_PICKS, DRAFT_PICK_FACETS } from 'test/fixtures'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
+import { DRAFT_PICKS, DRAFT_PICK_FACETS, DRAFT_PICK_1 } from 'test/fixtures'
 import { initialFilterState } from 'state/draftPicks/reducer'
 import { PLAYERS_URL } from 'utilities/constants'
 
 describe('DraftPicksTable', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <DraftPicksTable
-        draftPicks={{ data: DRAFT_PICKS, facets: DRAFT_PICK_FACETS, meta: { total: DRAFT_PICKS.length } }}
-        fetchDraftPicks={blank__}
-        updateDraftPicksSort={blank__}
-        updateDraftPicksFilter={blank__}
-        fetchDraftPickFacets={blank__}
-        {...props}
-      />
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      draftPicks: { data: DRAFT_PICKS, facets: DRAFT_PICK_FACETS, meta: { total: DRAFT_PICKS.length } },
+      fetchDraftPicks: blank__,
+      fupdateDraftPicksSort: blank__,
+      updateDraftPicksFilter: blank__,
+      fetchDraftPickFacets: blank__,
+      setTab: blank__,
+      ...context
+    }
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <DraftPicksTable />
+      </RouteWithOutletContext>
+    )
+  }
+
+  const sortTable = () => screen.getByTestId('SortTable')
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const columnHeaders = () => screen.getAllByRole('columnheader')
+  const checkboxes = () => screen.queryAllByRole('checkbox')
 
   it('renders the fpl teams table', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(link(wrapper, 1, 1).props().to).toEqual(`${PLAYERS_URL}/${DRAFT_PICKS[0].player.id}`)
-    expect(link(wrapper, 1, 1).text()).toEqual(DRAFT_PICKS[0].player.lastName)
-    expect(tableCell(wrapper, 1, 5).text()).toEqual('No')
+    expect(link(1, 1)).toHaveAttribute('href', `${PLAYERS_URL}/${DRAFT_PICK_1.player.id}`)
+    expect(link(1, 1)).toHaveTextContent(DRAFT_PICK_1.player.lastName)
+    expect(tableCell(1, 5)).toHaveTextContent('No')
 
-    expect(tableCell(wrapper, 3, 1).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 2).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 3).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 4).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 5).text()).toEqual('Yes')
+    expect(tableCell(3, 1)).toHaveTextContent('-')
+    expect(tableCell(3, 2)).toHaveTextContent('-')
+    expect(tableCell(3, 3)).toHaveTextContent('-')
+    expect(tableCell(3, 4)).toHaveTextContent('-')
+    expect(tableCell(3, 5)).toHaveTextContent('Yes')
 
-    expect(tableCell(wrapper, 4, 1).text()).toEqual('')
-    expect(tableCell(wrapper, 4, 2).text()).toEqual('')
-    expect(tableCell(wrapper, 4, 3).text()).toEqual('')
-    expect(tableCell(wrapper, 4, 4).text()).toEqual('')
-    expect(tableCell(wrapper, 4, 5).text()).toEqual('')
+    expect(tableCell(4, 1)).toHaveTextContent('')
+    expect(tableCell(4, 2)).toHaveTextContent('')
+    expect(tableCell(4, 3)).toHaveTextContent('')
+    expect(tableCell(4, 4)).toHaveTextContent('')
+    expect(tableCell(4, 5)).toHaveTextContent('')
   })
 
   it('triggers fetchDraftPicks on render', () => {
     const fetchDraftPicks = jest.fn()
-    render({ fetchDraftPicks })
+    customRender({ fetchDraftPicks })
 
     expect(fetchDraftPicks).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers fetchDraftPickFacets on render', () => {
     const fetchDraftPickFacets = jest.fn()
-    render({ fetchDraftPickFacets })
+    customRender({ fetchDraftPickFacets })
 
     expect(fetchDraftPickFacets).toHaveBeenCalledWith()
   })
 
   it('triggers updateDraftPicksSort', () => {
     const updateDraftPicksSort = jest.fn()
-    const wrapper = render({ updateDraftPicksSort })
+    customRender({ updateDraftPicksSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(within(columnHeaders()[0]).getByTestId('ArrowDownwardIcon'))
     expect(updateDraftPicksSort).toHaveBeenCalledWith({ pickNumber: 'desc' })
   })
 
   it('triggers updateDraftPicksFilter', () => {
     const updateDraftPicksFilter = jest.fn()
-    const wrapper = render({ updateDraftPicksFilter})
 
-    wrapper.find('HeaderCell').at(3).find('button').simulate('click')
+    customRender({ updateDraftPicksFilter })
 
-    menuItem(wrapper).at(0).simulate('click')
-    menuItem(wrapper).at(3).simulate('click')
-    wrapper.find('li').find('button').at(1).simulate('click')
+    fireEvent.click(within(columnHeaders()[3]).getByLabelText('filter'))
+    fireEvent.click(checkboxes()[0])
+    fireEvent.click(checkboxes()[3])
+    fireEvent.click(screen.getByRole('button', { name: /apply/i }))
 
     expect(updateDraftPicksFilter)
       .toHaveBeenCalledWith({ teamId: [DRAFT_PICK_FACETS.teams[0].value, DRAFT_PICK_FACETS.teams[3].value] })

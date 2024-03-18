@@ -207,4 +207,22 @@ describe('ErrorDialog', () => {
 
     expect(screen.queryByRole('presentation')).not.toBeInTheDocument()
   })
+
+  it('prevents clicking out of errors', () => {
+    const clearRequestErrors = jest.fn()
+    const onClose = jest.fn()
+
+    customRender({ clearRequestErrors, onClose })
+
+    const backdrop = document.querySelector('.MuiBackdrop-root')
+
+    if (backdrop) {
+      fireEvent.click(backdrop)
+    } else {
+      throw new Error('.MuiBackdrop-root not found')
+    }
+
+    expect(clearRequestErrors).not.toHaveBeenCalled()
+    expect(onClose).not.toHaveBeenCalled()
+  })
 })
