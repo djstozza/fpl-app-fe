@@ -758,7 +758,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 17,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 1,
+    finished: true
   },
   {
     assists: 0,
@@ -780,7 +782,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 3,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 0,
+    finished: true
   },
   {
     assists: 0,
@@ -802,7 +806,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 10,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 5,
+    finished: false
   },
   {
     assists: 2,
@@ -824,7 +830,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 13,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 1,
+    finished: true
   },
   {
     assists: 1,
@@ -846,7 +854,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 16,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 0,
+    finished: true
   },
   {
     assists: 1,
@@ -868,7 +878,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 11,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 2,
+    finished: false
   },
   {
     assists: 0,
@@ -890,7 +902,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: -1,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 3,
+    finished: true
   },
   {
     assists: 0,
@@ -912,7 +926,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 8,
-    yellowCards: 1
+    yellowCards: 1,
+    goalsConceded: 1,
+    finished: true
   },
   {
     assists: 0,
@@ -934,7 +950,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 2,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 2,
+    finished: false
   },
   {
     assists: 0,
@@ -956,7 +974,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 5,
-    yellowCards: 1
+    yellowCards: 1,
+    goalsConceded: 1,
+    finished: true
   },
   {
     assists: 0,
@@ -978,7 +998,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 2,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 2,
+    finished: false
   },
   {
     assists: 1,
@@ -1000,7 +1022,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 12,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 1,
+    finished: true
   },
   {
     assists: 0,
@@ -1022,7 +1046,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 2,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 2,
+    finished: true
   },
   {
     assists: 0,
@@ -1044,7 +1070,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 8,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 1,
+    finished: false
   },
   {
     assists: 0,
@@ -1066,7 +1094,9 @@ export const PLAYER_HISTORY = [
     saves: 0,
     started: true,
     totalPoints: 3,
-    yellowCards: 0
+    yellowCards: 0,
+    goalsConceded: 3,
+    finished: true
   }
 ]
 

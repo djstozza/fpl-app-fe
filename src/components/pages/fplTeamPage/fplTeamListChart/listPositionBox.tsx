@@ -110,7 +110,7 @@ const ListPositionBox = (props: Props) => {
     clearValidSubstitutions
   } = props
 
-  const { classes, cx } = useStyles()
+  const { classes } = useStyles()
   const playerRef = useRef<null | HTMLDivElement>(null)
 
   const isSelected = selectedListPositionId === id
@@ -137,6 +137,7 @@ const ListPositionBox = (props: Props) => {
 
   return (
     <div
+      data-testid='ListPositionBox'
       onClick={handleClick}
       className={
         classNames(

@@ -96,7 +96,7 @@ const TradeablePlayersTable = (props: Props) => {
   if (isOwner) cells['tradeInColumn'] = tradeInColumn
 
   return (
-    <Fragment>
+    <div data-testid='TradeablePlayersTable'>
       <SearchListener fetchAction={fetchTradeablePlayers} initialFilterState={initialFilterState}>
         <SortTable
           collection={players}
@@ -151,7 +151,7 @@ const TradeablePlayersTable = (props: Props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Fragment>
+    </div>
   )
 }
 

@@ -1,48 +1,56 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { within, render, screen } from '@testing-library/react'
 
 import FplTeamDetails from '.'
 import { FPL_TEAM_1 } from 'test/fixtures'
-import { MockedRouter } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
+
 import {
   LEAGUES_URL,
   FPL_TEAMS_URL
 } from 'utilities/constants'
 
-describe('FplTeamDetails', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <FplTeamDetails
-        fplTeam={FPL_TEAM_1}
-        {...props}
-      />
-    </MockedRouter>
-  )
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
+describe('FplTeamDetails', () => {
+  const customRender = (context = {}) => {
+    const baseContext = {
+      fplTeam: FPL_TEAM_1,
+      setTab: blank__,
+      setAction: blank__,
+      ...context
+    }
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <FplTeamDetails  />
+      </RouteWithOutletContext>
+    )
+  }
+
+  const tableRows = () => screen.getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
 
   it('renders the fpl team details page', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(tableCell(wrapper, 0, 0).text()).toEqual('League')
-    expect(link(wrapper, 0, 1).props().to).toEqual(`${LEAGUES_URL}/${FPL_TEAM_1.league.id}`)
-    expect(link(wrapper, 0, 1).text()).toEqual(FPL_TEAM_1.league.name)
+    expect(tableCell(0, 0)).toHaveTextContent('League')
+    expect(link(0, 1)).toHaveAttribute('href', `${LEAGUES_URL}/${FPL_TEAM_1.league.id}`)
+    expect(link(0, 1)).toHaveTextContent(FPL_TEAM_1.league.name)
 
-    expect(tableCell(wrapper, 5, 0).text()).toEqual('Owner')
-    expect(tableCell(wrapper, 5, 1).text()).toEqual(FPL_TEAM_1.owner.username)
+    expect(tableCell(5, 0)).toHaveTextContent('Owner')
+    expect(tableCell(5, 1)).toHaveTextContent(FPL_TEAM_1.owner.username)
   })
 
   it('renders the edit league button if isOwner = true', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(wrapper.find('ButtonLink').props().to).toEqual(`${FPL_TEAMS_URL}/${FPL_TEAM_1.id}/details/edit`)
+    expect(screen.getByText('Edit Fpl Team')).toHaveAttribute('href',`${FPL_TEAMS_URL}/${FPL_TEAM_1.id}/details/edit` )
   })
 
   it('does not render the edit league button if isOwner = false', () => {
-    const wrapper = render({ fplTeam: { ...FPL_TEAM_1, isOwner: false } })
+    customRender({ fplTeam: { ...FPL_TEAM_1, isOwner: false } })
 
-    expect(wrapper.find('ButtonLink')).toHaveLength(0)
+    expect(screen.queryByText('Edit FplTeam')).toBeNull()
   })
 })

@@ -59,6 +59,7 @@ const OutListPosition = (props: Props) => {
 
   return (
     <Paper
+      data-testid='OutListPosition'
       className={classes.container}
     >
       <div className={classes.outNameContainer}>

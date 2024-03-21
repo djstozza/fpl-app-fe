@@ -185,7 +185,7 @@ export type Player = {
 export type History = {
   started: boolean,
   finished: boolean,
-  kickoffTime: number,
+  kickoffTime: string,
   minutes: number,
   round: RoundBase,
   opponent: TeamBase,

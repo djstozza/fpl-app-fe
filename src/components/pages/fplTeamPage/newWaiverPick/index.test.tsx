@@ -1,25 +1,25 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen } from '@testing-library/react'
 import { SnackbarProvider } from 'notistack'
 
 import NewWaiverPick from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
 import { LIST_POSITIONS, PLAYER_SUMMARIES, FPL_TEAM_LISTS } from 'test/fixtures'
 
 const errors = [
   {
-    details: 'You cannot draft players at this time',
+    detail: 'You cannot draft players at this time',
     code: 'is invalid',
     source: 'base',
     title: 'is invalid'
   },
   {
-    details: 'You cannot pick out of turn',
+    detail: 'You cannot pick out of turn',
     code: 'is invalid',
     source: 'base',
     title: 'is invalid'
   },
   {
-    details: 'Player has already been taken',
+    detail: 'Player has already been taken',
     code: 'is invalid',
     source: 'base',
     title: 'is invalid'
@@ -27,74 +27,108 @@ const errors = [
 ]
 
 describe('NewWaiverPick', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <SnackbarProvider maxSnack={3}>
-        <NewWaiverPick
-          waiverPicks={{ errors: [] }}
-          trades={{ errors: [] }}
-          fetchListPositions={blank__}
-          fplTeamList={{ listPositions: LIST_POSITIONS }}
-          currentFplTeamList={FPL_TEAM_LISTS[0]}
-          isWaiver
-          deadline={new Date()}
-          outListPosition={undefined}
-          setOutListPosition={blank__}
-          fetchTradeablePlayers={blank__}
-          updateTradeablePlayersFilter={blank__}
-          updateTradeablePlayersSort={blank__}
-          updateTradeablePlayersPage={blank__}
-          players={{ data: PLAYER_SUMMARIES, meta: { total: PLAYER_SUMMARIES.length } }}
-          fetchPlayerFacets={blank__}
-          createMiniDraftPick={blank__}
-          {...props}
-        />
-      </SnackbarProvider>
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      waiverPicks: { errors: [] },
+      trades: { errors: [] },
+      fplTeam: { isOwner: true },
+      fplTeamList: { listPositions: LIST_POSITIONS,  outListPosition: undefined },
+      currentFplTeamList: FPL_TEAM_LISTS[0],
+      isWaiver: true,
+      deadline: new Date(),
+      fetchListPositions: blank__,
+      setOutListPosition: blank__,
+      fetchTradeablePlayers: blank__,
+      updateTradeablePlayersFilter: blank__,
+      updateTradeablePlayersSort: blank__,
+      updateTradeablePlayersPage: blank__,
+      players: { data: PLAYER_SUMMARIES, meta: { total: PLAYER_SUMMARIES.length } },
+      fetchPlayerFacets: blank__,
+      createMiniDraftPick: blank__,
+      setTab: blank__,
+      setAction: blank__,
+      ...context
+    }
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <SnackbarProvider maxSnack={3}>
+          <NewWaiverPick />
+        </SnackbarProvider>
+      </RouteWithOutletContext>
+    )
+  }
 
-  const snackBarItem = wrapper => wrapper.find('WithStyles(SnackbarItem)')
+  const newWaiverPick = () => screen.queryByTestId('NewWaiverPick')
+  const listPositionsTable = () => screen.queryByTestId('ListPositionsTable')
+  const outListPosition = () => screen.queryByTestId('OutListPosition')
+  const tradeablePlayersTable = () => screen.queryByTestId('TradeablePlayersTable')
+  const alert = () => screen.getAllByRole('alert')
 
   describe('isWaiver = true', () => {
     it('only renders the ListPositionsTable if outListPosition is undefined', () => {
-      const wrapper = render()
-
-      expect(wrapper.find('ListPositionsTable')).toHaveLength(1)
-      expect(wrapper.find('OutListPosition').html()).toEqual(null)
-      expect(wrapper.find('TradeablePlayersTable')).toHaveLength(0)
+      customRender()
+      
+      expect(newWaiverPick()).toBeInTheDocument()
+      expect(listPositionsTable()).toBeInTheDocument()
+      expect(outListPosition()).not.toBeInTheDocument()
+      expect(tradeablePlayersTable()).not.toBeInTheDocument()
     })
 
     it('renders the TradeableListPositionsTable and OutListPosition if outListPosition is present', () => {
-      const wrapper = render({ outListPosition: LIST_POSITIONS[0] })
+      customRender({ fplTeamList: { listPositions: LIST_POSITIONS, outListPosition: LIST_POSITIONS[0] } })
 
-      expect(wrapper.find('ListPositionsTable')).toHaveLength(0)
-      expect(wrapper.find('OutListPosition').html()).not.toEqual(null)
-      expect(wrapper.find('TradeablePlayersTable')).toHaveLength(1)
+      expect(listPositionsTable()).not.toBeInTheDocument()
+      expect(outListPosition()).toBeInTheDocument()
+      expect(tradeablePlayersTable()).toBeInTheDocument()
+    })
+
+    it('sets the tab and action', () => {
+      const setTab = jest.fn()
+      const setAction = jest.fn()
+
+      customRender({ setTab, setAction })
+
+      expect(setTab).toHaveBeenCalledWith('waiverPicks')
+      expect(setAction).toHaveBeenCalledWith('new')
     })
   })
 
   describe('isWaiver = false', () => {
     it('only renders the ListPositionsTable if outListPosition is undefined', () => {
-      const wrapper = render({ isWaiver: false })
+      customRender({ isWaiver: false })
 
-      expect(wrapper.find('ListPositionsTable')).toHaveLength(1)
-      expect(wrapper.find('OutListPosition').html()).toEqual(null)
-      expect(wrapper.find('TradeablePlayersTable')).toHaveLength(0)
+      expect(newWaiverPick()).toBeInTheDocument()
+      expect(listPositionsTable()).toBeInTheDocument()
+      expect(outListPosition()).not.toBeInTheDocument()
+      expect(tradeablePlayersTable()).not.toBeInTheDocument()
     })
 
     it('renders the TradeableListPositionsTable and OutListPosition if outListPosition is present', () => {
-      const wrapper = render({ outListPosition: LIST_POSITIONS[0], isWaiver: false })
+      customRender({
+        isWaiver: false,
+        fplTeamList: { listPositions: LIST_POSITIONS,  outListPosition: LIST_POSITIONS[0] }
+      })
 
-      expect(wrapper.find('ListPositionsTable')).toHaveLength(0)
-      expect(wrapper.find('OutListPosition').html()).not.toEqual(null)
-      expect(wrapper.find('TradeablePlayersTable')).toHaveLength(1)
+      expect(listPositionsTable()).not.toBeInTheDocument()
+      expect(outListPosition()).toBeInTheDocument()
+      expect(tradeablePlayersTable()).toBeInTheDocument()
+    })
+
+    it('sets the tab and action', () => {
+      const setTab = jest.fn()
+      const setAction = jest.fn()
+
+      customRender({ setTab, setAction, isWaiver: false })
+
+      expect(setTab).toHaveBeenCalledWith('trades')
+      expect(setAction).toHaveBeenCalledWith('new')
     })
   })
 
   it('triggers fetchListPositions on render if the fplTeamListId is present', () => {
     const fetchListPositions = jest.fn()
 
-    render({
+    customRender({
       waiverPicks: { errors: [] },
       fetchListPositions
     })
@@ -105,7 +139,7 @@ describe('NewWaiverPick', () => {
   it('does not fetchListPositions on render if currentFplTeamList is undefined', () => {
     const fetchListPositions = jest.fn()
 
-    render({
+    customRender({
       waiverPicks: { errors: [] },
       currentFplTeamList: undefined,
       fetchListPositions
@@ -115,14 +149,14 @@ describe('NewWaiverPick', () => {
   })
 
   it('shows errors with the snackbar when present', () => {
-    const wrapper = render({ waiverPicks: { errors } })
-
-    expect(snackBarItem(wrapper)).toHaveLength(3)
+    customRender({ waiverPicks: { errors } })
+    
+    expect(alert()).toHaveLength(errors.length)
   })
 
   it('renders nothing if there are no list positions present', () => {
-    const wrapper = render({ fplTeamList: { listPositions: [] } })
+    customRender({ fplTeamList: { listPositions: [] } })
 
-    expect(wrapper.html()).toEqual('')
+    expect(newWaiverPick()).not.toBeInTheDocument()
   })
 })

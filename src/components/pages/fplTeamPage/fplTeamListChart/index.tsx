@@ -308,7 +308,11 @@ const FplTeamListChart = () => {
         <div className={classes.startingContainer}>
           {
             Object.values(groupedListPositions).map((listPositions, i) => (
-              <Box key={i} className={classes.startingRow}>
+              <Box
+                key={i}
+                data-testid='starting'
+                className={classes.startingRow}
+              >
                 {
                   listPositions.map((listPosition, j) => (
                     <ListPositionBox
@@ -356,7 +360,10 @@ const FplTeamListChart = () => {
           <div className={classes.goalkeeperBoxBottom}>
           </div>
         </div>
-        <Box className={classes.substitutesContainer}>
+        <Box
+          data-testid='substitute'
+          className={classes.substitutesContainer}
+        >
           {
             consolidatedSubstitutes.map((listPosition, j) => (
               <ListPositionBox

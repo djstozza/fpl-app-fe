@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { Theme, Alert } from '@mui/material'
 import Countdown from 'react-countdown'
@@ -166,7 +165,7 @@ const FplTeamAlert = (props: Props) => {
   }
 
   return (
-    <Fragment>
+    <div data-testid='FplTeamAlert'>
     {
       Boolean(deadline) &&
       <Alert
@@ -183,7 +182,7 @@ const FplTeamAlert = (props: Props) => {
         />
       </Alert>
     }
-    </Fragment>
+    </div>
   )
 
 }

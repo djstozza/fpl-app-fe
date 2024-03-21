@@ -130,7 +130,7 @@ const TradeableListPositionsTable = (props: Props) => {
   }
 
   return (
-    <Fragment>
+    <div data-testid='TradeableListPositionsTable'>
       <SearchListener fetchAction={fetchTradeableListPositions} initialFilterState={initialFilterState}>
         <SortTable
           collection={tradeableListPositions}
@@ -177,7 +177,7 @@ const TradeableListPositionsTable = (props: Props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Fragment>
+    </div>
   )
 }
 

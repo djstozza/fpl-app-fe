@@ -34,6 +34,9 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
+export const tab = 'details'
+export const action = 'edit'
+
 const EditFplTeamForm = () => {
   const {
     errors = [],
@@ -47,9 +50,6 @@ const EditFplTeamForm = () => {
   const { classes } = useStyles()
 
   const [newName, setName] = useState(name)
-
-  const tab = 'details'
-  const action = 'edit'
 
   useEffect(() => {
     setTab(tab)

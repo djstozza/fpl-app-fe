@@ -58,7 +58,7 @@ const AddPlayer = () => {
   if (!listPositions.length) return null
 
   return (
-    <Fragment>
+    <div data-testid='AddPlayer'>
       {
         !outListPosition &&
         <ListPositionsTable
@@ -89,7 +89,7 @@ const AddPlayer = () => {
           submitting={submitting}
         />
       }
-    </Fragment>
+    </div>
   )
 }
 

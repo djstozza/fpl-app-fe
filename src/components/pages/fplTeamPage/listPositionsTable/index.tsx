@@ -118,12 +118,14 @@ const ListPositionsTable = (props: Props) => {
   }
 
   return (
-    <SortTable
-      collection={listPositions}
-      cells={Object.values(cells)}
-      fetching={fetching}
-      name='list positions'
-    />
+    <div data-testid='ListPositionsTable'>
+      <SortTable
+        collection={listPositions}
+        cells={Object.values(cells)}
+        fetching={fetching}
+        name='list positions'
+      />
+    </div>
   )
 }
 

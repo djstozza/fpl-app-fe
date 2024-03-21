@@ -1,8 +1,8 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen } from '@testing-library/react'
 import { SnackbarProvider } from 'notistack'
 
 import NewTeamTrade from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
 import { LIST_POSITIONS, FPL_TEAM_LIST_1, INTER_TEAM_TRADE_GROUPS } from 'test/fixtures'
 
 const errors = [
@@ -15,54 +15,62 @@ const errors = [
 ]
 
 describe('NewTeamTrade', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <SnackbarProvider maxSnack={3}>
-        <NewTeamTrade
-          isOwner
-          fplTeamList={{ listPositions: LIST_POSITIONS }}
-          currentFplTeamList={FPL_TEAM_LIST_1}
-          selectedFplTeamListId={FPL_TEAM_LIST_1.id}
-          interTeamTradeGroups={{ data: INTER_TEAM_TRADE_GROUPS, errors: [] }}
-          fetchListPositions={blank__}
-          fetchInterTeamTradeGroup={blank__}
-          deadline={new Date()}
-          outListPosition={LIST_POSITIONS[3]}
-          setOutListPosition={blank__}
-          fetchTradeableListPositions={blank__}
-          listPosition={{ tradeableListPositions: LIST_POSITIONS }}
-          createInterTeamTradeGroup={blank__}
-          updateTradeableListPositionsFilter={blank__}
-          updateTradeableListPositionsSort={blank__}
-          fetchTradeableListPositionFacets={blank__}
-          {...props}
-        />
-      </SnackbarProvider>
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      fplTeam: { isOwner: true },
+      fplTeamList: { listPositions: LIST_POSITIONS, outListPosition: LIST_POSITIONS[3] },
+      currentFplTeamList: FPL_TEAM_LIST_1, 
+      selectedFplTeamListId: FPL_TEAM_LIST_1.id,
+      interTeamTradeGroups: { data: INTER_TEAM_TRADE_GROUPS, errors: [] },
+      listPosition: { tradeableListPositions: LIST_POSITIONS },
+      deadline: new Date(),
+      setOutListPosition: blank__,
+      fetchTradeableListPositions: blank__,
+      fetchInterTeamTradeGroup: blank__,
+      createInterTeamTradeGroup: blank__,
+      updateTradeableListPositionsFilter: blank__,
+      updateTradeableListPositionsSort: blank__,
+      fetchTradeableListPositionFacets: blank__,
+      fetchListPositions: blank__,
+      ...context
+    }
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <SnackbarProvider maxSnack={3}>
+          <NewTeamTrade />
+        </SnackbarProvider>
+      </RouteWithOutletContext>
+    )
+  }
 
-  const snackBarItem = wrapper => wrapper.find('WithStyles(SnackbarItem)')
+  const newTeamTrade = () => screen.queryByTestId('NewTeamTrade')
+  const listPositionsTable = () => screen.queryByTestId('ListPositionsTable')
+  const outListPosition = () => screen.queryByTestId('OutListPosition')
+  const tradeableListPositionsTable = () => screen.queryByTestId('TradeableListPositionsTable')
+  const alert = () => screen.getAllByRole('alert')
 
   it('only does not render the listPositionsTable if outListPosition is present', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(wrapper.find('ListPositionsTable')).toHaveLength(0)
-    expect(wrapper.find('OutListPosition').html()).not.toEqual(null)
-    expect(wrapper.find('TradeableListPositionsTable')).toHaveLength(1)
+    expect(newTeamTrade()).toBeInTheDocument()
+    expect(listPositionsTable()).not.toBeInTheDocument()
+    expect(outListPosition()).toBeInTheDocument()
+    expect(tradeableListPositionsTable()).toBeInTheDocument()
   })
 
   it('only renders the ListPositionsTable if outListPosition is undefined', () => {
-    const wrapper = render({ outListPosition: undefined })
+    customRender({ fplTeamList: { listPositions: LIST_POSITIONS, outListPosition: undefined } })
 
-    expect(wrapper.find('ListPositionsTable')).toHaveLength(1)
-    expect(wrapper.find('OutListPosition').html()).toEqual(null)
-    expect(wrapper.find('TradeableListPositionsTable')).toHaveLength(0)
+    expect(newTeamTrade()).toBeInTheDocument()
+    expect(listPositionsTable()).toBeInTheDocument()
+    expect(outListPosition()).not.toBeInTheDocument()
+    expect(tradeableListPositionsTable()).not.toBeInTheDocument()
   })
 
   it('calls fetchListPositions if there is a selectedFplTeamListId', () => {
     const fetchListPositions = jest.fn()
 
-    render({ fetchListPositions })
+    customRender({ fetchListPositions })
 
     expect(fetchListPositions).toHaveBeenCalledWith(FPL_TEAM_LIST_1.id)
   })
@@ -70,20 +78,20 @@ describe('NewTeamTrade', () => {
   it('does not call fetchListPositions if there is no currentFplTeamList', () => {
     const fetchListPositions = jest.fn()
 
-    render({ fetchListPositions, currentFplTeamList: undefined })
+    customRender({ fetchListPositions, currentFplTeamList: undefined })
 
     expect(fetchListPositions).not.toHaveBeenCalled()
   })
 
   it('shows errors with the snackbar when present', () => {
-    const wrapper = render({ interTeamTradeGroups: { errors } })
+    customRender({ interTeamTradeGroups: { errors } })
 
-    expect(snackBarItem(wrapper)).toHaveLength(1)
+   expect(alert()).toHaveLength(errors.length)
   })
 
   it('renders nothing if there are no listPositions', () => {
-    const wrapper = render({ fplTeamList: { listPositions: [] } })
+    customRender({ fplTeamList: { listPositions: [] } })
 
-    expect(wrapper.html()).toEqual('')
+    expect(newTeamTrade()).not.toBeInTheDocument()
   })
 })
