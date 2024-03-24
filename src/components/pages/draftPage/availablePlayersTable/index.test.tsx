@@ -25,18 +25,13 @@ describe('AvailablePlayersTable', () => {
       setTab: blank__,
       ...context
     }
+
     return render(
       <RouteWithOutletContext context={baseContext}>
         <AvailablePlayersTable />
       </RouteWithOutletContext>
     )
   }
-  
-  // const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const headerCell = wrapper =>  wrapper.find('HeaderCell')
-  const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
-  const pagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
-  // const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
 
   const sortTable = () => screen.getByTestId('SortTable')
   const tableRows = () => within(sortTable()).getAllByRole('row')

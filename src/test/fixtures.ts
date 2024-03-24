@@ -241,7 +241,8 @@ export const ROUNDS = [
     isNext: true,
     isPrevious: false,
     miniDraft: false,
-    name: 'Gameweek 1'
+    name: 'Gameweek 1',
+    waiverDeadline: '2021-08-10 11:29:24 UTC'
   },
   {
     current: false,
@@ -1618,9 +1619,9 @@ export const FPL_TEAM_LIST_2 = {
 
 export const FPL_TEAM_LIST_3 = {
   id: '3',
-  cumulativeRank: null,
-  roundRank: null,
-  totalScore: null,
+  cumulativeRank: undefined,
+  roundRank: undefined,
+  totalScore: undefined,
   round: ROUND_3
 }
 

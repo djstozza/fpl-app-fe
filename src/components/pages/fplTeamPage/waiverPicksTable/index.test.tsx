@@ -1,10 +1,8 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { SnackbarProvider } from 'notistack'
-import { within } from '@testing-library/react'
-import UserEvent from '@testing-library/user-event'
 
 import WaiverPicksTable from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
 import { WAIVER_PICKS, TRADES, FPL_TEAM_LISTS } from 'test/fixtures'
 import {
   PLAYERS_URL,
@@ -18,19 +16,19 @@ const changeWaiverPickOrder = jest.fn()
 
 const errors = [
   {
-    details: 'You cannot draft players at this time',
+    detail: 'You cannot draft players at this time',
     code: 'is invalid',
     source: 'base',
     title: 'is invalid'
   },
   {
-    details: 'You cannot pick out of turn',
+    detail: 'You cannot pick out of turn',
     code: 'is invalid',
     source: 'base',
     title: 'is invalid'
   },
   {
-    details: 'Player has already been taken',
+    detail: 'Player has already been taken',
     code: 'is invalid',
     source: 'base',
     title: 'is invalid'
@@ -38,155 +36,190 @@ const errors = [
 ]
 
 describe('WaiverPicksTable', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <SnackbarProvider maxSnack={3}>
-        <WaiverPicksTable
-          fplTeamId={fplTeamId}
-          selectedFplTeamListId={FPL_TEAM_LISTS[0].id}
-          waiverPicks={{ data: WAIVER_PICKS, errors: [] }}
-          fplTeamList={{ data: FPL_TEAM_LISTS[0] }}
-          fplTeamLists={{ data: FPL_TEAM_LISTS }}
-          trades={{ data: TRADES, errors: [] }}
-          fetchWaiverPicks={blank__}
-          changeWaiverPickOrder={changeWaiverPickOrder}
-          fetchTrades={blank__}
-          isWaiver
-          isOwner
-          {...props}
-        />
-      </SnackbarProvider>
-    </MockedRouter>
-  )
+  const originalWindowLocation = window.location
+  
+  const customRender = (context = {}, path = "/") => {
+    const baseContext = {
+      fplTeamId: fplTeamId,
+      fplTeam: { isOwner: true },
+      selectedFplTeamListId: FPL_TEAM_LISTS[0].id, 
+      waiverPicks: { data: WAIVER_PICKS, errors: [] },
+      fplTeamList: { data: FPL_TEAM_LISTS[0] },
+      fplTeamLists: { data: FPL_TEAM_LISTS },
+      trades: { data: TRADES, errors: [] },
+      changeWaiverPickOrder: changeWaiverPickOrder,
+      isWaiver: true,
+      fetchWaiverPicks: blank__,
+      fetchTrades: blank__, 
+      setTab: blank__,
+      setAction: blank__,
+      ...context
+    }
+  
+    return render(
+      <RouteWithOutletContext context={baseContext} path={path}>
+        <SnackbarProvider maxSnack={3}>
+          <WaiverPicksTable />
+        </SnackbarProvider>
+      </RouteWithOutletContext>
+    )
+  }
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const headerCell = wrapper => wrapper.find('HeaderCell')
-  const tabPanelTabs = wrapper => wrapper.find('TabPanel').find('WithStyles(ForwardRef(Tab))')
-  const snackBarItem = wrapper => wrapper.find('WithStyles(SnackbarItem)')
+  beforeEach(() => {
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      enumerable: true,
+      value: new URL(window.location.href),
+    })
+  })
+
+  afterEach(() => {
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      enumerable: true,
+      value: originalWindowLocation,
+    })
+  })
+
+  const tabPanelTabs = () => within(screen.getByRole('tablist')).getAllByRole('tab')
+  const sortTable = () => screen.getByTestId('SortTable')
+  
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const combobox = (i, j) => within(tableCell(i, j)).getByRole('combobox')
+  const listboxOptions = () => within(screen.getByRole('listbox')).getAllByRole('option')
+
+  const alert = () => screen.getAllByRole('alert')
 
   describe('showTrades = false', () => {
-    beforeAll(
-      () => {
-        delete window.location
-        global.window = Object.create(window)
-        global.window.location = { pathname: `${FPL_TEAMS_URL}/${FPL_TEAM_LISTS[0].id}/waiverPicks` }
-      }
-    )
-
-    it('renders the waiver picks table and the round selectors', () => {
-      const wrapper = render()
-
-      expect(headerCell(wrapper)).toHaveLength(6)
-      expect(tabPanelTabs(wrapper)).toHaveLength(FPL_TEAM_LISTS.length)
-
-      expect(link(wrapper, 1, 1).props().to).toEqual(`${PLAYERS_URL}/${WAIVER_PICKS[0].outPlayer.id}`)
-      expect(link(wrapper, 1, 1).text())
-        .toEqual(`${WAIVER_PICKS[0].outPlayer.firstName} ${WAIVER_PICKS[0].outPlayer.lastName}`)
-      expect(link(wrapper, 1, 3).text())
-        .toEqual(`${WAIVER_PICKS[0].inPlayer.firstName} ${WAIVER_PICKS[0].inPlayer.lastName}`)
-      expect(tableCell(wrapper, 1, 5).text()).toEqual(WAIVER_PICKS[0].status)
-
-      expect(tableCell(wrapper, 2, 0).text()).toEqual(String(WAIVER_PICKS[1].pickNumber))
-
-      expect(link(wrapper, 2, 2).props().to).toEqual(`${TEAMS_URL}/${WAIVER_PICKS[1].outTeam.id}/`)
-      expect(link(wrapper, 2, 2).text()).toEqual(`${WAIVER_PICKS[1].outTeam.shortName}`)
-
-      expect(link(wrapper, 2, 4).props().to).toEqual(`${TEAMS_URL}/${WAIVER_PICKS[1].inTeam.id}/`)
-      expect(link(wrapper, 2, 4).text()).toEqual(`${WAIVER_PICKS[1].inTeam.shortName}`)
+    const path = `${FPL_TEAMS_URL}/${FPL_TEAM_LISTS[0].id}/waiverPicks`
+    beforeEach(() => {
+      const expectedUrl = `https://www.example.com${path}`
+      window.location.href = expectedUrl
     })
 
-    it('triggers fetchWaiverPicks on render', () => {
-      const fetchWaiverPicks = jest.fn()
-      render({ fetchWaiverPicks })
+    it('renders the waiver picks table and the round selectors', () => {
+      customRender({}, path)
 
-      expect(fetchWaiverPicks).toHaveBeenCalled()
+      expect(tableCells(1)).toHaveLength(6)
+      expect(tabPanelTabs()).toHaveLength(FPL_TEAM_LISTS.length)
+
+      expect(link(1, 1)).toHaveAttribute('href', `${PLAYERS_URL}/${WAIVER_PICKS[0].outPlayer.id}`)
+      expect(link(1, 1))
+        .toHaveTextContent(`${WAIVER_PICKS[0].outPlayer.firstName} ${WAIVER_PICKS[0].outPlayer.lastName}`)
+      expect(link(1, 3))
+        .toHaveTextContent(`${WAIVER_PICKS[0].inPlayer.firstName} ${WAIVER_PICKS[0].inPlayer.lastName}`)
+      expect(tableCell(1, 5)).toHaveTextContent(WAIVER_PICKS[0].status)
+
+      expect(tableCell(2, 0)).toHaveTextContent(String(WAIVER_PICKS[1].pickNumber))
+
+      expect(link(2, 2)).toHaveAttribute('href', `${TEAMS_URL}/${WAIVER_PICKS[1].outTeam.id}/`)
+      expect(link(2, 2)).toHaveTextContent(`${WAIVER_PICKS[1].outTeam.shortName}`)
+
+      expect(link(2, 4)).toHaveAttribute('href', `${TEAMS_URL}/${WAIVER_PICKS[1].inTeam.id}/`)
+      expect(link(2, 4)).toHaveTextContent(`${WAIVER_PICKS[1].inTeam.shortName}`)
+    })
+
+    it('triggers fetchWaiverPicks, setAction and setTab, on render', () => {
+      const fetchWaiverPicks = jest.fn()
+      const setAction = jest.fn()
+      const setTab = jest.fn()
+      customRender({ fetchWaiverPicks, setAction, setTab }, path)
+
+      expect(fetchWaiverPicks).toHaveBeenCalledWith(FPL_TEAM_LISTS[0].id)
+      expect(setTab).toHaveBeenCalledWith('waiverPicks')
+      expect(setAction).toHaveBeenCalledWith()
     })
 
     it('triggers changeWaiverPickOrder when the picknumbers are clicked if before waiverDeadline', () => {
-      render()
-
-      const selectButtons = document.querySelectorAll('[role=button]')
-
-      UserEvent.click(selectButtons[selectButtons.length - 1])
-
-      const listbox = document.body.querySelector('ul[role=listbox]')
-      const listItem = within(listbox).getByText(String(WAIVER_PICKS[0].pickNumber))
-
-      UserEvent.click(listItem)
+      customRender({}, path)
+      
+      fireEvent.keyDown(combobox(1, 0), { key: 'ArrowDown', code: 'ArrowDown' })
+      
+      fireEvent.click(listboxOptions()[listboxOptions().length - 1])
 
       expect(changeWaiverPickOrder)
-        .toHaveBeenCalledWith(FPL_TEAM_LISTS[0].id, WAIVER_PICKS[1].id, WAIVER_PICKS[0].pickNumber)
+        .toHaveBeenCalledWith(FPL_TEAM_LISTS[0].id, WAIVER_PICKS[0].id, WAIVER_PICKS[1].pickNumber)
     })
 
     it('does not allow the switching of waiver picks if isOwner = false', () => {
-      const wrapper = render({ isOwner: false })
-
-      expect(tableCell(wrapper, 1, 0).find('WithStyles(ForwardRef(TextField))')).toHaveLength(0)
+      customRender({ fplTeam: { isOwner: false } }, path)
+     
+      expect(screen.queryAllByRole('combobox')).toHaveLength(0)
     })
 
     it('does not allow the switching of waiver picks if the round is not current', () => {
-      const wrapper = render({ isOwner: false })
+      customRender({ fplTeamList: { data: { round: { current: false } } } }, path)
 
-      expect(tableCell(wrapper, 1, 0).find('WithStyles(ForwardRef(TextField))')).toHaveLength(0)
+      expect(screen.queryAllByRole('combobox')).toHaveLength(0)
+    })
+
+    it('does not allow the switching of waiver picks if no fplTeamListData', () => {
+      customRender({ fplTeamList: { data: undefined } }, path)
+
+      expect(screen.queryAllByRole('combobox')).toHaveLength(0)
     })
 
     it('does not allow the switching of waiver picks if isWaiver = false', () => {
-      const wrapper = render({ isWaiver: false })
+      customRender({ isWaiver: false }, path)
 
-      expect(tableCell(wrapper, 1, 0).find('WithStyles(ForwardRef(TextField))')).toHaveLength(0)
+      expect(screen.queryAllByRole('combobox')).toHaveLength(0)
     })
 
     it('renders errors if present', () => {
-      const wrapper = render({ waiverPicks: { data: WAIVER_PICKS, errors } })
+      customRender({ waiverPicks: { data: WAIVER_PICKS, errors } }, path)
 
-      expect(snackBarItem(wrapper)).toHaveLength(3)
+      expect(alert()).toHaveLength(3)
+    })
+
+    it('returns nothing if selectedFplTeamListId is undefiend', () => {
+      customRender({ selectedFplTeamListId: undefined }, path)
+
+      expect(screen.queryByTestId('WaiverPicksTable')).not.toBeInTheDocument()
     })
   })
 
   describe('showTrades = true', () => {
-    beforeAll(
-      () => {
-        delete window.location
-        global.window = Object.create(window)
-        global.window.location = { pathname: `${FPL_TEAMS_URL}/${FPL_TEAM_LISTS[0].id}/trades` }
-      }
-    )
+    const path = `${FPL_TEAMS_URL}/${FPL_TEAM_LISTS[0].id}/trades`
+    
+    beforeEach(() => {
+      const expectedUrl = `https://www.example.com${path}`
+      window.location.href = expectedUrl
+    })
 
     it('renders the waiver picks table and the round selectors', () => {
-      const wrapper = render({ isWaiver: false })
+      customRender({ isWaiver: false }, path)
 
-      expect(headerCell(wrapper)).toHaveLength(4)
-      expect(tabPanelTabs(wrapper)).toHaveLength(FPL_TEAM_LISTS.length)
+      expect(tableCells(1)).toHaveLength(4)
+      expect(tabPanelTabs()).toHaveLength(FPL_TEAM_LISTS.length)
 
-      expect(link(wrapper, 1, 0).props().to).toEqual(`${PLAYERS_URL}/${TRADES[0].outPlayer.id}`)
-      expect(link(wrapper, 1, 0).text())
-        .toEqual(`${TRADES[0].outPlayer.firstName} ${TRADES[0].outPlayer.lastName}`)
+      expect(link(1, 0)).toHaveAttribute('href', `${PLAYERS_URL}/${TRADES[0].outPlayer.id}`)
+      expect(link(1, 0)).toHaveTextContent(`${TRADES[0].outPlayer.firstName} ${TRADES[0].outPlayer.lastName}`)
 
-      expect(link(wrapper, 1, 2).props().to).toEqual(`${PLAYERS_URL}/${TRADES[0].inPlayer.id}`)
-      expect(link(wrapper, 1, 2).text())
-        .toEqual(`${TRADES[0].inPlayer.firstName} ${TRADES[0].inPlayer.lastName}`)
+      expect(link(1, 2)).toHaveAttribute('href', `${PLAYERS_URL}/${TRADES[0].inPlayer.id}`)
+      expect(link(1, 2)).toHaveTextContent(`${TRADES[0].inPlayer.firstName} ${TRADES[0].inPlayer.lastName}`)
 
-      expect(link(wrapper, 2, 1).props().to).toEqual(`${TEAMS_URL}/${TRADES[1].outTeam.id}/`)
-      expect(link(wrapper, 2, 1).text()).toEqual(`${TRADES[1].outTeam.shortName}`)
+      expect(link(2, 1)).toHaveAttribute('href', `${TEAMS_URL}/${TRADES[1].outTeam.id}/`)
+      expect(link(2, 1)).toHaveTextContent(`${TRADES[1].outTeam.shortName}`)
 
-      expect(link(wrapper, 2, 3).props().to).toEqual(`${TEAMS_URL}/${TRADES[1].inTeam.id}/`)
-      expect(link(wrapper, 2, 3).text()).toEqual(`${TRADES[1].inTeam.shortName}`)
+      expect(link(2, 3)).toHaveAttribute('href', `${TEAMS_URL}/${TRADES[1].inTeam.id}/`)
+      expect(link(2, 3)).toHaveTextContent(`${TRADES[1].inTeam.shortName}`)
     })
 
     it('triggers fetchTrades on render', () => {
       const fetchTrades = jest.fn()
-      render({ fetchTrades })
+      customRender({ fetchTrades }, path)
 
       expect(fetchTrades).toHaveBeenCalled()
     })
-  })
 
-  it('returns nothing if selectedFplTeamListId is undefiend', () => {
-    const wrapper = render({ selectedFplTeamListId: undefined })
+    it('returns nothing if selectedFplTeamListId is undefiend', () => {
+      customRender({ selectedFplTeamListId: undefined }, path)
 
-    expect(wrapper.html()).toEqual('')
+      expect(screen.queryByTestId('WaiverPicksTable')).not.toBeInTheDocument()
+    })
   })
 })

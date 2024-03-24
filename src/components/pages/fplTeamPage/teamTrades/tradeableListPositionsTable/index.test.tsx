@@ -1,113 +1,126 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import TradeableListPositionsTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
 import { PLAYERS_URL, TEAMS_URL } from 'utilities/constants'
 import { LIST_POSITIONS, LIST_POSITION_FACETS, LIST_POSITION_2, INTER_TEAM_TRADE_GROUP_1 } from 'test/fixtures'
-import { initialFilterState } from 'state/listPosition/reducer'
+import { initialFilterState, initialState } from 'state/listPosition/reducer'
 import { listPositionTableCells } from 'components/pages/fplTeamPage/listPositionsTable'
 
-const listPosition = { tradeableListPositions: LIST_POSITIONS, facets: LIST_POSITION_FACETS }
+const listPosition = { ...initialState, tradeableListPositions: LIST_POSITIONS, facets: LIST_POSITION_FACETS }
 const cellNumber = Object.values(listPositionTableCells()).length
 
 describe('TradeableListPositionsTable', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <TradeableListPositionsTable
-        listPosition={listPosition}
-        outListPosition={LIST_POSITION_2}
-        fetchTradeableListPositions={blank__}
-        fetchTradeableListPositionFacets={blank__}
-        updateTradeableListPositionsFilter={blank__}
-        updateTradeableListPositionsSort={blank__}
-        submitAction={blank__}
-        isOwner
-        deadline={new Date()}
-        {...props}
-      />
-    </MockedRouter>
-  )
+  const customRender = (props = {}) => {
+    return render(
+      <MockedRouter>
+        <TradeableListPositionsTable
+          listPosition={listPosition}
+          outListPosition={LIST_POSITION_2}
+          fetchTradeableListPositions={blank__}
+          fetchTradeableListPositionFacets={blank__}
+          updateTradeableListPositionsFilter={blank__}
+          updateTradeableListPositionsSort={blank__}
+          submitAction={blank__}
+          isOwner
+          deadline={new Date()}
+          {...props}
+        />
+      </MockedRouter>
+    )
+  }
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const headerCell = wrapper =>  wrapper.find('HeaderCell')
-  const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
-  const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
+  const sortTable = () => screen.getByTestId('SortTable')
+  
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const tradeIn = (i, j,)  => within(tableCell(i, j)).getByRole('button', { name: /trade in/i })
+  const columnHeaders = () => screen.getAllByRole('columnheader')
+  const checkboxes = () => screen.queryAllByRole('checkbox')
+
+  const presentation = () => screen.queryAllByRole('presentation')
+  const dialog = () => presentation()[1]
+
+  const confirm = () => within(dialog()).getByRole('button', { name: /confirm/i })
+  const cancel = () => within(dialog()).getByRole('button', { name: /cancel/i })
+
+  const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
 
   it('shows the player rows', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(wrapper.find('WithStyles(ForwardRef(TableRow))')).toHaveLength(LIST_POSITIONS.length + 1)
-    expect(link(wrapper, 2, 0).props().to).toEqual(`${PLAYERS_URL}/${LIST_POSITIONS[1].player.id}`)
-    expect(link(wrapper, 2, 0).text()).toEqual(LIST_POSITIONS[1].player.lastName)
+    expect(tableRows()).toHaveLength(LIST_POSITIONS.length + 1)
+    expect(tableCells(1)).toHaveLength(cellNumber + 1)
+    
+    expect(link(2, 0)).toHaveAttribute('href', `${PLAYERS_URL}/${LIST_POSITIONS[1].player.id}`)
+    expect(link(2, 0)).toHaveTextContent(LIST_POSITIONS[1].player.lastName)
 
-    expect(link(wrapper, 1, 1).props().to).toEqual(`${PLAYERS_URL}/${LIST_POSITIONS[0].player.id}`)
-    expect(link(wrapper, 1, 1).text()).toEqual(LIST_POSITIONS[0].player.firstName)
+    expect(link(1, 1)).toHaveAttribute('href', `${PLAYERS_URL}/${LIST_POSITIONS[0].player.id}`)
+    expect(link(1, 1)).toHaveTextContent(LIST_POSITIONS[0].player.firstName)
 
-    expect(link(wrapper, 3, 2).props().to).toEqual(`${TEAMS_URL}/${LIST_POSITIONS[2].team.id}/`)
-    expect(link(wrapper, 3, 2).text()).toEqual(LIST_POSITIONS[2].team.shortName)
-    expect(link(wrapper, 3, 2).find('img').props().alt).toEqual(LIST_POSITIONS[2].team.shortName)
-
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(link(3, 2)).toHaveAttribute('href', `${TEAMS_URL}/${LIST_POSITIONS[2].team.id}/`)
+    expect(link(3, 2)).toHaveTextContent(LIST_POSITIONS[2].team.shortName)
+    expect(within(link(3, 2)).getByRole('img')).toHaveAttribute('alt', LIST_POSITIONS[2].team.shortName)
   })
-
 
   it('triggers the submit action', () => {
     const submitAction = jest.fn()
-    const wrapper = render({ submitAction, isWaiver: true })
+    customRender({ submitAction, isWaiver: true })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation()).toHaveLength(0)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
-
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(true)
-    expect(dialog(wrapper).text()).toContain(
+    fireEvent.click(tradeIn(1, cellNumber))
+   
+    expect(dialog().style.opacity).toEqual('1')
+    expect(dialog()).toHaveTextContent(
       `Confirm tradeOut: ${LIST_POSITION_2.player.firstName} ${LIST_POSITION_2.player.lastName}` +
       `In: ${LIST_POSITIONS[0].player.firstName} ${LIST_POSITIONS[0].player.lastName}`
     )
 
-    dialog(wrapper).find('button').at(1).simulate('click')
+    fireEvent.click(confirm())
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(submitAction).toHaveBeenCalledWith(LIST_POSITIONS[0])
   })
 
   it('closes the draft dialog when cancel is clicked', () => {
     const submitAction = jest.fn()
-    const wrapper = render({ submitAction })
+    customRender({ submitAction })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation()).toHaveLength(0)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
-
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(true)
-    dialog(wrapper).find('button').at(0).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(tradeIn(1, cellNumber))
+    expect(dialog().style.opacity).toEqual('1')
+    
+    fireEvent.click(cancel())
+ 
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(submitAction).not.toHaveBeenCalled()
   })
 
   it('closes the draft dialog when cancel is clicked', () => {
     const submitAction = jest.fn()
-    const wrapper = render({ submitAction })
+    customRender({ submitAction })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation()).toHaveLength(0)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(tradeIn(1, cellNumber))
+    expect(dialog().style.opacity).toEqual('1')
 
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
+    const backdrop = document.querySelector('.MuiBackdrop-root')
 
-    wrapper.find('WithStyles(ForwardRef(Backdrop))').simulate('click')
+    if (backdrop) {
+      fireEvent.click(backdrop)
+    } else {
+      throw new Error('.MuiBackdrop-root not found')
+    }
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(submitAction).not.toHaveBeenCalled()
   })
@@ -116,7 +129,7 @@ describe('TradeableListPositionsTable', () => {
     const fetchTradeableListPositions = jest.fn()
     const fetchTradeableListPositionFacets = jest.fn()
 
-    render({ fetchTradeableListPositions, fetchTradeableListPositionFacets })
+    customRender({ fetchTradeableListPositions, fetchTradeableListPositionFacets })
 
     expect(fetchTradeableListPositions).toHaveBeenCalledWith(initialFilterState)
     expect(fetchTradeableListPositionFacets).toHaveBeenCalled()
@@ -124,41 +137,42 @@ describe('TradeableListPositionsTable', () => {
 
   it('triggers updateTradeableListPositionsSort', () => {
     const updateTradeableListPositionsSort = jest.fn()
-    const wrapper = render({ updateTradeableListPositionsSort })
+    customRender({ updateTradeableListPositionsSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(sortButton('LN'))
+  
     expect(updateTradeableListPositionsSort).toHaveBeenCalledWith({ lastName: 'desc' })
   })
 
   it('triggers updateTradeableListPositionsFilter', () => {
     const updateTradeableListPositionsFilter = jest.fn()
-    const wrapper = render({ updateTradeableListPositionsFilter })
+    customRender({ updateTradeableListPositionsFilter })
 
-    wrapper.find('HeaderCell').at(2).find('button').simulate('click')
-
-    menuItem(wrapper).at(0).simulate('click')
-    menuItem(wrapper).at(3).simulate('click')
-    wrapper.find('li').find('button').at(1).simulate('click')
+    fireEvent.click(within(columnHeaders()[2]).getByLabelText('filter'))
+    fireEvent.click(checkboxes()[0])
+    fireEvent.click(checkboxes()[3])
+    fireEvent.click(screen.getByRole('button', { name: /apply/i }))
 
     expect(updateTradeableListPositionsFilter)
       .toHaveBeenCalledWith({ team_id: [LIST_POSITION_FACETS.teams[0].value, LIST_POSITION_FACETS.teams[3].value] })
   })
 
   it('does not show the trade column if isOwner = false', () => {
-    const wrapper = render({ isOwner: false })
+    customRender({ isOwner: false })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber)
+    expect(tableCells(1)).toHaveLength(cellNumber)
+    expect(screen.queryAllByRole('button', { name: /trade in/i })).toHaveLength(0)
   })
 
   it('renders nothing if there is no outListPosition', () => {
-    const wrapper = render({ outListPosition: undefined })
+    customRender({ outListPosition: undefined })
 
-    expect(wrapper.html()).toEqual('')
+    expect(screen.queryByTestId('TradeableListPositionsTable')).not.toBeInTheDocument()
   })
 
   it('includes the inFplTeamListId and excludedPlayerIds filters if an interTeamTradeGroup is present', () => {
     const fetchTradeableListPositions = jest.fn()
-    render({ fetchTradeableListPositions, interTeamTradeGroup: INTER_TEAM_TRADE_GROUP_1 })
+    customRender({ fetchTradeableListPositions, interTeamTradeGroup: INTER_TEAM_TRADE_GROUP_1 })
 
     expect(fetchTradeableListPositions).toHaveBeenCalledWith({
       ...initialFilterState,

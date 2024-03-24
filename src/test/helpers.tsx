@@ -51,12 +51,13 @@ export const MockedRouterStoreWithRoute = ({
 interface RouteWithOutletContextProps<T = any> {
   context: T;
   children: ReactNode;
+  path?: string
 }
 
-export const RouteWithOutletContext = <T,>({ context, children }: RouteWithOutletContextProps<T>) => (
+export const RouteWithOutletContext = <T,>({ context, children, path = "/" }: RouteWithOutletContextProps<T>) => (
   <Router>
     <Routes>
-      <Route path="/"element={<Outlet context={context as T} />}>
+      <Route path={path} element={<Outlet context={context as T} />}>
         <Route index element={children} />
       </Route>
     </Routes>

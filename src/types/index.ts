@@ -80,7 +80,7 @@ export type RoundSummary = {
   miniDraft: boolean,
   dataChecked: boolean,
   deadlineTime: string,
-  waiverDeadline?: string
+  waiverDeadline: string
 } & RoundBase
 
 export type Round = { fixtures: Fixture[] } & RoundSummary

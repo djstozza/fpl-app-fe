@@ -413,7 +413,6 @@ const TeamTradeTabs = () => {
           </TableBody>
         </Table>
       </div>
-
       <Dialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}

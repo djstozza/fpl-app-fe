@@ -18,7 +18,6 @@ const errors = [
   }
 ]
 
-
 jest.mock('@rails/actioncable', () => ({
   createConsumer: () => ({
     subscriptions: {

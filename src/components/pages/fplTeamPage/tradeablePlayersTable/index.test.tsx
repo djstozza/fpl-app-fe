@@ -1,17 +1,17 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import TradeablePlayersTable from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
 import { PLAYERS_URL, TEAMS_URL } from 'utilities/constants'
 import { PLAYER_SUMMARIES, PLAYER_FACETS, LIST_POSITION_2 } from 'test/fixtures'
-import { initialFilterState } from 'state/players/reducer'
+import { initialFilterState, initialState } from 'state/players/reducer'
 import { playersTableCells } from 'components/pages/playersPage'
 
-const players = { data: PLAYER_SUMMARIES, meta: { total: PLAYER_SUMMARIES.length }, facets: PLAYER_FACETS }
+const players = { ...initialState, data: PLAYER_SUMMARIES, meta: { total: PLAYER_SUMMARIES.length }, facets: PLAYER_FACETS }
 const cellNumber = Object.values(playersTableCells()).length
 
 describe('TradeablePlayersTable', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <TradeablePlayersTable
         players={players}
@@ -23,116 +23,128 @@ describe('TradeablePlayersTable', () => {
         updateTradeablePlayersPage={blank__}
         submitAction={blank__}
         isOwner
+        isWaiver={true}
+        submitting={false}
         {...props}
       />
     </MockedRouter>
   )
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const headerCell = wrapper =>  wrapper.find('HeaderCell')
-  const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
-  const pagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
-  const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
+  const sortTable = () => screen.getByTestId('SortTable')
+  
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const tradeIn = (i, j,)  => within(tableCell(i, j)).getByRole('button', { name: /trade in/i })
+  const waiverIn = (i, j,)  => within(tableCell(i, j)).getByRole('button', { name: /waiver in/i })
+  const tradeInQuery = () => screen.queryAllByRole('button', { name: /trade in/i })
+  const waiverInQuery = () => screen.queryAllByRole('button', { name: /waiver in/i })
+  const columnHeaders = () => screen.getAllByRole('columnheader')
+  const checkboxes = () => screen.queryAllByRole('checkbox')
+
+  const presentation = () => screen.queryAllByRole('presentation')
+  const dialog = () => presentation()[1]
+
+  const confirm = () => within(dialog()).getByRole('button', { name: /confirm/i })
+  const cancel = () => within(dialog()).getByRole('button', { name: /cancel/i })
+
+  const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
+  const tablePagination = () => screen.getByTestId('SortTablePagination')
 
   it('shows the player rows', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(wrapper.find('WithStyles(ForwardRef(TableRow))')).toHaveLength(PLAYER_SUMMARIES.length + 1)
-    expect(link(wrapper, 2, 0).props().to).toEqual(`${PLAYERS_URL}/${PLAYER_SUMMARIES[1].id}`)
-    expect(link(wrapper, 2, 0).text()).toEqual(PLAYER_SUMMARIES[1].lastName)
+    expect(tableRows()).toHaveLength(PLAYER_SUMMARIES.length + 1)
+    expect(tableCells(1)).toHaveLength(cellNumber + 1)
+    expect(link(2, 0)).toHaveAttribute('href', `${PLAYERS_URL}/${PLAYER_SUMMARIES[1].id}`)
+    expect(link(2, 0)).toHaveTextContent(PLAYER_SUMMARIES[1].lastName)
 
-    expect(link(wrapper, 1, 1).props().to).toEqual(`${PLAYERS_URL}/${PLAYER_SUMMARIES[0].id}`)
-    expect(link(wrapper, 1, 1).text()).toEqual(PLAYER_SUMMARIES[0].firstName)
+    expect(link(1, 1)).toHaveAttribute('href', `${PLAYERS_URL}/${PLAYER_SUMMARIES[0].id}`)
+    expect(link(1, 1)).toHaveTextContent(PLAYER_SUMMARIES[0].firstName)
 
-    expect(link(wrapper, 3, 2).props().to).toEqual(`${TEAMS_URL}/${PLAYER_SUMMARIES[2].team.id}/`)
-    expect(link(wrapper, 3, 2).text()).toEqual(PLAYER_SUMMARIES[2].team.shortName)
-    expect(link(wrapper, 3, 2).find('img').props().alt).toEqual(PLAYER_SUMMARIES[2].team.shortName)
-
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(link(3, 2)).toHaveAttribute('href', `${TEAMS_URL}/${PLAYER_SUMMARIES[2].team.id}/`)
+    expect(link(3, 2)).toHaveTextContent(PLAYER_SUMMARIES[2].team.shortName)
+    expect(within(link(3, 2)).getByRole('img')).toHaveAttribute('alt', PLAYER_SUMMARIES[2].team.shortName)
   })
 
   it('triggers the submit action - isWaiver false', () => {
     const submitAction = jest.fn()
-    const wrapper = render({ submitAction })
+    customRender({ submitAction, isWaiver: false })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation()).toHaveLength(0)
+    expect(waiverInQuery()).toHaveLength(0)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(tradeIn(1, cellNumber))
+    expect(dialog().style.opacity).toEqual('1')
 
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(true)
-
-    expect(dialog(wrapper).text()).toContain(
+    expect(dialog()).toHaveTextContent(
       `Confirm tradeOut: ${LIST_POSITION_2.player.firstName} ${LIST_POSITION_2.player.lastName}` +
       `In: ${PLAYER_SUMMARIES[0].firstName} ${PLAYER_SUMMARIES[0].lastName}` +
       `This trade cannot be reversed once confirmed`
     )
 
-    dialog(wrapper).find('button').at(1).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(confirm())
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(submitAction).toHaveBeenCalledWith(PLAYER_SUMMARIES[0].id)
   })
 
   it('triggers the submit action - isWaiver true', () => {
     const submitAction = jest.fn()
-    const wrapper = render({ submitAction, isWaiver: true })
+    customRender({ submitAction, isWaiver: true })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation()).toHaveLength(0)
+    expect(tradeInQuery()).toHaveLength(0)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(waiverIn(1, cellNumber))
+    expect(dialog().style.opacity).toEqual('1')
 
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(true)
-    expect(dialog(wrapper).text()).toContain(
+    expect(dialog()).toHaveTextContent(
       `Confirm waiver pickOut: ${LIST_POSITION_2.player.firstName} ${LIST_POSITION_2.player.lastName}` +
       `In: ${PLAYER_SUMMARIES[0].firstName} ${PLAYER_SUMMARIES[0].lastName}`
     )
 
-    dialog(wrapper).find('button').at(1).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(confirm())
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(submitAction).toHaveBeenCalledWith(PLAYER_SUMMARIES[0].id)
   })
 
-  it('closes the draft dialog when cancel is clicked', () => {
+  it('closes the dialog when cancel is clicked', () => {
     const submitAction = jest.fn()
-    const wrapper = render({ submitAction })
+    customRender({ submitAction })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation()).toHaveLength(0)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(waiverIn(1, cellNumber))
+    expect(dialog().style.opacity).toEqual('1')
 
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(true)
-    dialog(wrapper).find('button').at(0).simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(cancel())
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(submitAction).not.toHaveBeenCalled()
   })
 
-  it('closes the draft dialog when cancel is clicked', () => {
+  it('closes the dialog when clicking out of it', () => {
     const submitAction = jest.fn()
-    const wrapper = render({ submitAction })
+    customRender({ submitAction })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber + 1)
+    expect(presentation()).toHaveLength(0)
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(waiverIn(1, cellNumber))
+    expect(dialog().style.opacity).toEqual('1')
 
-    tableCell(wrapper, 1, cellNumber).find('button').simulate('click')
+    const backdrop = document.querySelector('.MuiBackdrop-root')
 
-    wrapper.find('WithStyles(ForwardRef(Backdrop))').simulate('click')
+    if (backdrop) {
+      fireEvent.click(backdrop)
+    } else {
+      throw new Error('.MuiBackdrop-root not found')
+    }
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(submitAction).not.toHaveBeenCalled()
   })
@@ -141,7 +153,7 @@ describe('TradeablePlayersTable', () => {
     const fetchTradeablePlayers = jest.fn()
     const fetchPlayerFacets = jest.fn()
 
-    render({ fetchTradeablePlayers, fetchPlayerFacets })
+    customRender({ fetchTradeablePlayers, fetchPlayerFacets })
 
     expect(fetchTradeablePlayers).toHaveBeenCalledWith(initialFilterState)
     expect(fetchPlayerFacets).toHaveBeenCalled()
@@ -149,21 +161,20 @@ describe('TradeablePlayersTable', () => {
 
   it('triggers updateTradeablePlayersSort', () => {
     const updateTradeablePlayersSort = jest.fn()
-    const wrapper = render({ updateTradeablePlayersSort })
+    customRender({ updateTradeablePlayersSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(sortButton('LN'))
     expect(updateTradeablePlayersSort).toHaveBeenCalledWith({ lastName: 'asc' })
   })
 
   it('triggers updateTradeablePlayersFilter', () => {
     const updateTradeablePlayersFilter = jest.fn()
-    const wrapper = render({ updateTradeablePlayersFilter })
+    customRender({ updateTradeablePlayersFilter })
 
-    wrapper.find('HeaderCell').at(2).find('button').simulate('click')
-
-    menuItem(wrapper).at(0).simulate('click')
-    menuItem(wrapper).at(3).simulate('click')
-    wrapper.find('li').find('button').at(1).simulate('click')
+    fireEvent.click(within(columnHeaders()[2]).getByLabelText('filter'))
+    fireEvent.click(checkboxes()[0])
+    fireEvent.click(checkboxes()[3])
+    fireEvent.click(screen.getByRole('button', { name: /apply/i }))
 
     expect(updateTradeablePlayersFilter)
       .toHaveBeenCalledWith({ teamId: [PLAYER_FACETS.teams[0].value, PLAYER_FACETS.teams[3].value] })
@@ -174,19 +185,27 @@ describe('TradeablePlayersTable', () => {
     const { page: { offset, limit } } = initialFilterState
     const playersArr = Array(limit + 1).fill(PLAYER_SUMMARIES[0])
 
-    const wrapper = render({
+    customRender({
       players: { data: playersArr, meta: { total: playersArr.length } },
       updateTradeablePlayersPage
     })
 
-    expect(pagination(wrapper).text()).toEqual(`1-${limit} of ${playersArr.length}`)
-    pagination(wrapper).find('button').at(1).simulate('click')
+    expect(tablePagination()).toHaveTextContent(`1–${limit} of ${playersArr.length}`)
+    fireEvent.click(screen.getByTitle('Go to next page'))
     expect(updateTradeablePlayersPage).toHaveBeenCalledWith(offset + limit)
   })
 
   it('does not show the trade column if isOwner = false', () => {
-    const wrapper = render({ isOwner: false })
+    customRender({ isOwner: false })
 
-    expect(headerCell(wrapper).length).toEqual(cellNumber)
+    expect(tableCells(1)).toHaveLength(cellNumber)
+    expect(tradeInQuery()).toHaveLength(0)
+    expect(waiverInQuery()).toHaveLength(0)
+  })
+
+  it('does not render if there is no outListPosition', () => {
+    customRender({ outListPosition: undefined })
+
+    expect(screen.queryByTestId('TradeablePlayersTable')).not.toBeInTheDocument()
   })
 })
