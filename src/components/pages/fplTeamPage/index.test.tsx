@@ -32,7 +32,7 @@ afterEach(() => {
 
 const tabsArr = Object.values(TABS)
 
-describe('DraftPage', () => {
+describe('FplTeamPage', () => {
   const connectedRender = (props = {}, state = {}) => render(
     <MockedRouterStoreWithRoute
        defaultState={{

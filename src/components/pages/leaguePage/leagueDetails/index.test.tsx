@@ -1,30 +1,48 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { within, render, screen } from '@testing-library/react'
 
 import LeagueDetails from '.'
 import { LIVE_LEAGUE } from 'test/fixtures'
-import { MockedRouter } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
 
 describe('LeagueDetails', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <LeagueDetails
-        league={LIVE_LEAGUE}
-        {...props}
-      />
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      league: LIVE_LEAGUE,
+      setTab: blank__,
+      setAction: blank__,
+      ...context
+    }
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <LeagueDetails />
+      </RouteWithOutletContext>
+    )
+  }
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
+
+  
+  const tableRows = () => screen.getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+
 
   it('renders the league details page', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(tableCell(wrapper, 0, 0).text()).toEqual('Status')
-    expect(tableCell(wrapper, 0, 1).text()).toEqual(LIVE_LEAGUE.status)
+    expect(tableCell(0, 0)).toHaveTextContent('Status')
+    expect(tableCell(0, 1)).toHaveTextContent(LIVE_LEAGUE.status)
 
-    expect(tableCell(wrapper, 1, 0).text()).toEqual('Owner')
-    expect(tableCell(wrapper, 1, 1).text()).toEqual(LIVE_LEAGUE.owner.username)
+    expect(tableCell(1, 0)).toHaveTextContent('Owner')
+    expect(tableCell(1, 1)).toHaveTextContent(LIVE_LEAGUE.owner.username)
+  })
+
+  it('triggers setTab and setAction on load', () => {
+    const setTab = jest.fn()
+    const setAction = jest.fn()
+    customRender({ setTab, setAction })
+
+    expect(setTab).toHaveBeenCalledWith('details')
+    expect(setAction).toHaveBeenCalledWith()
   })
 })

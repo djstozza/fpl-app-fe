@@ -1535,6 +1535,7 @@ export const INITIALIZED_LEAGUE = {
   canCreateDraft: false,
   canGoToDraft: false,
   canGoToMiniDraft: false,
+  showDraftPickColumn: false,
   showLiveColumns: false,
   isOwner: true,
   owner: USER_1,

@@ -88,7 +88,7 @@ const LeagueForm = (props: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const params: Params = { name, code, fplTeamName }
+    const params: Params = { name: newName, code: newCode, fplTeamName }
     if (hideFplTeamName) delete params.fplTeamName
     submitFn({ league: params })
   }

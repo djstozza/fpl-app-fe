@@ -1,4 +1,4 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import ActionsFooter from '.'
 
@@ -6,44 +6,44 @@ import { MockedRouter, blank__ } from 'test/helpers'
 import { LIVE_LEAGUE, INITIALIZED_LEAGUE } from 'test/fixtures'
 
 describe('ActionsFooter', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <ActionsFooter
         league={{ ...LIVE_LEAGUE, canGoToDraft: true }}
         generateDraftPicks={blank__}
         createDraft={blank__}
         detailsPage
+        submitting={false}
         {...props}
       />
     </MockedRouter>
   )
 
-  const buttonLink = wrapper => wrapper.find('WithStyles(ForwardRef(ButtonBase))')
-  const button = (wrapper, i) => buttonLink(wrapper).at(i).find('button')
-
+  const button = text => screen.getByText(text, { selector: 'button' })
+  
   it('renders all button links', () => {
     const generateDraftPicks = jest.fn()
     const createDraft = jest.fn()
-    const wrapper = render({ generateDraftPicks, createDraft })
+    const { container } = customRender({ generateDraftPicks, createDraft })
+    
+    expect(container.querySelectorAll('.MuiButtonBase-root')).toHaveLength(5)
 
-    expect(buttonLink(wrapper)).toHaveLength(5)
-    button(wrapper, 1).simulate('click')
-
+    fireEvent.click(button('Generate draft picks'))
     expect(generateDraftPicks).toHaveBeenCalledWith(LIVE_LEAGUE.id)
 
-    button(wrapper, 2).simulate('click')
+    fireEvent.click(button('Create draft'))
     expect(createDraft).toHaveBeenCalledWith(LIVE_LEAGUE.id)
   })
 
   it('disables buttons when submitting = true', () => {
-    const wrapper = render({ submitting: true })
+    customRender({ submitting: true })
 
-    expect(button(wrapper, 1).props().disabled).toEqual(true)
-    expect(button(wrapper, 2).props().disabled).toEqual(true)
+    expect(button('Generate draft picks')).toHaveAttribute('disabled')
+    expect(button('Create draft')).toHaveAttribute('disabled')
   })
 
   it('renders no buttons if not the owner and league is only initialized', () => {
-    const wrapper = render({
+    const { container } = customRender({
       league: { ...INITIALIZED_LEAGUE, isOwner: false },
       generateDraftPicks: false,
       createDraft: false,
@@ -51,6 +51,6 @@ describe('ActionsFooter', () => {
       detailsPage: false
     })
 
-    expect(buttonLink(wrapper)).toHaveLength(0)
+    expect(container.querySelectorAll('.MuiButtonBase-root')).toHaveLength(0)
   })
 })

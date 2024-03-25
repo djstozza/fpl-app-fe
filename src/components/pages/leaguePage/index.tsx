@@ -45,7 +45,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const TABS = {
+export const TABS = {
   details: { label: 'Details', value: 'details', display: true },
   fplTeams: { label: 'Fpl Teams', value: 'fplTeams', display: true }
 }
