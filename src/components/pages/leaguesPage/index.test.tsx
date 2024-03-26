@@ -1,4 +1,4 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, within, render, screen } from '@testing-library/react'
 
 import ConnectedLeaguesPage, { LeaguesPage } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
@@ -12,76 +12,75 @@ import { LEAGUES } from 'test/fixtures'
 import { initialFilterState } from 'state/leagues/reducer'
 
 describe('LeaguesPage', () => {
-  const connectedRender = (props = {}, state = {}) => createMount()(
+  const connectedRender = (state = {}) => render(
     <MockedRouterStore
       defaultState={{
         leagues: { data: LEAGUES },
         ...state
       }}
     >
-      <ConnectedLeaguesPage
-        fetchLeagues={blank__}
-        updateSort={blank__}
-        {...props}
-      />
+      <ConnectedLeaguesPage />
     </MockedRouterStore>
   )
 
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <LeaguesPage
         leagues={LEAGUES}
         fetchLeagues={blank__}
         updateSort={blank__}
+        fetching={false}
         {...props}
       />
     </MockedRouter>
   )
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const buttonLink = wrapper => wrapper.find('ButtonLink')
+  // const tableCell = (wrapper, i, j) => (
+  //   wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
+  // )
+  // const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
+  // const buttonLink = wrapper => wrapper.find('ButtonLink')
+
+
+  const sortTable = () => screen.getByTestId('SortTable')
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
 
   it('renders button links', () => {
-    const wrapper = render({ leagues: undefined })
+    customRender({ leagues: undefined })
 
-    expect(buttonLink(wrapper).at(0).props().to).toEqual(`${PROFILE_URL}${NEW_LEAGUE_URL}`)
-    expect(buttonLink(wrapper).at(0).text()).toEqual('New League')
-    expect(buttonLink(wrapper).at(1).props().to).toEqual(`${PROFILE_URL}${JOIN_LEAGUE_URL}`)
-    expect(buttonLink(wrapper).at(1).text()).toEqual('Join a League')
+    expect(screen.getByText('New League')).toHaveAttribute('href', `${PROFILE_URL}${NEW_LEAGUE_URL}`)
+    expect(screen.getByText('Join a League')).toHaveAttribute('href', `${PROFILE_URL}${JOIN_LEAGUE_URL}`)
   })
 
   it('renders the league table', () => {
-    const wrapper = connectedRender()
+    connectedRender()
 
-    expect(wrapper.find('WithStyles(ForwardRef(TableRow))')).toHaveLength(LEAGUES.length + 1)
+    expect(tableRows()).toHaveLength(LEAGUES.length + 1)
 
-    expect(tableCell(wrapper, 1, 2).text()).toEqual(LEAGUES[0].owner.username)
+    expect(tableCell(1, 2)).toHaveTextContent(LEAGUES[0].owner.username)
 
-    expect(link(wrapper, 2, 0).props().to).toEqual(`${LEAGUES_URL}/${LEAGUES[1].id}`)
-    expect(link(wrapper, 2, 0).text()).toEqual(LEAGUES[1].name)
-
-    expect(buttonLink(wrapper).at(0).props().to).toEqual(`${PROFILE_URL}${NEW_LEAGUE_URL}`)
-    expect(buttonLink(wrapper).at(0).text()).toEqual('New League')
-    expect(buttonLink(wrapper).at(1).props().to).toEqual(`${PROFILE_URL}${JOIN_LEAGUE_URL}`)
-    expect(buttonLink(wrapper).at(1).text()).toEqual('Join a League')
+    expect(link(2, 0)).toHaveAttribute('href', `${LEAGUES_URL}/${LEAGUES[1].id}`)
+    expect(link(2, 0)).toHaveTextContent(LEAGUES[1].name)
   })
 
 
   it('triggers the fetchLeagues function on load', () => {
     const fetchLeagues = jest.fn()
-    render({ fetchLeagues })
+    customRender({ fetchLeagues })
 
     expect(fetchLeagues).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers updateSort', () => {
     const updateSort = jest.fn()
-    const wrapper = render({ updateSort })
+    customRender({ updateSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(sortButton('N'))
+
     expect(updateSort).toHaveBeenCalledWith({ name: 'desc' })
   })
 })

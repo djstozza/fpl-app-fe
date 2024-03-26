@@ -1,7 +1,7 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import ConnectedCreateLeague, { CreateLeague } from '.'
-import { MockedRouterStore, blank__ } from 'test/helpers'
+import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 
 import {
   PROFILE_URL,
@@ -26,80 +26,85 @@ const errors = [
 ]
 
 describe('CreateLeague', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouterStore>
+  const customRender = (props = {}) => render(
+    <MockedRouter>
       <CreateLeague
         initializeForm={blank__}
         createLeague={blank__}
+        errors={[]}
         {...props}
       />
-    </MockedRouterStore>
+    </MockedRouter>
   )
 
-  const connectedRender = (state = {}) => createMount()(
+  const ConnectedRenderBase = (state = {}) => (
     <MockedRouterStore defaultState={{ leagues: { errors: undefined }, ...state }}>
-      <ConnectedCreateLeague initializeForm={blank__} />
+      <ConnectedCreateLeague />
     </MockedRouterStore>
   )
 
-  const nameInput = wrapper => wrapper.find({ name: 'name' }).find('input')
-  const codeButton = wrapper => wrapper.find({ name: 'generateCode' }).find('button')
-  const codeInput = wrapper => wrapper.find({ name: 'code' }).find('input')
-  const fplTeamNameInput = wrapper => wrapper.find({ name: 'fplTeamName' }).find('input')
-  const submitButton = wrapper => wrapper.find({ type: 'submit' }).find('button')
-  const nameHelperText = wrapper => wrapper.find({ name: 'name' }).find('WithStyles(ForwardRef(FormHelperText))')
-  const fplTeamNameHelperText = wrapper => (
-    wrapper.find({ name: 'fplTeamName' }).find('WithStyles(ForwardRef(FormHelperText))')
-  )
+  const connectedRender = (state = {}) => render(ConnectedRenderBase(state))
+
+  const header = () => screen.getByRole('heading')
+  const nameInput = () => screen.getByRole('textbox', { name: 'Name' })
+  const codeButton = () => screen.getByRole('button', { name: /generate code/i })
+  const codeInput = () => screen.getByRole<HTMLInputElement>('textbox', { name: /code/i })
+  const fplTeamNameInput = () => screen.getByRole('textbox', { name: /fpl team name/i })
+  const submitButton = () => screen.getByRole('button', { name: /submit/i })
+  const cancel = () => screen.getByText('Cancel')
 
   it('renders the title', () => {
-    const wrapper = render()
-    expect(wrapper.find('WithStyles(ForwardRef(Typography))').at(0).text()).toEqual('Create a League')
+    customRender()
+    expect(header()).toHaveTextContent('Create a League')
   })
 
   it('triggers initialForm on load', () => {
     const initializeForm = jest.fn()
 
-    render({ initializeForm })
+    customRender({ initializeForm })
 
     expect(initializeForm).toHaveBeenCalled()
   })
 
   it('triggers createLeague with the name, username and code', () => {
     const createLeague = jest.fn()
-    const wrapper = render({ createLeague })
+    customRender({ createLeague })
 
-    nameInput(wrapper).simulate('change', { target: { value: name } })
+    fireEvent.change(nameInput(), { target: { value: name } })
 
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    expect(submitButton()).toHaveAttribute('disabled')
 
-    codeButton(wrapper).simulate('click')
+    fireEvent.click(codeButton())
+  
+    const code = codeInput().value
+    expect(code).toHaveLength(8)
 
-    const code = codeInput(wrapper).props().value
-    expect(code.length).toEqual(8)
+    expect(submitButton()).toHaveAttribute('disabled')
 
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    fireEvent.change(fplTeamNameInput(), { target: { value: fplTeamName } })
 
-    fplTeamNameInput(wrapper).simulate('change', { target: { value: fplTeamName } })
-
-    submitButton(wrapper).simulate('submit')
+    fireEvent.click(submitButton())
 
     expect(createLeague).toHaveBeenCalledWith({ league: { name, code, fplTeamName } })
   })
 
   it('shows errors', () => {
-    const wrapper = connectedRender({ leagues: { errors } })
+    const { rerender, container } = connectedRender()
 
-    expect(nameInput(wrapper).props()['aria-invalid']).toEqual(true)
-    expect(nameHelperText(wrapper).text()).toEqual(errors[0].detail)
+    rerender(ConnectedRenderBase({ leagues: { errors } }))
 
-    expect(fplTeamNameInput(wrapper).props()['aria-invalid']).toEqual(true)
-    expect(fplTeamNameHelperText(wrapper).text()).toEqual(errors[1].detail)
+    const helperText = container.querySelectorAll('.MuiFormHelperText-root')
+
+    expect(nameInput()).toHaveAttribute('aria-invalid', 'true')
+    expect(helperText[0]).toHaveTextContent(errors[0].detail)
+
+    expect(fplTeamNameInput()).toHaveAttribute('aria-invalid', 'true')
+    expect(helperText[1]).toHaveTextContent(errors[1].detail)
   })
 
   it('renders the cancel button', () => {
-    const wrapper = render()
-    expect(wrapper.find('ButtonLink').at(0).props().to).toEqual(`${PROFILE_URL}${LEAGUES_URL}`)
-    expect(wrapper.find('ButtonLink').at(0).text()).toEqual('Cancel')
+    customRender()
+
+    expect(cancel()).toHaveAttribute('href', `${PROFILE_URL}${LEAGUES_URL}`)
   })
 })

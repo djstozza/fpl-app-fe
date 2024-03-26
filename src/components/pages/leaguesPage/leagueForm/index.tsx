@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import {
   Paper,
@@ -76,9 +76,14 @@ const LeagueForm = (props: Props) => {
 
   const { classes } = useStyles()
 
+  const firstUpdate = useRef(true)
+
   useEffect(
     () => {
-      initializeForm()
+      if (firstUpdate.current) {
+        initializeForm()
+        firstUpdate.current = false
+      }
     }, [initializeForm]
   )
 
@@ -96,8 +101,8 @@ const LeagueForm = (props: Props) => {
   const baseErrors = errors.filter(({ source }) => source === 'base')
 
   const disableSubmit = (
-    !name ||
-    !code ||
+    !newName ||
+    !newCode ||
     (!hideFplTeamName && !fplTeamName) ||
     (newName === name && newCode === code)
   )
@@ -113,7 +118,10 @@ const LeagueForm = (props: Props) => {
         </Typography>
         {
           Boolean(baseErrors.length) &&
-          <div className={classes.baseErrorsContainer}>
+          <div
+            data-testid='league-form-base-errors' 
+            className={classes.baseErrorsContainer}
+          >
             {
               baseErrors.map(({ detail }, i) => (
                 <Typography key={i} color='error'>{detail}</Typography>
