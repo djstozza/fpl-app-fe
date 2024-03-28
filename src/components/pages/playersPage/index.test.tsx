@@ -1,66 +1,66 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, within, render, screen } from '@testing-library/react'
 
 import ConnectedPlayersPage, { PlayersPage } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 import { TITLE, PLAYERS_URL, TEAMS_URL } from 'utilities/constants'
 import { PLAYER_SUMMARIES, PLAYER_FACETS } from 'test/fixtures'
-import { initialFilterState } from 'state/players/reducer'
+import { initialFilterState, initialState } from 'state/players/reducer'
 
 const players = { data: PLAYER_SUMMARIES, meta: { total: PLAYER_SUMMARIES.length }, facets: PLAYER_FACETS }
 
 describe('PlayersPage', () => {
-  const connectedRender = (props = {}, state = {}) => createMount()(
+  const connectedRender = (state = {}) => render(
     <MockedRouterStore
       defaultState={{
         players,
         ...state
       }}
     >
-      <ConnectedPlayersPage
-        fetchPlayers={blank__}
-        fetchFacets={blank__}
-        updateSort={blank__}
-        handleFilterChange={blank__}
-        handleChangePage={blank__}
-        {...props}
-      />
+      <ConnectedPlayersPage />
     </MockedRouterStore>
   )
 
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <PlayersPage
-        players={players}
+        players={{...initialState, ...players }}
         fetchPlayers={blank__}
         fetchFacets={blank__}
+        updateFilter={blank__}
         updateSort={blank__}
-        handleFilterChange={blank__}
-        handleChangePage={blank__}
+        updatePage={blank__}
         {...props}
       />
     </MockedRouter>
   )
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
-  const pagination = wrapper => wrapper.find('WithStyles(ForwardRef(TablePagination))')
+  const sortTable = () => screen.getByTestId('SortTable')
+  
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const columnHeaders = () => screen.getAllByRole('columnheader')
+  const checkboxes = () => screen.queryAllByRole('checkbox')
+
+  const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
+  
+  const tablePagination = () => screen.getByTestId('SortTablePagination')
 
   it('renders the players table and sets the document title', () => {
-    const wrapper = connectedRender()
+    connectedRender()
 
-    expect(wrapper.find('WithStyles(ForwardRef(TableRow))')).toHaveLength(PLAYER_SUMMARIES.length + 1)
-    expect(link(wrapper, 2, 0).props().to).toEqual(`${PLAYERS_URL}/${PLAYER_SUMMARIES[1].id}`)
-    expect(link(wrapper, 2, 0).text()).toEqual(PLAYER_SUMMARIES[1].lastName)
+    expect(tableRows()).toHaveLength(PLAYER_SUMMARIES.length + 1)
+    expect(link(2, 0)).toHaveAttribute('href', `${PLAYERS_URL}/${PLAYER_SUMMARIES[1].id}`)
+    expect(link(2, 0)).toHaveTextContent(PLAYER_SUMMARIES[1].lastName)
 
-    expect(link(wrapper, 1, 1).props().to).toEqual(`${PLAYERS_URL}/${PLAYER_SUMMARIES[0].id}`)
-    expect(link(wrapper, 1, 1).text()).toEqual(PLAYER_SUMMARIES[0].firstName)
+    expect(link(1, 1)).toHaveAttribute('href', `${PLAYERS_URL}/${PLAYER_SUMMARIES[0].id}`)
+    expect(link(1, 1)).toHaveTextContent(PLAYER_SUMMARIES[0].firstName)
 
-    expect(link(wrapper, 3, 2).props().to).toEqual(`${TEAMS_URL}/${PLAYER_SUMMARIES[2].team.id}/`)
-    expect(link(wrapper, 3, 2).text()).toEqual(PLAYER_SUMMARIES[2].team.shortName)
-    expect(link(wrapper, 3, 2).find('img').props().alt).toEqual(PLAYER_SUMMARIES[2].team.shortName)
+    expect(link(3, 2)).toHaveAttribute('href', `${TEAMS_URL}/${PLAYER_SUMMARIES[2].team.id}/`)
+    expect(link(3, 2)).toHaveTextContent(PLAYER_SUMMARIES[2].team.shortName)
+    expect(within(link(3, 2)).getByRole('img')).toHaveAttribute('alt', PLAYER_SUMMARIES[2].team.shortName)
 
     expect(document.title).toEqual(`${TITLE} - Players`)
   })
@@ -68,7 +68,7 @@ describe('PlayersPage', () => {
   it('triggers the fetchPlayers and fetchFacets function on load', () => {
     const fetchPlayers = jest.fn()
     const fetchFacets = jest.fn()
-    render({ fetchPlayers, fetchFacets })
+    customRender({ fetchPlayers, fetchFacets })
 
     expect(fetchPlayers).toHaveBeenCalledWith(initialFilterState)
     expect(fetchFacets).toHaveBeenCalled()
@@ -76,21 +76,20 @@ describe('PlayersPage', () => {
 
   it('triggers updateSort', () => {
     const updateSort = jest.fn()
-    const wrapper = render({ updateSort })
+    customRender({ updateSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(sortButton('LN'))
     expect(updateSort).toHaveBeenCalledWith({ lastName: 'asc' })
   })
 
   it('triggers updateFilter', () => {
     const updateFilter = jest.fn()
-    const wrapper = render({ updateFilter})
+    customRender({ updateFilter })
 
-    wrapper.find('HeaderCell').at(2).find('button').simulate('click')
-
-    menuItem(wrapper).at(0).simulate('click')
-    menuItem(wrapper).at(3).simulate('click')
-    wrapper.find('li').find('button').at(1).simulate('click')
+    fireEvent.click(within(columnHeaders()[2]).getByLabelText('filter'))
+    fireEvent.click(checkboxes()[0])
+    fireEvent.click(checkboxes()[3])
+    fireEvent.click(screen.getByRole('button', { name: /apply/i }))
 
     expect(updateFilter).toHaveBeenCalledWith({ teamId: [PLAYER_FACETS.teams[0].value, PLAYER_FACETS.teams[3].value] })
   })
@@ -100,10 +99,13 @@ describe('PlayersPage', () => {
     const { page: { offset, limit } } = initialFilterState
     const playersArr = Array(limit + 1).fill(PLAYER_SUMMARIES[0])
 
-    const wrapper = render({ players: { data: playersArr, meta: { total: playersArr.length } }, updatePage })
+    customRender({
+      players: { data: playersArr, meta: { total: playersArr.length } },
+      updatePage
+    })
 
-    expect(pagination(wrapper).text()).toEqual(`1-${limit} of ${playersArr.length}`)
-    pagination(wrapper).find('button').at(1).simulate('click')
+    expect(tablePagination()).toHaveTextContent(`1–${limit} of ${playersArr.length}`)
+    fireEvent.click(screen.getByTitle('Go to next page'))
     expect(updatePage).toHaveBeenCalledWith(offset + limit)
   })
 })

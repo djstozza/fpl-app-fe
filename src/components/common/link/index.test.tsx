@@ -17,8 +17,6 @@ describe('Link', () => {
     </MockedRouter>
   )
 
-  // const link = wrapper => wrapper.find('Link').at(1)
-
   const link = () => screen.getByRole('link')
 
   it('renders a link wih the team crest', () => {
