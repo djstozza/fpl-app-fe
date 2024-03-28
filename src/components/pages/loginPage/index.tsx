@@ -72,7 +72,12 @@ const useStyles = makeStyles<StyleProps>()((theme: Theme, { height }) => ({
 }));
 
 export const LoginPage = (props: Props) => {
-  const { logIn, errors = [], submitting, initializeAuth } = props
+  const { 
+    logIn,
+    errors,
+    submitting,
+    initializeAuth
+  } = props
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -91,9 +96,16 @@ export const LoginPage = (props: Props) => {
     }
   }, [height])
 
-  useEffect(() => {
-    initializeAuth()
-  }, [initializeAuth])
+  const firstUpdate = useRef(true)
+
+  useEffect(
+    () => {
+      if (firstUpdate.current) {
+        initializeAuth()
+        firstUpdate.current = false
+      }
+    }, [initializeAuth]
+  )
 
   const { classes } = useStyles({ height })
 
@@ -120,10 +132,11 @@ export const LoginPage = (props: Props) => {
             type='email'
             onChange={({ target: { value }}) => setEmail(value)}
             value={email}
-            error={Boolean(errors.find(({ source }) => source.includes('email')))}
-            helperText={errors.find(({ source }) => source === 'email')?.detail}
+            error={Boolean(errors?.find(({ source }) => source.includes('email')))}
+            helperText={errors?.find(({ source }) => source === 'email')?.detail}
           />
           <TextField
+            data-testid='password'
             required
             className={classes.textField}
             fullWidth
@@ -136,8 +149,8 @@ export const LoginPage = (props: Props) => {
             InputProps={{
               autoComplete: 'off'
             }}
-            error={Boolean(errors.find(({ source }) => source.includes('password')))}
-            helperText={errors.find(({ source }) => source.includes('password'))?.detail}
+            error={Boolean(errors?.find(({ source }) => source.includes('password')))}
+            helperText={errors?.find(({ source }) => source.includes('password'))?.detail}
           />
           <div className={classes.actions}>
             <div>

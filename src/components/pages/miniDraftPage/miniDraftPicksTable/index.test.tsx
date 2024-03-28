@@ -1,81 +1,105 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import MiniDraftPicksTable from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
-import { MINI_DRAFT_PICKS, MINI_DRAFT_PICK_FACETS } from 'test/fixtures'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
+import { 
+  MINI_DRAFT_PICKS,
+  MINI_DRAFT_PICK_1,
+  MINI_DRAFT_PICK_FACETS } from 'test/fixtures'
 import { initialFilterState } from 'state/miniDraftPicks/reducer'
 import { PLAYERS_URL } from 'utilities/constants'
 
 const season = 'summer'
 
 describe('MiniDraftPicksTable', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <MiniDraftPicksTable
-        miniDraftPicks={{
-          data: MINI_DRAFT_PICKS,
-          facets: MINI_DRAFT_PICK_FACETS,
-          meta: { total: MINI_DRAFT_PICKS.length },
-          season
-        }}
-        fetchMiniDraftPicks={blank__}
-        updateMiniDraftPicksSort={blank__}
-        updateMiniDraftPicksFilter={blank__}
-        fetchMiniDraftPickFacets={blank__}
-        {...props}
-      />
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      miniDraftPicks: {
+        data: MINI_DRAFT_PICKS,
+        facets: MINI_DRAFT_PICK_FACETS,
+        meta: { total: MINI_DRAFT_PICKS.length },
+        season
+      },
+      fetchMiniDraftPicks: blank__,
+      updateMiniDraftPicksSort: blank__,
+      updateMiniDraftPicksFilter: blank__,
+      fetchMiniDraftPickFacets: blank__,
+      setTab: blank__,
+      setAction: blank__,
+      ...context
+    }
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
-  const menuItem = wrapper => wrapper.find('WithStyles(ForwardRef(MenuItem))')
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <MiniDraftPicksTable />
+      </RouteWithOutletContext>
+    )
+  }
+  
+  const sortTable = () => screen.getByTestId('SortTable')
+  
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const columnHeaders = () => screen.getAllByRole('columnheader')
+  const checkboxes = () => screen.queryAllByRole('checkbox')
+
+  const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
 
   it('renders the fpl teams table', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(link(wrapper, 1, 1).props().to).toEqual(`${PLAYERS_URL}/${MINI_DRAFT_PICKS[0].outPlayer.id}`)
-    expect(link(wrapper, 1, 1).text())
-      .toEqual(`${MINI_DRAFT_PICKS[0].outPlayer.firstName} ${MINI_DRAFT_PICKS[0].outPlayer.lastName}`)
-    expect(link(wrapper, 1, 3).text())
-      .toEqual(`${MINI_DRAFT_PICKS[0].inPlayer.firstName} ${MINI_DRAFT_PICKS[0].inPlayer.lastName}`)
-    expect(tableCell(wrapper, 1, 6).text()).toEqual('No')
+    expect(screen.getByTestId('MiniDraftPicksTable')).toBeInTheDocument()
 
-    expect(tableCell(wrapper, 3, 1).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 2).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 3).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 4).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 5).text()).toEqual('-')
-    expect(tableCell(wrapper, 3, 6).text()).toEqual('Yes')
+    expect(link(1, 1)).toHaveAttribute('href', `${PLAYERS_URL}/${MINI_DRAFT_PICK_1.outPlayer.id}`)
+    expect(link(1, 1))
+      .toHaveTextContent(`${MINI_DRAFT_PICK_1.outPlayer.firstName} ${MINI_DRAFT_PICK_1.outPlayer.lastName}`)
+    expect(link(1, 3))
+      .toHaveTextContent(`${MINI_DRAFT_PICK_1.inPlayer.firstName} ${MINI_DRAFT_PICK_1.inPlayer.lastName}`)
+    expect(tableCell(1, 6)).toHaveTextContent('No')
+
+    expect(tableCell(3, 1)).toHaveTextContent('-')
+    expect(tableCell(3, 2)).toHaveTextContent('-')
+    expect(tableCell(3, 3)).toHaveTextContent('-')
+    expect(tableCell(3, 4)).toHaveTextContent('-')
+    expect(tableCell(3, 5)).toHaveTextContent('-')
+    expect(tableCell(3, 6)).toHaveTextContent('Yes')
   })
 
-  it('triggers fetchMiniDraftPicks on render', () => {
+  it('triggers fetchMiniDraftPicks, setTab on render', () => {
     const fetchMiniDraftPicks = jest.fn()
-    render({ fetchMiniDraftPicks })
+    const setTab = jest.fn()
+
+    customRender({ 
+      fetchMiniDraftPicks,
+      setTab
+    })
 
     expect(fetchMiniDraftPicks).toHaveBeenCalledWith(initialFilterState)
+    expect(setTab).toHaveBeenCalledWith('miniDraftPicks')
   })
 
   it('triggers fetchMiniDraftPickFacets on render', () => {
     const fetchMiniDraftPickFacets = jest.fn()
-    render({ fetchMiniDraftPickFacets })
+    customRender({ fetchMiniDraftPickFacets })
 
     expect(fetchMiniDraftPickFacets).toHaveBeenCalledWith()
   })
 
   it('triggers updateMiniDraftPicksSort', () => {
     const updateMiniDraftPicksSort = jest.fn()
-    const wrapper = render({ updateMiniDraftPicksSort })
+    customRender({ updateMiniDraftPicksSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(sortButton('PN'))
     expect(updateMiniDraftPicksSort).toHaveBeenCalledWith({ pickNumber: 'desc' })
   })
 
   it('renders nothing if there is no season and does not trigger fetchMiniDraftPickFacets', () => {
     const fetchMiniDraftPickFacets = jest.fn()
-    const wrapper = render({
+    
+    customRender({
       fetchMiniDraftPickFacets,
       miniDraftPicks: {
         data: MINI_DRAFT_PICKS,
@@ -83,21 +107,20 @@ describe('MiniDraftPicksTable', () => {
       }
     })
 
-    expect(wrapper.html()).toEqual('')
+    expect(screen.queryByTestId('MiniDraftPicksTable')).not.toBeInTheDocument()
 
     expect(fetchMiniDraftPickFacets).not.toHaveBeenCalled()
   })
 
   it('triggers updateMiniDraftPicksFilter', () => {
     const updateMiniDraftPicksFilter = jest.fn()
-    const wrapper = render({ updateMiniDraftPicksFilter})
+    customRender({ updateMiniDraftPicksFilter})
 
-    wrapper.find('HeaderCell').at(7).find('button').simulate('click')
 
-    menuItem(wrapper).at(0).simulate('click')
-    menuItem(wrapper).at(1).simulate('click')
-
-    wrapper.find('li').find('button').at(1).simulate('click')
+    fireEvent.click(within(columnHeaders()[7]).getByLabelText('filter'))
+    fireEvent.click(checkboxes()[0])
+    fireEvent.click(checkboxes()[1])
+    fireEvent.click(screen.getByRole('button', { name: /apply/i }))
 
     expect(updateMiniDraftPicksFilter).toHaveBeenCalledWith({
       fplTeamId: [

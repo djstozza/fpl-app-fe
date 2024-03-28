@@ -43,6 +43,7 @@ describe('AvailablePlayersTable', () => {
   const dialog = () => presentation()[1]
   const checkboxes = () => screen.queryAllByRole('checkbox')
   const tablePagination = () => screen.getByTestId('SortTablePagination')
+  const backdrop = () => document.querySelector('.MuiBackdrop-root') as HTMLElement
 
   it('shows the player rows', () => {
     customRender({ draftPicks: { ...DRAFT_PICK_STATUS, userCanPick: false } })
@@ -109,13 +110,7 @@ describe('AvailablePlayersTable', () => {
 
     fireEvent.click(within(tableCell(1, cellNumber)).getByText('Draft'))
 
-    const backdrop = document.querySelector('.MuiBackdrop-root')
-
-    if (backdrop) {
-      fireEvent.click(backdrop)
-    } else {
-      throw new Error('.MuiBackdrop-root not found')
-    }
+    fireEvent.click(backdrop())
 
     expect(dialog().style.opacity).toEqual('0')
 

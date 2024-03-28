@@ -1,4 +1,4 @@
-import { within, render, screen, fireEvent, act } from '@testing-library/react'
+import { within, render, screen, fireEvent } from '@testing-library/react'
 
 import ListPositionsTable, { listPositionTableCells } from '.'
 import { MockedRouter, blank__ } from 'test/helpers'

@@ -59,7 +59,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const TABS = [
+export const TABS = [
   { label: 'Tradeable List Positions', value: 'miniDraft/tradeableListPositions', display: true },
   { label: 'Mini Draft Picks', value: 'miniDraft/miniDraftPicks', display: true }
 ]

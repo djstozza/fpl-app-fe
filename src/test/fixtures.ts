@@ -2057,23 +2057,27 @@ export const TRADES = [
   }
 ]
 
+export const MINI_DRAFT_PICK_1 = {
+  ...TRADES[0],
+  fplTeam: FPL_TEAM_1,
+  user: USER_1,
+  passed: false,
+  pickNumber: 1,
+  season: 'winter'
+}
+
+export const MINI_DRAFT_PICK_2 = {
+  ...TRADES[1],
+  fplTeam: FPL_TEAM_2,
+  user: USER_2,
+  passed: false,
+  pickNumber: 2,
+  season: 'winter'
+}
+
 export const MINI_DRAFT_PICKS = [
-  {
-    ...TRADES[0],
-    fplTeam: FPL_TEAM_1,
-    user: USER_1,
-    passed: false,
-    pickNumber: 1,
-    season: 'winter'
-  },
-  {
-    ...TRADES[1],
-    fplTeam: FPL_TEAM_2,
-    user: USER_2,
-    passed: false,
-    pickNumber: 2,
-    season: 'winter'
-  },
+  MINI_DRAFT_PICK_1,
+  MINI_DRAFT_PICK_2,
   {
     id: '3',
     fplTeam: FPL_TEAM_3,

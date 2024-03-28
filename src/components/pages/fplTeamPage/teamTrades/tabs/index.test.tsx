@@ -72,11 +72,13 @@ describe('TeamTradeTabs', () => {
   const expandRow = (i, j) => within(tableCell(i, j, 0)).getByRole('button')
   
   const link = (i, j, k) => within(tableCell(i, j, k)).getByRole('link')
-  
+
   const presentation = () => screen.queryAllByRole('presentation')
   const dialog = () => presentation()[1]
   const confirm = () => within(dialog()).getByRole('button', { name: /confirm/i })
   const cancelDialog = () => within(dialog()).getByRole('button', { name: /cancel/i })
+
+  const backdrop = () => document.querySelector('.MuiBackdrop-root') as HTMLElement
   
   it('renders the outTrades by default', () => {
     customRender()
@@ -214,13 +216,7 @@ describe('TeamTradeTabs', () => {
 
     fireEvent.click(submit(0, 2, 3))
 
-    const backdrop = document.querySelector('.MuiBackdrop-root')
-
-    if (backdrop) {
-      fireEvent.click(backdrop)
-    } else {
-      throw new Error('.MuiBackdrop-root not found')
-    }
+    fireEvent.click(backdrop())
 
     expect(dialog().style.opacity).toEqual('0')
 

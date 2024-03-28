@@ -214,14 +214,9 @@ describe('ErrorDialog', () => {
 
     customRender({ clearRequestErrors, onClose })
 
-    const backdrop = document.querySelector('.MuiBackdrop-root')
-
-    if (backdrop) {
-      fireEvent.click(backdrop)
-    } else {
-      throw new Error('.MuiBackdrop-root not found')
-    }
-
+    const backdrop = document.querySelector('.MuiBackdrop-root') as HTMLElement
+    fireEvent.click(backdrop)
+ 
     expect(clearRequestErrors).not.toHaveBeenCalled()
     expect(onClose).not.toHaveBeenCalled()
   })

@@ -49,6 +49,8 @@ describe('TradeableListPositionsTable', () => {
 
   const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
 
+  const backdrop = () => document.querySelector('.MuiBackdrop-root') as HTMLElement
+
   it('shows the player rows', () => {
     customRender()
 
@@ -73,8 +75,8 @@ describe('TradeableListPositionsTable', () => {
     expect(presentation()).toHaveLength(0)
 
     fireEvent.click(tradeIn(1, cellNumber))
-   
     expect(dialog().style.opacity).toEqual('1')
+    
     expect(dialog()).toHaveTextContent(
       `Confirm tradeOut: ${LIST_POSITION_2.player.firstName} ${LIST_POSITION_2.player.lastName}` +
       `In: ${LIST_POSITIONS[0].player.firstName} ${LIST_POSITIONS[0].player.lastName}`
@@ -87,7 +89,7 @@ describe('TradeableListPositionsTable', () => {
     expect(submitAction).toHaveBeenCalledWith(LIST_POSITIONS[0])
   })
 
-  it('closes the draft dialog when cancel is clicked', () => {
+  it('closes the dialog when cancel is clicked', () => {
     const submitAction = jest.fn()
     customRender({ submitAction })
 
@@ -103,7 +105,7 @@ describe('TradeableListPositionsTable', () => {
     expect(submitAction).not.toHaveBeenCalled()
   })
 
-  it('closes the draft dialog when cancel is clicked', () => {
+  it('closes the dialog when clicking out of it', () => {
     const submitAction = jest.fn()
     customRender({ submitAction })
 
@@ -112,13 +114,7 @@ describe('TradeableListPositionsTable', () => {
     fireEvent.click(tradeIn(1, cellNumber))
     expect(dialog().style.opacity).toEqual('1')
 
-    const backdrop = document.querySelector('.MuiBackdrop-root')
-
-    if (backdrop) {
-      fireEvent.click(backdrop)
-    } else {
-      throw new Error('.MuiBackdrop-root not found')
-    }
+    fireEvent.click(backdrop())
 
     expect(dialog().style.opacity).toEqual('0')
 

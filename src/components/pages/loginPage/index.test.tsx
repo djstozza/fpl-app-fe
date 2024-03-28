@@ -1,7 +1,8 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen } from '@testing-library/react'
+
 
 import ConnectedLoginPage, { LoginPage } from '.'
-import { MockedRouterStore, blank__ } from 'test/helpers'
+import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 
 const email = 'user@example.com'
 const password = 'password'
@@ -15,65 +16,69 @@ const errors = [
 ]
 
 describe('LoginPage', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouterStore>
+  const customRender = (props = {}) => render(
+    <MockedRouter>
       <LoginPage
         initializeAuth={blank__}
         logIn={blank__}
+        errors={[]}
+        submitting={false}
         {...props}
       />
-    </MockedRouterStore>
+    </MockedRouter>
   )
 
-  const connectedRender = (state = {}) => createMount()(
+  const ConnectedRenderBase = (state = {}) => (
     <MockedRouterStore defaultState={{ ...state }}>
-      <ConnectedLoginPage initializeAuth={blank__} />
+      <ConnectedLoginPage />
     </MockedRouterStore>
   )
 
-  const emailInput = wrapper => wrapper.find({ name: 'email' }).find('input')
-  const passwordInput = wrapper => wrapper.find({ name: 'password' }).find('input')
-  const submitButton = wrapper => wrapper.find('button')
-  const helperText = wrapper => wrapper.find('WithStyles(ForwardRef(FormHelperText))')
+  const connectedRender = (state = {}) => render(ConnectedRenderBase(state))
+
+  const emailInput = () => screen.getByRole('textbox', { name: /email/i })
+  const passwordInput = () => screen.getByTestId('password').querySelector('input') as HTMLElement
+  const logInButton = () => screen.getByRole('button', { name: /log in/i })
 
   it('triggers initialAuth on load', () => {
     const initializeAuth = jest.fn()
 
-    render({ initializeAuth })
+    customRender({ initializeAuth })
 
     expect(initializeAuth).toHaveBeenCalled()
   })
 
   it('triggers logIn with the email, username and password', () => {
     const logIn = jest.fn()
-    const wrapper = render({ logIn })
+    customRender({ logIn })
 
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    expect(logInButton()).toHaveAttribute('disabled')
 
-    emailInput(wrapper).simulate('change', { target: { value: email } })
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    fireEvent.change(emailInput(), { target: { value: email } })
+   
+    expect(logInButton()).toHaveAttribute('disabled')
+    fireEvent.change(passwordInput(), { target: { value: password } })
 
-    passwordInput(wrapper).simulate('change', { target: { value: password } })
-
-    expect(submitButton(wrapper).props().disabled).toEqual(false)
-
-    submitButton(wrapper).simulate('submit')
+    expect(logInButton()).not.toHaveAttribute('disabled')
+    fireEvent.click(logInButton())
 
     expect(logIn).toHaveBeenCalledWith({ user: { email, password } })
   })
 
   it('disables the submit button when submitting = true', () => {
-    const wrapper = connectedRender({ auth: { submitting: true } })
+    connectedRender({ auth: { submitting: true } })
 
-    emailInput(wrapper).simulate('change', { target: { value: email } })
-    passwordInput(wrapper).simulate('change', { target: { value: password } })
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    fireEvent.change(emailInput(), { target: { value: email } })
+    fireEvent.change(passwordInput(), { target: { value: password } })
+    
+    expect(logInButton()).toHaveAttribute('disabled')
   })
 
   it('shows errors', () => {
-    const wrapper = connectedRender({ auth: { errors } })
-    expect(helperText(wrapper).text()).toEqual('Email or password is invalid')
-    expect(emailInput(wrapper).props()['aria-invalid']).toEqual(true)
-    expect(passwordInput(wrapper).props()['aria-invalid']).toEqual(true)
+    const { rerender, container } = connectedRender()
+  
+    rerender(ConnectedRenderBase({ auth: { errors } }))
+
+    expect(container.querySelector('.MuiFormHelperText-root')).toHaveTextContent('Email or password is invalid')
   })
 })

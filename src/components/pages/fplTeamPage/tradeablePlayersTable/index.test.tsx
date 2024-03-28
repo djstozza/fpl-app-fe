@@ -206,6 +206,6 @@ describe('TradeablePlayersTable', () => {
   it('does not render if there is no outListPosition', () => {
     customRender({ outListPosition: undefined })
 
-    expect(screen.queryByTestId('TradeablePlayersTable')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('TradeableListPositionsTable')).not.toBeInTheDocument()
   })
 })

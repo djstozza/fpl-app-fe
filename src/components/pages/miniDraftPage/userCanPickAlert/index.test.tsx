@@ -1,17 +1,19 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { within, render, screen, fireEvent } from '@testing-library/react'
 
 import UserCanPickAlert from '.'
-import { MINI_DRAFT_PICK_STATUS, LIST_POSITIONS } from 'test/fixtures'
+import { LEAGUES_URL } from 'utilities/constants'
+import { initialState } from 'state/miniDraftPicks/reducer'
+import { MINI_DRAFT_PICK_STATUS } from 'test/fixtures'
 import { MockedRouter, blank__ } from 'test/helpers'
 
 const leagueId = '4'
 
 describe('UserCanPickAlert', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <UserCanPickAlert
         leagueId={leagueId}
-        miniDraftPicks={{ ...MINI_DRAFT_PICK_STATUS }}
+        miniDraftPicks={{ ...initialState, ...MINI_DRAFT_PICK_STATUS }}
         passMiniDraftPick={blank__}
         deadline={new Date()}
         {...props}
@@ -19,75 +21,88 @@ describe('UserCanPickAlert', () => {
     </MockedRouter>
   )
 
-  const draftLink = wrapper => wrapper.find('WithStyles(ForwardRef(Alert))').find('Link')
-  const passButton = wrapper => wrapper.find('WithStyles(ForwardRef(Alert))').find('button')
-  const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
+  const alert = () => screen.getByRole('alert')
+  const draftLink = () => within(alert()).getByRole('link', { name: /draft a player/i })
+  const passButton = () => within(alert()).getByRole('button', { name: /pass/i })
+
+  const presentation = () => screen.queryAllByRole('presentation')
+  const dialog = () => presentation()[1]
+
+  const confirm = () => within(dialog()).getByRole('button', { name: /confirm/i })
+  const cancel = () => within(dialog()).getByRole('button', { name: /cancel/i })
+  const backdrop = () => document.querySelector('.MuiBackdrop-root') as HTMLElement
+
+  // const draftLink = wrapper => wrapper.find('WithStyles(ForwardRef(Alert))').find('Link')
+  // const passButton = wrapper => wrapper.find('WithStyles(ForwardRef(Alert))').find('button')
+  // const dialog = wrapper => wrapper.find('WithStyles(ForwardRef(Dialog))')
 
   it('returns nothing if canMakeMiniDraftPick = false', () => {
-    const wrapper = render({ miniDraftPicks: { ...MINI_DRAFT_PICK_STATUS, canMakeMiniDraftPick: false } })
+    const { container } = customRender({ miniDraftPicks: { ...MINI_DRAFT_PICK_STATUS, canMakeMiniDraftPick: false } })
 
-    expect(wrapper.html()).toEqual('')
+    expect(container).toBeEmptyDOMElement()
   })
 
   it('returns nothing if deadline is not defined', () => {
-    const wrapper = render({ deadline: undefined })
+    const { container } = customRender({ deadline: undefined })
 
-    expect(wrapper.html()).toEqual('')
+    expect(container).toBeEmptyDOMElement()
   })
 
   it('shows both the draftLink and passButton if canMakeMiniDraftPick = true', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(draftLink(wrapper)).toHaveLength(1)
-    expect(passButton(wrapper)).toHaveLength(1)
+    expect(draftLink()).toHaveAttribute('href', `${LEAGUES_URL}/${leagueId}/miniDraft/tradeableListPositions`)
+    expect(passButton()).toBeInTheDocument()
   })
 
   it('allows the user to pass if canMakeMiniDraftPick = true', () => {
     const passMiniDraftPick = jest.fn()
-    const wrapper = render({ passMiniDraftPick })
+    customRender({ passMiniDraftPick })
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(presentation()).toHaveLength(0)
 
-    passButton(wrapper).simulate('click')
+    fireEvent.click(passButton())
 
-    expect(dialog(wrapper).props().open).toEqual(true)
-    expect(dialog(wrapper).text())
-      .toContain('Are you wish to pass? You will not be allowed to draft more players after two passes.')
+    expect(dialog().style.opacity).toEqual('1')
 
-    dialog(wrapper).find('button').at(1).simulate('click')
+    expect(dialog()).toHaveTextContent(
+      `Are you wish to pass? You will not be allowed to draft more players after two passes.`
+    )
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(confirm())
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(passMiniDraftPick).toHaveBeenCalled()
   })
 
   it('closes the pass mini draft dialog when cancel is clicked', () => {
     const passMiniDraftPick = jest.fn()
-    const wrapper = render({ passMiniDraftPick, fplTeamList: { outListPosition: LIST_POSITIONS[0] } })
+    customRender({ passMiniDraftPick })
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(presentation()).toHaveLength(0)
 
-    passButton(wrapper).simulate('click')
+    fireEvent.click(passButton())
 
-    expect(dialog(wrapper).props().open).toEqual(true)
-    dialog(wrapper).find('button').at(0).simulate('click')
+    expect(dialog().style.opacity).toEqual('1')
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    fireEvent.click(cancel())
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(passMiniDraftPick).not.toHaveBeenCalled()
   })
 
-  it('closes the pass mini draft dialog when cancel is clicked', () => {
+  it('closes the pass mini draft dialog when clicking out of the dialog', () => {
     const passMiniDraftPick = jest.fn()
-    const wrapper = render({ passMiniDraftPick })
+    customRender({ passMiniDraftPick })
 
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(presentation()).toHaveLength(0)
 
-    passButton(wrapper).simulate('click')
+    fireEvent.click(passButton())
+    expect(dialog().style.opacity).toEqual('1')
+    
+    fireEvent.click(backdrop())
 
-    wrapper.find('WithStyles(ForwardRef(Backdrop))').simulate('click')
-
-    expect(dialog(wrapper).props().open).toEqual(false)
+    expect(dialog().style.opacity).toEqual('0')
 
     expect(passMiniDraftPick).not.toHaveBeenCalled()
   })

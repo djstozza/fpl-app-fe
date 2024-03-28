@@ -55,7 +55,7 @@ const errors = [
 ]
 
 describe('DraftPage', () => {
-  const connectedRender = (props = {}, state = {}) => render(
+  const connectedRender = (state = {}) => render(
     <MockedRouterStoreWithRoute
       defaultState={{
         league: { data: LIVE_LEAGUE },
@@ -65,9 +65,7 @@ describe('DraftPage', () => {
       }}
     >
       <SnackbarProvider maxSnack={3}>
-        <ConnectedDraftPage
-          {...props}
-        />
+        <ConnectedDraftPage />
       </SnackbarProvider>
     </MockedRouterStoreWithRoute>
   )
@@ -149,7 +147,7 @@ describe('DraftPage', () => {
       expect(screen.queryByTestId('DraftPage')).not.toBeInTheDocument()
     })
 
-    describe('receiving and handles WebSocket messages',  () => {
+    describe('receiving and handling WebSocket messages',  () => {
       const server = new WS("ws://localhost:1234")
       new WebSocket("ws://localhost:1234")
 

@@ -26,6 +26,7 @@ describe('UserCanPickAlert', () => {
   const miniDraftButton = () => screen.getByRole('button', { name: miniDraftText })
   const presentation = () => screen.queryAllByRole('presentation')
   const dialog = () => presentation()[1]
+  const backdrop = () => document.querySelector('.MuiBackdrop-root') as HTMLElement
 
   it('returns nothing if userCanPick = false', () => {
     customRender({ draftPicks: { ...DRAFT_PICK_STATUS, userCanPick: false } })
@@ -88,16 +89,9 @@ describe('UserCanPickAlert', () => {
     
     customRender({ updateDraftPick })
 
-    
     fireEvent.click(miniDraftButton())
-
-    const backdrop = document.querySelector('.MuiBackdrop-root')
-
-    if (backdrop) {
-      fireEvent.click(backdrop)
-    } else {
-      throw new Error('.MuiBackdrop-root not found')
-    }
+    
+    fireEvent.click(backdrop())
 
     expect(dialog().style.opacity).toEqual('0') // Dialog closed
     expect(updateDraftPick).not.toHaveBeenCalled()

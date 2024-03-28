@@ -60,7 +60,6 @@ describe('JoinLeague', () => {
 
   const header = () => screen.getByRole('heading')
   const nameInput = () => screen.getByRole<HTMLInputElement>('textbox', { name: 'Name' })
-  const codeButton = () => screen.getByRole('button', { name: /generate code/i })
   const codeInput = () => screen.getByRole<HTMLInputElement>('textbox', { name: /code/i })
   const fplTeamNameInput = () => screen.getByRole<HTMLInputElement>('textbox', { name: /fpl team name/i })
   const submitButton = () => screen.getByRole('button', { name: /submit/i })
