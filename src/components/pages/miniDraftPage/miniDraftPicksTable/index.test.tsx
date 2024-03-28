@@ -5,7 +5,8 @@ import { RouteWithOutletContext, blank__ } from 'test/helpers'
 import { 
   MINI_DRAFT_PICKS,
   MINI_DRAFT_PICK_1,
-  MINI_DRAFT_PICK_FACETS } from 'test/fixtures'
+  MINI_DRAFT_PICK_FACETS
+} from 'test/fixtures'
 import { initialFilterState } from 'state/miniDraftPicks/reducer'
 import { PLAYERS_URL } from 'utilities/constants'
 

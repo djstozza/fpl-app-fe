@@ -1,57 +1,79 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
+import { Navigate } from 'react-router-dom'
 
 import HistoryTable from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
 import { PLAYER_HISTORY } from 'test/fixtures'
 import { initialFilterState } from 'state/player/reducer'
 import { PLAYERS_URL } from 'utilities/constants'
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  Navigate: jest.fn()
+}))
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
+
 const playerId = '1'
 
 describe('HistoryTable', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <HistoryTable
-        hasHistory
-        history={PLAYER_HISTORY}
-        fetchPlayerHistory={blank__}
-        updatePlayerHistorySort={blank__}
-        playerId={playerId}
-        tab='history'
-        {...props}
-      />
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      player: { data: { hasHistory: true }, history: PLAYER_HISTORY },
+      playerId: playerId,
+      fetchPlayerHistory: blank__,
+      updatePlayerHistoryPast: blank__,
+      setTab: blank__,
+      ...context
+    }
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <HistoryTable />
+      </RouteWithOutletContext>
+    )
+  }
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
+  const sortTable = () => screen.getByTestId('SortTable')
+
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+
+  const sortButton = (text) => within(screen.getByLabelText(text)).getByRole('button')
 
   it('redirects to the player details page if hasHistory = false', () => {
-    const wrapper = render({ hasHistory: false, history: undefined })
+    customRender({ player: { data: { hasHistory: false }, history: undefined } })
 
-    expect(wrapper.find('Navigate').props().to).toEqual(`${PLAYERS_URL}/${playerId}`)
+    expect(Navigate).toHaveBeenCalledWith(
+      { to: `${PLAYERS_URL}/${playerId}` },
+      {}
+    )
   })
 
   it('renders the team fixtures table', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(tableCell(wrapper, 2, 4).text()).toEqual(String(PLAYER_HISTORY[1].totalPoints))
-    expect(tableCell(wrapper, 3, 6).text()).toEqual(String(PLAYER_HISTORY[2].assists))
+    expect(tableCell(2, 4)).toHaveTextContent(String(PLAYER_HISTORY[1].totalPoints))
+    expect(tableCell(3, 6)).toHaveTextContent(String(PLAYER_HISTORY[2].assists))
   })
 
-  it('triggers fetchPlayerHistory on render', () => {
+  it('triggers fetchPlayerHistory and setTab on render', () => {
     const fetchPlayerHistory = jest.fn()
-    render({ fetchPlayerHistory })
+    const setTab = jest.fn()
+    customRender({ fetchPlayerHistory, setTab })
 
     expect(fetchPlayerHistory).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
+    expect(setTab).toHaveBeenCalledWith('history')
   })
 
   it('triggers updatePlayerHistorySort', () => {
     const updatePlayerHistorySort = jest.fn()
-    const wrapper = render({ updatePlayerHistorySort })
+    customRender({ updatePlayerHistorySort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(sortButton('Round'))
 
     expect(updatePlayerHistorySort).toHaveBeenCalledWith({ tab: 'history', sort: { 'rounds.deadlineTime': 'asc' } })
   })

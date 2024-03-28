@@ -11,9 +11,7 @@ import {
   PLAYER_SUMMARIES,
   MINI_DRAFT_PICKS,
   FPL_TEAM_LIST_1,
-  LIST_POSITIONS,
-  ROUND_1,
-  MINI_DRAFT_PICK_STATUS
+  ROUND_1
 } from 'test/fixtures'
 import { MockedRouterStoreWithRoute, MockedRouter, blank__ } from 'test/helpers'
 import { initialState as playersInitialState } from 'state/players/reducer'

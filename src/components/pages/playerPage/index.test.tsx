@@ -1,80 +1,102 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen } from '@testing-library/react'
+import * as rrd from 'react-router-dom'
 
 import ConnectedPlayerPage, { PlayerPage } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 import { TITLE } from 'utilities/constants'
 import { PLAYER_SUMMARIES } from 'test/fixtures'
+import { initialState } from 'state/players/reducer'
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn(), // Mock the useParams hook
+}))
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
+
 
 const player = {
   ...PLAYER_SUMMARIES[0],
-  code: '1234',
+  code: 1234,
   photo: '1234.jpg',
   hasHistory: true,
-  hasHistoryPast: true
+  hasHistoryPast: true,
+  historyPast: [],
+  history: []
 }
 
 describe('PlayerPage', () => {
-  const connectedRender = (props = {}, state = {}) => createMount()(
+  const connectedRender = (state = {}) => render(
     <MockedRouterStore
       defaultState={{
-        player: { data: player },
+        player: { ...initialState, data: player },
         ...state
       }}
     >
-      <ConnectedPlayerPage
-        fetchPlayer={blank__}
-        fetchPlayerHistory={blank__}
-        fetchPlayerHistoryPast={blank__}
-        updatePlayerHistorySort={blank__}
-        updatePlayerHistoryPastSort={blank__}
-        match={{ params: { playerId: PLAYER_SUMMARIES[0].id } }}
-        {...props}
-      />
+      <ConnectedPlayerPage />
     </MockedRouterStore>
   )
 
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <PlayerPage
-        player={{ data: player }}
+        player={{ ...initialState, data: player, history: [], historyPast: [] }}
         fetchPlayer={blank__}
         fetchPlayerHistory={blank__}
         fetchPlayerHistoryPast={blank__}
         updatePlayerHistorySort={blank__}
         updatePlayerHistoryPastSort={blank__}
-        match={{ params: { playerId: PLAYER_SUMMARIES[0].id } }}
         {...props}
       />
     </MockedRouter>
   )
 
-  const tabs = wrapper => wrapper.find('Tabs').find('WithStyles(ForwardRef(Tab))')
+  const tabs = () => screen.getAllByRole('tab')
+  const heading = () => screen.getByRole('heading')
 
-  it('renders the player details by default and sets the document title', () => {
-    const wrapper = connectedRender()
+  describe('when playerId is present', () => {
+    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ playerId: player.id }))
 
-    expect(tabs(wrapper)).toHaveLength(3)
-    expect(tabs(wrapper).at(0).props().selected).toEqual(true)
-    expect(wrapper.find('h4').text()).toEqual(`${player.firstName} ${player.lastName}(${player.team.shortName})`)
-    expect(document.title)
-      .toEqual(`${TITLE} - ${player.firstName} ${player.lastName} - Details`)
+    it('renders the player details by default and sets the document title', () => {
+      connectedRender()
+
+      expect(tabs()).toHaveLength(3)
+      expect(tabs()[0]).toHaveAttribute('aria-selected', 'true')
+      
+     
+      expect(heading()).toHaveTextContent(`${player.firstName} ${player.lastName}(${player.team.shortName})`)
+      expect(document.title)
+        .toEqual(`${TITLE} - ${player.firstName} ${player.lastName} - Details`)
+    })
+
+    it('only renders active tabs', () => {
+      const wrapper = connectedRender({ player: { data: { ...player, hasHistory: false, hasHistoryPast: false } } })
+
+      expect(tabs()).toHaveLength(1)
+      expect(tabs()[0]).toHaveTextContent('Details')
+    })
+
+    it('triggers the fetchPlayer function on load', () => {
+      const fetchPlayer = jest.fn()
+      customRender({ fetchPlayer })
+
+      expect(fetchPlayer).toHaveBeenCalledWith(PLAYER_SUMMARIES[0].id)
+    })
+
+    it('renders nothing if data is not defined', () => {
+      const { container } = connectedRender({ player: { data: undefined } })
+      expect(container).toBeEmptyDOMElement()
+    })
   })
 
-  it('only renders active tabs', () => {
-    const wrapper = connectedRender({}, { player: { data: { ...player, hasHistory: false, hasHistoryPast: false } } })
+  describe('when playerId is not peresent', () => {
+    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ playerId: undefined }))
 
-    expect(tabs(wrapper)).toHaveLength(1)
-  })
-
-  it('triggers the fetchPlayer function on load', () => {
-    const fetchPlayer = jest.fn()
-    render({ fetchPlayer })
-
-    expect(fetchPlayer).toHaveBeenCalledWith(PLAYER_SUMMARIES[0].id)
-  })
-
-  it('renders nothing if data is not defined', () => {
-    const wrapper = connectedRender({}, { player: { data: undefined } })
-    expect(wrapper.html()).toEqual('')
+    it('renders nothing if data is not defined', () => {
+      const { container } = connectedRender()
+      expect(container).toBeEmptyDOMElement()
+    })
   })
 })

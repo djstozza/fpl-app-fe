@@ -20,7 +20,6 @@ describe('TabPanel', () => {
   )
 
   const tabs = () => screen.getAllByRole('tab')
-  // const tab = wrapper => wrapper.find('WithStyles(ForwardRef(Tab))')
 
   it('renders the tabs', () => {
     customRender()
