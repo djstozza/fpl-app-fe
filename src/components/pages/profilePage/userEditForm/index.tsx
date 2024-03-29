@@ -1,4 +1,5 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
@@ -8,9 +9,9 @@ import {
   Paper
 } from '@mui/material'
 
-import { AuthContext } from '..'
 import { PROFILE_URL } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
+import type { ProfileProps } from '..'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   form: {
@@ -38,7 +39,7 @@ const UserEditForm = () => {
     updateUser,
     submitting,
     initializeAuth
-  } = useContext(AuthContext)
+  } = useOutletContext<ProfileProps>()
 
   const { classes } = useStyles()
 

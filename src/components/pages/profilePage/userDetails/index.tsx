@@ -1,4 +1,5 @@
-import { Fragment, useContext } from 'react'
+import { Fragment } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 import {
   Table,
@@ -8,10 +9,9 @@ import {
   Theme
 } from '@mui/material'
 
-import { AuthContext } from '..'
 import ButtonLink from 'components/common/buttonLink'
-
 import { EDIT_USER_DETAILS_URL, CHANGE_PASSWORD_URL } from 'utilities/constants'
+import type { ProfileProps } from '..'
 
 const USER_DETAILS_ROWS = [
   { rowId: 'email', label: 'Email' },
@@ -31,7 +31,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
 }))
 
 const UserDetails = () => {
-  const { user } = useContext(AuthContext)
+  const { user } = useOutletContext<ProfileProps>()
   const { classes } = useStyles()
 
   return (

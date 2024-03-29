@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { useState } from 'react'
 import { useParams, Outlet, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { makeStyles } from 'tss-react/mui'
@@ -16,7 +16,7 @@ import {
 import type { User, Error } from 'types'
 import type { FplTeamsState } from 'state/fplTeams'
 
-type Props = {
+export type ProfileProps = {
   user: User,
   errors: Error[],
   updateUser: Function,
@@ -34,25 +34,15 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const TABS = {
+export const TABS = {
   details: { label: 'Details', value: 'details', display: true },
   leagues: { label: 'Leagues', value: 'leagues', display: true },
   fplTeams: { label: 'Fpl Teams', value: 'fplTeams', display: true }
 }
 
-export const AuthContext = createContext<any>({})
-
-export const ProfilePage = (props: Props) => {
+export const ProfilePage = (props: ProfileProps) => {
   const {
-    user,
-    updateUser,
-    changePassword,
-    errors = [],
-    submitting,
-    initializeAuth,
-    fetchFplTeams,
-    updateFplTeamsSort,
-    fplTeams
+    user
   } = props
   const { username } = user
   const { classes } = useStyles()
@@ -63,17 +53,6 @@ export const ProfilePage = (props: Props) => {
 
   TABS.details['extraTitleInfo'] = capitalize(action)
 
-  const value = {
-    user,
-    updateUser,
-    changePassword,
-    errors,
-    submitting,
-    initializeAuth,
-    fetchFplTeams,
-    updateFplTeamsSort,
-    fplTeams
-  }
   return (
     <div data-testid='ProfilePage'>
       <Typography variant='h4' className={classes.title}>
@@ -86,9 +65,7 @@ export const ProfilePage = (props: Props) => {
         url={PROFILE_URL}
         titleSubstr={username}
       />
-      <AuthContext.Provider value={value}>
-        <Outlet />
-      </AuthContext.Provider>
+      <Outlet context={props} />
     </div>
   )
 }

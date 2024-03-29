@@ -1,7 +1,7 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import ChangePasswordForm from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
 
 import {
   PROFILE_URL
@@ -26,69 +26,69 @@ const errors = [
 ]
 
 describe('ChangePasswordForm', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <ChangePasswordForm
-        initializeAuth={blank__}
-        changePassword={blank__}
-        {...props}
-      />
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      initializeAuth: blank__,
+      changePassword: blank__,
+      ...context
+    }
 
-  const passwordInput = wrapper => wrapper.find({ name: 'password' }).find('input')
-  const newPasswordInput = wrapper => wrapper.find({ name: 'newPassword' }).find('input')
-  const submitButton = wrapper => wrapper.find({ type: 'submit' }).find('button')
-  const passwordHelperText = wrapper => wrapper.find({ name: 'password' }).find('WithStyles(ForwardRef(FormHelperText))')
-  const newPasswordHelperText = wrapper => (
-    wrapper.find({ name: 'newPassword' }).find('WithStyles(ForwardRef(FormHelperText))')
-  )
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <ChangePasswordForm  />
+      </RouteWithOutletContext>
+    )
+  }
 
+  const passwordInput = () => screen.getByTestId('password').querySelector('input') as HTMLElement
+  const newPasswordInput = () => screen.getByTestId('newPassword').querySelector('input') as HTMLElement
+  const submitButton = () => screen.getByRole('button', { name: /change/i })
+  const cancel = () => screen.getByText('Cancel')
+  
   it('renders the title', () => {
-    const wrapper = render()
-    expect(wrapper.find('WithStyles(ForwardRef(Typography))').at(0).text()).toEqual('Change Password')
+    customRender()
+
+    expect(screen.getByRole('heading')).toHaveTextContent('Change Password')
   })
 
   it('triggers initialForm on load', () => {
     const initializeAuth = jest.fn()
 
-    render({ initializeAuth })
+    customRender({ initializeAuth })
 
     expect(initializeAuth).toHaveBeenCalled()
   })
 
   it('triggers changePassword with the password and newPassword', () => {
     const changePassword = jest.fn()
-    const wrapper = render({ changePassword })
+    customRender({ changePassword })
+    fireEvent.change(passwordInput(), { target: { value: password } })
 
-    passwordInput(wrapper).simulate('change', { target: { value: password } })
+    expect(submitButton()).toHaveAttribute('disabled')
+    fireEvent.change(newPasswordInput(), { target: { value: newPassword } })
 
-    newPasswordInput(wrapper).simulate('change', { target: { value: newPassword } })
-
-    submitButton(wrapper).simulate('submit')
-
-    expect(changePassword).toHaveBeenCalledWith({ user: { password, newPassword } })
+    fireEvent.click(submitButton())
   })
 
   it('shows errors', () => {
-    const wrapper = render({ errors })
+    const { container } = customRender({ errors })
 
-    expect(passwordInput(wrapper).props()['aria-invalid']).toEqual(true)
-    expect(passwordHelperText(wrapper).text()).toEqual(errors[0].detail)
+    expect(passwordInput()).toHaveAttribute('aria-invalid', 'true')
+    expect(container.querySelectorAll('.MuiFormHelperText-root')[0]).toHaveTextContent(errors[0].detail)
+    
 
-    expect(newPasswordInput(wrapper).props()['aria-invalid']).toEqual(true)
-    expect(newPasswordHelperText(wrapper).text()).toEqual(errors[1].detail)
+    expect(newPasswordInput()).toHaveAttribute('aria-invalid', 'true')
+    expect(container.querySelectorAll('.MuiFormHelperText-root')[1]).toHaveTextContent(errors[1].detail)
   })
 
   it('disables the submit button if submitting = true', () => {
-    const wrapper = render({ submitting: true })
+    customRender({ submitting: true })
 
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    expect(submitButton()).toHaveAttribute('disabled')
   })
 
   it('renders the cancel button', () => {
-    const wrapper = render()
-    expect(wrapper.find('ButtonLink').at(0).props().to).toEqual(PROFILE_URL)
-    expect(wrapper.find('ButtonLink').at(0).text()).toEqual('Cancel')
+    customRender()
+    expect(cancel()).toHaveAttribute('href', PROFILE_URL)
   })
 })

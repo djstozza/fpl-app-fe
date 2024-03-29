@@ -1,6 +1,5 @@
-import { useContext } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
-import { AuthContext } from '..'
 import SortTable from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/fplTeams/reducer'
@@ -10,6 +9,7 @@ import {
   LEAGUES_URL
 } from 'utilities/constants'
 
+import type { ProfileProps } from '..'
 import type { FplTeam } from 'types'
 
 const FPL_TEAMS_TABLE_CELLS = [
@@ -56,7 +56,7 @@ const FplTeamsTable = () => {
     fplTeams: { data: fplTeams, fetching },
     fetchFplTeams,
     updateFplTeamsSort
-  } = useContext(AuthContext)
+  } = useOutletContext<ProfileProps>()
 
   return (
     <div data-testid='FplTeamsTable'>

@@ -1,42 +1,44 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { within, render, screen } from '@testing-library/react'
 
 import UserDetails from '.'
-import { MockedRouter } from 'test/helpers'
+import { RouteWithOutletContext } from 'test/helpers'
 import { USER_1 } from 'test/fixtures'
 import { EDIT_USER_DETAILS_URL, CHANGE_PASSWORD_URL } from 'utilities/constants'
 
 describe('UserDetails', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <UserDetails
-        user={USER_1}
-        {...props}
-      />
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      user: USER_1,
+      ...context
+    }
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <UserDetails />
+      </RouteWithOutletContext>
+    )
+  }
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const buttonLink = wrapper => wrapper.find('ButtonLink')
+  const tableRows = () => screen.getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+
+  const link = (text) => screen.getByRole('link', { name: text })
 
   it('renders the user details', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(tableCell(wrapper, 0, 0).text()).toEqual('Email')
-    expect(tableCell(wrapper, 0, 1).text()).toEqual(USER_1.email)
+    expect(tableCell(0, 0)).toHaveTextContent('Email')
+    expect(tableCell(0, 1)).toHaveTextContent(USER_1.email)
 
-    expect(tableCell(wrapper, 1, 0).text()).toEqual('Username')
-    expect(tableCell(wrapper, 1, 1).text()).toEqual(USER_1.username)
+    expect(tableCell(1, 0)).toHaveTextContent('Username')
+    expect(tableCell(1, 1)).toHaveTextContent(USER_1.username)
   })
 
   it('renders the edit buttons', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(buttonLink(wrapper).at(0).props().to).toEqual(EDIT_USER_DETAILS_URL)
-    expect(buttonLink(wrapper).at(0).text()).toEqual('Edit Details')
-
-    expect(buttonLink(wrapper).at(1).props().to).toEqual(CHANGE_PASSWORD_URL)
-    expect(buttonLink(wrapper).at(1).text()).toEqual('Change Password')
+    expect(link('Edit Details')).toHaveAttribute('href', EDIT_USER_DETAILS_URL)
+    expect(link('Change Password')).toHaveAttribute('href', CHANGE_PASSWORD_URL)
   })
 })

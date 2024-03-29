@@ -1,11 +1,13 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { render, screen } from '@testing-library/react'
 
-import ConnectedProfilePage from '.'
+import ConnectedProfilePage, { TABS } from '.'
 import { MockedRouterStore } from 'test/helpers'
 import { USER_1 } from 'test/fixtures'
 
+const tabsArr = Object.values(TABS)
+
 describe('ProfilePage', () => {
-  const connectedRender = (props = {}, state = {}) => createMount()(
+  const connectedRender = (props = {}, state = {}) => render(
     <MockedRouterStore
       defaultState={{
         auth: { user: USER_1 },
@@ -13,28 +15,22 @@ describe('ProfilePage', () => {
         ...state
       }}
     >
-      <ConnectedProfilePage
-        match={{ params: { tab: 'details' } }}
-        {...props}
-      />
+      <ConnectedProfilePage />
     </MockedRouterStore>
   )
 
-  const tabs = wrapper => wrapper.find('Tabs').find('WithStyles(ForwardRef(Tab))')
+  const tabs = () => screen.getAllByRole('tab')
+  const heading = () => screen.getByRole('heading')
 
-  it('renders the league details by default and sets the document title', () => {
-    const wrapper = connectedRender()
+  it('renders the details tab by default and sets the document title', () => {
+    connectedRender()
 
-    expect(tabs(wrapper)).toHaveLength(3)
-    expect(tabs(wrapper).at(0).props().selected).toEqual(true)
-    expect(tabs(wrapper).at(0).text()).toEqual('Details')
-    expect(wrapper.find('h4').text()).toEqual(`${USER_1.username}`)
-  })
+    expect(tabs()).toHaveLength(3)
+    expect(tabs()[0]).toHaveAttribute('aria-selected', 'true')
+    expect(tabs()[0]).toHaveTextContent(tabsArr[0].label)
+    expect(tabs()[1]).toHaveTextContent(tabsArr[1].label)
+    expect(tabs()[2]).toHaveTextContent(tabsArr[2].label)
 
-  it('renders the details tab by default', () => {
-    const wrapper = connectedRender({ match: { params: { tab: undefined } } })
-
-    expect(tabs(wrapper).at(0).props().selected).toEqual(true)
-    expect(tabs(wrapper).at(0).text()).toEqual('Details')
+    expect(heading()).toHaveTextContent(USER_1.username)
   })
 })
