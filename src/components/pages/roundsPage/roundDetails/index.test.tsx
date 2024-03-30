@@ -1,4 +1,4 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { within, render, screen } from '@testing-library/react'
 import timezoneMock from 'timezone-mock'
 
 import RoundDetails from '.'
@@ -8,7 +8,7 @@ import { ROUND_1 } from 'test/fixtures'
 describe('RoundDetails', () => {
   timezoneMock.register('Australia/Adelaide')
 
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <RoundDetails
         roundId={ROUND_1.id}
@@ -18,24 +18,30 @@ describe('RoundDetails', () => {
       />
     </MockedRouter>
   )
-
-  const container = wrapper => wrapper.find('.makeStyles-root-1')
+  
+  const heading = () => screen.getAllByRole('heading')[0]
+  const detailsContainer = () =>  screen.getAllByTestId('round-day-container')
+  const detailsHeading = (i) => within(detailsContainer()[i]).getByRole('heading')
+  const accordionButton = (i) => within(detailsContainer()[i]).getAllByRole('button')
 
   it('shows the round name and groups the fixtures by date', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(wrapper.find('h4').text()).toEqual(ROUND_1.name)
-    expect(container(wrapper)).toHaveLength(2)
-    expect(container(wrapper).at(0).find('h6').text()).toEqual('14th August 2021')
-    expect(container(wrapper).at(0).find('WithStyles(ForwardRef(Accordion))')).toHaveLength(2)
-    expect(container(wrapper).at(1).find('h6').text()).toEqual('16th August 2021')
-    expect(container(wrapper).at(1).find('WithStyles(ForwardRef(Accordion))')).toHaveLength(1)
+    expect(heading()).toHaveTextContent(ROUND_1.name)
+    
+    expect(detailsContainer()).toHaveLength(2)
+    
+    expect(detailsHeading(0)).toHaveTextContent('14th August 2021')
+    expect(accordionButton(0)).toHaveLength(2)
+    
+    expect(detailsHeading(1)).toHaveTextContent('16th August 2021')
+    expect(accordionButton(1)).toHaveLength(1)
   })
 
   it('fetches the round if a round id is present', () => {
     const fetchRound = jest.fn()
 
-    render({ fetchRound })
+    customRender({ fetchRound })
 
     expect(fetchRound).toHaveBeenCalledWith(ROUND_1.id)
   })
@@ -43,13 +49,14 @@ describe('RoundDetails', () => {
   it('does not fetch the round if roundId is null', () => {
     const fetchRound = jest.fn()
 
-    render({ roundId: null, fetchRound })
+    customRender({ roundId: null, fetchRound })
 
     expect(fetchRound).not.toHaveBeenCalled()
   })
 
   it('renders nothing if the round is not present', () => {
-    const wrapper = render({ round: null })
-    expect(wrapper.html()).toEqual('')
+    const { container } = customRender({ round: null })
+    
+    expect(container).toBeEmptyDOMElement()
   })
 })

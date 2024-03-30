@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect } from 'react'
 import moment from 'moment'
 import { groupBy } from 'lodash'
 import { makeStyles } from 'tss-react/mui'
@@ -25,10 +25,6 @@ type GroupedFixtures = {
 }
 
 const useStyles = makeStyles()((theme: Theme) => ({
-  root: {
-
-  },
-
   title: {
     padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
   },
@@ -70,13 +66,16 @@ const RoundDetails = (props: Props) => {
     groupBy(fixtures, ({ kickoffTime }) => moment(kickoffTime).format('Do MMMM YYYY'))
 
   return (
-    <Fragment>
+    <div data-testid='RoundDetails'>
       <Typography variant='h4' className={classes.title}>
         {name}
       </Typography>
       {
         Object.entries(groupedFixtures).map(([day, fixtures]) => (
-          <div key={day} className={classes.root}>
+          <div
+            data-testid='round-day-container'
+            key={day}
+          >
             <Typography variant='subtitle1' className={classes.title}>
               {day}
             </Typography>
@@ -91,7 +90,7 @@ const RoundDetails = (props: Props) => {
           </div>
         ))
       }
-    </Fragment>
+    </div>
   )
 }
 

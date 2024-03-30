@@ -1,4 +1,4 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { within, render, screen } from '@testing-library/react'
 
 import FixtureDetails from '.'
 import { MockedRouter } from 'test/helpers'
@@ -6,7 +6,7 @@ import { IN_PROGRESS_FIXTURE } from 'test/fixtures'
 import { PLAYERS_URL } from 'utilities/constants'
 
 describe('FixtureDetails', () => {
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <FixtureDetails
         fixture={IN_PROGRESS_FIXTURE}
@@ -15,78 +15,78 @@ describe('FixtureDetails', () => {
     </MockedRouter>
   )
 
-  const tableHead = (wrapper) => wrapper.find('WithStyles(ForwardRef(TableHead))')
-  const tableBody = (wrapper, i = 0) => wrapper.find('WithStyles(ForwardRef(TableBody))').at(i)
-  const tableBodyCell = (wrapper, i, j) => tableBody(wrapper, i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  const playerDiv = (wrapper, i, j, k) => tableBodyCell(wrapper, i, j).find('div').at(k)
-  const playerLink = (wrapper, i, j, k) => playerDiv(wrapper, i, j, k).find('Link').at(0)
+  const table = () => screen.getByRole('table')
+  const colummnHeaders = () => screen.getAllByRole('columnheader')
+  const tableBody = (i) => document.querySelectorAll('tbody')[i]
+  const tableBodyCell = (i, j) => within(tableBody(i)).getAllByRole('cell')[j]
+  const playerDiv = (i, j, k) => tableBodyCell(i, j).querySelectorAll('div')[k]
+  const playerLink = (i, j, k) => within(tableBodyCell(i, j)).getAllByRole('link')[k]
 
   it('renders the relevant stats', () => {
-    const wrapper = render()
+    customRender()
 
-    expect(tableHead(wrapper)).toHaveLength(5)
-
-    expect(tableHead(wrapper).at(0).text()).toEqual('Goals Scored')
-
-    // Home team stats
-    expect(playerDiv(wrapper, 0, 0, 0).text()).toEqual('3 Borges Fernandes')
-    expect(playerLink(wrapper, 0, 0, 0).props().to).toEqual(`${PLAYERS_URL}/277`)
-
-    expect(playerDiv(wrapper, 0, 0, 1).text()).toEqual('1 Rodrigues de Paula Santos')
-    expect(playerLink(wrapper, 0, 0, 1).props().to).toEqual(`${PLAYERS_URL}/274`)
-
-    expect(playerDiv(wrapper, 0, 0, 2).text()).toEqual('1 Greenwood')
-    expect(playerLink(wrapper, 0, 0, 2).props().to).toEqual(`${PLAYERS_URL}/289`)
-
-    // Away team stats
-    expect(playerDiv(wrapper, 0, 1, 0).text()).toEqual('1 Ayling')
-    expect(playerLink(wrapper, 0, 1, 0).props().to).toEqual(`${PLAYERS_URL}/206`)
-
-    expect(tableHead(wrapper).at(1).text()).toEqual('Assists')
+    expect(colummnHeaders()).toHaveLength(5)
+    expect(colummnHeaders()[0]).toHaveTextContent('Goals Scored')
 
     // Home team stats
-    expect(playerDiv(wrapper, 1, 0, 0).text()).toEqual('4 Pogba')
-    expect(playerLink(wrapper, 1, 0, 0).props().to).toEqual(`${PLAYERS_URL}/272`)
+    expect(playerDiv(0, 0, 0)).toHaveTextContent('3 Borges Fernandes')
+    expect(playerLink(0, 0, 0)).toHaveAttribute('href', `${PLAYERS_URL}/277`)
 
-    expect(playerDiv(wrapper, 1, 0, 1).text()).toEqual('1 Lindelöf')
-    expect(playerLink(wrapper, 1, 0, 1).props().to).toEqual(`${PLAYERS_URL}/284`)
+    expect(playerDiv(0, 0, 1)).toHaveTextContent('1 Rodrigues de Paula Santos')
+    expect(playerLink(0, 0, 1)).toHaveAttribute('href', `${PLAYERS_URL}/274`)
+
+    expect(playerDiv(0, 0, 2)).toHaveTextContent('1 Greenwood')
+    expect(playerLink(0, 0, 2)).toHaveAttribute('href', `${PLAYERS_URL}/289`)
 
     // Away team stats
-    expect(playerDiv(wrapper, 1, 1, 0).text()).toEqual('1 Dallas')
-    expect(playerLink(wrapper, 1, 1, 0).props().to).toEqual(`${PLAYERS_URL}/209`)
+    expect(playerDiv(0, 1, 0)).toHaveTextContent('1 Ayling')
+    expect(playerLink(0, 1, 0)).toHaveAttribute('href', `${PLAYERS_URL}/206`)
 
-    expect(tableHead(wrapper).at(2).text()).toEqual('Saves')
+    expect(colummnHeaders()[1]).toHaveTextContent('Assists')
 
     // Home team stats
-    expect(playerDiv(wrapper, 2, 0, 0).text()).toEqual('2 de Gea')
-    expect(playerLink(wrapper, 2, 0, 0).props().to).toEqual(`${PLAYERS_URL}/270`)
+    expect(playerDiv(1, 0, 0)).toHaveTextContent('4 Pogba')
+    expect(playerLink(1, 0, 0)).toHaveAttribute('href', `${PLAYERS_URL}/272`)
+
+    expect(playerDiv(1, 0, 1)).toHaveTextContent('1 Lindelöf')
+    expect(playerLink(1, 0, 1)).toHaveAttribute('href', `${PLAYERS_URL}/284`)
 
     // Away team stats
-    expect(playerDiv(wrapper, 2, 1, 0).text()).toEqual('3 Meslier')
-    expect(playerLink(wrapper, 2, 1, 0).props().to).toEqual(`${PLAYERS_URL}/220`)
+    expect(playerDiv(1, 1, 0)).toHaveTextContent('1 Dallas')
+    expect(playerLink(1, 1, 0)).toHaveAttribute('href', `${PLAYERS_URL}/209`)
 
-    expect(tableHead(wrapper).at(3).text()).toEqual('Yellow Cards')
+    expect(colummnHeaders()[2]).toHaveTextContent('Saves')
 
     // Home team stats
-    expect(playerDiv(wrapper, 3, 0, 0).text()).toEqual('1 Shaw')
-    expect(playerLink(wrapper, 3, 0, 0).props().to).toEqual(`${PLAYERS_URL}/275`)
+    expect(playerDiv(2, 0, 0)).toHaveTextContent('2 de Gea')
+    expect(playerLink(2, 0, 0)).toHaveAttribute('href', `${PLAYERS_URL}/270`)
 
     // Away team stats
-    expect(playerDiv(wrapper, 3, 1, 0).text()).toEqual('1 Cooper')
-    expect(playerLink(wrapper, 3, 1, 0).props().to).toEqual(`${PLAYERS_URL}/205`)
+    expect(playerDiv(2, 1, 0)).toHaveTextContent('3 Meslier')
+    expect(playerLink(2, 1, 0)).toHaveAttribute('href', `${PLAYERS_URL}/220`)
 
-    expect(playerDiv(wrapper, 3, 1, 1).text()).toEqual('1 Dias Belloli')
-    expect(playerLink(wrapper, 3, 1, 1).props().to).toEqual(`${PLAYERS_URL}/217`)
+    expect(colummnHeaders()[3]).toHaveTextContent('Yellow Cards')
 
-    expect(tableHead(wrapper).at(4).text()).toEqual('Bonus')
+    // Home team stats
+    expect(playerDiv(3, 0, 0)).toHaveTextContent('1 Shaw')
+    expect(playerLink(3, 0, 0)).toHaveAttribute('href', `${PLAYERS_URL}/275`)
 
-    expect(playerDiv(wrapper, 4, 0, 0).text()).toEqual('3 Borges Fernandes')
-    expect(playerLink(wrapper, 4, 0, 0).props().to).toEqual(`${PLAYERS_URL}/277`)
+    // Away team stats
+    expect(playerDiv(3, 1, 0)).toHaveTextContent('1 Cooper')
+    expect(playerLink(3, 1, 0)).toHaveAttribute('href', `${PLAYERS_URL}/205`)
 
-    expect(playerDiv(wrapper, 4, 0, 1).text()).toEqual('2 Pogba')
-    expect(playerLink(wrapper, 4, 0, 1).props().to).toEqual(`${PLAYERS_URL}/272`)
+    expect(playerDiv(3, 1, 1)).toHaveTextContent('1 Dias Belloli')
+    expect(playerLink(3, 1, 1)).toHaveAttribute('href', `${PLAYERS_URL}/217`)
 
-    expect(playerDiv(wrapper, 4, 0, 2).text()).toEqual('1 Greenwood')
-    expect(playerLink(wrapper, 4, 0, 2).props().to).toEqual(`${PLAYERS_URL}/289`)
+    expect(colummnHeaders()[4]).toHaveTextContent('Bonus')
+
+    expect(playerDiv(4, 0, 0)).toHaveTextContent('3 Borges Fernandes')
+    expect(playerLink(4, 0, 0)).toHaveAttribute('href', `${PLAYERS_URL}/277`)
+
+    expect(playerDiv(4, 0, 1)).toHaveTextContent('2 Pogba')
+    expect(playerLink(4, 0, 1)).toHaveAttribute('href', `${PLAYERS_URL}/272`)
+
+    expect(playerDiv(4, 0, 2)).toHaveTextContent('1 Greenwood')
+    expect(playerLink(4, 0, 2)).toHaveAttribute('href', `${PLAYERS_URL}/289`)
   })
 })
