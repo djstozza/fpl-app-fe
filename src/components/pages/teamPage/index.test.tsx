@@ -1,12 +1,25 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { within, render, screen } from '@testing-library/react'
+import * as rrd from 'react-router-dom'
 
-import ConnectedTeamPage, { TeamPage } from '.'
+import ConnectedTeamPage, { TeamPage, TABS } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 import { TITLE } from 'utilities/constants'
-import { TEAMS, MANCHESTER_UNITED, ARSENAL, PLAYERS } from 'test/fixtures'
+import { TEAMS, MANCHESTER_UNITED, ARSENAL, PLAYER_SUMMARIES } from 'test/fixtures'
+import { initialState as initialTeamState } from 'state/team/reducer'
+import { initialState as initialPlayersState } from 'state/players/reducer'
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn(), // Mock the useParams hook
+}))
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
+
 
 describe('TeamPage', () => {
-  const connectedRender = (props = {}, state = {}) => createMount()(
+  const connectedRender = (state = {}) => render(
     <MockedRouterStore
       defaultState={{
         team: { data: MANCHESTER_UNITED, fixtures: [] },
@@ -15,69 +28,82 @@ describe('TeamPage', () => {
         ...state
       }}
     >
-      <ConnectedTeamPage
-        fetchTeam={blank__}
-        fetchTeams={blank__}
-        updateTeamPlayersSort={blank__}
-        updateTeamFixturesSort={blank__}
-        match={{ params: { teamId: MANCHESTER_UNITED.id }}}
-        {...props}
-      />
+      <ConnectedTeamPage />
     </MockedRouterStore>
   )
 
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <TeamPage
-        team={{ data: MANCHESTER_UNITED, fixtures: [] }}
+        team={{ ...initialTeamState, data: MANCHESTER_UNITED }}
+        players={initialPlayersState}
         teams={TEAMS}
         fetchTeam={blank__}
         fetchTeams={blank__}
         updateTeamPlayersSort={blank__}
         updateTeamFixturesSort={blank__}
-        match={{ params: { teamId: MANCHESTER_UNITED.id } }}
+        fetchTeamPlayers={blank__}
+        fetchTeamFixtures={blank__}
         {...props}
       />
     </MockedRouter>
   )
 
-  const tabPanelTabs = wrapper => wrapper.find('TabPanel').find('WithStyles(ForwardRef(Tab))')
-  const teamTabs = wrapper => wrapper.find('Tabs').find('WithStyles(ForwardRef(Tab))')
+  const tabList = (i) => screen.getAllByRole('tablist')[i]
+  const tabListTabs = (i) => within(tabList(i)).getAllByRole('tab')
 
-  it('renders the tab panel, team details and sets the document title', () => {
-    const wrapper = connectedRender()
-    wrapper.update()
+  describe('when teamId is present', () => {
+    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ teamId: MANCHESTER_UNITED.id }))
 
-    expect(wrapper.find('TabPanel').text()).toEqual('ARSLEEMCIMUNTOT')
+    it('renders the tab panel, team details and sets the document title', () => {
+      connectedRender()
 
-    expect(tabPanelTabs(wrapper)).toHaveLength(TEAMS.length)
-    expect(tabPanelTabs(wrapper).at(3).props().selected).toEqual(true)
-    expect(tabPanelTabs(wrapper).at(3).text()).toEqual(MANCHESTER_UNITED.shortName)
+      expect(tabListTabs(0)).toHaveLength(TEAMS.length)
+      expect(tabListTabs(0)[3]).toHaveAttribute('aria-selected', 'true')
+      expect(tabListTabs(0)[3]).toHaveTextContent(MANCHESTER_UNITED.shortName)
 
-    expect(teamTabs(wrapper)).toHaveLength(3)
-    expect(teamTabs(wrapper).at(0).props().selected).toEqual(true)
-    expect(document.title).toEqual(`${TITLE} - ${MANCHESTER_UNITED.name} - Details`)
+      expect(tabListTabs(1)).toHaveLength(3)
+      expect(tabListTabs(1)[0]).toHaveAttribute('aria-selected', 'true')
+      expect(tabListTabs(1)[0]).toHaveTextContent(TABS[0].label)
+      expect(tabListTabs(1)[1]).toHaveTextContent(TABS[1].label)
+      expect(tabListTabs(1)[2]).toHaveTextContent(TABS[2].label)
+      expect(document.title).toEqual(`${TITLE} - ${MANCHESTER_UNITED.name} - Details`)
+    })
+
+     it('triggers the fetchTeams function on load', () => {
+      const fetchTeams = jest.fn()
+      customRender({ fetchTeams })
+
+      expect(fetchTeams).toHaveBeenCalledWith({ sort: { shortName: 'asc' } })
+    })
+
+    it('calls fetchTeam with the teamId', () => {
+      const fetchTeam = jest.fn()
+      customRender({ fetchTeam })
+
+      expect(fetchTeam).toHaveBeenCalledWith(
+        MANCHESTER_UNITED.id,
+        'details',
+        {
+          'fixtures': { 'kickoffTime': 'asc' },
+          'players': { 'totalPoints': 'desc' }
+        }
+      )
+    })
+
+    it('renders nothing if data is not defined', () => {
+      const { container } = connectedRender({ team: { data: undefined, fixtures: [] }, players: { data: PLAYER_SUMMARIES } })
+      expect(container).toBeEmptyDOMElement()
+    })
   })
 
-  it('triggers the fetchTeams function on load', () => {
-    const fetchTeams = jest.fn()
-    render({ fetchTeams })
+  describe('when teamId is undefined', () => {
+    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ teamId: undefined }))
 
-    expect(fetchTeams).toHaveBeenCalledWith({ sort: { shortName: 'asc' } })
-  })
+    it('renders nothing', () => {
+      const { container } = connectedRender()
 
-  it('calls fetchTeam with the teamId', () => {
-    const fetchTeam = jest.fn()
-    const teamId =  ARSENAL.id
-    const wrapper = render({ fetchTeam, match: { params: { teamId } } })
-
-    expect(fetchTeam).toHaveBeenCalledWith(teamId, 'details', undefined)
-    expect(tabPanelTabs(wrapper).at(0).props().selected).toEqual(true)
-    expect(tabPanelTabs(wrapper).at(0).text()).toEqual(ARSENAL.shortName)
-  })
-
-  it('renders nothing if data is not defined', () => {
-    const wrapper = connectedRender({}, { team: { data: undefined, fixtures: [] }, players: { data: PLAYERS } })
-    expect(wrapper.html()).toEqual('')
+      expect(container).toBeEmptyDOMElement()
+    })
   })
 })

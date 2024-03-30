@@ -16,7 +16,6 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-
 const player = {
   ...PLAYER_SUMMARIES[0],
   code: 1234,

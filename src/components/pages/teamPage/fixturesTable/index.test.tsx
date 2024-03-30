@@ -1,62 +1,71 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import timezoneMock from 'timezone-mock'
 
 import FixturesTable from '.'
-import { MockedRouter, blank__ } from 'test/helpers'
+import { RouteWithOutletContext, blank__ } from 'test/helpers'
 import { TEAM_FIXTURES } from 'test/fixtures'
 import { initialFilterState } from 'state/team/reducer'
 import { ROUNDS_URL, TEAMS_URL } from 'utilities/constants'
 
 describe('FixturesTable', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouter>
-      <FixturesTable
-        fixtures={TEAM_FIXTURES}
-        fetchTeamFixtures={blank__}
-        updateTeamFixturesSort={blank__}
-        tab='fixtures'
-        teamId='1'
-        {...props}
-      />
-    </MockedRouter>
-  )
+  const customRender = (context = {}) => {
+    const baseContext = {
+      team: { fixtures: TEAM_FIXTURES },
+      teamId: '1',
+      fetchTeamFixtures: blank__,
+      updateTeamFixturesSort: blank__,
+      setTab: blank__,
+      ...context
+    }
+    
+    return render(
+      <RouteWithOutletContext context={baseContext}>
+        <FixturesTable />
+      </RouteWithOutletContext>
+    )
+  }
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
+  const sortTable = () => screen.getByTestId('SortTable')
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const sortButton = (text) => within(screen.getByLabelText(text)).getByRole('button')
 
   it('renders the team fixtures table', () => {
     timezoneMock.register('Australia/Adelaide')
 
-    const wrapper = render()
+    customRender()
 
-    expect(link(wrapper, 1, 0).props().to).toEqual(`${ROUNDS_URL}/${TEAM_FIXTURES[0].round.id}`)
-    expect(link(wrapper, 1, 0).text()).toEqual(TEAM_FIXTURES[0].round.name)
+    expect(link(1, 0)).toHaveAttribute('href', `${ROUNDS_URL}/${TEAM_FIXTURES[0].round.id}`)
+    expect(link(1, 0)).toHaveTextContent(TEAM_FIXTURES[0].round.name)
 
-    expect(link(wrapper, 2, 1).props().to).toEqual(`${TEAMS_URL}/${TEAM_FIXTURES[1].opponent.id}/fixtures`)
-    expect(link(wrapper, 2, 1).text()).toEqual(TEAM_FIXTURES[1].opponent.shortName)
-    expect(link(wrapper, 2, 1).find('img').props().alt).toEqual(TEAM_FIXTURES[1].opponent.shortName)
+    expect(link(2, 1)).toHaveAttribute('href', `${TEAMS_URL}/${TEAM_FIXTURES[1].opponent.id}/fixtures`)
+    expect(link(2, 1)).toHaveTextContent(TEAM_FIXTURES[1].opponent.shortName)
+    expect(within(link(2, 1)).getByRole('img')).toHaveAttribute('alt', TEAM_FIXTURES[1].opponent.shortName)
 
-    expect(tableCell(wrapper, 3, 3).text()).toEqual('16/08/21 01:00')
+    expect(tableCell(3, 3)).toHaveTextContent('16/08/21 01:00')
 
-    expect(tableCell(wrapper, 1, 5).text())
-      .toEqual(`${TEAM_FIXTURES[0].homeTeamScore} - ${TEAM_FIXTURES[0].awayTeamScore}`)
-    expect(tableCell(wrapper, 3, 5).text()).toEqual('') // Upcoming fixtures do not show scores
+    expect(tableCell(1, 5))
+      .toHaveTextContent(`${TEAM_FIXTURES[0].homeTeamScore} - ${TEAM_FIXTURES[0].awayTeamScore}`)
+    expect(tableCell(3, 5)).toHaveTextContent('') // Upcoming fixtures do not show scores
   })
 
-  it('triggers fetchTeamFixtures on render', () => {
+  it('triggers fetchTeamFixtures and setTab on render', () => {
     const fetchTeamFixtures = jest.fn()
-    render({ fetchTeamFixtures })
+    const setTab = jest.fn()
+    customRender({ fetchTeamFixtures, setTab })
 
     expect(fetchTeamFixtures).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
+    expect(setTab).toHaveBeenCalledWith('fixtures')
   })
 
   it('triggers fetchTeamFixtures', () => {
     const updateTeamFixturesSort = jest.fn()
-    const wrapper = render({ updateTeamFixturesSort })
+    customRender({ updateTeamFixturesSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(sortButton('Round'))
+
     expect(updateTeamFixturesSort).toHaveBeenCalledWith({ tab: 'fixtures', sort: { 'rounds.deadlineTime': 'asc' } })
   })
 })

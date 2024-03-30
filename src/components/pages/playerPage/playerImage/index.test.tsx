@@ -25,7 +25,6 @@ describe('PlayerImage', () => {
     expect(img()).toHaveAttribute('src', playerPlaceHolderLoader())
   })
 
-
   it('should set the correct image source after loading', () => {
     const originalImage = global.Image
     

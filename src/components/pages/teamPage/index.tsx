@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useParams, useLocation, Outlet } from 'react-router-dom'
 import qs from 'qs'
@@ -59,7 +59,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }))
 
-const TABS = [
+export const TABS = [
   { label: 'Details', value: 'details', display: true },
   { label: 'Fixtures', value: 'fixtures', display: true },
   { label: 'Players', value: 'players', display: true }
