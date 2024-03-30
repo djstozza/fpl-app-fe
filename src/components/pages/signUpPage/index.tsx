@@ -82,6 +82,8 @@ export const SignUpPage = (props: Props) => {
     signUp({ user: { email, username, password } })
   }
 
+  const firstUpdate = useRef(true)
+
   useEffect(() => {
     if (!height) {
       window.dispatchEvent(new Event('resize'))
@@ -89,7 +91,10 @@ export const SignUpPage = (props: Props) => {
   }, [height])
 
   useEffect(() => {
-    initializeAuth()
+    if (firstUpdate.current) {
+      initializeAuth()
+      firstUpdate.current = false
+    }
   }, [initializeAuth])
 
   const { classes } = useStyles({ height })
@@ -138,6 +143,7 @@ export const SignUpPage = (props: Props) => {
             className={classes.textField}
             fullWidth
             variant='outlined'
+            data-testid='password'
             label='Password'
             name='password'
             type='password'

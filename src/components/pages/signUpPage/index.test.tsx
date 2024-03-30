@@ -1,7 +1,7 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import ConnectedSignUpPage, { SignUpPage } from '.'
-import { MockedRouterStore, blank__ } from 'test/helpers'
+import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 
 const email = 'user@example.com'
 const username = 'user 1'
@@ -28,53 +28,54 @@ const errors = [
 ]
 
 describe('SignUpPage', () => {
-  const render = (props = {}) => createMount()(
-    <MockedRouterStore>
+  const customRender = (props = {}) => render(
+    <MockedRouter>
       <SignUpPage
+        submitting={false}
+        errors={[]}
         initializeAuth={blank__}
         signUp={blank__}
         {...props}
       />
-    </MockedRouterStore>
+    </MockedRouter>
   )
 
-  const connectedRender = (state = {}) => createMount()(
+  const ConnectedRenderBase = (state = {}) => (
     <MockedRouterStore defaultState={{ ...state }}>
-      <ConnectedSignUpPage initializeAuth={blank__} />
+      <ConnectedSignUpPage />
     </MockedRouterStore>
   )
 
-  const emailInput = wrapper => wrapper.find({ name: 'email' }).find('input')
-  const usernameInput = wrapper => wrapper.find({ name: 'username' }).find('input')
-  const passwordInput = wrapper => wrapper.find({ name: 'password' }).find('input')
-  const submitButton = wrapper => wrapper.find('button')
-  const helperText = wrapper => wrapper.find('WithStyles(ForwardRef(FormHelperText))')
+  const connectedRender = (state = {}) => render(ConnectedRenderBase(state))
+
+  const emailInput = () => screen.getByRole('textbox', { name: /email/i })
+  const usernameInput = () => screen.getByRole('textbox', { name: /username/i })
+  const passwordInput = () => screen.getByTestId('password').querySelector('input') as HTMLElement
+  const submitButton = () => screen.getByRole('button', { name: /submit/i })
 
   it('triggers initialAuth on load', () => {
     const initializeAuth = jest.fn()
 
-    render({ initializeAuth })
+    customRender({ initializeAuth })
 
     expect(initializeAuth).toHaveBeenCalled()
   })
 
   it('triggers signUp with the email, username and password', () => {
     const signUp = jest.fn()
-    const wrapper = render({ signUp })
+    customRender({ signUp })
 
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    expect(submitButton()).toHaveAttribute('disabled')
 
-    emailInput(wrapper).simulate('change', { target: { value: email } })
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    fireEvent.change(emailInput(), { target: { value: email } })
+    expect(submitButton()).toHaveAttribute('disabled')
 
-    usernameInput(wrapper).simulate('change', { target: { value: username } })
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    fireEvent.change(usernameInput(), { target: { value: username } })
+    expect(submitButton()).toHaveAttribute('disabled')
 
-    passwordInput(wrapper).simulate('change', { target: { value: password } })
+    fireEvent.change(passwordInput(), { target: { value: password } })
 
-    expect(submitButton(wrapper).props().disabled).toEqual(false)
-
-    submitButton(wrapper).simulate('submit')
+    fireEvent.click(submitButton())
 
     expect(signUp).toHaveBeenCalledWith({ user: { email, username, password } })
   })
@@ -82,19 +83,24 @@ describe('SignUpPage', () => {
   it('disables the submit button when submitting = true', () => {
     const wrapper = connectedRender({ auth: { submitting: true } })
 
-    emailInput(wrapper).simulate('change', { target: { value: email } })
-    usernameInput(wrapper).simulate('change', { target: { value: username } })
-    passwordInput(wrapper).simulate('change', { target: { value: password } })
-    expect(submitButton(wrapper).props().disabled).toEqual(true)
+    fireEvent.change(emailInput(), { target: { value: email } })
+    fireEvent.change(usernameInput(), { target: { value: username } })
+    fireEvent.change(passwordInput(), { target: { value: password } })
+    expect(submitButton()).toHaveAttribute('disabled')
   })
 
   it('shows errors', () => {
-    const wrapper = connectedRender({ auth: { errors } })
-    expect(helperText(wrapper).at(0).text()).toEqual('Email has already been taken')
-    expect(helperText(wrapper).at(1).text()).toEqual('Username has already been taken')
-    expect(helperText(wrapper).at(2).text()).toEqual('Password is too short (minimum is 8 characters)')
-    expect(emailInput(wrapper).props()['aria-invalid']).toEqual(true)
-    expect(usernameInput(wrapper).props()['aria-invalid']).toEqual(true)
-    expect(passwordInput(wrapper).props()['aria-invalid']).toEqual(true)
+    const { container, rerender } = connectedRender({ auth: { errors } })
+    rerender(ConnectedRenderBase({ auth: { errors } }))
+    rerender(ConnectedRenderBase({ auth: { errors } }))
+
+    const helperText = container.querySelectorAll('.MuiFormHelperText-root')
+    expect(helperText[0]).toHaveTextContent('Email has already been taken')
+    expect(helperText[1]).toHaveTextContent('Username has already been taken')
+    expect(helperText[2]).toHaveTextContent('Password is too short (minimum is 8 characters)')
+    
+    expect(emailInput()).toHaveAttribute('aria-invalid', 'true')
+    expect(usernameInput()).toHaveAttribute('aria-invalid', 'true')
+    expect(passwordInput()).toHaveAttribute('aria-invalid', 'true')
   })
 })
