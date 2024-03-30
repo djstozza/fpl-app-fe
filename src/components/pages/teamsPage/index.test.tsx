@@ -1,31 +1,27 @@
-import { createMount } from '@material-ui/core/test-utils'
+import { fireEvent, within, render, screen } from '@testing-library/react'
 
 import ConnectedTeamsPage, { TeamsPage } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 import { TITLE, TEAMS_URL } from 'utilities/constants'
 import { TEAMS } from 'test/fixtures'
-import { initialFilterState } from 'state/teams/reducer'
+import { initialFilterState, initialState } from 'state/teams/reducer'
 
 describe('TeamsPage', () => {
-  const connectedRender = (props = {}, state = {}) => createMount()(
+  const connectedRender = (props = {}, state = {}) => render(
     <MockedRouterStore
       defaultState={{
         teams: { data: TEAMS },
         ...state
       }}
     >
-      <ConnectedTeamsPage
-        fetchTeams={blank__}
-        updateSort={blank__}
-        {...props}
-      />
+      <ConnectedTeamsPage />
     </MockedRouterStore>
   )
 
-  const render = (props = {}) => createMount()(
+  const customRender = (props = {}) => render(
     <MockedRouter>
       <TeamsPage
-        teams={{ data: TEAMS }}
+        teams={{ ...initialState, data: TEAMS }}
         fetchTeams={blank__}
         updateSort={blank__}
         {...props}
@@ -33,36 +29,45 @@ describe('TeamsPage', () => {
     </MockedRouter>
   )
 
-  const tableCell = (wrapper, i, j) => (
-    wrapper.find('WithStyles(ForwardRef(TableRow))').at(i).find('WithStyles(ForwardRef(TableCell))').at(j)
-  )
-  const link = (wrapper, i, j) => tableCell(wrapper, i, j).find('Link').at(0)
+  const sortTable = () => screen.getByTestId('SortTable')
+  
+  const tableRows = () => within(sortTable()).getAllByRole('row')
+  
+  const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
+  const tableCell = (i, j) => tableCells(i)[j]
+  const link = (i, j) => within(tableCell(i, j)).getByRole('link')
+  const columnHeaders = () => screen.getAllByRole('columnheader')
+  const checkboxes = () => screen.queryAllByRole('checkbox')
+
+  const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
+  
+  const tablePagination = () => screen.getByTestId('SortTablePagination')
 
   it('renders the teams  table and sets the document title', () => {
-    const wrapper = connectedRender()
+    connectedRender()
 
-    expect(wrapper.find('WithStyles(ForwardRef(TableRow))')).toHaveLength(TEAMS.length + 1)
-    expect(link(wrapper, 2, 0).props().to).toEqual(`${TEAMS_URL}/${TEAMS[1].id}/`)
-    expect(link(wrapper, 2, 0).text()).toEqual(TEAMS[1].shortName)
-    expect(link(wrapper, 2, 0).find('img').props().alt).toEqual(TEAMS[1].shortName)
+    expect(tableRows()).toHaveLength(TEAMS.length + 1)
+    expect(link(2, 0)).toHaveAttribute('href', `${TEAMS_URL}/${TEAMS[1].id}/`)
+    expect(link(2, 0)).toHaveTextContent(TEAMS[1].shortName)
+    expect(within(link(2, 0)).getByRole('img')).toHaveAttribute('alt', TEAMS[1].shortName)
 
-    expect(tableCell(wrapper, 4, 11).text()).toEqual(TEAMS[3].currentForm.join(''))
+    expect(tableCell(4, 11)).toHaveTextContent(TEAMS[3].currentForm.join(''))
 
     expect(document.title).toEqual(`${TITLE} - Teams`)
   })
 
   it('triggers the fetchTeams function on load', () => {
     const fetchTeams = jest.fn()
-    render({ fetchTeams })
+    customRender({ fetchTeams })
 
     expect(fetchTeams).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers updateSort', () => {
     const updateSort = jest.fn()
-    const wrapper = render({ updateSort })
+    customRender({ updateSort })
 
-    tableCell(wrapper, 0, 0).find('WithStyles(ForwardRef(TableSortLabel))').simulate('click')
+    fireEvent.click(sortButton('N'))
     expect(updateSort).toHaveBeenCalledWith({ shortName: 'asc' })
   })
 })
