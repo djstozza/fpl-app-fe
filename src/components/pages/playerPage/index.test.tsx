@@ -71,7 +71,7 @@ describe('PlayerPage', () => {
     })
 
     it('only renders active tabs', () => {
-      const wrapper = connectedRender({ player: { data: { ...player, hasHistory: false, hasHistoryPast: false } } })
+      connectedRender({ player: { data: { ...player, hasHistory: false, hasHistoryPast: false } } })
 
       expect(tabs()).toHaveLength(1)
       expect(tabs()[0]).toHaveTextContent('Details')

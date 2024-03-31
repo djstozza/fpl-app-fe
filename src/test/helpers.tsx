@@ -3,7 +3,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from 'state/rootReducer'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
-import history from 'state/history'
 
 export const blank__ = (): void => { return }
 

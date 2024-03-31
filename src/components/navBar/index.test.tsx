@@ -184,10 +184,10 @@ describe('NavBar', () => {
         matches: mediaQuery.match(query, { width }),
         media: query,
         onchange: null,
-        addListener: () => {},
-        removeListener: () => {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
         dispatchEvent: () => false,
       })
     }

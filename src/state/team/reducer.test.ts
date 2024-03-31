@@ -7,7 +7,6 @@ import {
   TEAM_FIXTURES,
   errors
 } from 'test/fixtures'
-import { initialFilterState } from './reducer'
 
 describe('Team reducer handles action', () => {
   test(actions.API_TEAMS_SHOW, () => {

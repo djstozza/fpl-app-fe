@@ -1,6 +1,6 @@
 import { expectSaga } from 'redux-saga-test-plan'
 
-import requestSagas, * as sagas from './sagas'
+import * as sagas from './sagas'
 import * as actions from './actions'
 
 const successAction = 'SUCCESS'

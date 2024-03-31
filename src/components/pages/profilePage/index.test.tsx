@@ -7,7 +7,7 @@ import { USER_1 } from 'test/fixtures'
 const tabsArr = Object.values(TABS)
 
 describe('ProfilePage', () => {
-  const connectedRender = (props = {}, state = {}) => render(
+  const connectedRender = (state = {}) => render(
     <MockedRouterStore
       defaultState={{
         auth: { user: USER_1 },

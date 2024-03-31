@@ -7,7 +7,7 @@ import { TEAMS } from 'test/fixtures'
 import { initialFilterState, initialState } from 'state/teams/reducer'
 
 describe('TeamsPage', () => {
-  const connectedRender = (props = {}, state = {}) => render(
+  const connectedRender = (state = {}) => render(
     <MockedRouterStore
       defaultState={{
         teams: { data: TEAMS },
@@ -36,12 +36,8 @@ describe('TeamsPage', () => {
   const tableCells = (i) => within(tableRows()[i]).getAllByRole('cell')
   const tableCell = (i, j) => tableCells(i)[j]
   const link = (i, j) => within(tableCell(i, j)).getByRole('link')
-  const columnHeaders = () => screen.getAllByRole('columnheader')
-  const checkboxes = () => screen.queryAllByRole('checkbox')
 
   const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
-  
-  const tablePagination = () => screen.getByTestId('SortTablePagination')
 
   it('renders the teams  table and sets the document title', () => {
     connectedRender()

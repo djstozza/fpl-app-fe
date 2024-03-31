@@ -15,7 +15,6 @@ describe('FixtureDetails', () => {
     </MockedRouter>
   )
 
-  const table = () => screen.getByRole('table')
   const colummnHeaders = () => screen.getAllByRole('columnheader')
   const tableBody = (i) => document.querySelectorAll('tbody')[i]
   const tableBodyCell = (i, j) => within(tableBody(i)).getAllByRole('cell')[j]

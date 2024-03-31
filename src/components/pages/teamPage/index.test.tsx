@@ -4,7 +4,7 @@ import * as rrd from 'react-router-dom'
 import ConnectedTeamPage, { TeamPage, TABS } from '.'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 import { TITLE } from 'utilities/constants'
-import { TEAMS, MANCHESTER_UNITED, ARSENAL, PLAYER_SUMMARIES } from 'test/fixtures'
+import { TEAMS, MANCHESTER_UNITED, PLAYER_SUMMARIES } from 'test/fixtures'
 import { initialState as initialTeamState } from 'state/team/reducer'
 import { initialState as initialPlayersState } from 'state/players/reducer'
 

@@ -81,7 +81,7 @@ describe('SignUpPage', () => {
   })
 
   it('disables the submit button when submitting = true', () => {
-    const wrapper = connectedRender({ auth: { submitting: true } })
+    connectedRender({ auth: { submitting: true } })
 
     fireEvent.change(emailInput(), { target: { value: email } })
     fireEvent.change(usernameInput(), { target: { value: username } })

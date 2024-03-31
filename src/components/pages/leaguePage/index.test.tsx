@@ -15,7 +15,7 @@ afterEach(() => {
 })
 
 describe('LeaguePage', () => {
-  const connectedRender = (props = {}, state = {}) => render(
+  const connectedRender = (state = {}) => render(
     <MockedRouterStoreWithRoute
       defaultState={{
         league: { data: LEAGUES[0] },
@@ -77,7 +77,7 @@ describe('LeaguePage', () => {
     })
 
     it('renders nothing if data is not defined', () => {
-      connectedRender({}, { league: { data: undefined } })
+      connectedRender({ league: { data: undefined } })
       
       expect(screen.queryByTestId('LeaguePage')).not.toBeInTheDocument()
     })

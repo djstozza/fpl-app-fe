@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { useOutletContext } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
 
 import SearchListener from 'components/common/searchListener'
