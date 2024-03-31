@@ -85,6 +85,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "css-mediaquery": "^0.1.2",
     "husky": "^7.0.2",
     "jest-websocket-mock": "^2.5.0",
