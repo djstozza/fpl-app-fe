@@ -22,11 +22,11 @@ const { id, league: { id: leagueId } } = FPL_TEAM_1
 const { id: outListPositionId, position: { id: positionId } } = LIST_POSITION_1
 const sort = { name: 'desc' }
 const filter = { team_id: ['3'] }
-const page = { offset: 1, limit: 50 }
+const page = { offset: '1', limit: '50' }
 
 describe('List position sagas', () => {
   test('fetchValidSubstitutions', () => {
-    expectSaga(listPositionSagas, actions.fetchValidSubstitutions(listPositionId))
+    expectSaga(listPositionSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',
@@ -53,7 +53,7 @@ describe('List position sagas', () => {
         filter: { leagueId, positionId },
         page: undefined
       })
-      .dispatch({ type: actions.FETCH_AVAILABLE_PLAYERS })
+      .dispatch({ type: actions.FETCH_TRADEABLE_PLAYERS })
       .run()
 
     expectSaga(
@@ -74,7 +74,7 @@ describe('List position sagas', () => {
         },
         page
       })
-      .dispatch({ type: actions.FETCH_AVAILABLE_PLAYERS })
+      .dispatch({ type: actions.FETCH_TRADEABLE_PLAYERS })
       .run()
   })
 
@@ -133,7 +133,7 @@ describe('List position sagas', () => {
   })
 
   test('fetchTradeableListPositions', () => {
-    let query = { sort: undefined, filter: undefined }
+    let query = { sort: {}, filter: {} }
 
     expectSaga(sagas.fetchTradeableListPositions, actions.fetchTradeableListPositions(query))
       .withState({
@@ -167,7 +167,7 @@ describe('List position sagas', () => {
   })
 
   test('fetchTradeableListPositionFacets', () => {
-    expectSaga(sagas.fetchTradeableListPositionFacets, actions.fetchTradeableListPositionFacets())
+    expectSaga(sagas.fetchTradeableListPositionFacets)
       .withState({
         fplTeamList: { outListPosition: LIST_POSITION_1 }
       })

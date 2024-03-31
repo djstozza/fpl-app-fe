@@ -20,7 +20,7 @@ const sort = {
 
 describe('Team sagas', () => {
   test('fetchTeam', () => {
-    expectSaga(teamSagas, actions.fetchTeam(teamId))
+    expectSaga(teamSagas)
       .put({
         type: requestActions.UNAUTHED_REQUEST,
         method: 'GET',
@@ -40,7 +40,7 @@ describe('Team sagas', () => {
   })
 
   test('fetchTeamFixtures', () => {
-    expectSaga(sagas.fetchTeamFixtures, actions.fetchTeamFixtures({ id: teamId, sort }))
+    expectSaga(sagas.fetchTeamFixtures, actions.fetchTeamFixtures({ id: teamId, tab: 'details', sort }))
       .put({
         type: requestActions.UNAUTHED_REQUEST,
         method: 'GET',

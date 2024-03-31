@@ -10,7 +10,7 @@ const roundId = 4
 
 describe('Round sagas', () => {
   test('fetchRound', () => {
-    expectSaga(sagas, actions.fetchRound(roundId))
+    expectSaga(sagas)
       .put({
         type: requestActions.UNAUTHED_REQUEST,
         method: 'GET',

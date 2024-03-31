@@ -2,28 +2,29 @@ import { success, failure } from 'utilities/actions'
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 
-import { WAIVER_PICKS } from 'test/fixtures'
-
-const errors = [{ failure: true }]
+import { WAIVER_PICKS, errors } from 'test/fixtures'
 
 describe('Waiver picks reducer handles action', () => {
   test(actions.API_LIST_POSITION_WAIVER_PICKS_CREATE, () => {
     expect(reducer(initialState, {
-      type: actions.API_LIST_POSITION_WAIVER_PICKS_CREATE
+      type: actions.API_LIST_POSITION_WAIVER_PICKS_CREATE,
+      meta: {}
     }))
       .toEqual({ ...initialState, submitting: true })
   })
 
   test(actions.API_LIST_POSITION_WAIVER_PICKS_CREATE, () => {
     expect(reducer(initialState, {
-      type: actions.API_LIST_POSITION_WAIVER_PICKS_CREATE
+      type: actions.API_LIST_POSITION_WAIVER_PICKS_CREATE,
+      meta: {}
     }))
       .toEqual({ ...initialState, submitting: true })
   })
 
   test(actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX, () => {
     expect(reducer(initialState, {
-      type: actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX
+      type: actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX,
+      meta: {}
     }))
       .toEqual({ ...initialState, fetching: true })
   })
@@ -32,6 +33,7 @@ describe('Waiver picks reducer handles action', () => {
     expect(reducer({ ...initialState, errors }, {
       type: success(actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX),
       data: WAIVER_PICKS,
+      meta: {}
     }))
       .toEqual({ ...initialState, data: WAIVER_PICKS, submitting: false })
   })
@@ -40,6 +42,7 @@ describe('Waiver picks reducer handles action', () => {
     expect(reducer(initialState, {
       type: success(actions.API_LIST_POSITION_WAIVER_PICKS_CREATE),
       data: WAIVER_PICKS,
+      meta: {}
     }))
       .toEqual({ ...initialState, data: WAIVER_PICKS, submitting: false })
   })
@@ -48,6 +51,7 @@ describe('Waiver picks reducer handles action', () => {
     expect(reducer(initialState, {
       type: success(actions.API_FPL_TEAM_LSIT_WAIVER_PICKS_CHANGE_ORDER),
       data: WAIVER_PICKS,
+      meta: {}
     }))
       .toEqual({ ...initialState, data: WAIVER_PICKS, submitting: false })
   })
@@ -55,7 +59,8 @@ describe('Waiver picks reducer handles action', () => {
   test(failure(actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
@@ -63,7 +68,8 @@ describe('Waiver picks reducer handles action', () => {
   test(failure(actions.API_LIST_POSITION_WAIVER_PICKS_CREATE), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LIST_POSITION_WAIVER_PICKS_CREATE),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
@@ -71,13 +77,14 @@ describe('Waiver picks reducer handles action', () => {
   test(failure(actions.API_FPL_TEAM_LSIT_WAIVER_PICKS_CHANGE_ORDER), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_FPL_TEAM_LSIT_WAIVER_PICKS_CHANGE_ORDER),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(reducer(undefined, { type: 'unknown', meta: {} }))
       .toEqual({ ...initialState })
   })
 })

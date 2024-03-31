@@ -21,7 +21,7 @@ const sort = { name: 'desc' }
 
 describe('Leagues sagas', () => {
   test('fetchLeagues', () => {
-    expectSaga(leaguesSagas, actions.fetchLeagues())
+    expectSaga(leaguesSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',
@@ -34,7 +34,7 @@ describe('Leagues sagas', () => {
   })
 
   test('createLeague', () => {
-    expectSaga(leaguesSagas, actions.createLeague({ league }))
+    expectSaga(leaguesSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'POST',
@@ -48,7 +48,7 @@ describe('Leagues sagas', () => {
   })
 
   test('joinLeague', () => {
-    expectSaga(leaguesSagas, actions.joinLeague({ league }))
+    expectSaga(leaguesSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'POST',

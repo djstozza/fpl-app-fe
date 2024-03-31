@@ -64,12 +64,12 @@ const commaJoinValues = (object: QueryParam) => {
   return result
 }
 
-export const stringify = (query: Query): string => {
+export const stringify = (query?: Query): string => {
   query = decamelizeKeys(query || {})
 
   return qs.stringify({
     ...query,
-    filter: query.filter && commaJoinValues(query.filter)
+    filter: query?.filter && commaJoinValues(query.filter)
   })
 }
 

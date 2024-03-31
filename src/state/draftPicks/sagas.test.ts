@@ -23,7 +23,7 @@ const leagueId = '1'
 
 describe('DraftPicks sagas', () => {
   test('fetchDraftPicks', () => {
-    expectSaga(draftPicksSagas, actions.fetchDraftPicks({ sort, filter }))
+    expectSaga(draftPicksSagas)
       .withState({ league: { data: LIVE_LEAGUE } })
       .put({
         type: requestActions.AUTHED_REQUEST,
@@ -49,7 +49,7 @@ describe('DraftPicks sagas', () => {
   })
 
   test('fetchDraftPickFacets', () => {
-    expectSaga(sagas.fetchDraftPickFacets, actions.fetchDraftPickFacets())
+    expectSaga(sagas.fetchDraftPickFacets)
       .withState({ league: { data: LIVE_LEAGUE } })
       .put({
         type: requestActions.AUTHED_REQUEST,

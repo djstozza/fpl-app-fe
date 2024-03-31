@@ -402,27 +402,27 @@ export const PLAYER_BASES = [
 ]
 
 export const PLAYER_SUMMARIES = [
-    {
-      assists: 14,
-      bonus: 40,
-      chanceOfPlayingNextRound: 100,
-      chanceOfPlayingThisRound: 100,
-      cleanSheets: 12,
-      externalId: '357',
-      goalsScored: 23,
-      minutes: 3083,
-      ownGoals: 0,
-      penaltiesMissed: 0,
-      penaltiesSaved: 0,
-      position: FORWARD,
-      redCards: 0,
-      saves: 0,
-      status: 'a',
-      team: SPURS_TEAM_BASE,
-      totalPoints: 242,
-      yellowCards: 1,
-      ...PLAYER_BASES[0]
-    },
+  {
+    assists: 14,
+    bonus: 40,
+    chanceOfPlayingNextRound: 100,
+    chanceOfPlayingThisRound: 100,
+    cleanSheets: 12,
+    externalId: '357',
+    goalsScored: 23,
+    minutes: 3083,
+    ownGoals: 0,
+    penaltiesMissed: 0,
+    penaltiesSaved: 0,
+    position: FORWARD,
+    redCards: 0,
+    saves: 0,
+    status: 'a',
+    team: SPURS_TEAM_BASE,
+    totalPoints: 242,
+    yellowCards: 1,
+    ...PLAYER_BASES[0]
+  },
   {
     assists: 0,
     bonus: 3,
@@ -2046,14 +2046,17 @@ export const TRADES = [
     outPlayer: PLAYER_BASES[1],
     inPlayer: PLAYER_BASES[4],
     outTeam: MANCHESTER_CITY_TEAM_BASE,
-    inTeam: SPURS_TEAM_BASE
+    inTeam: SPURS_TEAM_BASE,
+    position: 'FWD'
   },
   {
     id: '2',
     outPlayer: PLAYER_BASES[0],
     inPlayer: PLAYER_BASES[3],
     outTeam: LEEDS_TEAM_BASE,
-    inTeam: MANCHESTER_UNITED_TEAM_BASE
+    inTeam: MANCHESTER_UNITED_TEAM_BASE,
+    position: 'FWD'
+    
   }
 ]
 
@@ -2062,7 +2065,7 @@ export const MINI_DRAFT_PICK_1 = {
   fplTeam: FPL_TEAM_1,
   user: USER_1,
   passed: false,
-  pickNumber: 1,
+  pickNumber: '1',
   season: 'winter'
 }
 
@@ -2071,7 +2074,7 @@ export const MINI_DRAFT_PICK_2 = {
   fplTeam: FPL_TEAM_2,
   user: USER_2,
   passed: false,
-  pickNumber: 2,
+  pickNumber: '2',
   season: 'winter'
 }
 
@@ -2131,3 +2134,13 @@ export const DRAFT_PICK_STATUS = {
 export const MINI_DRAFT_PICK_STATUS = {
   canMakeMiniDraftPick: true
 }
+
+export const errors = [
+  {
+    status: 'status',
+    code: 'code',
+    title: 'title',
+    detail: 'detail',
+    source: 'source'
+  }
+]

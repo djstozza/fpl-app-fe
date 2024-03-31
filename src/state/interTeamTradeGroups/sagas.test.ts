@@ -15,6 +15,8 @@ import {
 } from 'utilities/constants'
 import { success, failure } from 'utilities/actions'
 
+import { LIST_POSITION_1 } from 'test/fixtures'
+
 const fplTeamListId = '1'
 const inFplTeamListId = '5'
 const inPlayerId = '354'
@@ -25,7 +27,7 @@ const interTeamTradeId = '13'
 
 describe('Inter team trade groups sagas', () => {
   test('fetchInterTeamTradeGroup', () => {
-    expectSaga(interTeamTradeGroupsSagas, actions.fetchInterTeamTradeGroups(fplTeamListId))
+    expectSaga(interTeamTradeGroupsSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',
@@ -40,7 +42,7 @@ describe('Inter team trade groups sagas', () => {
   test('createInterTeamTradeGroup', () => {
     expectSaga(
       sagas.createInterTeamTradeGroup,
-      actions.createInterTeamTradeGroup({ player: { id: inPlayerId }, fplTeamListId: inFplTeamListId })
+      actions.createInterTeamTradeGroup(LIST_POSITION_1)
     )
       .withState({
         fplTeamList: {
@@ -132,7 +134,7 @@ describe('Inter team trade groups sagas', () => {
   test('addToInterTeamTradeGroup', () => {
     expectSaga(
       sagas.addToInterTeamTradeGroup,
-      actions.addToInterTeamTradeGroup({ player: { id: inPlayerId }, fplTeamListId: inFplTeamListId })
+      actions.addToInterTeamTradeGroup(LIST_POSITION_1)
     )
       .withState({
         fplTeamList: {

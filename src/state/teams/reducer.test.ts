@@ -2,9 +2,7 @@ import { success, failure } from 'utilities/actions'
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 
-import { TEAMS } from 'test/fixtures'
-
-const errors = [{ failure: true }]
+import { TEAMS, errors } from 'test/fixtures'
 
 describe('Teams reducer handles action', () => {
   test(actions.API_TEAMS_INDEX, () => {
@@ -13,7 +11,8 @@ describe('Teams reducer handles action', () => {
     }
     expect(reducer(initialState, {
       type: actions.API_TEAMS_INDEX,
-      sort: newSort
+      sort: newSort,
+      meta: {}
     }))
       .toEqual({ ...initialState, sort: newSort, fetching: true })
   })
@@ -22,13 +21,17 @@ describe('Teams reducer handles action', () => {
     expect(reducer(initialState, {
       type: success(actions.API_TEAMS_INDEX),
       data: TEAMS,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, data: TEAMS })
   })
 
   test(`${success(actions.API_TEAMS_INDEX)} - no data`, () => {
     expect(reducer(initialState, {
-      type: success(actions.API_TEAMS_INDEX)
+      type: success(actions.API_TEAMS_INDEX),
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState })
   })
@@ -36,13 +39,15 @@ describe('Teams reducer handles action', () => {
   test(failure(actions.API_TEAMS_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_TEAMS_INDEX),
-      errors
+      errors,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(reducer(undefined, { type: 'unknown', sort: {}, meta: {} }))
       .toEqual({ ...initialState })
   })
 })

@@ -15,7 +15,7 @@ const interTeamTradeGroupId = '7'
 
 describe('Inter team trade group sagas', () => {
   test('fetchInterTeamTradeGroup', () => {
-    expectSaga(interTeamTradeGroupSagas, actions.fetchInterTeamTradeGroup(fplTeamListId, interTeamTradeGroupId))
+    expectSaga(interTeamTradeGroupSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',

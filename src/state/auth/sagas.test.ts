@@ -21,7 +21,7 @@ describe('Auth sagas', () => {
   test('logIn', () => {
     const user = { email: 'user@example.com', password: 'password' }
 
-    expectSaga(authSagas, actions.logIn({ user }))
+    expectSaga(authSagas)
       .put({
         type: requestActions.UNAUTHED_REQUEST,
         method: 'POST',
@@ -69,7 +69,7 @@ describe('Auth sagas', () => {
   })
 
   test('updateSession', () => {
-    expectSaga(sagas.updateSession, actions.updateSession())
+    expectSaga(sagas.updateSession)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'PUT',

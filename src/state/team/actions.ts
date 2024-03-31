@@ -27,9 +27,9 @@ type FetchTeamPlayersProps = {
 type UpdateProps = {
   tab: string,
   sort: {
-    [key: string]:  {
+
       [key: string]: string
-    }
+
   }
 }
 

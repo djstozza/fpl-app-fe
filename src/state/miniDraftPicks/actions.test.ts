@@ -2,7 +2,7 @@ import * as actions from './actions'
 
 const sort = { pickNumber: 'desc' }
 const filter = { team_id: ['1'] }
-const page = { offset: 1, limit: 50 }
+const page = { offset: '1', limit: '50' }
 const leagueId = '1'
 const inPlayerId = '321'
 

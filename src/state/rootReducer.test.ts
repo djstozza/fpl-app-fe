@@ -22,7 +22,6 @@ import { initialState as teamInitialState } from './team/reducer'
 import { initialState as teamsInitialState } from './teams/reducer'
 import { initialState as tradesInitialState } from './trades/reducer'
 import { initialState as waiverPicksInitialState } from './waiverPicks/reducer'
-import { USER_1 } from 'test/fixtures'
 
 describe('Root reducer', () => {
   const blankAppState = {
@@ -49,11 +48,7 @@ describe('Root reducer', () => {
     waiverPicks: waiverPicksInitialState
   }
   const exampleLoggedInState = {
-    ...blankAppState,
-    auth: {
-      user: USER_1,
-      token: 'fake_token'
-    }
+    auth: undefined
   }
 
   it('Clears application state on logout', () => {

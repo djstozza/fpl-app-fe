@@ -19,7 +19,7 @@ const { id } = FPL_TEAM_1
 
 describe('Fpl team sagas', () => {
   test('fetchFplTeam', () => {
-    expectSaga(fplTeamSagas, actions.fetchFplTeam(fplTeamId))
+    expectSaga(fplTeamSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',

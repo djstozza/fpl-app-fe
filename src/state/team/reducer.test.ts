@@ -2,9 +2,12 @@ import { success, failure } from 'utilities/actions'
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 
-import { MANCHESTER_UNITED, TEAM_FIXTURES } from 'test/fixtures'
-
-const errors = [{ failure: true }]
+import {
+  MANCHESTER_UNITED,
+  TEAM_FIXTURES,
+  errors
+} from 'test/fixtures'
+import { initialFilterState } from './reducer'
 
 describe('Team reducer handles action', () => {
   test(actions.API_TEAMS_SHOW, () => {
@@ -18,7 +21,8 @@ describe('Team reducer handles action', () => {
     }
     expect(reducer(initialState, {
       type: actions.API_TEAMS_SHOW,
-      sort: newSort
+      sort: newSort,
+      meta: {}
     }))
       .toEqual({ ...initialState, sort: newSort })
   })
@@ -27,20 +31,26 @@ describe('Team reducer handles action', () => {
     expect(reducer(initialState, {
       type: success(actions.API_TEAMS_SHOW),
       data: MANCHESTER_UNITED,
+      sort: { players: {}, fixtures: {} },
+      meta: {}
     }))
       .toEqual({ ...initialState, data: MANCHESTER_UNITED })
   })
 
   test(actions.API_TEAMS_FIXTURES_INDEX, () => {
     expect(reducer(initialState, {
-      type: actions.API_TEAMS_FIXTURES_INDEX
+      type: actions.API_TEAMS_FIXTURES_INDEX,
+      sort: { players: {}, fixtures: {} },
+      meta: {}
     }))
       .toEqual({ ...initialState, fetching: true })
   })
 
   test(`${success(actions.API_TEAMS_SHOW)} - no data`, () => {
     expect(reducer(initialState, {
-      type: success(actions.API_TEAMS_SHOW)
+      type: success(actions.API_TEAMS_SHOW),
+      sort: { players: {}, fixtures: {} },
+      meta: {}
     }))
       .toEqual({ ...initialState })
   })
@@ -48,7 +58,9 @@ describe('Team reducer handles action', () => {
   test(success(actions.API_TEAMS_FIXTURES_INDEX), () => {
     expect(reducer(initialState, {
       type: success(actions.API_TEAMS_FIXTURES_INDEX),
-      data: TEAM_FIXTURES
+      data: TEAM_FIXTURES,
+      sort: { players: {}, fixtures: {} },
+      meta: {}
     }))
       .toEqual({ ...initialState, fixtures: TEAM_FIXTURES })
   })
@@ -58,7 +70,8 @@ describe('Team reducer handles action', () => {
 
     expect(reducer(initialState, {
       type: actions.UPDATE_TEAM_FIXTURES_SORT,
-      sort: newSort
+      sort: newSort,
+      meta: {}
     }))
       .toEqual({ ...initialState, sort: { ...initialState.sort, fixtures: newSort } })
   })
@@ -67,7 +80,8 @@ describe('Team reducer handles action', () => {
     const newSort = { redCards: 'desc' }
     expect(reducer(initialState, {
       type: actions.UPDATE_TEAM_PLAYERS_SORT,
-      sort: newSort
+      sort: newSort,
+      meta: {}
     }))
       .toEqual({ ...initialState, sort: { ...initialState.sort, players: newSort } })
   })
@@ -75,7 +89,9 @@ describe('Team reducer handles action', () => {
   test(failure(actions.API_TEAMS_SHOW), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_TEAMS_SHOW),
-      errors
+      errors,
+      sort: { players: {}, fixtures: {} },
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
@@ -83,13 +99,24 @@ describe('Team reducer handles action', () => {
   test(failure(actions.API_TEAMS_FIXTURES_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_TEAMS_FIXTURES_INDEX),
-      errors
+      errors,
+      sort: { players: {}, fixtures: {} },
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(
+      reducer(
+        undefined,
+        { 
+          type: 'unknown',
+          sort: { players: {}, fixtures: {} },
+          meta: {}
+        }
+      )
+    )
       .toEqual({ ...initialState })
   })
 })

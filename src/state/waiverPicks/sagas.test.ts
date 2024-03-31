@@ -25,7 +25,7 @@ const newPickNumber = '4'
 
 describe('Waiver picks sagas', () => {
   test('fetchWaiverPicks', () => {
-    expectSaga(waiverPicksSagas, actions.fetchWaiverPicks(fplTeamListId))
+    expectSaga(waiverPicksSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',

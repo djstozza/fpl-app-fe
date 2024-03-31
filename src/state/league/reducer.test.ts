@@ -2,42 +2,49 @@ import { success, failure } from 'utilities/actions'
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 
-import { LIVE_LEAGUE, FPL_TEAMS } from 'test/fixtures'
-
-const errors = [{ failure: true }]
+import {
+  LIVE_LEAGUE,
+  FPL_TEAMS,
+  errors
+} from 'test/fixtures'
 
 describe('League reducer handles action', () => {
   test(actions.API_LEAGUES_UPDATE, () => {
     expect(reducer(initialState, {
-      type: actions.API_LEAGUES_UPDATE
+      type: actions.API_LEAGUES_UPDATE,
+      meta: {}
     }))
       .toEqual({ ...initialState, submitting: true })
   })
 
   test(actions.API_LEAGUE_GENERATE_DRAFT_PICKS, () => {
     expect(reducer(initialState, {
-      type: actions.API_LEAGUE_GENERATE_DRAFT_PICKS
+      type: actions.API_LEAGUE_GENERATE_DRAFT_PICKS,
+      meta: {}
     }))
       .toEqual({ ...initialState, submitting: true })
   })
 
   test(actions.API_LEAGUE_FPL_TEAMS_INDEX, () => {
     expect(reducer(initialState, {
-      type: actions.API_LEAGUE_FPL_TEAMS_INDEX
+      type: actions.API_LEAGUE_FPL_TEAMS_INDEX,
+      meta: {}
     }))
       .toEqual({ ...initialState, fetching: true })
   })
 
   test(actions.API_LEAGUE_CREATE_DRAFT, () => {
     expect(reducer(initialState, {
-      type: actions.API_LEAGUE_CREATE_DRAFT
+      type: actions.API_LEAGUE_CREATE_DRAFT,
+      meta: {}
     }))
       .toEqual({ ...initialState, submitting: true })
   })
 
   test(actions.INITIALIZE_FORM, () => {
     expect(reducer({ ...initialState, errors }, {
-      type: actions.INITIALIZE_FORM
+      type: actions.INITIALIZE_FORM,
+      meta: {}
     }))
       .toEqual(initialState)
   })
@@ -45,7 +52,8 @@ describe('League reducer handles action', () => {
   test(success(actions.API_LEAGUES_SHOW), () => {
     expect(reducer(initialState, {
       type: success(actions.API_LEAGUES_SHOW),
-      data: LIVE_LEAGUE
+      data: LIVE_LEAGUE,
+      meta: {}
     }))
       .toEqual({ ...initialState, data: LIVE_LEAGUE })
   })
@@ -53,7 +61,8 @@ describe('League reducer handles action', () => {
   test(success(actions.API_LEAGUES_UPDATE), () => {
     expect(reducer({ ...initialState, errors }, {
       type: success(actions.API_LEAGUES_UPDATE),
-      data: LIVE_LEAGUE
+      data: LIVE_LEAGUE,
+      meta: {}
     }))
       .toEqual({ ...initialState, data: LIVE_LEAGUE, submitting: false })
   })
@@ -62,7 +71,8 @@ describe('League reducer handles action', () => {
     const state = { ...initialState, data: LIVE_LEAGUE }
     expect(reducer(state, {
       type: success(actions.API_LEAGUE_FPL_TEAMS_INDEX),
-      data: FPL_TEAMS
+      data: FPL_TEAMS,
+      meta: {}
     }))
       .toEqual({ ...state, fplTeams: FPL_TEAMS })
   })
@@ -70,7 +80,8 @@ describe('League reducer handles action', () => {
   test(`${success(actions.API_LEAGUE_FPL_TEAMS_INDEX)} - no data`, () => {
     const state = { ...initialState, data: LIVE_LEAGUE }
     expect(reducer(state, {
-      type: success(actions.API_LEAGUE_FPL_TEAMS_INDEX)
+      type: success(actions.API_LEAGUE_FPL_TEAMS_INDEX),
+      meta: {}
     }))
       .toEqual({ ...state, fplTeams: [] })
   })
@@ -79,7 +90,8 @@ describe('League reducer handles action', () => {
     const state = { ...initialState, data: LIVE_LEAGUE }
     expect(reducer(state, {
       type: success(actions.API_LEAGUE_GENERATE_DRAFT_PICKS),
-      data: FPL_TEAMS
+      data: FPL_TEAMS,
+      meta: {}
     }))
       .toEqual({ ...state, fplTeams: FPL_TEAMS })
   })
@@ -89,7 +101,8 @@ describe('League reducer handles action', () => {
 
     expect(reducer(initialState, {
       type: actions.UPDATE_LEAGUE_FPL_TEAMS_SORT,
-      sort: newSort
+      sort: newSort,
+      meta: {}
     }))
       .toEqual({ ...initialState, sort: newSort })
   })
@@ -98,7 +111,8 @@ describe('League reducer handles action', () => {
     const state = { ...initialState, fplTeams: FPL_TEAMS }
     expect(reducer(state, {
       type: success(actions.API_LEAGUE_CREATE_DRAFT),
-      data: LIVE_LEAGUE
+      data: LIVE_LEAGUE,
+      meta: {}
     }))
       .toEqual({ ...state, fplTeams: FPL_TEAMS, data: LIVE_LEAGUE })
   })
@@ -106,7 +120,8 @@ describe('League reducer handles action', () => {
   test(failure(actions.API_LEAGUES_SHOW), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUES_SHOW),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -114,7 +129,8 @@ describe('League reducer handles action', () => {
   test(failure(actions.API_LEAGUES_UPDATE), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUES_UPDATE),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -122,7 +138,8 @@ describe('League reducer handles action', () => {
   test(failure(actions.API_LEAGUE_GENERATE_DRAFT_PICKS), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUE_GENERATE_DRAFT_PICKS),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -130,7 +147,8 @@ describe('League reducer handles action', () => {
   test(failure(actions.API_LEAGUE_FPL_TEAMS_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUE_FPL_TEAMS_INDEX),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -138,13 +156,14 @@ describe('League reducer handles action', () => {
   test(failure(actions.API_LEAGUE_CREATE_DRAFT), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUE_CREATE_DRAFT),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(reducer(undefined, { type: 'unknown', meta: {} }))
       .toEqual({ ...initialState })
   })
 })

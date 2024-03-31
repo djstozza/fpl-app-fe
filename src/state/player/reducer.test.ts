@@ -5,23 +5,26 @@ import * as actions from './actions'
 import {
   PLAYER_SUMMARIES,
   PLAYER_HISTORY,
-  PLAYER_HISTORY_PAST
+  PLAYER_HISTORY_PAST,
+  errors
 } from 'test/fixtures'
-
-const errors = [{ failure: true }]
 
 describe('Player reducer handles action', () => {
   test(success(actions.API_PLAYERS_SHOW), () => {
     expect(reducer(initialState, {
       type: success(actions.API_PLAYERS_SHOW),
-      data: PLAYER_SUMMARIES[0]
+      data: PLAYER_SUMMARIES[0],
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, data: PLAYER_SUMMARIES[0] })
   })
 
   test(`${success(actions.API_PLAYERS_SHOW)} - no data`, () => {
     expect(reducer(initialState, {
-      type: success(actions.API_PLAYERS_SHOW)
+      type: success(actions.API_PLAYERS_SHOW),
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState })
   })
@@ -29,7 +32,9 @@ describe('Player reducer handles action', () => {
   test(success(actions.API_PLAYERS_HISTORY_INDEX), () => {
     expect(reducer(initialState, {
       type: success(actions.API_PLAYERS_HISTORY_INDEX),
-      data: PLAYER_HISTORY
+      data: PLAYER_HISTORY,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, history: PLAYER_HISTORY })
   })
@@ -37,7 +42,9 @@ describe('Player reducer handles action', () => {
   test(success(actions.API_PLAYERS_HISTORY_PAST_INDEX), () => {
     expect(reducer(initialState, {
       type: success(actions.API_PLAYERS_HISTORY_PAST_INDEX),
-      data: PLAYER_HISTORY_PAST
+      data: PLAYER_HISTORY_PAST,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, historyPast: PLAYER_HISTORY_PAST })
   })
@@ -46,21 +53,26 @@ describe('Player reducer handles action', () => {
     const newSort = { goalsScored: 'desc' }
     expect(reducer(initialState, {
       type: actions.UPDATE_PLAYER_HISTORY_SORT,
-      sort: newSort
+      sort: newSort,
+      meta: {}
     }))
       .toEqual({ ...initialState, sort: { ...initialState.sort, history: newSort }})
   })
 
   test(actions.API_PLAYERS_HISTORY_INDEX, () => {
     expect(reducer(initialState, {
-      type: actions.API_PLAYERS_HISTORY_INDEX
+      type: actions.API_PLAYERS_HISTORY_INDEX,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, fetching: true })
   })
 
   test(actions.API_PLAYERS_HISTORY_PAST_INDEX, () => {
     expect(reducer(initialState, {
-      type: actions.API_PLAYERS_HISTORY_PAST_INDEX
+      type: actions.API_PLAYERS_HISTORY_PAST_INDEX,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, fetching: true })
   })
@@ -69,7 +81,8 @@ describe('Player reducer handles action', () => {
     const newSort = { minutes: 'asc' }
     expect(reducer(initialState, {
       type: actions.UPDATE_PLAYER_HISTORY_PAST_SORT,
-      sort: newSort
+      sort: newSort,
+      meta: {}
     }))
       .toEqual({ ...initialState, sort: { ...initialState.sort, historyPast: newSort }})
   })
@@ -77,7 +90,9 @@ describe('Player reducer handles action', () => {
   test(failure(actions.API_PLAYERS_SHOW), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_PLAYERS_SHOW),
-      errors
+      errors,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
@@ -85,7 +100,9 @@ describe('Player reducer handles action', () => {
   test(failure(actions.API_PLAYERS_HISTORY_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_PLAYERS_HISTORY_INDEX),
-      errors
+      errors,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
@@ -93,13 +110,15 @@ describe('Player reducer handles action', () => {
   test(failure(actions.API_PLAYERS_HISTORY_PAST_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_PLAYERS_HISTORY_PAST_INDEX),
-      errors
+      errors,
+      sort: {},
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(reducer(undefined, { type: 'unknown', sort: {}, meta: {} }))
       .toEqual({ ...initialState })
   })
 })

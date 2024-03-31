@@ -2,7 +2,7 @@ import * as actions from './actions'
 
 const sort = { lastName: 'desc' }
 const filter = { team_id: ['1'] }
-const page = { offset: 1, limit: 50 }
+const page = { offset: '1', limit: '50' }
 
 describe('Players actions', () => {
   test(actions.API_PLAYERS_INDEX, () => {

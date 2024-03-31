@@ -25,7 +25,7 @@ const inPlayerId = '342'
 
 describe('Trades sagas', () => {
   test('fetchTrades', () => {
-    expectSaga(tradesSagas, actions.fetchTrades(fplTeamListId))
+    expectSaga(tradesSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',
@@ -33,7 +33,7 @@ describe('Trades sagas', () => {
         successAction: success(actions.API_FPL_TEAM_LIST_TRADES_INDEX),
         failureAction: failure(actions.API_FPL_TEAM_LIST_TRADES_INDEX)
       })
-      .dispatch({ type: actions.API_TEAMS_INDEX })
+      .dispatch({ type: actions.API_FPL_TEAM_LIST_TRADES_INDEX })
       .run()
 
     expectSaga(sagas.fetchTrades, actions.fetchTrades(fplTeamListId))
@@ -44,12 +44,12 @@ describe('Trades sagas', () => {
         successAction: success(actions.API_FPL_TEAM_LIST_TRADES_INDEX),
         failureAction: failure(actions.API_FPL_TEAM_LIST_TRADES_INDEX)
       })
-      .dispatch({ type: actions.API_TEAMS_INDEX })
+      .dispatch({ type: actions.API_FPL_TEAM_LIST_TRADES_INDEX })
       .run()
   })
 
   test('createTrade', () => {
-    expectSaga(tradesSagas, actions.createTrade(inPlayerId))
+    expectSaga(tradesSagas)
       .withState({
         fplTeamList: { outListPosition: LIST_POSITION_1 }
       })

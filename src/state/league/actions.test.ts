@@ -6,7 +6,7 @@ const leagueId = '1'
 const league = LEAGUES[0]
 const sort = { name: 'desc' }
 const filter = { position_id: ['1'] }
-const page = { offset: 1, limit: 50 }
+const page = { offset: '1', limit: '50' }
 
 describe('League actions', () => {
   test(actions.API_LEAGUES_SHOW, () => {

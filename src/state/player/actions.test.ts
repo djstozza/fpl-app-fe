@@ -20,12 +20,12 @@ describe('Player actions', () => {
   })
 
   test(actions.UPDATE_PLAYER_HISTORY_SORT, () => {
-    expect(actions.updatePlayerHistorySort({ sort: historySort }))
+    expect(actions.updatePlayerHistorySort({ id: playerId, sort: historySort }))
       .toEqual({ type: actions.UPDATE_PLAYER_HISTORY_SORT, sort: historySort })
   })
 
   test(actions.UPDATE_PLAYER_HISTORY_PAST_SORT, () => {
-    expect(actions.updatePlayerHistoryPastSort({ sort: historyPastSort }))
+    expect(actions.updatePlayerHistoryPastSort({ id: playerId, sort: historyPastSort }))
       .toEqual({ type: actions.UPDATE_PLAYER_HISTORY_PAST_SORT, sort: historyPastSort })
   })
 })

@@ -13,7 +13,7 @@ const sort = { position: 'desc' }
 
 describe('Teams sagas', () => {
   test('fetchTeams', () => {
-    expectSaga(teamsSagas, actions.fetchTeams({ sort }))
+    expectSaga(teamsSagas)
       .put({
         type: requestActions.UNAUTHED_REQUEST,
         method: 'GET',

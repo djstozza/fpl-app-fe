@@ -22,11 +22,11 @@ const { id: leagueId } = LIVE_LEAGUE
 const league = { name: 'League 1', code: '1234' }
 const sort = { name: 'desc' }
 const filter = { position_id: ['4'] }
-const page = { offset: 1, limit: 50 }
+const page = { offset: '1', limit: '50' }
 
 describe('League sagas', () => {
   test('fetchLeague', () => {
-    expectSaga(leagueSagas, actions.fetchLeague(leagueId))
+    expectSaga(leagueSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',
@@ -94,7 +94,7 @@ describe('League sagas', () => {
   })
 
   test('generateDraftPicks', () => {
-    expectSaga(leagueSagas, actions.generateDraftPicks(leagueId))
+    expectSaga(leagueSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'POST',
@@ -128,7 +128,7 @@ describe('League sagas', () => {
   })
 
   test('createDraft', () => {
-    expectSaga(leagueSagas, actions.createDraft(leagueId))
+    expectSaga(leagueSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'POST',

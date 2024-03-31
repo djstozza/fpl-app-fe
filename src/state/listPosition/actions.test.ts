@@ -2,7 +2,7 @@ import * as actions from './actions'
 
 const sort = { lastName: 'asc' }
 const filter = { team_id: ['3'] }
-const page = { offset: 1, limit: 50 }
+const page = { offset: '1', limit: '50' }
 const listPositionId = '1'
 
 describe('List position actions', () => {
@@ -61,8 +61,8 @@ describe('List position actions', () => {
   })
 
   test(actions.UPDATE_TRADEABLE_LIST_POSITIONS_FILTER, () => {
-    expect(actions.updateTradeableListPositionsFilter())
-      .toEqual({ type: actions.UPDATE_TRADEABLE_LIST_POSITIONS_FILTER })
+    expect(actions.updateTradeableListPositionsFilter({}))
+      .toEqual({ type: actions.UPDATE_TRADEABLE_LIST_POSITIONS_FILTER, filter: {} })
   })
 
   test(actions.UPDATE_TRADEABLE_LIST_POSITIONS_SORT, () => {

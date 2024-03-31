@@ -11,11 +11,11 @@ import history from 'state/history'
 
 const sort = { lastName: 'desc' }
 const filter = { position_id: ['4'] }
-const page = { offset: 101, limit: 50 }
+const page = { offset: '101', limit: '50' }
 
 describe('Players sagas', () => {
   test('fetchPlayers', () => {
-    expectSaga(playersSagas, actions.fetchPlayers({ sort, filter, page }))
+    expectSaga(playersSagas)
       .put({
         type: requestActions.UNAUTHED_REQUEST,
         method: 'GET',

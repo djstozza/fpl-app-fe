@@ -14,13 +14,13 @@ import { success, failure } from 'utilities/actions'
 import { INTER_TEAM_TRADE_GROUP_1, PLAYER_BASES } from 'test/fixtures'
 
 const fplTeamListId = '3'
-const excludedPlayerIds = [PLAYER_BASES[0].id, PLAYER_BASES[1].id]
+const excludedPlayerIds = [PLAYER_BASES[0].id, PLAYER_BASES[1].id].join(',')
 const outListPositionId = '10'
 const inListPositionId = '1'
 
 describe('Fpl team list sagas', () => {
   test('fetchFplTeamList', () => {
-    expectSaga(fplTeamListSagas, actions.fetchFplTeamList(fplTeamListId))
+    expectSaga(fplTeamListSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',

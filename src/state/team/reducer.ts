@@ -13,15 +13,21 @@ export type State = {
   fetching: boolean
 }
 
-type TeamAction = {
-  sort: {
-    players: {
-      [key: string]: string
-    },
-    fixtures: {
-      [key: string]: string
-    }
+type FullSort = {
+  players: {
+    [key: string]: string
+  },
+  fixtures: {
+    [key: string]: string
   }
+}
+
+type UpdateSort = {
+  [key: string]: string
+}
+
+type TeamAction = {
+  sort: FullSort | UpdateSort
 } & Action
 
 export const initialFilterState = {

@@ -2,35 +2,37 @@ import { success, failure } from 'utilities/actions'
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 
-import { LEAGUES } from 'test/fixtures'
-
-const errors = [{ failure: true }]
+import { LEAGUES, errors } from 'test/fixtures'
 
 describe('Leagues reducer handles action', () => {
   test(actions.INITIALIZE_FORM, () => {
     expect(reducer({ ...initialState, errors }, {
-      type: actions.INITIALIZE_FORM
+      type: actions.INITIALIZE_FORM,
+      meta: {}
     }))
       .toEqual({ ...initialState })
   })
 
   test(actions.API_LEAGUES_INDEX, () => {
     expect(reducer(initialState, {
-      type: actions.API_LEAGUES_INDEX
+      type: actions.API_LEAGUES_INDEX,
+      meta: {}
     }))
       .toEqual({ ...initialState, fetching: true })
   })
 
   test(actions.API_LEAGUES_CREATE, () => {
     expect(reducer(initialState, {
-      type: actions.API_LEAGUES_CREATE
+      type: actions.API_LEAGUES_CREATE,
+      meta: {}
     }))
       .toEqual({ ...initialState, submitting: true })
   })
 
   test(actions.API_LEAGUES_JOIN, () => {
     expect(reducer(initialState, {
-      type: actions.API_LEAGUES_JOIN
+      type: actions.API_LEAGUES_JOIN,
+      meta: {}
     }))
       .toEqual({ ...initialState, submitting: true })
   })
@@ -38,7 +40,8 @@ describe('Leagues reducer handles action', () => {
   test(success(actions.API_LEAGUES_INDEX), () => {
     expect(reducer(initialState, {
       type: success(actions.API_LEAGUES_INDEX),
-      data: LEAGUES
+      data: LEAGUES,
+      meta: {}
     }))
       .toEqual({ ...initialState, data: LEAGUES, submitting: false })
   })
@@ -46,7 +49,8 @@ describe('Leagues reducer handles action', () => {
   test(success(actions.API_LEAGUES_JOIN), () => {
     expect(reducer(initialState, {
       type: success(actions.API_LEAGUES_JOIN),
-      data: LEAGUES
+      data: LEAGUES,
+      meta: {}
     }))
       .toEqual({ ...initialState, data: LEAGUES, submitting: false })
   })
@@ -54,14 +58,16 @@ describe('Leagues reducer handles action', () => {
   test(success(actions.API_LEAGUES_CREATE), () => {
     expect(reducer(initialState, {
       type: success(actions.API_LEAGUES_CREATE),
-      data: LEAGUES
+      data: LEAGUES,
+      meta: {}
     }))
       .toEqual({ ...initialState, data: LEAGUES, submitting: false })
   })
 
   test(`${success(actions.API_LEAGUES_INDEX)} - no data`, () => {
     expect(reducer(initialState, {
-      type: success(actions.API_LEAGUES_INDEX)
+      type: success(actions.API_LEAGUES_INDEX),
+      meta: {}
     }))
       .toEqual({ ...initialState })
   })
@@ -69,7 +75,8 @@ describe('Leagues reducer handles action', () => {
   test(failure(actions.API_LEAGUES_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUES_INDEX),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -77,7 +84,8 @@ describe('Leagues reducer handles action', () => {
   test(failure(actions.API_LEAGUES_JOIN), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUES_JOIN),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -85,13 +93,14 @@ describe('Leagues reducer handles action', () => {
   test(failure(actions.API_LEAGUES_CREATE), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUES_CREATE),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(reducer(undefined, { type: 'unknown', meta: {} }))
       .toEqual({ ...initialState })
   })
 })

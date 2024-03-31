@@ -2,9 +2,11 @@ import { success, failure } from 'utilities/actions'
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 
-import { PLAYER_SUMMARIES, PLAYER_FACETS } from 'test/fixtures'
-
-const errors = [{ failure: true }]
+import {
+  PLAYER_SUMMARIES,
+  PLAYER_FACETS,
+  errors
+} from 'test/fixtures'
 
 describe('Players reducer handles action', () => {
   test(success(actions.API_PLAYERS_INDEX), () => {
@@ -19,7 +21,8 @@ describe('Players reducer handles action', () => {
   test(success(actions.API_PLAYERS_FACETS_INDEX), () => {
     expect(reducer(initialState, {
       type: success(actions.API_PLAYERS_FACETS_INDEX),
-      data: PLAYER_FACETS
+      data: PLAYER_FACETS,
+      meta: {}
     }))
       .toEqual({ ...initialState, facets: PLAYER_FACETS })
   })
@@ -34,7 +37,8 @@ describe('Players reducer handles action', () => {
     }
     expect(reducer(initialState, {
       type: actions.API_PLAYERS_INDEX,
-      ...newParams
+      ...newParams,
+      meta: {}
     }))
       .toEqual({ ...initialState, ...newParams, fetching: true })
   })
@@ -42,7 +46,8 @@ describe('Players reducer handles action', () => {
   test(failure(actions.API_PLAYERS_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_PLAYERS_INDEX),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
@@ -50,13 +55,14 @@ describe('Players reducer handles action', () => {
   test(failure(actions.API_PLAYERS_FACETS_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_PLAYERS_FACETS_INDEX),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(reducer(undefined, { type: 'unknown', meta: {} }))
       .toEqual({ ...initialState })
   })
 })

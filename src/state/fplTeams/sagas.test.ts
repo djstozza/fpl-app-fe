@@ -18,7 +18,7 @@ const sort = { name: 'asc' }
 
 describe('Fpl teams sagas', () => {
   test('fetchFplTeams', () => {
-    expectSaga(fplTeamsSagas, actions.fetchFplTeams())
+    expectSaga(fplTeamsSagas)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',
@@ -26,10 +26,10 @@ describe('Fpl teams sagas', () => {
         successAction: success(actions.API_FPL_TEAMS_INDEX),
         failureAction: failure(actions.API_FPL_TEAMS_INDEX)
       })
-      .dispatch({ type: actions.API_FPL_TEAM_INDEX })
+      .dispatch({ type: actions.API_FPL_TEAMS_INDEX })
       .run()
 
-    expectSaga(sagas.fetchFplTeams, actions.fetchFplTeams())
+    expectSaga(sagas.fetchFplTeams)
       .put({
         type: requestActions.AUTHED_REQUEST,
         method: 'GET',
@@ -37,7 +37,7 @@ describe('Fpl teams sagas', () => {
         successAction: success(actions.API_FPL_TEAMS_INDEX),
         failureAction: failure(actions.API_FPL_TEAMS_INDEX)
       })
-      .dispatch({ type: actions.API_FPL_TEAM_INDEX })
+      .dispatch({ type: actions.API_FPL_TEAMS_INDEX })
       .run()
   })
 

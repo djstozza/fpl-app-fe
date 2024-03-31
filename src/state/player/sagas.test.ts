@@ -23,7 +23,7 @@ const sort = {
 
 describe('Player sagas', () => {
   test('fetchPlayer', () => {
-    expectSaga(playerSagas, actions.fetchPlayer(playerId))
+    expectSaga(playerSagas)
       .put({
         type: requestActions.UNAUTHED_REQUEST,
         method: 'GET',
@@ -64,7 +64,7 @@ describe('Player sagas', () => {
   test('updatePlayerHistorySort', () => {
     const historyPushSpy = jest.spyOn(history, 'push')
 
-    expectSaga(sagas.updatePlayerHistorySort, actions.updatePlayerHistorySort({ sort: sort.history }))
+    expectSaga(sagas.updatePlayerHistorySort, actions.updatePlayerHistorySort({ id: playerId, sort: sort.history }))
       .withState({
         player: { data: PLAYER_SUMMARIES[0] }
       })
@@ -78,7 +78,7 @@ describe('Player sagas', () => {
   test('updatePlayerHistoryPastSort', () => {
     const historyPushSpy = jest.spyOn(history, 'push')
 
-    expectSaga(sagas.updatePlayerHistoryPastSort, actions.updatePlayerHistoryPastSort({ sort: sort.historyPast }))
+    expectSaga(sagas.updatePlayerHistoryPastSort, actions.updatePlayerHistoryPastSort({ id: playerId, sort: sort.historyPast }))
       .withState({
         player: { data: PLAYER_SUMMARIES[0] }
       })

@@ -8,7 +8,7 @@ import * as requestActions from 'state/request/actions'
 
 describe('Rounds sagas', () => {
   test('fetchRounds', () => {
-    expectSaga(sagas, actions.fetchRounds())
+    expectSaga(sagas)
       .put({
         type: requestActions.UNAUTHED_REQUEST,
         method: 'GET',

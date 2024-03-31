@@ -23,12 +23,12 @@ describe('Team actions', () => {
   })
 
   test(actions.UPDATE_TEAM_PLAYERS_SORT, () => {
-    expect(actions.updateTeamPlayersSort({ tab, sort }))
-      .toEqual({ type: actions.UPDATE_TEAM_PLAYERS_SORT, tab, sort })
+    expect(actions.updateTeamPlayersSort({ tab, sort: sort.players }))
+      .toEqual({ type: actions.UPDATE_TEAM_PLAYERS_SORT, tab, sort: sort.players })
   })
 
   test(actions.UPDATE_TEAM_FIXTURES_SORT, () => {
-    expect(actions.updateTeamFixturesSort({ tab, sort }))
-      .toEqual({ type: actions.UPDATE_TEAM_FIXTURES_SORT, tab, sort })
+    expect(actions.updateTeamFixturesSort({ tab, sort: sort.fixtures }))
+      .toEqual({ type: actions.UPDATE_TEAM_FIXTURES_SORT, tab, sort: sort.fixtures })
   })
 })

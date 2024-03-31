@@ -2,9 +2,11 @@ import { success, failure } from 'utilities/actions'
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 
-import { FPL_TEAM_LISTS, LIST_POSITIONS } from 'test/fixtures'
-
-const errors = [{ failure: true }]
+import {
+  FPL_TEAM_LISTS,
+  LIST_POSITIONS,
+  errors
+} from 'test/fixtures'
 
 describe('Fpl team list reducer handles action', () => {
   test(success(actions.API_FPL_TEAM_LISTS_SHOW), () => {
@@ -12,14 +14,16 @@ describe('Fpl team list reducer handles action', () => {
 
     expect(reducer(state, {
       type: success(actions.API_FPL_TEAM_LISTS_SHOW),
-      data: FPL_TEAM_LISTS[0]
+      data: FPL_TEAM_LISTS[0],
+      meta: {}
     }))
       .toEqual({ ...state, data: FPL_TEAM_LISTS[0] })
   })
 
   test(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX, () => {
     expect(reducer(initialState, {
-      type: actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX
+      type: actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX,
+      meta: {}
     }))
       .toEqual({ ...initialState, fetching: true })
   })
@@ -29,7 +33,8 @@ describe('Fpl team list reducer handles action', () => {
 
     expect(reducer(state, {
       type: success(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX),
-      data: LIST_POSITIONS
+      data: LIST_POSITIONS,
+      meta: {}
     }))
       .toEqual({ ...state, listPositions: LIST_POSITIONS, submitting: false })
   })
@@ -38,7 +43,8 @@ describe('Fpl team list reducer handles action', () => {
     const state = { ...initialState, data: FPL_TEAM_LISTS[0] }
 
     expect(reducer(state, {
-      type: success(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX)
+      type: success(actions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX),
+      meta: {}
     }))
       .toEqual({ ...state, listPositions: [], submitting: false })
   })
@@ -48,7 +54,8 @@ describe('Fpl team list reducer handles action', () => {
 
     expect(reducer(state, {
       type: success(actions.API_FPL_TEAM_LISTS_UPDATE),
-      data: LIST_POSITIONS
+      data: LIST_POSITIONS,
+      meta: {}
     }))
       .toEqual({ ...state, listPositions: LIST_POSITIONS, submitting: false })
   })
@@ -57,7 +64,8 @@ describe('Fpl team list reducer handles action', () => {
     const state = { ...initialState, data: FPL_TEAM_LISTS[0] }
 
     expect(reducer(state, {
-      type: actions.API_FPL_TEAM_LISTS_UPDATE
+      type: actions.API_FPL_TEAM_LISTS_UPDATE,
+      meta: {}
     }))
       .toEqual({ ...state, submitting: true })
   })
@@ -67,7 +75,8 @@ describe('Fpl team list reducer handles action', () => {
 
     expect(reducer(state, {
       type: actions.SET_OUT_LIST_POSITION,
-      outListPosition: LIST_POSITIONS[0]
+      outListPosition: LIST_POSITIONS[0],
+      meta: {}
     }))
       .toEqual({ ...state, outListPosition: LIST_POSITIONS[0] })
   })
@@ -81,7 +90,8 @@ describe('Fpl team list reducer handles action', () => {
     }
 
     expect(reducer(state, {
-      type: actions.SET_OUT_LIST_POSITION
+      type: actions.SET_OUT_LIST_POSITION,
+      meta: {}
     }))
       .toEqual({ ...state, outListPosition: undefined })
   })
@@ -89,7 +99,8 @@ describe('Fpl team list reducer handles action', () => {
   test(failure(actions.API_FPL_TEAM_LISTS_SHOW), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_FPL_TEAM_LISTS_SHOW),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -97,13 +108,14 @@ describe('Fpl team list reducer handles action', () => {
   test(failure(actions.API_FPL_TEAM_LISTS_UPDATE), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_FPL_TEAM_LISTS_UPDATE),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(reducer(undefined, { type: 'unknown', meta: {} }))
       .toEqual({ ...initialState })
   })
 })

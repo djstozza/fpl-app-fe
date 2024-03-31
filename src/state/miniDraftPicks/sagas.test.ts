@@ -21,7 +21,7 @@ const { id } = LIVE_LEAGUE
 const season = 'winder'
 const sort = { lastName: 'desc' }
 const filter = { team_id: ['3'] }
-const page = { offset: 51, limit: 50 }
+const page = { offset: '51', limit: '50' }
 const fplTeamListId = '12'
 const inPlayerId = '352'
 const { id: listPositionId, position: { id: positionId } } = LIST_POSITION_1
@@ -30,7 +30,7 @@ describe('Mini draft picks', () => {
   test('fetchMiniDraftPicks', () => {
     const query = { mini_draft_pick: { season }, sort, filter }
 
-    expectSaga(miniDraftPicksSagas, actions.fetchMiniDraftPicks({ sort, filter }))
+    expectSaga(miniDraftPicksSagas)
       .withState({
         league: { data: LIVE_LEAGUE },
         miniDraftPicks: { season }
@@ -47,7 +47,7 @@ describe('Mini draft picks', () => {
   })
 
   test('fetchMiniDraftPickFacets', () => {
-    expectSaga(sagas.fetchMiniDraftPickFacets, actions.fetchMiniDraftPickFacets())
+    expectSaga(sagas.fetchMiniDraftPickFacets)
       .withState({
         league: { data: LIVE_LEAGUE },
         miniDraftPicks: { season }
@@ -133,7 +133,7 @@ describe('Mini draft picks', () => {
   })
 
   test('passMiniDraftPick', () => {
-    expectSaga(sagas.passMiniDraftPick, actions.passMiniDraftPick())
+    expectSaga(sagas.passMiniDraftPick)
       .withState({
         miniDraftPicks: { fplTeamListId }
       })
@@ -218,7 +218,7 @@ describe('Mini draft picks', () => {
         fplTeamList: { outListPosition: LIST_POSITION_1 },
         players: { filter, page }
       })
-      .dispatch({ type: actions.UPDATE_TRADEABLE_PLAYERS_SORT })
+      .dispatch({ type: actions.MINI_DRAFT_UPDATE_TRADEABLE_PLAYERS_SORT })
       .run()
 
     const query = { filter: { ...filter, leagueId: id, positionId }, sort, page }
@@ -236,7 +236,7 @@ describe('Mini draft picks', () => {
         fplTeamList: { outListPosition: LIST_POSITION_1 },
         players: { sort, page }
       })
-      .dispatch({ type: actions.UPDATE_TRADEABLE_PLAYERS_FILTER })
+      .dispatch({ type: actions.MINI_DRAFT_UPDATE_TRADEABLE_PLAYERS_FILTER })
       .run()
 
     const query = { filter: { ...filter, leagueId: id, positionId }, sort, page: { ...page, offset: 0 } }
@@ -254,7 +254,7 @@ describe('Mini draft picks', () => {
         fplTeamList: { outListPosition: LIST_POSITION_1 },
         players: { sort, page: { offset: 100, limit: 50 }, filter }
       })
-      .dispatch({ type: actions.UPDATE_TRADEABLE_PLAYERS_FILTER })
+      .dispatch({ type: actions.MINI_DRAFT_UPDATE_TRADEABLE_PLAYERS_FILTER })
       .run()
 
     const query = { filter: { ...filter, leagueId: id, positionId }, sort, page: { ...page, offset: page.offset } }

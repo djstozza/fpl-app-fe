@@ -1,5 +1,4 @@
 import { expectSaga } from 'redux-saga-test-plan'
-import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
 import requestSagas, * as sagas from './sagas'
 import * as actions from './actions'
@@ -31,11 +30,11 @@ describe('Request sagas', () => {
   describe('sendRequest', () => {
     test(`${actions.AUTHED_REQUEST} - success`, async () => {
       const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
-        status: '200',
+        ...new Response(),
+        status: 200,
         statusText: 'Success',
         ok: true,
-        body: { foo: 'bar' },
-        json: () => result
+        json: async () => result
       })
 
       await expectSaga(sagas.sendRequest, true, { successAction, failureAction, method, url, body })
@@ -43,7 +42,6 @@ describe('Request sagas', () => {
           loadingBar: { default: 0 },
           auth: { token }
         })
-        .put(showLoading())
         .put({ type: successAction, ...result, redirect: undefined, notification: undefined })
         .put({ type: actions.REQUEST_DONE })
         .dispatch({ type: actions.AUTHED_REQUEST })
@@ -69,9 +67,12 @@ describe('Request sagas', () => {
         statusText: 'Unporcessible Entity',
         ok: false
       }
+      
       const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
+        ...new Response(),
         ...response,
-        json: () => result
+        status: parseInt(response.status),
+        json: async () => result
       })
 
       await expectSaga(sagas.sendRequest, true, { successAction, failureAction, method, url })
@@ -84,7 +85,7 @@ describe('Request sagas', () => {
         .dispatch({ type: actions.AUTHED_REQUEST })
         .run()
 
-      expect(fetchStub).toBeCalledWith(
+      expect(fetchStub).toHaveBeenCalledWith(
         url,
         {
           body: undefined,
@@ -100,20 +101,20 @@ describe('Request sagas', () => {
 
     test(`${actions.UNAUTHED_REQUEST} - success`, async () => {
       const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
-        status: '200',
+        ...new Response(),
+        status: 200,
         statusText: 'Success',
         ok: true,
-        body: { foo: 'bar' },
-        json: () => result
+        json: async () => result
       })
 
-      await expectSaga(sagas.sendRequest, false, { successAction, failureAction, method, url, body, hideLoading: true })
+      await expectSaga(sagas.sendRequest, false, { successAction, failureAction, method, url, body })
         .put({ type: successAction, ...result, redirect: undefined, notification: undefined })
         .put({ type: actions.REQUEST_DONE })
         .dispatch({ type: actions.UNAUTHED_REQUEST })
         .run()
 
-      expect(fetchStub).toBeCalledWith(
+      expect(fetchStub).toHaveBeenCalledWith(
         url,
         {
           body: JSON.stringify(body),
@@ -134,20 +135,19 @@ describe('Request sagas', () => {
         ok: false
       }
       const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
+        ...new Response(),
         ...response,
-        json: () => result
+        status: parseInt(response.status),
+        json: async () => result
       })
 
       await expectSaga(sagas.sendRequest, false, { successAction, failureAction, method, url })
-        .withState({
-          loadingBar: { default: 1 }
-        })
         .put({ type: actions.REQUEST_FAIL, failureAction, url, response: { ...response, body: result } })
         .put({ type: actions.REQUEST_DONE })
         .dispatch({ type: actions.UNAUTHED_REQUEST })
         .run()
 
-      expect(fetchStub).toBeCalledWith(
+      expect(fetchStub).toHaveBeenCalledWith(
         url,
         {
           body: undefined,
@@ -165,16 +165,13 @@ describe('Request sagas', () => {
       const fetchStub = jest.spyOn(window, 'fetch').mockRejectedValue(error)
 
       await expectSaga(sagas.sendRequest, false, { successAction, failureAction, method, url })
-        .withState({
-          loadingBar: { default: 1 }
-        })
         .put({ type: failureAction, errors: [error] })
         .put({ type: actions.ADD_REQUEST_ERROR, error: { url, status: 'failed_to_fetch' } })
         .put({ type: actions.REQUEST_DONE })
         .dispatch({ type: actions.UNAUTHED_REQUEST })
         .run()
 
-      expect(fetchStub).toBeCalledWith(
+      expect(fetchStub).toHaveBeenCalledWith(
         url,
         {
           body: undefined,
@@ -208,23 +205,6 @@ describe('Request sagas', () => {
         .put({ type: actions.ADD_REQUEST_ERROR, error: { url, status, statusText, errors: [] } })
         .dispatch({ type: actions.REQUEST_FAIL })
         .run()
-    })
-
-    test(actions.REQUEST_DONE, () => {
-      expectSaga(requestSagas)
-        .withState({
-          request: { inFlight: 1 }
-        })
-        .dispatch({ type: actions.REQUEST_DONE })
-        .run()
-
-        expectSaga(sagas.requestDone)
-          .withState({
-            request: { inFlight: 0 }
-          })
-          .put(hideLoading())
-          .dispatch({ type: actions.REQUEST_DONE })
-          .run()
     })
   })
 })

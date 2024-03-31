@@ -2,9 +2,13 @@ import { success, failure } from 'utilities/actions'
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 
-import { MINI_DRAFT_PICKS, MINI_DRAFT_PICK_FACETS, ROUND_3 } from 'test/fixtures'
-
-const errors = [{ failure: true }]
+import {
+  MINI_DRAFT_PICKS,
+  MINI_DRAFT_PICK_FACETS,
+  MINI_DRAFT_PICK_1,
+  ROUND_3,
+  errors
+} from 'test/fixtures'
 
 describe('Mini draft picks reducer handles action', () => {
   test(success(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX), () => {
@@ -26,7 +30,8 @@ describe('Mini draft picks reducer handles action', () => {
     }
     expect(reducer(initialState, {
       type: success(actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE),
-      data
+      data,
+      meta: {}
     }))
       .toEqual({ ...initialState, ...data, submitting: false })
   })
@@ -40,7 +45,8 @@ describe('Mini draft picks reducer handles action', () => {
     }
     expect(reducer({ ...initialState, errors }, {
       type: success(actions.API_LEAGUE_MINI_DRAFT_PICK_PASS),
-      data
+      data,
+      meta: {}
     }))
       .toEqual({ ...initialState, ...data, fplTeamListId: undefined, submitting: false })
   })
@@ -55,22 +61,25 @@ describe('Mini draft picks reducer handles action', () => {
     }
     expect(reducer({ ...initialState, errors }, {
       type: success(actions.API_LEAGUE_MINI_DRAFT_PICKS_STATUS_INDEX),
-      data
+      data,
+      meta: {}
     }))
       .toEqual({ ...initialState, ...data, submitting: false })
   })
 
   test(success(actions.API_LEAGUE_MINI_DRAFT_PICKS_FACETS_INDEX), () => {
-    expect(reducer({ ...initialState, data: MINI_DRAFT_PICKS }, {
+    expect(reducer({ ...initialState, data: [MINI_DRAFT_PICK_1] }, {
       type: success(actions.API_LEAGUE_MINI_DRAFT_PICKS_FACETS_INDEX),
       data: MINI_DRAFT_PICK_FACETS,
+      meta: {}
     }))
-      .toEqual({ ...initialState, data: MINI_DRAFT_PICKS, facets: MINI_DRAFT_PICK_FACETS })
+      .toEqual({ ...initialState, data: [MINI_DRAFT_PICK_1], facets: MINI_DRAFT_PICK_FACETS })
   })
 
   test(actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE, () => {
     expect(reducer(initialState, {
-      type: actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE
+      type: actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE,
+      meta: {}
     }))
       .toEqual({ ...initialState, submitting: true })
   })
@@ -79,7 +88,8 @@ describe('Mini draft picks reducer handles action', () => {
     expect(reducer(initialState, {
       type: actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX,
       sort: { pickNumber: 'asc' },
-      filter: { position_id: ['0', '1'] }
+      filter: { position_id: ['0', '1'] },
+      meta: {}
     }))
       .toEqual({ ...initialState, sort: { pickNumber: 'asc' }, filter: { position_id: ['0', '1'] }, fetching: true })
   })
@@ -87,7 +97,8 @@ describe('Mini draft picks reducer handles action', () => {
   test(failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -95,7 +106,8 @@ describe('Mini draft picks reducer handles action', () => {
   test(failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_FACETS_INDEX), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_FACETS_INDEX),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
@@ -103,13 +115,14 @@ describe('Mini draft picks reducer handles action', () => {
   test(failure(actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE), () => {
     expect(reducer(initialState, {
       type: failure(actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE),
-      errors
+      errors,
+      meta: {}
     }))
       .toEqual({ ...initialState, errors, submitting: false })
   })
 
   test('unknown type and undefined state', () => {
-    expect(reducer(undefined, { type: 'unknown' }))
+    expect(reducer(undefined, { type: 'unknown', meta: {} }))
       .toEqual({ ...initialState })
   })
 })
