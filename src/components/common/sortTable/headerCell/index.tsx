@@ -32,14 +32,10 @@ const useStyles = makeStyles()(() =>
     },
 
     mainHeaderCell: {
-      zIndex: 3
-    },
-
-    mainCell: {
+      zIndex: 3,
       position: 'sticky',
       left: 0,
-      backgroundColor: colors.white,
-      zIndex: 2
+      backgroundColor: colors.white
     },
 
     headerWrapper: {
