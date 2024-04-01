@@ -69,7 +69,9 @@ import PrivateRoute from 'components/common/privateRoute'
 import NavBar from 'components/navBar'
 import ErrorDialog from 'components/errorDialog'
 import theme from './theme'
-import ChangePasswordForm from 'components/pages/profilePage/changePasswordForm';
+import ChangePasswordForm from 'components/pages/profilePage/changePasswordForm'
+
+import NotMatchPage from 'components/pages/NoMatchPage'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   container: {
@@ -215,6 +217,7 @@ const App = () => {
                 <Route path='miniDraftPicks' element={<MiniDraftPicksTable />} />
                 <Route path='tradeableListPositions' element={<NewMiniDraftPick />} />
               </Route>
+              <Route path='*' element={<NotMatchPage />} />
             </Routes>
           </div>
         </SnackbarProvider>

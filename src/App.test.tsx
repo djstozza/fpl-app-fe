@@ -484,4 +484,12 @@ describe('App', () => {
       expect(screen.getByTestId('LoginPage')).toBeInTheDocument()
     })
   })
+
+  describe('NoMatchPage', () => {
+    it('is rendered when there is no recognised route', () => {
+      customRender(['/unknown'], {})
+
+      expect(screen.getByTestId('NoMatchPage')).toBeInTheDocument()
+    })
+  })
 })
