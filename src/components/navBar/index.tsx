@@ -48,7 +48,7 @@ const useStyles = makeStyles()((theme: Theme) =>
     },
 
     active: {
-      backgroundColor: theme.palette.secondary.main
+      backgroundColor: `${theme.palette.secondary.main} !important`
     }
   }));
 

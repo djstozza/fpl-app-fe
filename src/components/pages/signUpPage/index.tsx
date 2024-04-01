@@ -41,14 +41,14 @@ const useStyles = makeStyles<StyleProps>()((theme: Theme, { height }) => ({
   form: {
     display: 'flex',
     position: 'fixed',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)'
     },
     [theme.breakpoints.down('sm')]: {
       width: '100vw',
-      top: '22.5%'
+      top: '33%'
     },
   },
   paper: {
