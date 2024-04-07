@@ -6,6 +6,7 @@ import * as actions from './actions'
 import * as requestActions from 'state/request/actions'
 
 export function * fetchRounds () : Generator<any, any, any> {
+  console.log(import.meta.env)
   const url = `${API_URL}${ROUNDS_URL}`
 
   yield put({

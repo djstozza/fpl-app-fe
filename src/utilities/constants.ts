@@ -1,7 +1,7 @@
 import { createConsumer } from '@rails/actioncable'
 
-export const API_URL = process.env.REACT_APP_API_URL
-export const CABLE_URL = process.env.REACT_APP_CABLE_URL
+export const API_URL = import.meta.env.VITE_API_URL
+export const VITE_CABLE_URL = import.meta.env.VITE_CABLE_URL
 export const ROUNDS_URL = '/rounds'
 export const TEAMS_URL = '/teams'
 export const PLAYERS_URL = '/players'
@@ -27,7 +27,7 @@ export const API_WAIVER_PICKS_PATH = '/waiver_picks'
 
 export const TITLE = 'Fpl App'
 
-export const cable = createConsumer(CABLE_URL)
+export const cable = createConsumer(VITE_CABLE_URL)
 
 export const APPLICATION_ERRORS = {
   '401': {

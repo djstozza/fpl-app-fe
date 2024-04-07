@@ -24,7 +24,7 @@ This frontend app requires an instance of the API to run against.
 
 During development, please pull down and setup an instance of the API by following  [these instructions](https://github.com/djstozza/fpl-app-api).
 
-Once you have the API up and running locally, ensure that the  `REACT_APP_API_URL`  variable, as well as the `REACT_APP_CABLE_URL` (for streaming) in your .env file is set to the URL for the local instance of the API.
+Once you have the API up and running locally, ensure that the  `VITE_API_URL`  variable, as well as the `VITE_CABLE_URL` (for streaming) in your .env file is set to the URL for the local instance of the API.
 
 If you do not have a .env file, please create one in the root directory of this project.
 
