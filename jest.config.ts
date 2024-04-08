@@ -29,15 +29,18 @@ export default {
   collectCoverageFrom: [
     "src/**/*.{js,jsx,ts,tsx}",
     "!src/test/*",
+    "!src/index.tsx",
+    "!src/reportWebVitals.ts",
+    "!src/setupTests.ts",
     "!<rootDir>/node_modules/",
     "!<rootDir>/path/to/dir/"
   ],
   coverageThreshold: {
     global: {
-      "branches": 97.56,
-      "functions": 98.83,
-      "lines": 98.56,
-      "statements": 98.49
+      "branches": 99.39,
+      "functions": 100,
+      "lines": 100,
+      "statements": 99.92
     }
   },
   coverageReporters: [
