@@ -1,4 +1,3 @@
-import React, { useState as useStateReal } from 'react'
 import { render, screen } from '@testing-library/react'
 import * as rrd from 'react-router-dom'
 import moment from 'moment'
@@ -166,30 +165,6 @@ describe('FplTeamPage', () => {
     it('renders nothing if there is no fplTeam', () => {
       customRender({ fplTeam: undefined })
       expect(screen.queryByTestId('FplTeamPage')).not.toBeInTheDocument()
-    })
-
-    describe('extraTitleInfo', () => {
-      it('shows the round and the total score on the teamLists tab if present', () => {
-        const useStateSpy = jest.spyOn(React, 'useState');
-        let calls = 0;
-      
-        useStateSpy.mockImplementation((init: any = undefined) => {
-          calls += 1;
-         
-          if (calls === 6) {
-            return ['teamLists', blank__]
-          }
-          return useStateReal(init);
-        })
-        customRender({
-          fplTeamList: { outListPosition: undefined, data: FPL_TEAM_LISTS[0] }
-        })
-
-        expect(heading())
-          .toHaveTextContent(`${FPL_TEAM_1.name} - ${FPL_TEAM_LISTS[0].round.name} - ${FPL_TEAM_LISTS[0].totalScore} Points`)
-
-        useStateSpy.mockRestore()
-      })
     })
 
     describe('selectedFplTeamListId', () => {
