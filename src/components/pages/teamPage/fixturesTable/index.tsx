@@ -29,7 +29,7 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'oppositionTeam',
     label: 'O',
     toolTipLabel: 'Opponent',
-    customRender: ({ opponent }: TeamFixture, classes, tab) => <ContainedTeamCrestLink team={opponent} tab={tab} />,
+    customRender: ({ opponent }: TeamFixture, _classes, tab) => <ContainedTeamCrestLink team={opponent} tab={tab} />,
     sortParam: 'oppositionTeam.shortName',
   },
   { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false, sortParam: 'leg' },

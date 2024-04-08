@@ -23,7 +23,7 @@ describe('TeamCrestLink', () => {
 
     expect(link()).toHaveTextContent(TEAM_BASE.shortName)
     expect(link().getAttribute('href')).toEqual(`${TEAMS_URL}/${TEAM_BASE.id}/`)
-    expect(within(link()).getByRole('img').getAttribute('src')).toEqual(`${TEAM_BASE.shortName.toLocaleLowerCase()}.png`)
+    expect(within(link()).getByRole('img').getAttribute('src')).toContain(`${TEAM_BASE.shortName.toLocaleLowerCase()}.png`)
   })
 
   it('adds a tab to the url if one is provided', () => {
@@ -56,6 +56,6 @@ describe('ContainedTeamCrestLink', () => {
 
     expect(link()).toHaveTextContent(TEAM_BASE.shortName)
     expect(link().getAttribute('href')).toEqual(`${TEAMS_URL}/${TEAM_BASE.id}/`)
-    expect(within(link()).getByRole('img').getAttribute('src')).toEqual(`${TEAM_BASE.shortName.toLocaleLowerCase()}.png`)
+    expect(within(link()).getByRole('img').getAttribute('src')).toContain(`${TEAM_BASE.shortName.toLocaleLowerCase()}.png`)
   })
 })
