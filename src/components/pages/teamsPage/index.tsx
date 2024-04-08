@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { Outlet, useParams } from 'react-router-dom'
 
 import { teamsActions } from 'state/teams'
 import SortTable from 'components/common/sortTable'
@@ -58,10 +57,7 @@ export const TeamsPage = (props: Props) => {
     updateSort
   } = props
 
-  const { teamId } = useParams()
   const { classes } = useStyles()
-
-  if (teamId) return <Outlet />
 
   document.title = `${TITLE} - Teams`
 

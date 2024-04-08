@@ -35,9 +35,8 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage .",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch --coverage",
     "test:debug": "jest --inspect-brk --runInBand --no-cache",
     "preview": "vite preview",
     "prepare": "husky install",
@@ -84,6 +83,7 @@
     "ts-jest": "^29.1.2",
     "ts-jest-mock-import-meta": "^1.2.0",
     "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "whatwg-fetch": "^3.6.20"
   }
 }
