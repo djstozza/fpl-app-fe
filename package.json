@@ -33,7 +33,8 @@
     "web-vitals": "^1.1.0"
   },
   "scripts": {
-    "start": "vite",
+    "start": "serve -s build",
+    "dev": "vite",
     "build": "tsc && vite build",
     "test": "jest --coverage",
     "test:watch": "jest --watch --coverage",
