@@ -9,11 +9,11 @@ The React/Redux front-end for FPL App Api. Users can challenge their friends to 
 
 ### Initial setup
 
-**Node.js** version `=>14.75` is required to run this application locally. If you don't have it setup already, please use [NVM](https://github.com/creationix/nvm) - a script that allows you to manage multiple Node.js versions on your local system.
+**Node.js** version `=> 18.12` is required to run this application locally. If you don't have it setup already, please use [NVM](https://github.com/creationix/nvm) - a script that allows you to manage multiple Node.js versions on your local system.
 
 ### Quick start
 
-Run  `npm install`  to install the required node packages and  `npm start`  to fire up the app on  `http://localhost:8080`.
+Run  `npm install` to install the required node packages and  `npm run dev`  to fire up the app on  `http://localhost:8080`.
 
 Note that if the app doesn't run on  `http://localhost:8080`, it won't be able to connect to the Staging API due to CORS restrictions.
 
