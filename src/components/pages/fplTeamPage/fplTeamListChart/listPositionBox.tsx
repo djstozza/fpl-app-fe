@@ -53,7 +53,10 @@ const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'center',
     width: theme.spacing(20),
     height: theme.spacing(12),
-    color: colors.white
+    color: colors.white,
+    [theme.breakpoints.up('md')]: {
+      height: theme.spacing(22)
+    }
   },
 
   substitute: {

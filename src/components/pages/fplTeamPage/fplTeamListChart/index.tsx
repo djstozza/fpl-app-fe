@@ -68,7 +68,11 @@ const useStyles = makeStyles()((theme: Theme) => ({
     marginLeft: 'auto',
     marginRight: 'audo',
     border: `1px solid ${colors.white}`,
-    zIndex: 1
+    zIndex: 1,
+    [theme.breakpoints.up('md')]: {
+      height: theme.spacing(16),
+      width: theme.spacing(48)
+    }
   },
 
   penaltyBoxTop: {
@@ -81,7 +85,11 @@ const useStyles = makeStyles()((theme: Theme) => ({
     marginLeft: 'auto',
     marginRight: 'audo',
     border: `1px solid ${colors.white}`,
-    zIndex: 1
+    zIndex: 1,
+    [theme.breakpoints.up('md')]: {
+      height: theme.spacing(16),
+      width: theme.spacing(48)
+    }
   },
 
   goalkeeperBoxBottom: {
@@ -95,7 +103,11 @@ const useStyles = makeStyles()((theme: Theme) => ({
     marginRight: 'audo',
     border: `1px solid ${colors.white}`,
     zIndex: 1,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`,
+    [theme.breakpoints.up('md')]: {
+      height: theme.spacing(8),
+      width: theme.spacing(24)
+    }
   },
 
   goalkeeperBoxTop: {
@@ -109,7 +121,11 @@ const useStyles = makeStyles()((theme: Theme) => ({
     marginRight: 'audo',
     border: `1px solid ${colors.white}`,
     zIndex: 1,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`,
+    [theme.breakpoints.up('md')]: {
+      height: theme.spacing(8),
+      width: theme.spacing(24)
+    }
   },
 
   halfWayLine: {
@@ -117,7 +133,10 @@ const useStyles = makeStyles()((theme: Theme) => ({
     bottom: '49.7%',
     width: `100%`,
     border: `1px solid ${colors.white}`,
-    zIndex: 1
+    zIndex: 1,
+    [theme.breakpoints.up('md')]: {
+      bottom: '49.9%'
+    }
   },
 
   penaltyBoxSemiCircleBottom: {
@@ -131,7 +150,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
     borderTopRightRadius: theme.spacing(11),
     border: `1px solid ${colors.white}`,
     zIndex: 1,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`,
+    [theme.breakpoints.up('md')]: {
+      bottom: theme.spacing(16),
+      height: theme.spacing(8),
+      width: theme.spacing(16)
+    }
   },
 
   penaltyBoxSemiCircleTop: {
@@ -145,7 +169,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
     border: `1px solid ${colors.white}`,
     zIndex: 1,
     transform: `translate(-50%, 0)`,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`,
+    [theme.breakpoints.up('md')]: {
+      top: theme.spacing(16),
+      height: theme.spacing(8),
+      width: theme.spacing(16)
+    }
   },
 
   centerCircle: {
@@ -158,7 +187,11 @@ const useStyles = makeStyles()((theme: Theme) => ({
     borderRadius: '50%',
     border: `1px solid ${colors.white}`,
     zIndex: 0,
-    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`
+    background: `repeating-conic-gradient(${colors.green800} 0% 25%, ${colors.green500} 0% 50%) 50% / ${theme.spacing(2.5)} ${theme.spacing(2.5)}`,
+    [theme.breakpoints.up('md')]: {
+      width: theme.spacing(16),
+      height: theme.spacing(16),
+    }
   },
 
   penaltySpotTop: {
@@ -171,7 +204,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
     height: theme.spacing(0.8),
     borderRadius: '50%',
     border: `1px solid ${colors.white}`,
-    zIndex: 1
+    zIndex: 1,
+    [theme.breakpoints.up('md')]: {
+      width: theme.spacing(1),
+      height: theme.spacing(1),
+      top: theme.spacing(12),
+    }
   },
 
   penaltySpotBottom: {
@@ -184,7 +222,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
     height: theme.spacing(0.75),
     borderRadius: '50%',
     border: `1px solid ${colors.white}`,
-    zIndex: 1
+    zIndex: 1,
+    [theme.breakpoints.up('md')]: {
+      width: theme.spacing(1),
+      height: theme.spacing(1),
+      bottom: theme.spacing(12),
+    }
   },
 
   centerSpot: {
@@ -197,7 +240,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
     height: theme.spacing(0.75),
     borderRadius: '50%',
     border: `1px solid ${colors.white}`,
-    zIndex: 2
+    zIndex: 2,
+    [theme.breakpoints.up('md')]: {
+      width: theme.spacing(1),
+      height: theme.spacing(1),
+      bottom: '49.4%',
+    }
   }
 }))
 
