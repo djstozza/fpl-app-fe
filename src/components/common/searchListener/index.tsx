@@ -26,8 +26,7 @@ const SearchListener = (props: Props) => {
     searchQuery.current = qs.parse(search.substring(1))
 
     fetchAction({ id, ...initialFilterState, ...searchQuery.current })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search])
+  }, [search, id])
 
   return (
     <SearchContext.Provider
