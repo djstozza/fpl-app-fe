@@ -61,6 +61,7 @@ export const MiniDraftPage = (props: Props) => {
     league,
     miniDraftPicks,
     fetchLeague,
+    fetchMiniDraftPicks,
     fetchMiniDraftPicksStatus,
     passMiniDraftPick,
     fetchListPositions
@@ -109,9 +110,13 @@ export const MiniDraftPage = (props: Props) => {
     ({ updatedAt, message }) => {
       if (updatedAt <= miniDraftPickUpdatedAt) return
       fetchMiniDraftPicksStatus(leagueId)
+      fetchMiniDraftPicks({ sort: miniDraftPicks.sort, filter: miniDraftPicks.filter })
       enqueueSnackbar(message, { variant: 'success' })
       setMiniDraftPickUpdatedAt(updatedAt)
-    }, [leagueId, fetchMiniDraftPicksStatus, miniDraftPickUpdatedAt, enqueueSnackbar]
+    }, [
+      leagueId, fetchMiniDraftPicksStatus, fetchMiniDraftPicks,
+      miniDraftPicks.sort, miniDraftPicks.filter, miniDraftPickUpdatedAt, enqueueSnackbar
+    ]
   )
 
   useEffect(

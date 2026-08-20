@@ -160,7 +160,7 @@ describe('DraftPage', () => {
 
       it('renders the message when updatedAt > previous updatedAt', async () => {
         customRender()
-    
+
         act(() => global.receivedHandler({ updatedAt: 1, message }))
 
         expect(alerts().length).toEqual(1)
@@ -174,6 +174,30 @@ describe('DraftPage', () => {
         act(() => global.receivedHandler({ updatedAt: -1, message }))
 
         expect(alerts().length).toEqual(0)
+      })
+
+      it('refetches the draft picks and status when updatedAt > previous updatedAt', async () => {
+        const fetchDraftPicks = vi.fn()
+        const fetchDraftPicksStatus = vi.fn()
+        const { sort, filter } = draftInitialState
+
+        customRender({ fetchDraftPicks, fetchDraftPicksStatus })
+        fetchDraftPicksStatus.mockClear()
+
+        act(() => global.receivedHandler({ updatedAt: 1, message }))
+
+        expect(fetchDraftPicks).toHaveBeenCalledWith({ sort, filter })
+        expect(fetchDraftPicksStatus).toHaveBeenCalledWith(LIVE_LEAGUE.id)
+      })
+
+      it('does not refetch the draft picks if updatedAt < previous updatedAt', async () => {
+        const fetchDraftPicks = vi.fn()
+
+        customRender({ fetchDraftPicks })
+
+        act(() => global.receivedHandler({ updatedAt: -1, message }))
+
+        expect(fetchDraftPicks).not.toHaveBeenCalled()
       })
     })
   })

@@ -53,6 +53,7 @@ export const DraftPage = (props: Props) => {
     draftPicks,
     fetchLeague,
     updateDraftPick,
+    fetchDraftPicks,
     fetchDraftPicksStatus
   } = props
 
@@ -78,9 +79,10 @@ export const DraftPage = (props: Props) => {
     ({ updatedAt, message }) => {
       if (updatedAt <= draftPickUpdatedAt) return
       fetchDraftPicksStatus(leagueId)
+      fetchDraftPicks({ sort: draftPicks.sort, filter: draftPicks.filter })
       enqueueSnackbar(message, { variant: 'success' })
       setDraftPickUpdatedAt(updatedAt)
-    }, [leagueId, fetchDraftPicksStatus, draftPickUpdatedAt, enqueueSnackbar]
+    }, [leagueId, fetchDraftPicksStatus, fetchDraftPicks, draftPicks.sort, draftPicks.filter, draftPickUpdatedAt, enqueueSnackbar]
   )
 
   useEffect(

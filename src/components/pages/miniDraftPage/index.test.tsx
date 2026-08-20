@@ -219,6 +219,30 @@ describe('MiniDraftPage', () => {
 
         expect(snackBarContainer()).not.toBeInTheDocument()
       })
+
+      it('refetches the mini draft picks and status when updatedAt > previous updatedAt', async () => {
+        const fetchMiniDraftPicks = vi.fn()
+        const fetchMiniDraftPicksStatus = vi.fn()
+        const { sort, filter } = miniDraftPicksInitialState
+
+        customRender({ fetchMiniDraftPicks, fetchMiniDraftPicksStatus })
+        fetchMiniDraftPicksStatus.mockClear()
+
+        act(() => global.receivedHandler({ updatedAt: 1, message }))
+
+        expect(fetchMiniDraftPicks).toHaveBeenCalledWith({ sort, filter })
+        expect(fetchMiniDraftPicksStatus).toHaveBeenCalledWith(LIVE_LEAGUE.id)
+      })
+
+      it('does not refetch the mini draft picks if updatedAt < previous updatedAt', async () => {
+        const fetchMiniDraftPicks = vi.fn()
+
+        customRender({ fetchMiniDraftPicks })
+
+        act(() => global.receivedHandler({ updatedAt: -1, message }))
+
+        expect(fetchMiniDraftPicks).not.toHaveBeenCalled()
+      })
     })
   })
 
