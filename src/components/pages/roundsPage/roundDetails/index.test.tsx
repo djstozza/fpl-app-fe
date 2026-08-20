@@ -21,7 +21,7 @@ describe('RoundDetails', () => {
   
   const heading = () => screen.getAllByRole('heading')[0]
   const detailsContainer = () =>  screen.getAllByTestId('round-day-container')
-  const detailsHeading = (i) => within(detailsContainer()[i]).getByRole('heading')
+  const detailsHeading = (i) => within(detailsContainer()[i]).getByRole('heading', { level: 6 })
   const accordionButton = (i) => within(detailsContainer()[i]).getAllByRole('button')
 
   it('shows the round name and groups the fixtures by date', () => {

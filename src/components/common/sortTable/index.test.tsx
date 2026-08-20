@@ -45,8 +45,7 @@ describe('SortTable', () => {
   const tableCell = (i, j) => tableCells(i)[j]
 
   const sortButton = (text) => within(screen.getByText(text)).getByRole('button')
-  const sortDirection = (text) => within(sortButton(text)).getByTestId('ArrowDownwardIcon')
-  
+
   const tablePagination = () => screen.getByTestId('SortTablePagination')
   
   it('shows the no results found message if the collection is empty', () => {
@@ -119,10 +118,10 @@ describe('SortTable', () => {
       )
       
       expect(sortButton('FN').className).not.toContain('Mui-active')
-      expect(sortDirection('FN').classList.toString()).toContain('MuiTableSortLabel-iconDirectionAsc')
-      
-      expect(sortButton('TP').className).toContain('Mui-active')      
-      expect(sortDirection('TP').classList.toString()).toContain('MuiTableSortLabel-iconDirectionDesc')
+      expect(sortButton('FN').className).toContain('MuiTableSortLabel-directionAsc')
+
+      expect(sortButton('TP').className).toContain('Mui-active')
+      expect(sortButton('TP').className).toContain('MuiTableSortLabel-directionDesc')
     })
   })
 

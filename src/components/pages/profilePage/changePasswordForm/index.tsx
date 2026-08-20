@@ -81,8 +81,8 @@ const ChangePasswordForm = () => {
           type='password'
           onChange={({ target: { value }}) => setPassword(value)}
           value={password}
-          InputProps={{
-            autoComplete: 'off'
+          slotProps={{
+            input: { autoComplete: 'off' }
           }}
           error={Boolean(errors.find(({ source }) => source === 'password'))}
           helperText={errors.find(({ source }) => source === 'password')?.detail}
@@ -98,8 +98,8 @@ const ChangePasswordForm = () => {
           type='password'
           onChange={({ target: { value }}) => setNewPassword(value)}
           value={newPassword}
-          InputProps={{
-            autoComplete: 'off'
+          slotProps={{
+            input: { autoComplete: 'off' }
           }}
           error={Boolean(errors.find(({ source }) => source === 'new_password'))}
           helperText={errors.find(({ source }) => source === 'new_password')?.detail}

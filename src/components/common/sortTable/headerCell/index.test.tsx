@@ -31,7 +31,6 @@ describe('HeaderCell', () => {
   const checkboxes = () => screen.queryAllByRole('checkbox')
   const modal = () => screen.queryByRole('presentation')
   const buttons = () => screen.getAllByRole('button')
-  const sortDirection = () => screen.getByTestId('ArrowDownwardIcon')
   const tableCell = () => screen.getByRole('cell')
 
   const filter = { teamId: ['1', '2'], positionId: ['4'] }
@@ -137,7 +136,7 @@ describe('HeaderCell', () => {
       customRender({ handleSort })
 
       expect(buttons()[1].className).toContain('Mui-active')
-      expect(sortDirection().classList.toString()).toContain('MuiTableSortLabel-iconDirectionDesc')
+      expect(buttons()[1].className).toContain('MuiTableSortLabel-directionDesc')
       
       fireEvent.click(buttons()[1])
 
@@ -150,7 +149,7 @@ describe('HeaderCell', () => {
       customRender({ handleSort, sort })
 
       expect(buttons()[1].className).not.toContain('Mui-active')
-      expect(sortDirection().classList.toString()).toContain('MuiTableSortLabel-iconDirectionAsc')
+      expect(buttons()[1].className).toContain('MuiTableSortLabel-directionAsc')
 
       fireEvent.click(buttons()[1])
 

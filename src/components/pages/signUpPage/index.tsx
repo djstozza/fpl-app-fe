@@ -149,8 +149,8 @@ export const SignUpPage = (props: Props) => {
             type='password'
             onChange={({ target: { value }}) => setPassword(value)}
             value={password}
-            InputProps={{
-              autoComplete: 'off'
+            slotProps={{
+              input: { autoComplete: 'off' }
             }}
             error={Boolean(errors.find(({ source }) => source === 'password'))}
             helperText={errors.find(({ source }) => source === 'password')?.detail}

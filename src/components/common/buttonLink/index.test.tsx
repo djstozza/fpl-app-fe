@@ -25,7 +25,7 @@ describe('User Login Form', () => {
     expect(link).toHaveAttribute('href', '/foo/1')
     expect(link).toHaveClass('MuiButton-contained')
     expect(link).toHaveClass('MuiButton-sizeSmall')
-    expect(link).toHaveClass('MuiButton-containedPrimary')
+    expect(link).toHaveClass('MuiButton-colorPrimary')
     expect(link).toHaveTextContent(name)
   })
 

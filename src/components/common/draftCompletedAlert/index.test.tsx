@@ -16,7 +16,8 @@ describe('DraftCompletedAlert', () => {
   it('shows the alert', () => {
     customRender()
     const alert = screen.getByRole('alert')
-    expect(alert).toHaveClass('MuiAlert-filledSuccess')
+    expect(alert).toHaveClass('MuiAlert-filled')
+    expect(alert).toHaveClass('MuiAlert-colorSuccess')
     expect(alert).toHaveTextContent('The substr has successfully been completed')
   })
 

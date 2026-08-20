@@ -68,7 +68,7 @@ const PlayerDetails = () => {
 
   return (
     <Grid data-testid='PlayerDetails' container>
-      <Grid item md={3} sm={5} xs={12}>
+      <Grid size={{ md: 3, sm: 5, xs: 12 }}>
         <div className={classes.playerImageContainer}>
           <PlayerImage
             key={code}
@@ -78,7 +78,7 @@ const PlayerDetails = () => {
           />
         </div>
       </Grid>
-      <Grid item md={9} sm={7} xs={12}>
+      <Grid size={{ md: 9, sm: 7, xs: 12 }}>
         <div ref={tableRef} className={classes.container}>
           <Table size='small'>
             <TableBody>

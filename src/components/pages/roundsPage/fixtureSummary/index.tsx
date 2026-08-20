@@ -52,7 +52,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
 
 const SummaryInfo = ({ inProgress, children }:{ inProgress?: boolean, children: any }) => (
   <Typography component='div'>
-    <Box fontWeight={inProgress ? 'fontWeightBold' : 'fontWeightRegular'}>
+    <Box sx={{ fontWeight: inProgress ? 'fontWeightBold' : 'fontWeightRegular' }}>
       {children}
     </Box>
   </Typography>
@@ -77,7 +77,7 @@ const FixtureSummary = (props: Props) => {
   const inProgress = started && !finished
 
   const teamDetailsGrid = (teamId, shortName) => (
-    <Grid item xs={4} md={4} lg={4}>
+    <Grid size={{ xs: 4, md: 4, lg: 4 }}>
       <Link
         to={`${TEAMS_URL}/${teamId}`}
         className={cx(classes.teamLink)}
@@ -102,9 +102,9 @@ const FixtureSummary = (props: Props) => {
       }
       expandIcon={stats.length > 0 ? <ExpandMoreIcon /> : ''}
     >
-      <Grid container spacing={1} alignItems='center'>
+      <Grid container spacing={1} sx={{ alignItems: 'center' }}>
         {teamDetailsGrid(homeTeamId, homeTeamName)}
-        <Grid item xs={4} md={4} lg={4}>
+        <Grid size={{ xs: 4, md: 4, lg: 4 }}>
           <SummaryInfo inProgress={inProgress}>
             {moment(kickoffTime).format('HH:mm')}
           </SummaryInfo>
