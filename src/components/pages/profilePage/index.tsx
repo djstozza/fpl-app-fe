@@ -1,7 +1,6 @@
 import { useParams, Outlet, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { makeStyles } from 'tss-react/mui'
-import { Theme, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { capitalize } from 'lodash'
 
 import { authActions } from 'state/auth'
@@ -27,12 +26,6 @@ export type ProfileProps = {
   submitting: boolean
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    padding: theme.spacing(1)
-  }
-}))
-
 export const TABS = {
   details: { label: 'Details', value: 'details', display: true },
   leagues: { label: 'Leagues', value: 'leagues', display: true },
@@ -44,7 +37,6 @@ export const ProfilePage = (props: ProfileProps) => {
     user
   } = props
   const { username } = user
-  const { classes } = useStyles()
   const { pathname } = useLocation()
   const matchedPath = pathname.match(/\/profile\/(\w+)(\/.*)?/) || []
   const tab = Object.keys(TABS).find(key => matchedPath[1] === key) || 'details'
@@ -54,7 +46,7 @@ export const ProfilePage = (props: ProfileProps) => {
 
   return (
     <div data-testid='ProfilePage'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={(theme) => ({ padding: theme.spacing(1) })}>
         {username}
       </Typography>
       <Tabs

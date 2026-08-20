@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   TextField,
   Button,
-  Theme,
-  Paper
+  Paper,
+  Box
 } from '@mui/material'
 
 
@@ -14,24 +13,7 @@ import { PROFILE_URL } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
 import type { ProfileProps } from '..'
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  form: {
-    marginTop: theme.spacing(2)
-  },
-  textField: {
-    paddingBottom: theme.spacing(2)
-  },
-  paper: {
-    padding: theme.spacing(3)
-  },
-  formHeader: {
-    paddingBottom: theme.spacing(2)
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  }
-}))
+const textFieldSx = (theme) => ({ paddingBottom: theme.spacing(2) })
 
 const ChangePasswordForm = () => {
   const {
@@ -40,8 +22,6 @@ const ChangePasswordForm = () => {
      submitting,
      initializeAuth
   } = useOutletContext<ProfileProps>()
-
-  const { classes } = useStyles()
 
   const [password, setPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -58,22 +38,23 @@ const ChangePasswordForm = () => {
   }
 
   return (
-    <form
+    <Box
+      component='form'
       data-testid='ChangePasswordForm'
       onSubmit={handleSubmit}
-      className={classes.form}
+      sx={(theme) => ({ marginTop: theme.spacing(2) })}
     >
-      <Paper className={classes.paper}>
+      <Paper sx={(theme) => ({ padding: theme.spacing(3) })}>
         <Typography
           variant='h5'
-          className={classes.formHeader}
+          sx={textFieldSx}
         >
           Change Password
         </Typography>
         <TextField
           data-testid='password'
           required
-          className={classes.textField}
+          sx={textFieldSx}
           fullWidth
           variant='outlined'
           label='Password'
@@ -90,7 +71,7 @@ const ChangePasswordForm = () => {
         <TextField
           data-testid='newPassword'
           required
-          className={classes.textField}
+          sx={textFieldSx}
           fullWidth
           variant='outlined'
           label='New Password'
@@ -104,7 +85,7 @@ const ChangePasswordForm = () => {
           error={Boolean(errors.find(({ source }) => source === 'new_password'))}
           helperText={errors.find(({ source }) => source === 'new_password')?.detail}
         />
-        <div className={classes.actions}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <ButtonLink
             to={PROFILE_URL}
             color='inherit'
@@ -120,9 +101,9 @@ const ChangePasswordForm = () => {
           >
             Change
           </Button>
-        </div>
+        </Box>
       </Paper>
-    </form>
+    </Box>
   )
 }
 

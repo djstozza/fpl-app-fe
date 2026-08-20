@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { makeStyles } from 'tss-react/mui'
+import { Box } from '@mui/material'
 
 import SearchListener from 'components/common/searchListener'
 import SortTable from 'components/common/sortTable'
@@ -23,13 +23,6 @@ type Props = {
   updateSort: Function,
   fetching: boolean
 }
-
-const useStyles = makeStyles()(() => ({
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  }
-}))
 
 const LEAGUES_TABLE_CELLS = [
   {
@@ -55,7 +48,6 @@ const LEAGUES_TABLE_CELLS = [
 
 export const LeaguesPage = (props: Props) => {
   const { leagues = [], fetchLeagues, updateSort, fetching } = props
-  const { classes } = useStyles()
 
   return (
     <div data-testid='LeaguesPage'>
@@ -68,7 +60,7 @@ export const LeaguesPage = (props: Props) => {
           name='leagues'
         />
       </SearchListener>
-      <div className={classes.actions}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonLink
           to={`${PROFILE_URL}${NEW_LEAGUE_URL}`}
           color='primary'
@@ -82,7 +74,7 @@ export const LeaguesPage = (props: Props) => {
         >
           Join a League
         </ButtonLink>
-      </div>
+      </Box>
     </div>
   )
 }

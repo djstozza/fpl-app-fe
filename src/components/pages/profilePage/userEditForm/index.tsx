@@ -1,36 +1,18 @@
 import { useState, useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   TextField,
   Button,
-  Theme,
-  Paper
+  Paper,
+  Box
 } from '@mui/material'
 
 import { PROFILE_URL } from 'utilities/constants'
 import ButtonLink from 'components/common/buttonLink'
 import type { ProfileProps } from '..'
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  form: {
-    marginTop: theme.spacing(2)
-  },
-  textField: {
-    paddingBottom: theme.spacing(2)
-  },
-  paper: {
-    padding: theme.spacing(3)
-  },
-  formHeader: {
-    paddingBottom: theme.spacing(2)
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  }
-}))
+const textFieldSx = (theme) => ({ paddingBottom: theme.spacing(2) })
 
 const UserEditForm = () => {
   const {
@@ -40,8 +22,6 @@ const UserEditForm = () => {
     submitting,
     initializeAuth
   } = useOutletContext<ProfileProps>()
-
-  const { classes } = useStyles()
 
   const [newEmail, setNewEmail] = useState(email)
   const [newUsername, setNewUsername] = useState(username)
@@ -65,21 +45,22 @@ const UserEditForm = () => {
   )
 
   return (
-    <form
+    <Box
+      component='form'
       data-testid='UserEditForm'
       onSubmit={handleSubmit}
-      className={classes.form}
+      sx={(theme) => ({ marginTop: theme.spacing(2) })}
     >
-      <Paper className={classes.paper}>
+      <Paper sx={(theme) => ({ padding: theme.spacing(3) })}>
         <Typography
           variant='h5'
-          className={classes.formHeader}
+          sx={textFieldSx}
         >
           Edit details
         </Typography>
         <TextField
           required
-          className={classes.textField}
+          sx={textFieldSx}
           fullWidth
           variant='outlined'
           label='Email'
@@ -92,7 +73,7 @@ const UserEditForm = () => {
         />
         <TextField
           required
-          className={classes.textField}
+          sx={textFieldSx}
           fullWidth
           variant='outlined'
           label='Username'
@@ -103,7 +84,7 @@ const UserEditForm = () => {
           error={Boolean(errors.find(({ source }) => source === 'username'))}
           helperText={errors.find(({ source }) => source === 'username')?.detail}
         />
-        <div className={classes.actions}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <ButtonLink
             to={PROFILE_URL}
             color='inherit'
@@ -119,9 +100,9 @@ const UserEditForm = () => {
           >
             Update
           </Button>
-        </div>
+        </Box>
       </Paper>
-    </form>
+    </Box>
   )
 }
 

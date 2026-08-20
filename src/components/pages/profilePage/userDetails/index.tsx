@@ -1,12 +1,11 @@
 import { Fragment } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Theme
+  Box
 } from '@mui/material'
 
 import ButtonLink from 'components/common/buttonLink'
@@ -18,26 +17,13 @@ const USER_DETAILS_ROWS = [
   { rowId: 'username', label: 'Username' }
 ]
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  table: {
-    marginBottom: theme.spacing(2)
-  },
-
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  }
-}))
-
 const UserDetails = () => {
   const { user } = useOutletContext<ProfileProps>()
-  const { classes } = useStyles()
 
   return (
     <Fragment>
       <Table
-        className={classes.table}
+        sx={(theme) => ({ marginBottom: theme.spacing(2) })}
         size='small'
       >
         <TableBody>
@@ -55,7 +41,7 @@ const UserDetails = () => {
           }
         </TableBody>
       </Table>
-      <div className={classes.actions}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <ButtonLink
           to={EDIT_USER_DETAILS_URL}
           color='primary'
@@ -69,7 +55,7 @@ const UserDetails = () => {
         >
           Change Password
         </ButtonLink>
-      </div>
+      </Box>
     </Fragment>
   )
 }

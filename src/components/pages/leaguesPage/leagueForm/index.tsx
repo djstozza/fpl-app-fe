@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { makeStyles } from 'tss-react/mui'
 import {
   Paper,
-  Theme,
   TextField,
   Button,
-  Typography
+  Typography,
+  Box
 } from '@mui/material'
 import {
   PROFILE_URL,
@@ -30,37 +29,7 @@ interface Params {
   [key: string]: string
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  form: {
-    marginTop: theme.spacing(2)
-  },
-  textField: {
-    paddingBottom: theme.spacing(2)
-  },
-  paper: {
-    padding: theme.spacing(3)
-  },
-  formHeader: {
-    paddingBottom: theme.spacing(2)
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  },
-  codeContainer: {
-    display: 'flex',
-    alignItems: 'baseline'
-  },
-  generateButtonContainer: {
-    marginRight: theme.spacing(1)
-  },
-  generateButton: {
-    whiteSpace: 'nowrap'
-  },
-  baseErrorsContainer: {
-    marginBottom: theme.spacing(1)
-  }
-}))
+const textFieldSx = (theme) => ({ paddingBottom: theme.spacing(2) })
 
 const LeagueForm = (props: Props) => {
   const {
@@ -73,8 +42,6 @@ const LeagueForm = (props: Props) => {
     hideFplTeamName = false,
     returnUrl
   } = props
-
-  const { classes } = useStyles()
 
   const firstUpdate = useRef(true)
 
@@ -108,30 +75,30 @@ const LeagueForm = (props: Props) => {
   )
 
   return (
-    <form onSubmit={handleSubmit} className={classes.form}>
-      <Paper className={classes.paper}>
+    <Box component='form' onSubmit={handleSubmit} sx={(theme) => ({ marginTop: theme.spacing(2) })}>
+      <Paper sx={(theme) => ({ padding: theme.spacing(3) })}>
         <Typography
           variant='h5'
-          className={classes.formHeader}
+          sx={textFieldSx}
         >
           {title}
         </Typography>
         {
           Boolean(baseErrors.length) &&
-          <div
-            data-testid='league-form-base-errors' 
-            className={classes.baseErrorsContainer}
+          <Box
+            data-testid='league-form-base-errors'
+            sx={(theme) => ({ marginBottom: theme.spacing(1) })}
           >
             {
               baseErrors.map(({ detail }, i) => (
                 <Typography key={i} color='error'>{detail}</Typography>
               ))
             }
-          </div>
+          </Box>
         }
         <TextField
           required
-          className={classes.textField}
+          sx={textFieldSx}
           fullWidth
           variant='outlined'
           label='Name'
@@ -142,24 +109,24 @@ const LeagueForm = (props: Props) => {
           error={Boolean(errors.find(({ source }) => source === 'name'))}
           helperText={errors.find(({ source }) => source === 'name')?.detail}
         />
-        <div className={classes.codeContainer}>
+        <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
           {
             create &&
-            <div className={classes.generateButtonContainer}>
+            <Box sx={(theme) => ({ marginRight: theme.spacing(1) })}>
               <Button
                 variant='contained'
                 color='primary'
                 name='generateCode'
                 onClick={() => setNewCode(Math.random().toString(36).slice(2, 10))}
-                className={classes.generateButton}
+                sx={{ whiteSpace: 'nowrap' }}
               >
                 Generate Code
               </Button>
-            </div>
+            </Box>
           }
           <TextField
             required
-            className={classes.textField}
+            sx={textFieldSx}
             fullWidth
             variant='outlined'
             label='Code'
@@ -171,12 +138,12 @@ const LeagueForm = (props: Props) => {
             error={Boolean(errors.find(({ source }) => source === 'code'))}
             helperText={errors.find(({ source }) => source === 'code')?.detail}
           />
-        </div>
+        </Box>
         {
           !hideFplTeamName &&
           <TextField
             required
-            className={classes.textField}
+            sx={textFieldSx}
             fullWidth
             variant='outlined'
             label='Fpl Team Name'
@@ -188,7 +155,7 @@ const LeagueForm = (props: Props) => {
             helperText={errors.find(({ source }) => source === 'fpl_team_name')?.detail}
           />
         }
-        <div className={classes.actions}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <ButtonLink
             to={returnUrl || `${PROFILE_URL}${LEAGUES_URL}`}
             color='inherit'
@@ -204,9 +171,9 @@ const LeagueForm = (props: Props) => {
           >
             Submit
           </Button>
-        </div>
+        </Box>
       </Paper>
-    </form>
+    </Box>
   )
 }
 
