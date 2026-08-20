@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import { useOutletContext, useParams } from 'react-router-dom'
 import { Link as DomLink } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
 import {
   Table,
   TableHead,
@@ -15,6 +14,7 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
+  Box,
 } from '@mui/material'
 
 import AddIcon from '@mui/icons-material/Add'
@@ -45,28 +45,11 @@ type OpenDialogProps = {
   str: string
 }
 
-const useStyles = makeStyles()(() => ({
-  container: {
-    maxWidth: '100vw',
-    overflow: 'scroll'
-  },
-
-  noPadding: {
-    padding: 0
-  },
-
-  cancel: {
-    color: colors.red
-  },
-
-  add: {
-    color: colors.green500
-  },
-
-  send: {
-    color: colors.blue700
-  }
-}))
+const containerSx = { maxWidth: '100vw', overflow: 'scroll' }
+const noPaddingSx = { padding: 0 }
+const cancelSx = { color: colors.red }
+const addSx = { color: colors.green500 }
+const sendSx = { color: colors.blue700 }
 
 const TABS = {
   out: {
@@ -99,7 +82,6 @@ const TeamTradeTabs = () => {
 
   const tab = 'teamTrades'
 
-  const { classes } = useStyles()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [interTeamTradeGroup, setInterTeamTradeGroup] = useState<undefined | InterTeamTradeGroup>()
   const [trade, setTrade] = useState<undefined | Trade>()
@@ -177,7 +159,7 @@ const TeamTradeTabs = () => {
         url={tabUrl}
         titleSubstr={`${fplTeamName} - Team Trades - ${roundName}`}
       />
-      <div className={classes.container}>
+      <Box sx={containerSx}>
         <Table
           size='small'
           stickyHeader
@@ -218,7 +200,7 @@ const TeamTradeTabs = () => {
                 const fplTeam = action === 'out' ? inFplTeam : outFplTeam
 
                 const expandComponent = (
-                  <TableCell colSpan={4} className={classes.noPadding}>
+                  <TableCell colSpan={4} sx={noPaddingSx}>
                     <Table
                       size='small'
                       stickyHeader
@@ -314,7 +296,7 @@ const TeamTradeTabs = () => {
                                           handleOpenDialog({ trade: trade, str: 'Remove Trade' })
                                         }}
                                       >
-                                        <CloseIcon className={classes.cancel} />
+                                        <CloseIcon sx={cancelSx} />
                                       </IconButton>
                                     </Tooltip>
                                   </TableCell>
@@ -353,7 +335,7 @@ const TeamTradeTabs = () => {
                                 handleOpenDialog({ interTeamTradeGroup: interTeamTradeGroup, str: 'Cancel' })
                              }}
                             >
-                              <CloseIcon className={classes.cancel} />
+                              <CloseIcon sx={cancelSx} />
                             </IconButton>
                           </Tooltip>
                         }
@@ -365,7 +347,7 @@ const TeamTradeTabs = () => {
                               component={DomLink}
                               to={`${FPL_TEAMS_URL}/${fplTeamId}/teamTrades/${id}/addPlayer`}
                             >
-                              <AddIcon className={classes.add} />
+                              <AddIcon sx={addSx} />
                             </IconButton>
                           </Tooltip>
                         }
@@ -378,7 +360,7 @@ const TeamTradeTabs = () => {
                                 handleOpenDialog({ interTeamTradeGroup: interTeamTradeGroup, str: 'Submit' })
                               }}
                             >
-                              <SendIcon className={classes.send} />
+                              <SendIcon sx={sendSx} />
                             </IconButton>
                           </Tooltip>
                         }
@@ -392,7 +374,7 @@ const TeamTradeTabs = () => {
                                   handleOpenDialog({ interTeamTradeGroup: interTeamTradeGroup, str: 'Approve' })
                                 }}
                               >
-                                <CheckIcon className={classes.add} />
+                                <CheckIcon sx={addSx} />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title='Decline'>
@@ -402,7 +384,7 @@ const TeamTradeTabs = () => {
                                   handleOpenDialog({ interTeamTradeGroup: interTeamTradeGroup, str: 'Decline' })
                                 }}
                               >
-                              <CloseIcon className={classes.cancel} />
+                              <CloseIcon sx={cancelSx} />
                               </IconButton>
                             </Tooltip>
                           </Fragment>
@@ -416,7 +398,7 @@ const TeamTradeTabs = () => {
             }
           </TableBody>
         </Table>
-      </div>
+      </Box>
       <Dialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}

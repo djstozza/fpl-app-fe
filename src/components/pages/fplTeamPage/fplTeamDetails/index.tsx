@@ -1,12 +1,11 @@
 import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui';
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Theme
+  Box
 } from '@mui/material'
 
 import ButtonLink from 'components/common/buttonLink'
@@ -40,17 +39,6 @@ const FPL_TEAM_DETAILS_ROWS = [
   }
 ]
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  table: {
-    marginBottom: theme.spacing(2)
-  },
-
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  }
-}))
-
 const FplTeamDetails = () => {
   const {
     fplTeam,
@@ -58,7 +46,6 @@ const FplTeamDetails = () => {
     setAction
   } = useOutletContext<FplTeamContext>()
   const { id, isOwner } = fplTeam
-  const { classes } = useStyles()
   const tab = 'details'
 
   useEffect(() => {
@@ -69,7 +56,7 @@ const FplTeamDetails = () => {
   return (
     <div data-testid='FplTeamDetails'>
       <Table
-        className={classes.table}
+        sx={(theme) => ({ marginBottom: theme.spacing(2) })}
         size='small'
       >
         <TableBody>
@@ -89,14 +76,14 @@ const FplTeamDetails = () => {
       </Table>
       {
         isOwner &&
-        <div className={classes.actions}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <ButtonLink
             to={`${FPL_TEAMS_URL}/${id}/details/edit`}
             color='primary'
           >
             Edit Fpl Team
           </ButtonLink>
-        </div>
+        </Box>
       }
     </div>
   )

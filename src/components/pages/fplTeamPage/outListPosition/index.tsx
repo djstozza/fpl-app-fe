@@ -1,8 +1,7 @@
-import { makeStyles } from 'tss-react/mui'
 import {
   Paper,
-  Theme,
-  IconButton
+  IconButton,
+  Box
 } from '@mui/material'
 import { useLocation } from 'react-router-dom'
 import ForwardIcon from '@mui/icons-material/Forward'
@@ -19,25 +18,20 @@ type Props = {
   setOutListPosition: Function
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
-    backgroundColor: colors.grey700,
-    color: colors.white
-  },
-  outNameContainer: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  crest: {
-    maxHeight: theme.spacing(3),
-    marginLeft: theme.spacing(0.75),
-    marginRight: theme.spacing(0.75)
-  }
-}))
+const containerSx = (theme) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+  backgroundColor: colors.grey700,
+  color: colors.white
+})
+
+const crestSx = (theme) => ({
+  maxHeight: theme.spacing(3),
+  marginLeft: theme.spacing(0.75),
+  marginRight: theme.spacing(0.75)
+})
 
 const OutListPosition = (props: Props) => {
   const {
@@ -45,7 +39,6 @@ const OutListPosition = (props: Props) => {
     setOutListPosition
   } = props
 
-  const { classes } = useStyles()
   const { pathname } = useLocation()
 
   const clearOutListPosition = () => {
@@ -60,20 +53,21 @@ const OutListPosition = (props: Props) => {
   return (
     <Paper
       data-testid='OutListPosition'
-      className={classes.container}
+      sx={containerSx}
     >
-      <div className={classes.outNameContainer}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <ForwardIcon style={{ transform: 'rotate(270deg)', marginRight: 12 }}/>
         <div style={{ marginTop: 1, display: 'flex', alignItems: 'center' }}>
           Out: {firstName} {lastName}
-          <img
+          <Box
+            component='img'
             src={teamCrestPathLoader(shortName)}
             alt={shortName}
-            className={classes.crest}
+            sx={crestSx}
           />
           ({singularNameShort})
         </div>
-      </div>
+      </Box>
       <IconButton
         size='small'
         color='inherit'

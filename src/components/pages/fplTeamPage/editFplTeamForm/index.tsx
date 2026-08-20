@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui';
 import {
   Paper,
-  Theme,
   TextField,
   Button,
-  Typography
+  Typography,
+  Box
 } from '@mui/material'
 
 import { FPL_TEAMS_URL } from 'utilities/constants'
@@ -14,25 +13,7 @@ import ButtonLink from 'components/common/buttonLink'
 
 import type { FplTeamContext } from '..'
 
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  form: {
-    marginTop: theme.spacing(2)
-  },
-  textField: {
-    paddingBottom: theme.spacing(2)
-  },
-  paper: {
-    padding: theme.spacing(3)
-  },
-  formHeader: {
-    paddingBottom: theme.spacing(2)
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  }
-}))
+const textFieldSx = (theme) => ({ paddingBottom: theme.spacing(2) })
 
 export const tab = 'details'
 export const action = 'edit'
@@ -46,8 +27,6 @@ const EditFplTeamForm = () => {
     setTab,
     setAction
   } = useOutletContext<FplTeamContext>()
-
-  const { classes } = useStyles()
 
   const [newName, setName] = useState(name)
 
@@ -64,21 +43,22 @@ const EditFplTeamForm = () => {
   }
 
   return (
-    <form
+    <Box
+      component='form'
       data-testid='EditFplTeamForm'
       onSubmit={handleSubmit}
-      className={classes.form}
+      sx={(theme) => ({ marginTop: theme.spacing(2) })}
     >
-      <Paper className={classes.paper}>
+      <Paper sx={(theme) => ({ padding: theme.spacing(3) })}>
         <Typography
           variant='h5'
-          className={classes.formHeader}
+          sx={textFieldSx}
         >
           Edit details
         </Typography>
         <TextField
           required
-          className={classes.textField}
+          sx={textFieldSx}
           fullWidth
           variant='outlined'
           label='Name'
@@ -89,7 +69,7 @@ const EditFplTeamForm = () => {
           error={Boolean(errors.find(({ source }) => source === 'name'))}
           helperText={errors.find(({ source }) => source === 'name')?.detail}
         />
-        <div className={classes.actions}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <ButtonLink
             to={`${FPL_TEAMS_URL}/${id}/details`}
             color='inherit'
@@ -105,9 +85,9 @@ const EditFplTeamForm = () => {
           >
             Submit
           </Button>
-        </div>
+        </Box>
       </Paper>
-    </form>
+    </Box>
   )
 }
 

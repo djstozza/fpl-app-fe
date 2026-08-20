@@ -1,5 +1,4 @@
-import { makeStyles } from 'tss-react/mui'
-import { Theme, Alert } from '@mui/material'
+import { Alert, Box } from '@mui/material'
 import Countdown from 'react-countdown'
 import pluralize from 'pluralize'
 
@@ -22,38 +21,27 @@ type Props = {
   leagueId: string
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper
-  },
-  wrapper: {
-    flexDirection: 'row',
-    display: 'flex'
-  },
-  message: {
+const alertSx = (theme) => ({
+  paddingTop: theme.spacing(0.25),
+  paddingBottom: theme.spacing(0.25),
+  display: 'flex',
+  alignItems: 'center',
+  '& .MuiAlert-message': {
     width: '100%'
-  },
-  alert: {
-    paddingTop: theme.spacing(0.25),
-    paddingBottom: theme.spacing(0.25),
-    display: 'flex',
-    alignItems: 'center'
-  },
-  textContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column',
-      alignItems: 'start'
-    }
-  },
-  noWrap: {
-    whiteSpace: 'nowrap'
   }
-}))
+})
+
+const textContainerSx = (theme) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    alignItems: 'start'
+  }
+})
+
+const noWrapSx = { whiteSpace: 'nowrap' }
 
 const FplTeamAlert = (props: Props) => {
   const {
@@ -70,8 +58,6 @@ const FplTeamAlert = (props: Props) => {
     leagueId
   } = props
 
-  const { classes } = useStyles()
-
   if (!deadline || !round) return null
 
   const { name } = round
@@ -79,32 +65,32 @@ const FplTeamAlert = (props: Props) => {
   const substr = miniDraft ? 'mini draft' : 'waiver'
 
   const renderer = ({ days, hours, minutes, seconds }) => (
-    <div className={classes.textContainer}>
+    <Box sx={textContainerSx}>
       <span>
         {name} {isWaiver ? substr : 'trade'} deadline ends in {
           Boolean(days) &&
-          <span className={classes.noWrap}>
+          <Box component='span' sx={noWrapSx}>
            {days} {pluralize('day', days)}{!days || (!hours && !minutes) ? '' : ', '}
-          </span>
+          </Box>
         }
         {
           Boolean(hours) &&
-          <span className={classes.noWrap}>
+          <Box component='span' sx={noWrapSx}>
             {hours} {pluralize('hour', hours)}{!hours || !minutes ? '' : ', '}
-          </span>
+          </Box>
         }
         {
           Boolean(minutes) &&
-          <span className={classes.noWrap}>
+          <Box component='span' sx={noWrapSx}>
             {minutes} {pluralize('minute', minutes)}
             {Boolean(days || hours || minutes) && Boolean(seconds) ? ' and ' : ''}
-          </span>
+          </Box>
         }
         {
           Boolean(seconds) &&
-          <span className={classes.noWrap}>
+          <Box component='span' sx={noWrapSx}>
             {seconds} {pluralize('second', seconds)}
-          </span>
+          </Box>
         }
       </span>
       {
@@ -154,7 +140,7 @@ const FplTeamAlert = (props: Props) => {
           </ButtonLink>
         </div>
       }
-    </div>
+    </Box>
   )
 
   const handleComplete = () => {
@@ -169,8 +155,7 @@ const FplTeamAlert = (props: Props) => {
     {
       Boolean(deadline) &&
       <Alert
-        classes={{ message: classes.message }}
-        className={classes.alert}
+        sx={alertSx}
         variant='filled'
         severity='info'
       >
