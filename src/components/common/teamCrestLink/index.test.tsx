@@ -48,8 +48,8 @@ describe('ContainedTeamCrestLink', () => {
   it('renders a contained version of the TeamCrestLink', () => {
     const { container } = customRender()
 
-    if (container.firstChild && container.firstChild instanceof Element) {
-      expect(container.firstChild.classList.toString()).toContain('container')
+    if (container.firstChild && container.firstChild instanceof HTMLElement) {
+      expect(container.firstChild).toHaveStyle({ display: 'flex', justifyContent: 'center' })
     } else {
       throw new Error('container.firstChild is either null or not an instance of Element')
     }

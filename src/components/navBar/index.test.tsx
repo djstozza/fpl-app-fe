@@ -11,6 +11,7 @@ import {
   PLAYERS_URL,
   LOGIN_URL
 } from 'utilities/constants'
+import theme from '../../theme'
 import ConnectedNavbar, { NavBar } from '.'
 import { USER_1 } from 'test/fixtures'
 import { MockedRouterStore,  blank__ } from 'test/helpers'
@@ -106,13 +107,13 @@ describe('NavBar', () => {
       
       customRender()
 
-      expect(label('Sign Up').className).toContain('active')
+      expect(label('Sign Up')).toHaveStyle({ backgroundColor: theme.palette.secondary.main })
       expect(label('Sign Up')).toHaveAttribute('href', SIGN_UP_URL)
 
-      expect(label('Rounds').className).not.toContain('active')
-      expect(label('Players').className).not.toContain('active')
-      expect(label('Teams').className).not.toContain('active')
-      expect(label('Log In').className).not.toContain('active')
+      expect(label('Rounds')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Players')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Teams')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Log In')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
     })
 
     it(`sets ${LOGIN_URL} as active`, () => {
@@ -121,13 +122,13 @@ describe('NavBar', () => {
       
       customRender()
 
-      expect(label('Log In').className).toContain('active')
+      expect(label('Log In')).toHaveStyle({ backgroundColor: theme.palette.secondary.main })
       expect(label('Log In')).toHaveAttribute('href', LOGIN_URL)
 
-      expect(label('Rounds').className).not.toContain('active')
-      expect(label('Players').className).not.toContain('active')
-      expect(label('Teams').className).not.toContain('active')
-      expect(label('Sign Up').className).not.toContain('active')
+      expect(label('Rounds')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Players')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Teams')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Sign Up')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
     })
 
     it(`sets ${ROUNDS_URL} as active`, () => {
@@ -136,13 +137,13 @@ describe('NavBar', () => {
       
       customRender()
 
-      expect(label('Rounds').className).toContain('active')
+      expect(label('Rounds')).toHaveStyle({ backgroundColor: theme.palette.secondary.main })
       expect(label('Rounds')).toHaveAttribute('href', ROUNDS_URL)
       
-      expect(label('Players').className).not.toContain('active')
-      expect(label('Teams').className).not.toContain('active')
-      expect(label('Log In').className).not.toContain('active')
-      expect(label('Sign Up').className).not.toContain('active')
+      expect(label('Players')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Teams')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Log In')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Sign Up')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
     })
 
     it(`sets ${TEAMS_URL} as active`, () => {
@@ -151,13 +152,13 @@ describe('NavBar', () => {
       
       customRender()
 
-      expect(label('Teams').className).toContain('active')
+      expect(label('Teams')).toHaveStyle({ backgroundColor: theme.palette.secondary.main })
       expect(label('Teams')).toHaveAttribute('href', TEAMS_URL)
 
-      expect(label('Rounds').className).not.toContain('active')
-      expect(label('Players').className).not.toContain('active')
-      expect(label('Log In').className).not.toContain('active')
-      expect(label('Sign Up').className).not.toContain('active')
+      expect(label('Rounds')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Players')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Log In')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Sign Up')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
     })
 
     it(`sets ${PLAYERS_URL} as active`, () => {
@@ -166,13 +167,13 @@ describe('NavBar', () => {
       
       customRender()
 
-      expect(label('Players').className).toContain('active')
+      expect(label('Players')).toHaveStyle({ backgroundColor: theme.palette.secondary.main })
       expect(label('Players')).toHaveAttribute('href', PLAYERS_URL)
 
-      expect(label('Rounds').className).not.toContain('active')
-      expect(label('Teams').className).not.toContain('active')
-      expect(label('Log In').className).not.toContain('active')
-      expect(label('Sign Up').className).not.toContain('active')
+      expect(label('Rounds')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Teams')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Log In')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
+      expect(label('Sign Up')).not.toHaveStyle({ backgroundColor: theme.palette.secondary.main })
     })
   })
 

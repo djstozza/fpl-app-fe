@@ -1,5 +1,4 @@
-import { makeStyles } from 'tss-react/mui'
-import { AppBar, Tabs, Tab, Theme } from '@mui/material'
+import { AppBar, Tabs, Tab, Box } from '@mui/material'
 import history from 'state/history'
 
 import type { RoundSummary, TeamSummary, FplTeamList } from 'types'
@@ -19,24 +18,21 @@ const scrollProps = (index: number) => {
   };
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper
-  }
-}));
-
 const TabPanel = (props: Props) => {
   const { collection, collectionId, labelRenderer, url, tab } = props
-  const { classes } = useStyles()
 
   const index = collection.findIndex(({ id }) => id === collectionId)
 
   const handleChange = (newId) => history.push(`${url}/${newId}/${tab ? tab : ''}`)
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={(theme) => ({
+        flexGrow: 1,
+        width: '100%',
+        backgroundColor: theme.palette.background.paper
+      })}
+    >
       <AppBar position='static' color='inherit'>
         <Tabs
           value={index}
@@ -58,7 +54,7 @@ const TabPanel = (props: Props) => {
           }
         </Tabs>
       </AppBar>
-    </div>
+    </Box>
   )
 }
 

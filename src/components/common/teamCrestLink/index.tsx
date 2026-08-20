@@ -1,6 +1,5 @@
 import Link from '../link'
-import { makeStyles } from 'tss-react/mui'
-import { Theme } from '@mui/material'
+import { Box } from '@mui/material'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL } from 'utilities/constants'
@@ -13,17 +12,6 @@ export type Props = {
   size?: string
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  crest: {
-    maxHeight: theme.spacing(3),
-    marginRight: theme.spacing(1)
-  },
-
-  large: {
-    maxHeight: theme.spacing(4)
-  }
-}));
-
 const TeamCrestLink = (props: Props) => {
   const {
     team: { id, shortName },
@@ -31,21 +19,16 @@ const TeamCrestLink = (props: Props) => {
     size = 'small'
   } = props
 
-  const { classes, cx } = useStyles()
-
   return (
     <Link to={`${TEAMS_URL}/${id}/${tab ? tab : ''}`} image>
-      <img
+      <Box
+        component='img'
         src={teamCrestPathLoader(shortName)}
         alt={shortName}
-        className={
-          cx(
-            classes.crest,
-            {
-              [classes.large]: size === 'large'
-            }
-          )
-        }
+        sx={(theme) => ({
+          maxHeight: theme.spacing(size === 'large' ? 4 : 3),
+          marginRight: theme.spacing(1)
+        })}
       />
       <div>
         {shortName}

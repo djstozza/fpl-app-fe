@@ -1,8 +1,7 @@
 import { Fragment, MouseEvent, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
-import { AppBar, Toolbar, IconButton, Typography, Tooltip, Theme, Menu, MenuItem, useMediaQuery, useTheme } from '@mui/material'
+import { AppBar, Toolbar, IconButton, Typography, Tooltip, Box, Menu, MenuItem, useMediaQuery, useTheme } from '@mui/material'
 
 import { authActions } from 'state/auth'
 import MoreIcon from '@mui/icons-material/MoreVert'
@@ -29,32 +28,13 @@ type Props = {
   logOut: Function
 }
 
-const useStyles = makeStyles()((theme: Theme) =>
-  ({
-    grow: {
-      flexGrow: 1,
-    },
-
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-
-    icon: {
-      width: theme.spacing(3.5)
-    },
-
-    section: {
-      display: 'flex'
-    },
-
-    active: {
-      backgroundColor: `${theme.palette.secondary.main} !important`
-    }
-  }));
+const growSx = { flexGrow: 1 }
+const iconSx = (theme) => ({ width: theme.spacing(3.5) })
+const sectionSx = { display: 'flex' }
+const activeSx = (theme) => ({ backgroundColor: `${theme.palette.secondary.main} !important` })
 
 export const NavBar = (props: Props) => {
   const { user, logOut } = props
-  const { classes, cx } = useStyles()
   const theme = useTheme()
   const showSectionMobile = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -87,7 +67,7 @@ export const NavBar = (props: Props) => {
         component={Link}
         to={ROUNDS_URL}
         onClick={handleMobileMenuClose}
-        className={cx({ [classes.active]: pathname === ROUNDS_URL })}
+        sx={pathname === ROUNDS_URL ? activeSx : undefined}
       >
         <IconButton
           size='small'
@@ -102,14 +82,14 @@ export const NavBar = (props: Props) => {
         component={Link}
         to={TEAMS_URL}
         onClick={handleMobileMenuClose}
-        className={cx({ [classes.active]: pathname === TEAMS_URL })}
+        sx={pathname === TEAMS_URL ? activeSx : undefined}
       >
         <IconButton
           size='small'
           color='inherit'
           aria-label='Teams'
         >
-          <img src={iconLoader('team-jersey-black')} alt='Teams' className={classes.icon} />
+          <Box component='img' src={iconLoader('team-jersey-black')} alt='Teams' sx={iconSx} />
         </IconButton>
         <p>Teams</p>
       </MenuItem>
@@ -117,14 +97,14 @@ export const NavBar = (props: Props) => {
         component={Link}
         to={PLAYERS_URL}
         onClick={handleMobileMenuClose}
-        className={cx({ [classes.active]: pathname === PLAYERS_URL })}
+        sx={pathname === PLAYERS_URL ? activeSx : undefined}
       >
         <IconButton
           size='small'
           color='inherit'
           aria-label='Players'
         >
-          <img src={iconLoader('player-black')} alt='Teams' className={classes.icon} />
+          <Box component='img' src={iconLoader('player-black')} alt='Teams' sx={iconSx} />
         </IconButton>
         <p>Players</p>
       </MenuItem>
@@ -179,9 +159,9 @@ export const NavBar = (props: Props) => {
               color='inherit'
               component={Link}
               to={SIGN_UP_URL}
-              className={cx({ [classes.active]: pathname.includes(SIGN_UP_URL) })}
+              sx={pathname.includes(SIGN_UP_URL) ? activeSx : undefined}
             >
-              <PersonAddIcon className={classes.icon} />
+              <PersonAddIcon sx={iconSx} />
             </IconButton>
           </Tooltip>
           <Tooltip title='Log In'>
@@ -190,9 +170,9 @@ export const NavBar = (props: Props) => {
               color='inherit'
               component={Link}
               to={LOGIN_URL}
-              className={cx({ [classes.active]: pathname.includes(LOGIN_URL) })}
+              sx={pathname.includes(LOGIN_URL) ? activeSx : undefined}
             >
-              <PersonIcon className={classes.icon} />
+              <PersonIcon sx={iconSx} />
             </IconButton>
           </Tooltip>
         </Fragment>
@@ -207,7 +187,7 @@ export const NavBar = (props: Props) => {
               aria-haspopup='true'
               color='inherit'
               onClick={handleAccountMenuOpen}
-              className={cx({ [classes.active]: pathname.includes(PROFILE_URL) })}
+              sx={pathname.includes(PROFILE_URL) ? activeSx : undefined}
             >
               <AccountCircleIcon />
             </IconButton>
@@ -219,16 +199,16 @@ export const NavBar = (props: Props) => {
   )
 
   return (
-    <div className={classes.grow}>
+    <Box sx={growSx}>
       <AppBar position='fixed'>
         <Toolbar>
           <Typography variant='h6' noWrap>
             FPL App
           </Typography>
-          <div className={classes.grow} />
+          <Box sx={growSx} />
           {
             !showSectionMobile &&
-            <div className={classes.section}>
+            <Box sx={sectionSx}>
               <Tooltip title='Rounds'>
                 <IconButton
                   size='small'
@@ -236,9 +216,9 @@ export const NavBar = (props: Props) => {
                   aria-label='Rounds'
                   component={Link}
                   to={ROUNDS_URL}
-                  className={cx({ [classes.active]: pathname.includes(ROUNDS_URL) })}
+                  sx={pathname.includes(ROUNDS_URL) ? activeSx : undefined}
                 >
-                  <FormatListNumberedIcon className={classes.icon} />
+                  <FormatListNumberedIcon sx={iconSx} />
                 </IconButton>
               </Tooltip>
               <Tooltip title='Teams'>
@@ -247,9 +227,9 @@ export const NavBar = (props: Props) => {
                   color='inherit'
                   component={Link}
                   to={TEAMS_URL}
-                  className={cx({ [classes.active]: pathname.includes(TEAMS_URL) })}
+                  sx={pathname.includes(TEAMS_URL) ? activeSx : undefined}
                 >
-                  <img src={iconLoader('team-jersey-white')} alt='Teams' className={classes.icon} />
+                  <Box component='img' src={iconLoader('team-jersey-white')} alt='Teams' sx={iconSx} />
                 </IconButton>
               </Tooltip>
               <Tooltip title='Players'>
@@ -258,17 +238,17 @@ export const NavBar = (props: Props) => {
                   color='inherit'
                   component={Link}
                   to={`${PLAYERS_URL}`}
-                  className={cx({ [classes.active]: pathname.includes(PLAYERS_URL) })}
+                  sx={pathname.includes(PLAYERS_URL) ? activeSx : undefined}
                 >
-                  <img src={iconLoader('player-white')} alt='Teams' className={classes.icon} />
+                  <Box component='img' src={iconLoader('player-white')} alt='Teams' sx={iconSx} />
                 </IconButton>
               </Tooltip>
-            </div>
+            </Box>
           }
           {renderAccountSection}
           {
             showSectionMobile &&
-            <div className={classes.section}>
+            <Box sx={sectionSx}>
               <IconButton
                 size='small'
                 aria-label='show more'
@@ -278,12 +258,12 @@ export const NavBar = (props: Props) => {
               >
                 <MoreIcon />
               </IconButton>
-            </div>
+            </Box>
           }
         </Toolbar>
       </AppBar>
       {showSectionMobile && renderMobileMenu}
-    </div>
+    </Box>
   );
 }
 
