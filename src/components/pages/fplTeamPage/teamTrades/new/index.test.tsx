@@ -68,7 +68,7 @@ describe('NewTeamTrade', () => {
   })
 
   it('calls fetchListPositions if there is a selectedFplTeamListId', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({ fetchListPositions })
 
@@ -76,7 +76,7 @@ describe('NewTeamTrade', () => {
   })
 
   it('does not call fetchListPositions if there is no currentFplTeamList', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({ fetchListPositions, currentFplTeamList: undefined })
 

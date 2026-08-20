@@ -28,11 +28,11 @@ describe('FplTeamAlert', () => {
   )
 
   beforeAll(() => {
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
 
   afterAll(() => {
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   const alert = () => screen.getByRole('alert')
@@ -55,7 +55,7 @@ describe('FplTeamAlert', () => {
   })
 
   it('triggers setOutListPosition if the new trade linkButton is clicked', () => {
-    const setOutListPosition = jest.fn()
+    const setOutListPosition = vi.fn()
     customRender({ deadline, setOutListPosition })
 
     fireEvent.click(buttonLinks()[0])
@@ -63,7 +63,7 @@ describe('FplTeamAlert', () => {
   })
 
   it('triggers setOutListPosition if the new team trade linkButton is clicked', () => {
-    const setOutListPosition = jest.fn()
+    const setOutListPosition = vi.fn()
     customRender({ deadline, setOutListPosition })
 
     fireEvent.click(buttonLinks()[1])
@@ -87,7 +87,7 @@ describe('FplTeamAlert', () => {
   })
 
   it('triggers setOutListPosition if the new waiver linkButton is clicked', () => {
-    const setOutListPosition = jest.fn()
+    const setOutListPosition = vi.fn()
     customRender({ deadline, setOutListPosition, isWaiver: true })
 
     fireEvent.click(buttonLinks()[0])
@@ -140,8 +140,8 @@ describe('FplTeamAlert', () => {
     const waiverDeadline = moment().add(1, 'second').toDate()
     const deadlineTimeAsTime = moment().add(1, 'day').toDate()
 
-    const setIsWaiver = jest.fn()
-    const setDeadline = jest.fn()
+    const setIsWaiver = vi.fn()
+    const setDeadline = vi.fn()
 
     customRender({ deadline: waiverDeadline, isWaiver: true, deadlineTimeAsTime, setIsWaiver, setDeadline })
 
@@ -149,7 +149,7 @@ describe('FplTeamAlert', () => {
       `${FPL_TEAM_LIST_1.round.name} waiver deadline ends in 1 second`
     )
 
-    act(() => jest.runOnlyPendingTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     expect(setIsWaiver).toHaveBeenCalledWith(false)
     expect(setDeadline).toHaveBeenCalledWith(deadlineTimeAsTime)
@@ -158,8 +158,8 @@ describe('FplTeamAlert', () => {
   it('calls setDeadline with undefined if deadlineTimeAsTime time has passed', async () => {
     const deadlineTimeAsTime = moment().add(1, 'second').toDate()
 
-    const setIsWaiver = jest.fn()
-    const setDeadline = jest.fn()
+    const setIsWaiver = vi.fn()
+    const setDeadline = vi.fn()
 
     customRender({ deadline: deadlineTimeAsTime, deadlineTimeAsTime, setIsWaiver, setDeadline })
 
@@ -167,7 +167,7 @@ describe('FplTeamAlert', () => {
       `${FPL_TEAM_LIST_1.round.name} trade deadline ends in 1 second`
     )
 
-    act(() => jest.runOnlyPendingTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     expect(setIsWaiver).not.toHaveBeenCalled()
     expect(setDeadline).toHaveBeenCalledWith(undefined)

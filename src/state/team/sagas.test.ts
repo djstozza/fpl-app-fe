@@ -53,7 +53,7 @@ describe('Team sagas', () => {
   })
 
   test('updateTeamPlayersSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
     const tab = 'players'
 
     expectSaga(sagas.updateTeamPlayersSort, actions.updateTeamPlayersSort({ tab, sort: sort.players } ))
@@ -68,7 +68,7 @@ describe('Team sagas', () => {
   })
 
   test('updateTeamFixturesSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
     const tab = 'fixtures'
 
     expectSaga(sagas.updateTeamFixturesSort, actions.updateTeamFixturesSort({ tab, sort: sort.fixtures } ))

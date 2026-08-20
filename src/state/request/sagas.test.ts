@@ -29,7 +29,7 @@ const error = {
 describe('Request sagas', () => {
   describe('sendRequest', () => {
     test(`${actions.AUTHED_REQUEST} - success`, async () => {
-      const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
+      const fetchStub = vi.spyOn(window, 'fetch').mockResolvedValue({
         ...new Response(),
         status: 200,
         statusText: 'Success',
@@ -68,7 +68,7 @@ describe('Request sagas', () => {
         ok: false
       }
       
-      const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
+      const fetchStub = vi.spyOn(window, 'fetch').mockResolvedValue({
         ...new Response(),
         ...response,
         status: parseInt(response.status),
@@ -100,7 +100,7 @@ describe('Request sagas', () => {
     })
 
     test(`${actions.UNAUTHED_REQUEST} - success`, async () => {
-      const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
+      const fetchStub = vi.spyOn(window, 'fetch').mockResolvedValue({
         ...new Response(),
         status: 200,
         statusText: 'Success',
@@ -134,7 +134,7 @@ describe('Request sagas', () => {
         statusText: 'Unporcessible Entity',
         ok: false
       }
-      const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
+      const fetchStub = vi.spyOn(window, 'fetch').mockResolvedValue({
         ...new Response(),
         ...response,
         status: parseInt(response.status),
@@ -162,7 +162,7 @@ describe('Request sagas', () => {
     })
 
     test(`${actions.UNAUTHED_REQUEST} - ${actions.ADD_REQUEST_ERROR}`, async () => {
-      const fetchStub = jest.spyOn(window, 'fetch').mockRejectedValue(error)
+      const fetchStub = vi.spyOn(window, 'fetch').mockRejectedValue(error)
 
       await expectSaga(sagas.sendRequest, false, { successAction, failureAction, method, url })
         .put({ type: failureAction, errors: [error] })

@@ -53,7 +53,7 @@ describe('UserEditForm', () => {
   })
 
   it('triggers initialForm on load', () => {
-    const initializeAuth = jest.fn()
+    const initializeAuth = vi.fn()
 
     customRender({ initializeAuth })
 
@@ -61,7 +61,7 @@ describe('UserEditForm', () => {
   })
 
   it('triggers updateUser with the email and username', () => {
-    const updateUser = jest.fn()
+    const updateUser = vi.fn()
     customRender({ updateUser })
 
     expect(submitButton()).toHaveAttribute('disabled')

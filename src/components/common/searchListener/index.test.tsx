@@ -8,8 +8,8 @@ const search = '?filter%5BpositionId%5D%5B0%5D=1&filter%5BpositionId%5D%5B1%5D=4
 const sort = { totalPoints: 'desc' }
 
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({ pathname, search })
 }))
 
@@ -29,7 +29,7 @@ describe('searchListener', () => {
   const customRender = (props = {}) => render(SearchListenerBase(props))
 
   it('triggers the fetch action based on the search query and the initial filter state', () => {
-    const fetchAction = jest.fn()
+    const fetchAction = vi.fn()
     customRender({ fetchAction, initialFilterState: { sort } })
 
     expect(fetchAction).toHaveBeenCalledWith({ sort, filter: { positionId: ['1', '4'] } })
@@ -38,7 +38,7 @@ describe('searchListener', () => {
   it('refetches if a new id is supplied', () => {
     const originalId = 1
     const newId = 2
-    const fetchAction = jest.fn()
+    const fetchAction = vi.fn()
     
     const { rerender } = customRender({ fetchAction, id: originalId, initialFilterState: { sort } })
 

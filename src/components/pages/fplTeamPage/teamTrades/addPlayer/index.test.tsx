@@ -80,7 +80,7 @@ describe('AddPlayer', () => {
   })
 
   it('calls fetchInterTeamTradeGroup if there is a selectedFplTeamListId', () => {
-    const fetchInterTeamTradeGroup = jest.fn()
+    const fetchInterTeamTradeGroup = vi.fn()
 
     customRender({ fetchInterTeamTradeGroup })
 
@@ -88,7 +88,7 @@ describe('AddPlayer', () => {
   })
 
   it('does not call fetchInterTeamTradeGroup if there is no selectedFplTeamListId', () => {
-    const fetchInterTeamTradeGroup = jest.fn()
+    const fetchInterTeamTradeGroup = vi.fn()
 
     customRender({ fetchInterTeamTradeGroup, selectedFplTeamListId: undefined })
 
@@ -96,7 +96,7 @@ describe('AddPlayer', () => {
   })
 
   it('calls fetchListPositions if there is a selectedFplTeamListId', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({ fetchListPositions })
 
@@ -104,7 +104,7 @@ describe('AddPlayer', () => {
   })
 
   it('does not call fetchListPositions if there is no currentFplTeamList', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({ fetchListPositions, currentFplTeamList: undefined })
 
@@ -112,7 +112,7 @@ describe('AddPlayer', () => {
   })
 
   it('does not call fetchListPositions if there is no interTeamTradeGroup', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({ fetchListPositions, interTeamTradeGroup: undefined })
 

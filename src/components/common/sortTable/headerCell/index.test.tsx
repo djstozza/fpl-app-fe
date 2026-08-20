@@ -57,7 +57,7 @@ describe('HeaderCell', () => {
 
   describe('filtering', () => {
     it('triggers handleFilterChange with the set filters', ()=> {
-      const handleFilterChange = jest.fn()
+      const handleFilterChange = vi.fn()
 
       customRender({ handleFilterChange, filter }) // Open filter
       
@@ -91,7 +91,7 @@ describe('HeaderCell', () => {
     })
 
     it('removes empty filters when handleFilterChange is called', () => {
-      const handleFilterChange = jest.fn()
+      const handleFilterChange = vi.fn()
 
       customRender({ handleFilterChange, filter })
 
@@ -132,7 +132,7 @@ describe('HeaderCell', () => {
     })
 
     it('triggers handleSort when clicked', () => {
-      const handleSort = jest.fn()
+      const handleSort = vi.fn()
       
       customRender({ handleSort })
 
@@ -146,7 +146,7 @@ describe('HeaderCell', () => {
 
     it('shows active = false if there is no sortDirection', () => {
       const sort = { 'position.name': 'asc' }
-      const handleSort = jest.fn()
+      const handleSort = vi.fn()
       customRender({ handleSort, sort })
 
       expect(buttons()[1].className).not.toContain('Mui-active')

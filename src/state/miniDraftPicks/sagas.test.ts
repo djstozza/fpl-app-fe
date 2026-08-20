@@ -64,7 +64,7 @@ describe('Mini draft picks', () => {
   })
 
   test('updateFilter', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateFilter, actions.updateFilter(filter))
       .withState({
@@ -83,7 +83,7 @@ describe('Mini draft picks', () => {
   })
 
   test('updateSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateSort, actions.updateSort(sort))
       .withState({
@@ -150,7 +150,7 @@ describe('Mini draft picks', () => {
   })
 
   test(`createMiniDraftPickSuccess - ${success(actions.API_LEAGUE_MINI_DRAFT_PICK_CREATE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.createMiniDraftPickSuccess)
       .withState({
@@ -172,7 +172,7 @@ describe('Mini draft picks', () => {
   })
 
   test(`createMiniDraftPickSuccess - ${success(actions.API_LEAGUE_MINI_DRAFT_PICK_PASS)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.createMiniDraftPickSuccess)
       .withState({
@@ -210,7 +210,7 @@ describe('Mini draft picks', () => {
   })
 
   test('updateAvailablePlayersSort', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateAvailablePlayersSort, actions.updateTradeablePlayersSort(sort))
       .withState({
@@ -228,7 +228,7 @@ describe('Mini draft picks', () => {
   })
 
   test('updateAvailablePlayersFilter', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateAvailablePlayersFilter, actions.updateTradeablePlayersFilter(filter))
       .withState({
@@ -246,7 +246,7 @@ describe('Mini draft picks', () => {
   })
 
   test('updateAvailablePlayersPage', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateAvailablePlayersPage, actions.updateTradeablePlayersPage(page.offset))
       .withState({

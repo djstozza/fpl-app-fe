@@ -43,10 +43,10 @@ export default tseslint.config(
     }
   },
   {
-    files: ['**/*.test.{ts,tsx}', 'jest.setup.ts', 'src/test/**'],
+    files: ['**/*.test.{ts,tsx}', 'vitest.setup.ts', 'src/test/**'],
     languageOptions: {
       globals: {
-        ...globals.jest
+        ...globals.vitest
       }
     }
   },

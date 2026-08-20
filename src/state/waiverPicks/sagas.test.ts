@@ -55,7 +55,7 @@ describe('Waiver picks sagas', () => {
   })
 
   test('createWaiverPickSuccess', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.createWaiverPickSuccess)
       .withState({

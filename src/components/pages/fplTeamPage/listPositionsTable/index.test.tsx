@@ -44,7 +44,7 @@ describe('ListPositionsTable', () => {
   })
 
   it('allows users to set the outListPosition for waiver picks if deadline is present and isOwner = true', () => {
-    const setOutListPosition = jest.fn()
+    const setOutListPosition = vi.fn()
     customRender({ isOwner: true, isWaiver: true, deadline: new Date(), setOutListPosition })
 
     expect(columnHeaders()).toHaveLength(listPositionCellNumber + 1)
@@ -57,7 +57,7 @@ describe('ListPositionsTable', () => {
   })
 
   it('allows users to set the outListPosition for trades if deadline is present and isOwner = true', () => {
-    const setOutListPosition = jest.fn()
+    const setOutListPosition = vi.fn()
     customRender({ isOwner: true, isWaiver: false, deadline: new Date(), setOutListPosition })
 
     expect(columnHeaders()).toHaveLength(listPositionCellNumber + 1)

@@ -38,8 +38,8 @@ describe('LeagueDetails', () => {
   })
 
   it('triggers setTab and setAction on load', () => {
-    const setTab = jest.fn()
-    const setAction = jest.fn()
+    const setTab = vi.fn()
+    const setAction = vi.fn()
     customRender({ setTab, setAction })
 
     expect(setTab).toHaveBeenCalledWith('details')

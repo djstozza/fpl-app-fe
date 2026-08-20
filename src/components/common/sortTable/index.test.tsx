@@ -70,7 +70,7 @@ describe('SortTable', () => {
 
   describe('sort', () => {
     test('desc -> asc', () => {
-      const handleSortChange = jest.fn()
+      const handleSortChange = vi.fn()
       customRender({ handleSortChange })
 
       fireEvent.click(sortButton('TP'))
@@ -78,7 +78,7 @@ describe('SortTable', () => {
     })
 
     test('asc -> desc', () => {
-      const handleSortChange = jest.fn()
+      const handleSortChange = vi.fn()
 
       customRender(
         { handleSortChange },
@@ -95,7 +95,7 @@ describe('SortTable', () => {
     })
 
     test('none -> asc', () => {
-      const handleSortChange = jest.fn()
+      const handleSortChange = vi.fn()
 
       customRender(
         { handleSortChange },
@@ -128,7 +128,7 @@ describe('SortTable', () => {
 
   describe('pagination', () => {
     it('trggers changes in pagaination', () => {
-      const handleChangePage = jest.fn()
+      const handleChangePage = vi.fn()
 
       customRender({ handleChangePage })
       

@@ -72,9 +72,9 @@ describe('FplTeamsTable', () => {
   })
 
   it('triggers fetchFplTeams, setTab and setAction on render', () => {
-    const fetchFplTeams = jest.fn()
-    const setTab = jest.fn()
-    const setAction = jest.fn()
+    const fetchFplTeams = vi.fn()
+    const setTab = vi.fn()
+    const setAction = vi.fn()
     customRender({ fetchFplTeams, setTab, setAction })
 
     expect(fetchFplTeams).toHaveBeenCalledWith({ id: LIVE_LEAGUE.id, ...initialFilterState })
@@ -83,7 +83,7 @@ describe('FplTeamsTable', () => {
   })
 
   it('triggers updateFplTeamsSort', () => {
-    const updateFplTeamsSort = jest.fn()
+    const updateFplTeamsSort = vi.fn()
     customRender({ updateFplTeamsSort })
 
     fireEvent.click(sortButton('N'))

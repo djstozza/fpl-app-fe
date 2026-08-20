@@ -47,7 +47,7 @@ describe('Fpl team sagas', () => {
   })
 
   test('updateFplTeamSuccess', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateFplTeamSuccess)
       .withState({ fplTeam: { data: FPL_TEAM_1 } })

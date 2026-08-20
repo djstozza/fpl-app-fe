@@ -41,7 +41,7 @@ describe('Players sagas', () => {
   })
 
   test('updateSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateSort, actions.updateSort(sort))
       .withState({
@@ -57,7 +57,7 @@ describe('Players sagas', () => {
   })
 
   test('updateFilter', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateFilter, actions.updateFilter(filter))
       .withState({
@@ -73,7 +73,7 @@ describe('Players sagas', () => {
   })
 
   test('updatePage', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updatePage, actions.updatePage(page.offset))
       .withState({

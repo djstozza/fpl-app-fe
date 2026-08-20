@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import * as rrd from 'react-router-dom'
 
@@ -7,13 +8,13 @@ import { TITLE } from 'utilities/constants'
 import { PLAYER_SUMMARIES } from 'test/fixtures'
 import { initialState } from 'state/players/reducer'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(), // Mock the useParams hook
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn(), // Mock the useParams hook
 }))
 
 afterEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 const player = {
@@ -56,7 +57,7 @@ describe('PlayerPage', () => {
   const heading = () => screen.getByRole('heading')
 
   describe('when playerId is present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ playerId: player.id }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ playerId: player.id }))
 
     it('renders the player details by default and sets the document title', () => {
       connectedRender()
@@ -78,7 +79,7 @@ describe('PlayerPage', () => {
     })
 
     it('triggers the fetchPlayer function on load', () => {
-      const fetchPlayer = jest.fn()
+      const fetchPlayer = vi.fn()
       customRender({ fetchPlayer })
 
       expect(fetchPlayer).toHaveBeenCalledWith(PLAYER_SUMMARIES[0].id)
@@ -91,7 +92,7 @@ describe('PlayerPage', () => {
   })
 
   describe('when playerId is not peresent', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ playerId: undefined }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ playerId: undefined }))
 
     it('renders nothing if data is not defined', () => {
       const { container } = connectedRender()

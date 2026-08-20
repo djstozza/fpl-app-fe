@@ -69,7 +69,7 @@ describe('TradeableListPositionsTable', () => {
   })
 
   it('triggers the submit action', () => {
-    const submitAction = jest.fn()
+    const submitAction = vi.fn()
     customRender({ submitAction, isWaiver: true })
 
     expect(presentation()).toHaveLength(0)
@@ -90,7 +90,7 @@ describe('TradeableListPositionsTable', () => {
   })
 
   it('closes the dialog when cancel is clicked', () => {
-    const submitAction = jest.fn()
+    const submitAction = vi.fn()
     customRender({ submitAction })
 
     expect(presentation()).toHaveLength(0)
@@ -106,7 +106,7 @@ describe('TradeableListPositionsTable', () => {
   })
 
   it('closes the dialog when clicking out of it', () => {
-    const submitAction = jest.fn()
+    const submitAction = vi.fn()
     customRender({ submitAction })
 
     expect(presentation()).toHaveLength(0)
@@ -122,8 +122,8 @@ describe('TradeableListPositionsTable', () => {
   })
 
   it('triggers the fetchTradeableListPositions and fetchTradeableListPositionFacets function on load', () => {
-    const fetchTradeableListPositions = jest.fn()
-    const fetchTradeableListPositionFacets = jest.fn()
+    const fetchTradeableListPositions = vi.fn()
+    const fetchTradeableListPositionFacets = vi.fn()
 
     customRender({ fetchTradeableListPositions, fetchTradeableListPositionFacets })
 
@@ -132,7 +132,7 @@ describe('TradeableListPositionsTable', () => {
   })
 
   it('triggers updateTradeableListPositionsSort', () => {
-    const updateTradeableListPositionsSort = jest.fn()
+    const updateTradeableListPositionsSort = vi.fn()
     customRender({ updateTradeableListPositionsSort })
 
     fireEvent.click(sortButton('LN'))
@@ -141,7 +141,7 @@ describe('TradeableListPositionsTable', () => {
   })
 
   it('triggers updateTradeableListPositionsFilter', () => {
-    const updateTradeableListPositionsFilter = jest.fn()
+    const updateTradeableListPositionsFilter = vi.fn()
     customRender({ updateTradeableListPositionsFilter })
 
     fireEvent.click(within(columnHeaders()[2]).getByLabelText('filter'))
@@ -167,7 +167,7 @@ describe('TradeableListPositionsTable', () => {
   })
 
   it('includes the inFplTeamListId and excludedPlayerIds filters if an interTeamTradeGroup is present', () => {
-    const fetchTradeableListPositions = jest.fn()
+    const fetchTradeableListPositions = vi.fn()
     customRender({ fetchTradeableListPositions, interTeamTradeGroup: INTER_TEAM_TRADE_GROUP_1 })
 
     expect(fetchTradeableListPositions).toHaveBeenCalledWith({

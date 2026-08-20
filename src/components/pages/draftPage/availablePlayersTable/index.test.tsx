@@ -63,7 +63,7 @@ describe('AvailablePlayersTable', () => {
   })
 
   it('allows the user to draft a player if userCanPick = true', () => {
-    const updateDraftPick = jest.fn()
+    const updateDraftPick = vi.fn()
     customRender({ updateDraftPick })
 
     expect(presentation().length).toEqual(0)
@@ -83,7 +83,7 @@ describe('AvailablePlayersTable', () => {
   })
 
   it('closes the draft dialog when cancel is clicked', () => {
-    const updateDraftPick = jest.fn()
+    const updateDraftPick = vi.fn()
     customRender({ updateDraftPick })
 
     expect(presentation().length).toEqual(0)
@@ -101,7 +101,7 @@ describe('AvailablePlayersTable', () => {
   })
 
   it('closes the draft dialog when the backdrop is clicked', () => {
-    const updateDraftPick = jest.fn()
+    const updateDraftPick = vi.fn()
     customRender({ updateDraftPick })
 
     expect(presentation().length).toEqual(0)
@@ -118,8 +118,8 @@ describe('AvailablePlayersTable', () => {
   })
 
   it('triggers the fetchAvailablePlayers and fetchPlayerFacets function on load', () => {
-    const fetchAvailablePlayers = jest.fn()
-    const fetchPlayerFacets = jest.fn()
+    const fetchAvailablePlayers = vi.fn()
+    const fetchPlayerFacets = vi.fn()
 
     customRender({ fetchAvailablePlayers, fetchPlayerFacets })
 
@@ -128,7 +128,7 @@ describe('AvailablePlayersTable', () => {
   })
 
   it('triggers updateAvailablePlayersSort', () => {
-    const updateAvailablePlayersSort = jest.fn()
+    const updateAvailablePlayersSort = vi.fn()
     customRender({ updateAvailablePlayersSort })
 
     fireEvent.click(within(columnHeaders()[0]).getByTestId('ArrowDownwardIcon'))
@@ -136,7 +136,7 @@ describe('AvailablePlayersTable', () => {
   })
 
   it('triggers updateAvailablePlayersFilter', () => {
-    const updateAvailablePlayersFilter = jest.fn()
+    const updateAvailablePlayersFilter = vi.fn()
     customRender({ updateAvailablePlayersFilter })
 
     fireEvent.click(within(columnHeaders()[2]).getByLabelText('filter'))
@@ -149,7 +149,7 @@ describe('AvailablePlayersTable', () => {
   })
 
   it('triggers updateAvailablePlayersPage', () => {
-    const updateAvailablePlayersPage = jest.fn()
+    const updateAvailablePlayersPage = vi.fn()
     const { page: { offset, limit } } = initialFilterState
     const playersArr = Array(limit + 1).fill(PLAYER_SUMMARIES[0])
 

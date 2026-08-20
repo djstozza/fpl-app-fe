@@ -39,7 +39,7 @@ describe('RoundDetails', () => {
   })
 
   it('fetches the round if a round id is present', () => {
-    const fetchRound = jest.fn()
+    const fetchRound = vi.fn()
 
     customRender({ fetchRound })
 
@@ -47,7 +47,7 @@ describe('RoundDetails', () => {
   })
 
   it('does not fetch the round if roundId is null', () => {
-    const fetchRound = jest.fn()
+    const fetchRound = vi.fn()
 
     customRender({ roundId: null, fetchRound })
 

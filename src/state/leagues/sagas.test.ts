@@ -62,7 +62,7 @@ describe('Leagues sagas', () => {
   })
 
   test(`leagueSuccess - ${success(actions.API_LEAGUES_CREATE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.leagueSuccess)
       .dispatch({ type: success(actions.API_LEAGUES_CREATE) })
@@ -72,7 +72,7 @@ describe('Leagues sagas', () => {
   })
 
   test(`leagueSuccess - ${success(actions.API_LEAGUES_JOIN)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.leagueSuccess)
       .dispatch({ type: success(actions.API_LEAGUES_JOIN) })
@@ -82,7 +82,7 @@ describe('Leagues sagas', () => {
   })
 
   test('updateSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateSort, actions.updateSort(sort))
       .dispatch({ type: actions.UPDATE_LEAGUES_SORT })

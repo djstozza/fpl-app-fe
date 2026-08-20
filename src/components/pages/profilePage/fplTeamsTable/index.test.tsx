@@ -48,14 +48,14 @@ describe('FplTeamsTable', () => {
   })
 
   it('triggers fetchFplTeams on render', () => {
-    const fetchFplTeams = jest.fn()
+    const fetchFplTeams = vi.fn()
     customRender({ fetchFplTeams })
 
     expect(fetchFplTeams).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers updateFplTeamsSort', () => {
-    const updateFplTeamsSort = jest.fn()
+    const updateFplTeamsSort = vi.fn()
     customRender({ updateFplTeamsSort })
 
     fireEvent.click(sortButton('N'))

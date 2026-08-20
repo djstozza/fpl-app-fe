@@ -52,8 +52,8 @@ describe('FixturesTable', () => {
   })
 
   it('triggers fetchTeamFixtures and setTab on render', () => {
-    const fetchTeamFixtures = jest.fn()
-    const setTab = jest.fn()
+    const fetchTeamFixtures = vi.fn()
+    const setTab = vi.fn()
     customRender({ fetchTeamFixtures, setTab })
 
     expect(fetchTeamFixtures).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
@@ -61,7 +61,7 @@ describe('FixturesTable', () => {
   })
 
   it('triggers fetchTeamFixtures', () => {
-    const updateTeamFixturesSort = jest.fn()
+    const updateTeamFixturesSort = vi.fn()
     customRender({ updateTeamFixturesSort })
 
     fireEvent.click(sortButton('Round'))

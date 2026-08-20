@@ -70,8 +70,8 @@ describe('MiniDraftPicksTable', () => {
   })
 
   it('triggers fetchMiniDraftPicks, setTab on render', () => {
-    const fetchMiniDraftPicks = jest.fn()
-    const setTab = jest.fn()
+    const fetchMiniDraftPicks = vi.fn()
+    const setTab = vi.fn()
 
     customRender({ 
       fetchMiniDraftPicks,
@@ -83,14 +83,14 @@ describe('MiniDraftPicksTable', () => {
   })
 
   it('triggers fetchMiniDraftPickFacets on render', () => {
-    const fetchMiniDraftPickFacets = jest.fn()
+    const fetchMiniDraftPickFacets = vi.fn()
     customRender({ fetchMiniDraftPickFacets })
 
     expect(fetchMiniDraftPickFacets).toHaveBeenCalledWith()
   })
 
   it('triggers updateMiniDraftPicksSort', () => {
-    const updateMiniDraftPicksSort = jest.fn()
+    const updateMiniDraftPicksSort = vi.fn()
     customRender({ updateMiniDraftPicksSort })
 
     fireEvent.click(sortButton('PN'))
@@ -98,7 +98,7 @@ describe('MiniDraftPicksTable', () => {
   })
 
   it('renders nothing if there is no season and does not trigger fetchMiniDraftPickFacets', () => {
-    const fetchMiniDraftPickFacets = jest.fn()
+    const fetchMiniDraftPickFacets = vi.fn()
     
     customRender({
       fetchMiniDraftPickFacets,
@@ -114,7 +114,7 @@ describe('MiniDraftPicksTable', () => {
   })
 
   it('triggers updateMiniDraftPicksFilter', () => {
-    const updateMiniDraftPicksFilter = jest.fn()
+    const updateMiniDraftPicksFilter = vi.fn()
     customRender({ updateMiniDraftPicksFilter})
 
 

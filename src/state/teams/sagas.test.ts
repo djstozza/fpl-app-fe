@@ -26,7 +26,7 @@ describe('Teams sagas', () => {
   })
 
   test('updateSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateSort, actions.updateSort(sort))
       .dispatch({ type: actions.UPDATE_TEAMS_SORT })

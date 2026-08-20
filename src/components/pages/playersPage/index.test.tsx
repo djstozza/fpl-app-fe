@@ -66,8 +66,8 @@ describe('PlayersPage', () => {
   })
 
   it('triggers the fetchPlayers and fetchFacets function on load', () => {
-    const fetchPlayers = jest.fn()
-    const fetchFacets = jest.fn()
+    const fetchPlayers = vi.fn()
+    const fetchFacets = vi.fn()
     customRender({ fetchPlayers, fetchFacets })
 
     expect(fetchPlayers).toHaveBeenCalledWith(initialFilterState)
@@ -75,7 +75,7 @@ describe('PlayersPage', () => {
   })
 
   it('triggers updateSort', () => {
-    const updateSort = jest.fn()
+    const updateSort = vi.fn()
     customRender({ updateSort })
 
     fireEvent.click(sortButton('LN'))
@@ -83,7 +83,7 @@ describe('PlayersPage', () => {
   })
 
   it('triggers updateFilter', () => {
-    const updateFilter = jest.fn()
+    const updateFilter = vi.fn()
     customRender({ updateFilter })
 
     fireEvent.click(within(columnHeaders()[2]).getByLabelText('filter'))
@@ -95,7 +95,7 @@ describe('PlayersPage', () => {
   })
 
   it('triggers updatePage', () => {
-    const updatePage = jest.fn()
+    const updatePage = vi.fn()
     const { page: { offset, limit } } = initialFilterState
     const playersArr = Array(limit + 1).fill(PLAYER_SUMMARIES[0])
 

@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
@@ -21,11 +21,34 @@ export default defineConfig({
       test: "/src/test"
     },
   },
-  server: {    
+  server: {
     open: true,
-    port: 8080, 
+    port: 8080,
   },
   build: {
     commonjsOptions: { transformMixedEsModules: true }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./vitest.setup.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text'],
+      include: ['src/**/*.{js,jsx,ts,tsx}'],
+      exclude: [
+        'src/test/**',
+        'src/index.tsx',
+        'src/reportWebVitals.ts'
+      ],
+      thresholds: {
+        // v8 counts branches/statements slightly differently than the
+        // istanbul provider Jest used, hence the lower bar than before
+        branches: 99,
+        functions: 100,
+        lines: 100,
+        statements: 99.8
+      }
+    }
   }
 })

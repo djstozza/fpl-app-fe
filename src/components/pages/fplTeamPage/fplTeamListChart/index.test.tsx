@@ -1,5 +1,5 @@
 import { within, render, screen, fireEvent, act } from '@testing-library/react'
-import WS from 'jest-websocket-mock'
+import WS from 'vitest-websocket-mock'
 import { SnackbarProvider } from 'notistack'
 import moment from 'moment'
 
@@ -18,7 +18,7 @@ const errors = [
   }
 ]
 
-jest.mock('@rails/actioncable', () => ({
+vi.mock('@rails/actioncable', () => ({
   createConsumer: () => ({
     subscriptions: {
       create: (_, handlers) => {
@@ -30,7 +30,7 @@ jest.mock('@rails/actioncable', () => ({
 }))
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 })
 
 describe('FplTeamListChart', () => {
@@ -188,7 +188,7 @@ describe('FplTeamListChart', () => {
   })
 
   it('processes substitutions if valid', () => {
-    const scrollIntoViewMock = jest.fn()
+    const scrollIntoViewMock = vi.fn()
     window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
 
     const deadlineTime = moment().add(2, 'days').toDate()
@@ -200,8 +200,8 @@ describe('FplTeamListChart', () => {
       }
     }
 
-    const fetchValidSubstitutions = jest.fn()
-    const processSubstitution = jest.fn()
+    const fetchValidSubstitutions = vi.fn()
+    const processSubstitution = vi.fn()
 
     const validSubstitutions = [LIST_POSITIONS[11].id, LIST_POSITIONS[12].id, LIST_POSITIONS[13].id]
 
@@ -267,8 +267,8 @@ describe('FplTeamListChart', () => {
         deadlineTime
       }
     }
-    const fetchValidSubstitutions = jest.fn()
-    const processSubstitution = jest.fn()
+    const fetchValidSubstitutions = vi.fn()
+    const processSubstitution = vi.fn()
 
     customRender({
       fplTeamList: { data: fplTeamList, listPositions: LIST_POSITIONS, errors: [] },
@@ -305,8 +305,8 @@ describe('FplTeamListChart', () => {
   })
 
   it('sets the tab and the action', () => {
-    const setTab = jest.fn()
-    const setAction = jest.fn()
+    const setTab = vi.fn()
+    const setAction = vi.fn()
     customRender({ setTab, setAction })
 
     expect(setTab).toHaveBeenCalledWith('teamLists')
@@ -324,7 +324,7 @@ describe('FplTeamListChart', () => {
     afterEach(() => server.close())
 
     it('calls fetchFplTeamList', async () => {
-      const fetchFplTeamList = jest.fn()
+      const fetchFplTeamList = vi.fn()
       customRender({ fetchFplTeamList })
   
       act(() => global.receivedHandler({ updatedAt: 1, message }))
@@ -333,7 +333,7 @@ describe('FplTeamListChart', () => {
     })
 
     it('does not call fetchFplTeamList if updatedAt < fplTeamListUpdatedAt', () => {
-      const fetchFplTeamList = jest.fn()
+      const fetchFplTeamList = vi.fn()
       customRender({ fetchFplTeamList })
   
       act(() => global.receivedHandler({ updatedAt: -1, message }))

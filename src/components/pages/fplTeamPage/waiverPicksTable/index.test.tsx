@@ -12,7 +12,7 @@ import {
 
 const fplTeamId = '3'
 
-const changeWaiverPickOrder = jest.fn()
+const changeWaiverPickOrder = vi.fn()
 
 const errors = [
   {
@@ -124,9 +124,9 @@ describe('WaiverPicksTable', () => {
     })
 
     it('triggers fetchWaiverPicks, setAction and setTab, on render', () => {
-      const fetchWaiverPicks = jest.fn()
-      const setAction = jest.fn()
-      const setTab = jest.fn()
+      const fetchWaiverPicks = vi.fn()
+      const setAction = vi.fn()
+      const setTab = vi.fn()
       customRender({ fetchWaiverPicks, setAction, setTab }, path)
 
       expect(fetchWaiverPicks).toHaveBeenCalledWith(FPL_TEAM_LISTS[0].id)
@@ -210,7 +210,7 @@ describe('WaiverPicksTable', () => {
     })
 
     it('triggers fetchTrades on render', () => {
-      const fetchTrades = jest.fn()
+      const fetchTrades = vi.fn()
       customRender({ fetchTrades }, path)
 
       expect(fetchTrades).toHaveBeenCalled()

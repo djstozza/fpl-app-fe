@@ -41,7 +41,7 @@ describe('LoginPage', () => {
   const logInButton = () => screen.getByRole('button', { name: /log in/i })
 
   it('triggers initialAuth on load', () => {
-    const initializeAuth = jest.fn()
+    const initializeAuth = vi.fn()
 
     customRender({ initializeAuth })
 
@@ -49,7 +49,7 @@ describe('LoginPage', () => {
   })
 
   it('triggers logIn with the email, username and password', () => {
-    const logIn = jest.fn()
+    const logIn = vi.fn()
     customRender({ logIn })
 
     expect(logInButton()).toHaveAttribute('disabled')

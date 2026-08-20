@@ -54,7 +54,7 @@ describe('SignUpPage', () => {
   const submitButton = () => screen.getByRole('button', { name: /submit/i })
 
   it('triggers initialAuth on load', () => {
-    const initializeAuth = jest.fn()
+    const initializeAuth = vi.fn()
 
     customRender({ initializeAuth })
 
@@ -62,7 +62,7 @@ describe('SignUpPage', () => {
   })
 
   it('triggers signUp with the email, username and password', () => {
-    const signUp = jest.fn()
+    const signUp = vi.fn()
     customRender({ signUp })
 
     expect(submitButton()).toHaveAttribute('disabled')

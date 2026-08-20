@@ -53,14 +53,14 @@ describe('TeamsPage', () => {
   })
 
   it('triggers the fetchTeams function on load', () => {
-    const fetchTeams = jest.fn()
+    const fetchTeams = vi.fn()
     customRender({ fetchTeams })
 
     expect(fetchTeams).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers updateSort', () => {
-    const updateSort = jest.fn()
+    const updateSort = vi.fn()
     customRender({ updateSort })
 
     fireEvent.click(sortButton('N'))

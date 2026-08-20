@@ -83,8 +83,8 @@ describe('NewWaiverPick', () => {
     })
 
     it('sets the tab and action', () => {
-      const setTab = jest.fn()
-      const setAction = jest.fn()
+      const setTab = vi.fn()
+      const setAction = vi.fn()
 
       customRender({ setTab, setAction })
 
@@ -115,8 +115,8 @@ describe('NewWaiverPick', () => {
     })
 
     it('sets the tab and action', () => {
-      const setTab = jest.fn()
-      const setAction = jest.fn()
+      const setTab = vi.fn()
+      const setAction = vi.fn()
 
       customRender({ setTab, setAction, isWaiver: false })
 
@@ -126,7 +126,7 @@ describe('NewWaiverPick', () => {
   })
 
   it('triggers fetchListPositions on render if the fplTeamListId is present', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({
       waiverPicks: { errors: [] },
@@ -137,7 +137,7 @@ describe('NewWaiverPick', () => {
   })
 
   it('does not fetchListPositions on render if currentFplTeamList is undefined', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({
       waiverPicks: { errors: [] },

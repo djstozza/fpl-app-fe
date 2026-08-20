@@ -7,13 +7,13 @@ import { PLAYER_HISTORY } from 'test/fixtures'
 import { initialFilterState } from 'state/player/reducer'
 import { PLAYERS_URL } from 'utilities/constants'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  Navigate: jest.fn()
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  Navigate: vi.fn()
 }))
 
 afterEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 const playerId = '1'
@@ -61,8 +61,8 @@ describe('HistoryTable', () => {
   })
 
   it('triggers fetchPlayerHistory and setTab on render', () => {
-    const fetchPlayerHistory = jest.fn()
-    const setTab = jest.fn()
+    const fetchPlayerHistory = vi.fn()
+    const setTab = vi.fn()
     customRender({ fetchPlayerHistory, setTab })
 
     expect(fetchPlayerHistory).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
@@ -70,7 +70,7 @@ describe('HistoryTable', () => {
   })
 
   it('triggers updatePlayerHistorySort', () => {
-    const updatePlayerHistorySort = jest.fn()
+    const updatePlayerHistorySort = vi.fn()
     customRender({ updatePlayerHistorySort })
 
     fireEvent.click(sortButton('Round'))

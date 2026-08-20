@@ -63,7 +63,7 @@ describe('DraftPicks sagas', () => {
   })
 
   test('updateFilter', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateFilter, actions.updateFilter(filter))
       .withState({ league: { data: LIVE_LEAGUE }, draftPicks: { sort } })
@@ -75,7 +75,7 @@ describe('DraftPicks sagas', () => {
   })
 
   test('updateSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateSort, actions.updateSort(sort))
       .withState({ league: { data: LIVE_LEAGUE }, draftPicks: { filter } })
@@ -129,7 +129,7 @@ describe('DraftPicks sagas', () => {
   })
 
   test('updateDraftPickSuccess', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateDraftPickSuccess)
       .withState({ league: { data: LIVE_LEAGUE } })

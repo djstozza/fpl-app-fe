@@ -9,13 +9,13 @@ import { PLAYERS_URL } from 'utilities/constants'
 
 const playerId = '1'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  Navigate: jest.fn()
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  Navigate: vi.fn()
 }))
 
 afterEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 describe('HistoryPastTable', () => {
@@ -61,8 +61,8 @@ describe('HistoryPastTable', () => {
   })
 
   it('triggers fetchPlayerHistoryPast, setTab on render', () => {
-    const fetchPlayerHistoryPast = jest.fn()
-    const setTab = jest.fn()
+    const fetchPlayerHistoryPast = vi.fn()
+    const setTab = vi.fn()
     customRender({ fetchPlayerHistoryPast, setTab })
 
     expect(fetchPlayerHistoryPast).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
@@ -70,7 +70,7 @@ describe('HistoryPastTable', () => {
   })
 
   it('triggers updatePlayerHistoryPastSort', () => {
-    const updatePlayerHistoryPastSort = jest.fn()
+    const updatePlayerHistoryPastSort = vi.fn()
     customRender({ updatePlayerHistoryPastSort })
 
    fireEvent.click(sortButton('Season'))

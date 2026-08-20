@@ -49,8 +49,8 @@ describe('PlayersTable', () => {
   })
 
   it('triggers fetchTeamPlayers and setTab on render', () => {
-    const fetchTeamPlayers = jest.fn()
-    const setTab = jest.fn()
+    const fetchTeamPlayers = vi.fn()
+    const setTab = vi.fn()
     customRender({ fetchTeamPlayers, setTab })
 
     expect(fetchTeamPlayers).toHaveBeenCalledWith({ id: '1', ...initialFilterState })
@@ -58,7 +58,7 @@ describe('PlayersTable', () => {
   })
 
   it('triggers updateTeamPlayersSort', () => {
-    const updateTeamPlayersSort = jest.fn()
+    const updateTeamPlayersSort = vi.fn()
     customRender({ updateTeamPlayersSort })
 
     fireEvent.click(sortButton('Last Name'))

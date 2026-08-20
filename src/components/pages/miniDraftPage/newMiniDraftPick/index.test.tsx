@@ -82,7 +82,7 @@ describe('NewMiniDraftPick', () => {
   })
 
   it('triggers fetchListPositions on render if the fplTeamListId is present', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({
       miniDraftPicks: { ...MINI_DRAFT_PICK_STATUS, errors: [], fplTeamListId },
@@ -93,7 +93,7 @@ describe('NewMiniDraftPick', () => {
   })
 
   it('does not fetchListPositions on render if the fplTeamListId is undefined', () => {
-    const fetchListPositions = jest.fn()
+    const fetchListPositions = vi.fn()
 
     customRender({
       miniDraftPicks: { ...MINI_DRAFT_PICK_STATUS, errors: []},

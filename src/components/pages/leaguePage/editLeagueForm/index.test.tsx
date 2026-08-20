@@ -17,13 +17,13 @@ const errors = [
   }
 ]
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  Navigate: jest.fn()
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  Navigate: vi.fn()
 }))
 
 afterEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 describe('EditLeagueForm', () => {
@@ -58,8 +58,8 @@ describe('EditLeagueForm', () => {
   })
 
   it('sets the tab and action', () => {
-    const setTab = jest.fn()
-    const setAction = jest.fn()
+    const setTab = vi.fn()
+    const setAction = vi.fn()
 
     customRender({ setTab, setAction })
 
@@ -68,7 +68,7 @@ describe('EditLeagueForm', () => {
   })
 
   it('triggers initialForm on load', () => {
-    const initializeForm = jest.fn()
+    const initializeForm = vi.fn()
 
     customRender({ initializeForm })
 
@@ -76,7 +76,7 @@ describe('EditLeagueForm', () => {
   })
 
   it('triggers updateLeague with the name and code', () => {
-    const updateLeague = jest.fn()
+    const updateLeague = vi.fn()
     customRender({ updateLeague })
 
     expect(submitButton()).toHaveAttribute('disabled')

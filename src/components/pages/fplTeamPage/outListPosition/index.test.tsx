@@ -7,8 +7,8 @@ import { LIST_POSITION_1 } from 'test/fixtures'
 
 const pathname = 'www.example.com'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({ pathname, search: '' })
 }))
 
@@ -33,8 +33,8 @@ describe('OutListPosition', () => {
   })
 
   it('clears the outListPosition when cancelled', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
-    const setOutListPosition = jest.fn()
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
+    const setOutListPosition = vi.fn()
     customRender({ setOutListPosition })
 
     fireEvent.click(screen.getByRole('button', { name: /cancel/i }))

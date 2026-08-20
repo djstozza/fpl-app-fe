@@ -29,16 +29,16 @@ describe('PlayerImage', () => {
     const originalImage = global.Image
     
     const mockImage = {
-      addEventListener: jest.fn((event, callback: EventListener) => {
+      addEventListener: vi.fn((event, callback: EventListener) => {
         if (event === 'load') {
           callback(new Event('load'))
         }
       }),
-      removeEventListener: jest.fn(),
+      removeEventListener: vi.fn(),
       src: 'mock-image-url',
     };
     
-    global.Image = jest.fn(() => mockImage) as any as typeof Image
+    global.Image = vi.fn(function () { return mockImage }) as any as typeof Image
 
     customRender()
 

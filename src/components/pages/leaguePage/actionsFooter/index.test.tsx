@@ -22,8 +22,8 @@ describe('ActionsFooter', () => {
   const button = text => screen.getByText(text, { selector: 'button' })
   
   it('renders all button links', () => {
-    const generateDraftPicks = jest.fn()
-    const createDraft = jest.fn()
+    const generateDraftPicks = vi.fn()
+    const createDraft = vi.fn()
     const { container } = customRender({ generateDraftPicks, createDraft })
     
     expect(container.querySelectorAll('.MuiButtonBase-root')).toHaveLength(5)

@@ -54,21 +54,21 @@ describe('DraftPicksTable', () => {
   })
 
   it('triggers fetchDraftPicks on render', () => {
-    const fetchDraftPicks = jest.fn()
+    const fetchDraftPicks = vi.fn()
     customRender({ fetchDraftPicks })
 
     expect(fetchDraftPicks).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers fetchDraftPickFacets on render', () => {
-    const fetchDraftPickFacets = jest.fn()
+    const fetchDraftPickFacets = vi.fn()
     customRender({ fetchDraftPickFacets })
 
     expect(fetchDraftPickFacets).toHaveBeenCalledWith()
   })
 
   it('triggers updateDraftPicksSort', () => {
-    const updateDraftPicksSort = jest.fn()
+    const updateDraftPicksSort = vi.fn()
     customRender({ updateDraftPicksSort })
 
     fireEvent.click(within(columnHeaders()[0]).getByTestId('ArrowDownwardIcon'))
@@ -76,7 +76,7 @@ describe('DraftPicksTable', () => {
   })
 
   it('triggers updateDraftPicksFilter', () => {
-    const updateDraftPicksFilter = jest.fn()
+    const updateDraftPicksFilter = vi.fn()
 
     customRender({ updateDraftPicksFilter })
 

@@ -18,8 +18,10 @@ import { success, failure } from 'utilities/actions'
 import { LIST_POSITION_1 } from 'test/fixtures'
 
 const fplTeamListId = '1'
-const inFplTeamListId = '5'
-const inPlayerId = '354'
+// LIST_POSITION_1 has no fplTeamListId of its own - the saga reads it off
+// action.inListPosition, which is undefined for this fixture
+const inFplTeamListId = undefined
+const inPlayerId = LIST_POSITION_1.player.id
 const outPlayerId = '167'
 const fplTeamId = '4'
 const interTeamTradeGroupId = '2'
@@ -39,8 +41,8 @@ describe('Inter team trade groups sagas', () => {
       .run()
   })
 
-  test('createInterTeamTradeGroup', () => {
-    expectSaga(
+  test('createInterTeamTradeGroup', async () => {
+    await expectSaga(
       sagas.createInterTeamTradeGroup,
       actions.createInterTeamTradeGroup(LIST_POSITION_1)
     )
@@ -63,7 +65,7 @@ describe('Inter team trade groups sagas', () => {
   })
 
   test(`interTeamTradeGroupSuccess - ${success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_CREATE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.interTeamTradeGroupSuccess)
       .withState({
@@ -79,7 +81,7 @@ describe('Inter team trade groups sagas', () => {
   })
 
   test(`interTeamTradeGroupSuccess - ${success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_ADD_TRADE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.interTeamTradeGroupSuccess)
       .withState({
@@ -95,7 +97,7 @@ describe('Inter team trade groups sagas', () => {
   })
 
   test(`interTeamTradeGroupSuccess - ${success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADES_DELETE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.interTeamTradeGroupSuccess)
       .withState({
@@ -131,8 +133,8 @@ describe('Inter team trade groups sagas', () => {
       .run()
   })
 
-  test('addToInterTeamTradeGroup', () => {
-    expectSaga(
+  test('addToInterTeamTradeGroup', async () => {
+    await expectSaga(
       sagas.addToInterTeamTradeGroup,
       actions.addToInterTeamTradeGroup(LIST_POSITION_1)
     )

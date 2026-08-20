@@ -56,7 +56,7 @@ describe('UserCanPickAlert', () => {
   })
 
   it('allows the user to select a mini draft pick if userCanPick = true', () => {
-    const updateDraftPick = jest.fn()
+    const updateDraftPick = vi.fn()
     
     customRender({ updateDraftPick })
 
@@ -72,7 +72,7 @@ describe('UserCanPickAlert', () => {
   })
 
   it('closes the draft dialog when cancel is clicked', () => {
-    const updateDraftPick = jest.fn()
+    const updateDraftPick = vi.fn()
     customRender({ updateDraftPick })
 
     fireEvent.click(miniDraftButton())
@@ -85,7 +85,7 @@ describe('UserCanPickAlert', () => {
   })
 
   it('closes the draft dialog when clicking out', () => {
-    const updateDraftPick = jest.fn()
+    const updateDraftPick = vi.fn()
     
     customRender({ updateDraftPick })
 

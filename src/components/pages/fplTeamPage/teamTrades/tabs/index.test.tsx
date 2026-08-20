@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import * as rrd from 'react-router-dom'
 
@@ -9,17 +10,17 @@ import { PLAYERS_URL, TEAMS_URL, FPL_TEAMS_URL } from 'utilities/constants'
 const fplTeamId = '3'
 const fplTeamName = 'Fpl Team Name'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(), // Mock the useParams hook
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn(), // Mock the useParams hook
 }))
 
 afterEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 describe('TeamTradeTabs', () => {
-  beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({}))
+  beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({}))
 
   const customRender = (context = {}) => {
     const baseContext = {
@@ -175,7 +176,7 @@ describe('TeamTradeTabs', () => {
   })
 
   it('can submit an inter team trade', () => {
-    const submitInterTeamTradeGroup = jest.fn()
+    const submitInterTeamTradeGroup = vi.fn()
     customRender({ submitInterTeamTradeGroup })
 
     fireEvent.click(submit(0, 2, 3))
@@ -198,7 +199,7 @@ describe('TeamTradeTabs', () => {
   })
 
   it('can close the dialog without triggering the confirm action', () => {
-    const submitInterTeamTradeGroup = jest.fn()
+    const submitInterTeamTradeGroup = vi.fn()
     customRender({ submitInterTeamTradeGroup })
 
     fireEvent.click(submit(0, 2, 3))
@@ -211,7 +212,7 @@ describe('TeamTradeTabs', () => {
   })
 
   it('closes the draft dialog when the backdrop is clicked without triggering the confirm action', () => {
-    const submitInterTeamTradeGroup = jest.fn()
+    const submitInterTeamTradeGroup = vi.fn()
     customRender({ submitInterTeamTradeGroup })
 
     fireEvent.click(submit(0, 2, 3))
@@ -224,7 +225,7 @@ describe('TeamTradeTabs', () => {
   })
 
   it('can cancel an inter team trade', () => {
-    const cancelInterTeamTradeGroup = jest.fn()
+    const cancelInterTeamTradeGroup = vi.fn()
     customRender({ cancelInterTeamTradeGroup })
 
     fireEvent.click(cancel(0, 2, 3))
@@ -246,7 +247,7 @@ describe('TeamTradeTabs', () => {
   })
 
   it('can remove a trade from an inter team trade group', () => {
-    const removeTrade = jest.fn()
+    const removeTrade = vi.fn()
     customRender({ removeTrade })
     
     fireEvent.click(expandRow(0, 1)) // Expand to show trades
@@ -269,7 +270,7 @@ describe('TeamTradeTabs', () => {
   })
 
   it('triggers fetchInterTeamTradeGroups on render', () => {
-    const fetchInterTeamTradeGroups = jest.fn()
+    const fetchInterTeamTradeGroups = vi.fn()
 
     customRender({ fetchInterTeamTradeGroups })
 
@@ -277,7 +278,7 @@ describe('TeamTradeTabs', () => {
   })
 
   it('renders nothing if selectedFplTeamListId is undefined', () => {
-    const fetchInterTeamTradeGroups = jest.fn()
+    const fetchInterTeamTradeGroups = vi.fn()
     customRender({ selectedFplTeamListId: undefined, fetchInterTeamTradeGroups })
 
     expect(screen.queryByTestId('TeamTradeTabs')).not.toBeInTheDocument()
@@ -297,7 +298,7 @@ describe('TeamTradeTabs', () => {
   })
 
   describe('when action = in', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ action: 'in' }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ action: 'in' }))
 
     it('renders the inTrades if the action = in', () => {
       customRender()
@@ -336,7 +337,7 @@ describe('TeamTradeTabs', () => {
     })
 
     it('can approve an inter team trade', () => {
-      const approveInterTeamTradeGroup = jest.fn()
+      const approveInterTeamTradeGroup = vi.fn()
       customRender({ approveInterTeamTradeGroup })
 
       fireEvent.click(approve(0, 1, 3))
@@ -358,7 +359,7 @@ describe('TeamTradeTabs', () => {
     })
 
     it('can decline an inter team trade', () => {
-      const declineInterTeamTradeGroup = jest.fn()
+      const declineInterTeamTradeGroup = vi.fn()
       customRender({ declineInterTeamTradeGroup })
 
       fireEvent.click(decline(0, 1, 3))

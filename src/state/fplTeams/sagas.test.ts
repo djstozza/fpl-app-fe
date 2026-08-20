@@ -42,7 +42,7 @@ describe('Fpl teams sagas', () => {
   })
 
   test('updateSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateSort, actions.updateFplTeamsSort(sort))
       .dispatch({ type: actions.UPDATE_FPL_TEAMS_SORT })

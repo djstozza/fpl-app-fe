@@ -79,7 +79,7 @@ describe('List position sagas', () => {
   })
 
   test('updateAvailablePlayersSort', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateAvailablePlayersSort, actions.updateTradeablePlayersSort(sort))
       .withState({
@@ -97,7 +97,7 @@ describe('List position sagas', () => {
   })
 
   test('updateAvailablePlayersFilter', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateAvailablePlayersFilter, actions.updateTradeablePlayersFilter(filter))
       .withState({
@@ -115,7 +115,7 @@ describe('List position sagas', () => {
   })
 
   test('updateAvailablePlayersPage', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateAvailablePlayersPage, actions.updateTradeablePlayersPage(page.offset))
       .withState({
@@ -183,7 +183,7 @@ describe('List position sagas', () => {
   })
 
   test('updateTradeableListPositionsFilter', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateTradeableListPositionsFilter, actions.updateTradeableListPositionsFilter(filter))
       .withState({
@@ -201,7 +201,7 @@ describe('List position sagas', () => {
   })
 
   test('updateTradeableListPositionsSort', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateTradeableListPositionsSort, actions.updateTradeableListPositionsSort(sort))
       .withState({

@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import * as rrd from 'react-router-dom'
 import moment from 'moment'
@@ -20,13 +21,13 @@ import {
 } from 'test/fixtures'
 import { MockedRouterStoreWithRoute, MockedRouter, blank__ } from 'test/helpers'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(), // Mock the useParams hook
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn(), // Mock the useParams hook
 }))
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 })
 
 const tabsArr = Object.values(TABS)
@@ -104,7 +105,7 @@ describe('FplTeamPage', () => {
   const fplTeamAlert = () => screen.queryByTestId('FplTeamAlert')
   
   describe('when fplTeamId is present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ fplTeamId: '1' }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ fplTeamId: '1' }))
     
     it('renders all the tabs if isOwner = true and the league is live', () => {
       connectedRender()
@@ -141,7 +142,7 @@ describe('FplTeamPage', () => {
     })
 
     it('triggers fetchFplTeam on render', () => {
-      const fetchFplTeam = jest.fn()
+      const fetchFplTeam = vi.fn()
 
       customRender({ fetchFplTeam })
 
@@ -149,7 +150,7 @@ describe('FplTeamPage', () => {
     })
 
     it('triggers fetchFplTeamLists on render', () => {
-      const fetchFplTeamLists = jest.fn()
+      const fetchFplTeamLists = vi.fn()
 
       customRender({ fetchFplTeamLists })
 
@@ -157,7 +158,7 @@ describe('FplTeamPage', () => {
     })
 
     it('renders nothing if there is no fplTeamId is undefined', () => {
-      (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ fplTeamId: undefined })
+      (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ fplTeamId: undefined })
       customRender()
       expect(screen.queryByTestId('FplTeamPage')).not.toBeInTheDocument()
     })
@@ -169,8 +170,8 @@ describe('FplTeamPage', () => {
 
     describe('selectedFplTeamListId', () => {
       it('does not get set if there are no fplTeamLists', () => {
-        const fetchFplTeamList = jest.fn()
-        const fetchListPositions = jest.fn()
+        const fetchFplTeamList = vi.fn()
+        const fetchListPositions = vi.fn()
 
         customRender({ fetchFplTeamList, fetchListPositions, fplTeamLists: { data: [] } })
 
@@ -179,9 +180,9 @@ describe('FplTeamPage', () => {
       })
 
       it('uses the fplTeamListId in the params if present', () => {
-        (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ fplTeamId: FPL_TEAM_1.id, fplTeamListId: FPL_TEAM_LISTS[1].id })
-        const fetchFplTeamList = jest.fn()
-        const fetchListPositions = jest.fn()
+        (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ fplTeamId: FPL_TEAM_1.id, fplTeamListId: FPL_TEAM_LISTS[1].id })
+        const fetchFplTeamList = vi.fn()
+        const fetchListPositions = vi.fn()
 
         customRender({
           fetchFplTeamList,
@@ -193,8 +194,8 @@ describe('FplTeamPage', () => {
       })
 
       it('defaults to the currentFplTeamListId if present and there is no fplTeamListId in the params', () => {
-        const fetchFplTeamList = jest.fn()
-        const fetchListPositions = jest.fn()
+        const fetchFplTeamList = vi.fn()
+        const fetchListPositions = vi.fn()
 
         customRender({ fetchFplTeamList, fetchListPositions, fplTeamLists: { data: FPL_TEAM_LISTS } })
 
@@ -203,8 +204,8 @@ describe('FplTeamPage', () => {
       })
 
       it('defaults to the last fplTeamList if present and there is no fplTeamListId and no currentFplTeamList', () => {
-        const fetchFplTeamList = jest.fn()
-        const fetchListPositions = jest.fn()
+        const fetchFplTeamList = vi.fn()
+        const fetchListPositions = vi.fn()
 
         const fplTeamLists = [
           {

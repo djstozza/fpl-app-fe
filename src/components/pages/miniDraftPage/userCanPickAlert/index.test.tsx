@@ -56,7 +56,7 @@ describe('UserCanPickAlert', () => {
   })
 
   it('allows the user to pass if canMakeMiniDraftPick = true', () => {
-    const passMiniDraftPick = jest.fn()
+    const passMiniDraftPick = vi.fn()
     customRender({ passMiniDraftPick })
 
     expect(presentation()).toHaveLength(0)
@@ -76,7 +76,7 @@ describe('UserCanPickAlert', () => {
   })
 
   it('closes the pass mini draft dialog when cancel is clicked', () => {
-    const passMiniDraftPick = jest.fn()
+    const passMiniDraftPick = vi.fn()
     customRender({ passMiniDraftPick })
 
     expect(presentation()).toHaveLength(0)
@@ -92,7 +92,7 @@ describe('UserCanPickAlert', () => {
   })
 
   it('closes the pass mini draft dialog when clicking out of the dialog', () => {
-    const passMiniDraftPick = jest.fn()
+    const passMiniDraftPick = vi.fn()
     customRender({ passMiniDraftPick })
 
     expect(presentation()).toHaveLength(0)

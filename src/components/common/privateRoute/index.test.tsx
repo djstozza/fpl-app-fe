@@ -42,7 +42,7 @@ describe('PrivateRoute', () => {
   })
 
   it('renders the component if the user is present', () => {
-    const updateSession = jest.fn()
+    const updateSession = vi.fn()
     customRender({ user: USER_1, updateSession }, { auth: { user: USER_1 } })
 
     expect(child()).toBeInTheDocument()

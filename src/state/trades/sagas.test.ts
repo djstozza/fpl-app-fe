@@ -66,7 +66,7 @@ describe('Trades sagas', () => {
   })
 
   test('creatTradeSuccess', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.creatTradeSuccess)
       .withState({

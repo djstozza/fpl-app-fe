@@ -25,7 +25,7 @@
     const checkbox = (pos, checked) => within(menuItem()[pos]).getByRole('checkbox', { checked })
 
     it('renders the dropdown if the anchor element is present and triggers applyFilter when apply is clicked', () => {
-      const applyFilter = jest.fn()
+      const applyFilter = vi.fn()
 
       customRender({ applyFilter, anchorEl })
 
@@ -45,7 +45,7 @@
     })
 
     it('clears the selection when the "Clear all" button is clicked', () => {
-      const applyFilter = jest.fn()
+      const applyFilter = vi.fn()
       
       customRender({ anchorEl, filterSelection, applyFilter })
 
@@ -68,7 +68,7 @@
     })
 
     it('clears the anchorEl when the menu is closed', () => {
-      const setAnchorEl = jest.fn()
+      const setAnchorEl = vi.fn()
       customRender({ anchorEl, setAnchorEl })
 
       const firstChild = screen.getByRole('presentation').firstChild // Close the menu
@@ -78,7 +78,7 @@
     })
 
     it('triggers setAnchorEl the button is clicked', () => {
-      const setAnchorEl = jest.fn()
+      const setAnchorEl = vi.fn()
 
       customRender({ setAnchorEl })
 

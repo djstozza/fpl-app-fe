@@ -69,14 +69,14 @@ describe('LeaguesPage', () => {
 
 
   it('triggers the fetchLeagues function on load', () => {
-    const fetchLeagues = jest.fn()
+    const fetchLeagues = vi.fn()
     customRender({ fetchLeagues })
 
     expect(fetchLeagues).toHaveBeenCalledWith(initialFilterState)
   })
 
   it('triggers updateSort', () => {
-    const updateSort = jest.fn()
+    const updateSort = vi.fn()
     customRender({ updateSort })
 
     fireEvent.click(sortButton('N'))

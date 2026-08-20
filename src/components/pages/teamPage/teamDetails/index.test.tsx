@@ -34,7 +34,7 @@ describe('TeamDetails', () => {
   })
 
   it('triggers setTab on render', () => {
-    const setTab = jest.fn()
+    const setTab = vi.fn()
     customRender({ setTab })
 
     expect(setTab).toHaveBeenCalledWith('details')

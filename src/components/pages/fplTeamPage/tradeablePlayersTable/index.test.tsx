@@ -70,7 +70,7 @@ describe('TradeablePlayersTable', () => {
   })
 
   it('triggers the submit action - isWaiver false', () => {
-    const submitAction = jest.fn()
+    const submitAction = vi.fn()
     customRender({ submitAction, isWaiver: false })
 
     expect(presentation()).toHaveLength(0)
@@ -92,7 +92,7 @@ describe('TradeablePlayersTable', () => {
   })
 
   it('triggers the submit action - isWaiver true', () => {
-    const submitAction = jest.fn()
+    const submitAction = vi.fn()
     customRender({ submitAction, isWaiver: true })
 
     expect(presentation()).toHaveLength(0)
@@ -113,7 +113,7 @@ describe('TradeablePlayersTable', () => {
   })
 
   it('closes the dialog when cancel is clicked', () => {
-    const submitAction = jest.fn()
+    const submitAction = vi.fn()
     customRender({ submitAction })
 
     expect(presentation()).toHaveLength(0)
@@ -128,7 +128,7 @@ describe('TradeablePlayersTable', () => {
   })
 
   it('closes the dialog when clicking out of it', () => {
-    const submitAction = jest.fn()
+    const submitAction = vi.fn()
     customRender({ submitAction })
 
     expect(presentation()).toHaveLength(0)
@@ -150,8 +150,8 @@ describe('TradeablePlayersTable', () => {
   })
 
   it('triggers the fetchTradeablePlayers and fetchPlayerFacets function on load', () => {
-    const fetchTradeablePlayers = jest.fn()
-    const fetchPlayerFacets = jest.fn()
+    const fetchTradeablePlayers = vi.fn()
+    const fetchPlayerFacets = vi.fn()
 
     customRender({ fetchTradeablePlayers, fetchPlayerFacets })
 
@@ -160,7 +160,7 @@ describe('TradeablePlayersTable', () => {
   })
 
   it('triggers updateTradeablePlayersSort', () => {
-    const updateTradeablePlayersSort = jest.fn()
+    const updateTradeablePlayersSort = vi.fn()
     customRender({ updateTradeablePlayersSort })
 
     fireEvent.click(sortButton('LN'))
@@ -168,7 +168,7 @@ describe('TradeablePlayersTable', () => {
   })
 
   it('triggers updateTradeablePlayersFilter', () => {
-    const updateTradeablePlayersFilter = jest.fn()
+    const updateTradeablePlayersFilter = vi.fn()
     customRender({ updateTradeablePlayersFilter })
 
     fireEvent.click(within(columnHeaders()[2]).getByLabelText('filter'))
@@ -181,7 +181,7 @@ describe('TradeablePlayersTable', () => {
   })
 
   it('triggers updateTradeablePlayersPage', () => {
-    const updateTradeablePlayersPage = jest.fn()
+    const updateTradeablePlayersPage = vi.fn()
     const { page: { offset, limit } } = initialFilterState
     const playersArr = Array(limit + 1).fill(PLAYER_SUMMARIES[0])
 

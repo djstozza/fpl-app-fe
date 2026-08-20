@@ -11,8 +11,8 @@ const TABS = {
 
 const pathname = '/pathname/tab3'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({ pathname, search: '' })
 }))
 

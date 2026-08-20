@@ -186,8 +186,8 @@ describe('ErrorDialog', () => {
   })
 
   it('triggers clearRequestErrors and onClose', () => {
-    const clearRequestErrors = jest.fn()
-    const onClose = jest.fn()
+    const clearRequestErrors = vi.fn()
+    const onClose = vi.fn()
 
     customRender({ clearRequestErrors, onClose })
 
@@ -209,8 +209,8 @@ describe('ErrorDialog', () => {
   })
 
   it('prevents clicking out of errors', () => {
-    const clearRequestErrors = jest.fn()
-    const onClose = jest.fn()
+    const clearRequestErrors = vi.fn()
+    const onClose = vi.fn()
 
     customRender({ clearRequestErrors, onClose })
 

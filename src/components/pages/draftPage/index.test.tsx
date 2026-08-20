@@ -1,5 +1,6 @@
+import type { Mocked } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
-import WS from 'jest-websocket-mock'
+import WS from 'vitest-websocket-mock'
 import * as rrd from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
 
@@ -13,12 +14,12 @@ import {
 } from 'test/fixtures'
 import { MockedRouterStoreWithRoute, MockedRouter, blank__ } from 'test/helpers'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(), // Mock the useParams hook
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn(), // Mock the useParams hook
 }))
 
-jest.mock('@rails/actioncable', () => ({
+vi.mock('@rails/actioncable', () => ({
   createConsumer: () => ({
     subscriptions: {
       create: (_, handlers) => {
@@ -30,7 +31,7 @@ jest.mock('@rails/actioncable', () => ({
 }))
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 })
 
 const errors = [
@@ -99,7 +100,7 @@ describe('DraftPage', () => {
   const alerts = () => screen.queryAllByRole('alert')
   
   describe('when leagueId is present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: '1' }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: '1' }))
     
     it('renders the draft picks tab by default', () => {
       connectedRender()
@@ -116,14 +117,14 @@ describe('DraftPage', () => {
     })
 
     it('triggers fetchLeague on render', () => {
-      const fetchLeague = jest.fn()
+      const fetchLeague = vi.fn()
       customRender({ fetchLeague })
 
       expect(fetchLeague).toHaveBeenCalledWith(LIVE_LEAGUE.id)
     })
 
     it('triggers fetchDraftPicksStatus on render', () => {
-      const fetchDraftPicksStatus = jest.fn()
+      const fetchDraftPicksStatus = vi.fn()
       customRender({ fetchDraftPicksStatus })
 
       expect(fetchDraftPicksStatus).toHaveBeenCalledWith(LIVE_LEAGUE.id)
@@ -178,7 +179,7 @@ describe('DraftPage', () => {
   })
 
   describe('when there is no leagueId', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ playerId: '1' }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ playerId: '1' }))
     
     it('does not render anything', () => {
       customRender()

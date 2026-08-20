@@ -1,5 +1,6 @@
+import type { Mocked } from 'vitest'
 import { within, render, screen, act } from '@testing-library/react'
-import WS from 'jest-websocket-mock'
+import WS from 'vitest-websocket-mock'
 import * as rrd from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
 import moment from 'moment'
@@ -18,12 +19,12 @@ import { initialState as playersInitialState } from 'state/players/reducer'
 import { initialState as miniDraftPicksInitialState } from 'state/miniDraftPicks/reducer'
 import { initialState as fplTeamListInitialState } from 'state/fplTeamList/reducer'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(), // Mock the useParams hook
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn(), // Mock the useParams hook
 }))
 
-jest.mock('@rails/actioncable', () => ({
+vi.mock('@rails/actioncable', () => ({
   createConsumer: () => ({
     subscriptions: {
       create: (_, handlers) => {
@@ -35,7 +36,7 @@ jest.mock('@rails/actioncable', () => ({
 }))
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 })
 
 const errors = [
@@ -113,7 +114,7 @@ describe('MiniDraftPage', () => {
   const draftCompletedAlert = () => screen.queryByText('The mini draft has successfully been completed')
 
   describe('when leagueId is present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: '1' }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: '1' }))
 
     it('renders the draft picks tab by default', () => {
       connectedRender()
@@ -128,14 +129,14 @@ describe('MiniDraftPage', () => {
     })
 
      it('triggers fetchLeague on render', () => {
-      const fetchLeague = jest.fn()
+      const fetchLeague = vi.fn()
       customRender({ fetchLeague })
 
       expect(fetchLeague).toHaveBeenCalledWith(LIVE_LEAGUE.id)
     })
 
       it('triggers fetchMiniDraftPicksStatus on render', () => {
-      const fetchMiniDraftPicksStatus = jest.fn()
+      const fetchMiniDraftPicksStatus = vi.fn()
       customRender({ fetchMiniDraftPicksStatus })
 
       expect(fetchMiniDraftPicksStatus).toHaveBeenCalledWith(LIVE_LEAGUE.id)
@@ -148,14 +149,14 @@ describe('MiniDraftPage', () => {
     })
 
     it('triggers fetchListPositions on render', () => {
-      const fetchListPositions = jest.fn()
+      const fetchListPositions = vi.fn()
       customRender({ fetchListPositions })
 
       expect(fetchListPositions).toHaveBeenCalledWith(FPL_TEAM_LIST_1.id)
     })
 
     it('does not trigger fetchListPositions if fplTeamListId is undefined', () => {
-      const fetchListPositions = jest.fn()
+      const fetchListPositions = vi.fn()
       customRender({ fetchListPositions, miniDraftPicks: { data: MINI_DRAFT_PICKS, errors: [] } })
 
       expect(fetchListPositions).not.toHaveBeenCalled()
@@ -222,7 +223,7 @@ describe('MiniDraftPage', () => {
   })
 
   describe('when leagueId is not present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: undefined }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: undefined }))
 
     it('renders nothing if there is no league', () => {
       const { container } = connectedRender()

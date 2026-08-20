@@ -18,13 +18,13 @@ const errors = [
   }
 ]
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  Navigate: jest.fn()
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  Navigate: vi.fn()
 }))
 
 afterEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 describe('EditFplTeamForm', () => {
@@ -55,7 +55,7 @@ describe('EditFplTeamForm', () => {
   })
 
   it('triggers updateFplTeam with the name', () => {
-    const updateFplTeam = jest.fn()
+    const updateFplTeam = vi.fn()
     
     customRender({ updateFplTeam })
 
@@ -79,8 +79,8 @@ describe('EditFplTeamForm', () => {
   })
 
   it('sets the tab and the action', () => {
-    const setTab = jest.fn()
-    const setAction = jest.fn()
+    const setTab = vi.fn()
+    const setAction = vi.fn()
 
     customRender({ setTab, setAction })
 

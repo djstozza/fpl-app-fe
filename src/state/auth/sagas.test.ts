@@ -51,7 +51,7 @@ describe('Auth sagas', () => {
   })
 
   test(`onAuthed - ${success(actions.API_SESSIONS_CREATE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.onAuthed)
       .dispatch({ type: success(actions.API_SESSIONS_CREATE) })
@@ -60,7 +60,7 @@ describe('Auth sagas', () => {
   })
 
   test(`onAuthed - ${success(actions.API_USERS_CREATE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.onAuthed)
       .dispatch({ type: success(actions.API_USERS_CREATE) })
@@ -83,8 +83,8 @@ describe('Auth sagas', () => {
   })
 
   test(`logOut - ${actions.LOG_OUT}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
-    jest.spyOn(window.localStorage.__proto__, 'removeItem')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
+    vi.spyOn(window.localStorage.__proto__, 'removeItem')
 
     expectSaga(sagas.logOut)
       .dispatch({ type: actions.LOG_OUT })
@@ -94,8 +94,8 @@ describe('Auth sagas', () => {
   })
 
   test(`logOut - ${failure(actions.API_SESSIONS_UPDATE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
-    jest.spyOn(window.localStorage.__proto__, 'removeItem')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
+    vi.spyOn(window.localStorage.__proto__, 'removeItem')
 
     expectSaga(sagas.logOut)
       .dispatch({ type: failure(actions.API_SESSIONS_UPDATE) })
@@ -121,7 +121,7 @@ describe('Auth sagas', () => {
   })
 
   test(`updateUserSuccess - ${success(actions.API_USERS_UPDATE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateUserSuccess)
       .dispatch({ type: success(actions.API_USERS_UPDATE) })
@@ -130,7 +130,7 @@ describe('Auth sagas', () => {
   })
 
   test(`updateUserSuccess - ${success(actions.API_PASSWORDS_UPDATE)}`, () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateUserSuccess)
       .dispatch({ type: success(actions.API_PASSWORDS_UPDATE) })

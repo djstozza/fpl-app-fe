@@ -45,7 +45,7 @@ describe('NavBar', () => {
   })
 
   it('it renders a dropdown, which can be used by the user to logout if the user is present', () => {
-    const logOut = jest.fn()
+    const logOut = vi.fn()
     customRender({ user: USER_1, logOut })
 
     expect(labelQuery('Log In')).not.toBeInTheDocument()
@@ -184,10 +184,10 @@ describe('NavBar', () => {
         matches: mediaQuery.match(query, { width }),
         media: query,
         onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
         dispatchEvent: () => false,
       })
     }

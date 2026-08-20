@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import * as rrd from 'react-router-dom'
 
@@ -5,13 +6,13 @@ import ConnectedLeaguePage, { LeaguePage, TABS } from '.'
 import { MockedRouterStoreWithRoute, MockedRouter, blank__ } from 'test/helpers'
 import { LEAGUES } from 'test/fixtures'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(), // Mock the useParams hook
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn(), // Mock the useParams hook
 }))
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 })
 
 describe('LeaguePage', () => {
@@ -52,7 +53,7 @@ describe('LeaguePage', () => {
   const tabs = () => screen.getAllByRole('tab')
   const heading = () => screen.getByRole('heading')
   describe('when leagueId is present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: '1' }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: '1' }))
 
     it('renders the league details by default and sets the document title', () => {
       connectedRender()
@@ -70,7 +71,7 @@ describe('LeaguePage', () => {
 
 
     it('triggers the fetchLeague function on load', () => {
-      const fetchLeague = jest.fn()
+      const fetchLeague = vi.fn()
       customRender({ fetchLeague })
 
       expect(fetchLeague).toHaveBeenCalledWith(LEAGUES[0].id)
@@ -84,7 +85,7 @@ describe('LeaguePage', () => {
   })
 
   describe('when leagueId is not present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: undefined }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ leagueId: undefined }))
     it('renders nothing if leagueId is not present', () => {
       connectedRender()
       

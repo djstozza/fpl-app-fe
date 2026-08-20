@@ -12,7 +12,7 @@ describe('store', () => {
 
   it('should dispatch appInitialization action', () => {
     const { auth } = store.getState()
-    const spy = jest.spyOn(store, 'dispatch')
+    const spy = vi.spyOn(store, 'dispatch')
     store.dispatch(rootActions.appInitialization(auth))
     expect(spy).toHaveBeenCalledWith(rootActions.appInitialization(auth))
   })

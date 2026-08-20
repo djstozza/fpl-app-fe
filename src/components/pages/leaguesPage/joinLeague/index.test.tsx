@@ -71,7 +71,7 @@ describe('JoinLeague', () => {
   })
 
   it('triggers initialForm on load', () => {
-    const initializeForm = jest.fn()
+    const initializeForm = vi.fn()
 
     customRender({ initializeForm })
 
@@ -79,7 +79,7 @@ describe('JoinLeague', () => {
   })
 
   it('triggers joinLeague with the name, username and code', () => {
-    const joinLeague = jest.fn()
+    const joinLeague = vi.fn()
     customRender({ joinLeague })
 
     fireEvent.change(nameInput(), { target: { value: name } })

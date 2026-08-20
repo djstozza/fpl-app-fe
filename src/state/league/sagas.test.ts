@@ -39,7 +39,7 @@ describe('League sagas', () => {
   })
 
   test('updateLeagueSuccess', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.updateLeagueSuccess)
       .withState({
@@ -81,7 +81,7 @@ describe('League sagas', () => {
   })
 
   test('updateFplTeamsSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateFplTeamsSort, actions.updateFplTeamsSort({ sort }))
       .withState({
@@ -107,7 +107,7 @@ describe('League sagas', () => {
   })
 
   test('generateDraftPicksSuccess', () => {
-    const historyReplaceSpy = jest.spyOn(history, 'replace')
+    const historyReplaceSpy = vi.spyOn(history, 'replace')
 
     expectSaga(sagas.generateDraftPicksSuccess)
       .withState({
@@ -165,7 +165,7 @@ describe('League sagas', () => {
   })
 
   test('updateAvailablePlayersSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateAvailablePlayersSort, actions.updateAvailablePlayersSort(sort))
       .withState({
@@ -180,7 +180,7 @@ describe('League sagas', () => {
   })
 
   test('updateAvailablePlayersFilter', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateAvailablePlayersFilter, actions.updateAvailablePlayersFilter(filter))
       .withState({
@@ -201,7 +201,7 @@ describe('League sagas', () => {
   })
 
   test('updateAvailablePlayersPage', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updateAvailablePlayersPage, actions.updateAvailablePlayersPage(page.offset))
       .withState({

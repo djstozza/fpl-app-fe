@@ -1,5 +1,6 @@
+import type { Mocked } from 'vitest'
 import { act, within, render, screen } from '@testing-library/react'
-import WS from 'jest-websocket-mock'
+import WS from 'vitest-websocket-mock'
 import * as rrd from 'react-router-dom'
 
 import ConnectedRoundsPage, { RoundsPage } from '.'
@@ -11,12 +12,12 @@ import {
 import { TITLE } from 'utilities/constants'
 import { MockedRouterStore, MockedRouter, blank__ } from 'test/helpers'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(), // Mock the useParams hook
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn(), // Mock the useParams hook
 }))
 
-jest.mock('@rails/actioncable', () => ({
+vi.mock('@rails/actioncable', () => ({
   createConsumer: () => ({
     subscriptions: {
       create: (_, handlers) => {
@@ -28,7 +29,7 @@ jest.mock('@rails/actioncable', () => ({
 }))
 
 afterEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 describe('RoundsPage', () => {
@@ -60,7 +61,7 @@ describe('RoundsPage', () => {
   const tab = (i) => within(tabList()).getAllByRole('tab')[i]
 
   describe('when roundId is present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ roundId: ROUND_1.id }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ roundId: ROUND_1.id }))
 
     it('renders the tab panel, round details and sets the document title', () => {
       connectedRender()
@@ -76,17 +77,17 @@ describe('RoundsPage', () => {
     })
 
     it('triggers the fetchRounds function on load', () => {
-      const fetchRounds = jest.fn()
+      const fetchRounds = vi.fn()
       customRender({ fetchRounds })
 
       expect(fetchRounds).toHaveBeenCalled()
     })
 
     describe('when a new round is picked', () => {
-      beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ roundId: ROUND_2.id }))
+      beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ roundId: ROUND_2.id }))
 
       it('calls fetchRound with the roundId', () => {
-        const fetchRound = jest.fn()
+        const fetchRound = vi.fn()
         customRender({ fetchRound })
     
         expect(fetchRound).toHaveBeenCalledWith(ROUND_2.id)
@@ -106,7 +107,7 @@ describe('RoundsPage', () => {
       afterEach(() => server.close())
 
       it('fetches the round again updatedAt > previous updatedAt', async () => {
-        const fetchRound = jest.fn()
+        const fetchRound = vi.fn()
         customRender({ fetchRound })
 
         act(() => global.receivedHandler({ updatedAt: 1, message }))
@@ -115,7 +116,7 @@ describe('RoundsPage', () => {
       })
 
       it('does not fetch the round again if updatedAt < previous updatedAt', async () => {
-        const fetchRound = jest.fn()
+        const fetchRound = vi.fn()
         customRender({ fetchRound })
         
 
@@ -132,10 +133,10 @@ describe('RoundsPage', () => {
   })
 
   describe('when roundId is undefined', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ roundId: undefined }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ roundId: undefined }))
     
     it('calls fetchRound with the current round', () => {
-      const fetchRound = jest.fn()
+      const fetchRound = vi.fn()
       const rounds = [
         {
           ...ROUND_1,
@@ -154,7 +155,7 @@ describe('RoundsPage', () => {
     })
 
     it('calls fetchRound with the last round if there is no current round', () => {
-      const fetchRound = jest.fn()
+      const fetchRound = vi.fn()
       const rounds = [
         {
           ...ROUND_1,

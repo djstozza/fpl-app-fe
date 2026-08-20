@@ -62,7 +62,7 @@ describe('Player sagas', () => {
   })
 
   test('updatePlayerHistorySort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updatePlayerHistorySort, actions.updatePlayerHistorySort({ id: playerId, sort: sort.history }))
       .withState({
@@ -76,7 +76,7 @@ describe('Player sagas', () => {
   })
 
   test('updatePlayerHistoryPastSort', () => {
-    const historyPushSpy = jest.spyOn(history, 'push')
+    const historyPushSpy = vi.spyOn(history, 'push')
 
     expectSaga(sagas.updatePlayerHistoryPastSort, actions.updatePlayerHistoryPastSort({ id: playerId, sort: sort.historyPast }))
       .withState({

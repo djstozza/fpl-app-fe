@@ -52,7 +52,7 @@ describe('ChangePasswordForm', () => {
   })
 
   it('triggers initialForm on load', () => {
-    const initializeAuth = jest.fn()
+    const initializeAuth = vi.fn()
 
     customRender({ initializeAuth })
 
@@ -60,7 +60,7 @@ describe('ChangePasswordForm', () => {
   })
 
   it('triggers changePassword with the password and newPassword', () => {
-    const changePassword = jest.fn()
+    const changePassword = vi.fn()
     customRender({ changePassword })
     fireEvent.change(passwordInput(), { target: { value: password } })
 

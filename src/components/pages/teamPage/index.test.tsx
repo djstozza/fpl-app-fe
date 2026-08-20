@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest'
 import { within, render, screen } from '@testing-library/react'
 import * as rrd from 'react-router-dom'
 
@@ -8,13 +9,13 @@ import { TEAMS, MANCHESTER_UNITED, PLAYER_SUMMARIES } from 'test/fixtures'
 import { initialState as initialTeamState } from 'state/team/reducer'
 import { initialState as initialPlayersState } from 'state/players/reducer'
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(), // Mock the useParams hook
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
+  useParams: vi.fn(), // Mock the useParams hook
 }))
 
 afterEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 
@@ -53,7 +54,7 @@ describe('TeamPage', () => {
   const tabListTabs = (i) => within(tabList(i)).getAllByRole('tab')
 
   describe('when teamId is present', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ teamId: MANCHESTER_UNITED.id }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ teamId: MANCHESTER_UNITED.id }))
 
     it('renders the tab panel, team details and sets the document title', () => {
       connectedRender()
@@ -71,14 +72,14 @@ describe('TeamPage', () => {
     })
 
      it('triggers the fetchTeams function on load', () => {
-      const fetchTeams = jest.fn()
+      const fetchTeams = vi.fn()
       customRender({ fetchTeams })
 
       expect(fetchTeams).toHaveBeenCalledWith({ sort: { shortName: 'asc' } })
     })
 
     it('calls fetchTeam with the teamId', () => {
-      const fetchTeam = jest.fn()
+      const fetchTeam = vi.fn()
       customRender({ fetchTeam })
 
       expect(fetchTeam).toHaveBeenCalledWith(
@@ -98,7 +99,7 @@ describe('TeamPage', () => {
   })
 
   describe('when teamId is undefined', () => {
-    beforeEach(() => (rrd as jest.Mocked<typeof rrd>).useParams.mockReturnValue({ teamId: undefined }))
+    beforeEach(() => (rrd as Mocked<typeof rrd>).useParams.mockReturnValue({ teamId: undefined }))
 
     it('renders nothing', () => {
       const { container } = connectedRender()
