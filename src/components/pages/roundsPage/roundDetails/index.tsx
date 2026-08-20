@@ -1,16 +1,13 @@
 import { useEffect } from 'react'
 import moment from 'moment'
 import { groupBy } from 'lodash'
-import { makeStyles } from 'tss-react/mui'
 import {
   Accordion,
-  Typography,
-  Theme
+  Typography
 } from '@mui/material'
 
 import FixtureSummary from '../fixtureSummary'
 import FixtureDetails from '../fixtureDetails'
-import { colors } from 'utilities/colors'
 
 import type { Round, Fixture } from 'types'
 
@@ -24,31 +21,12 @@ type GroupedFixtures = {
   [key: string]: Fixture[]
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
-  },
-
-  summary: {
-    textAlign: 'center',
-    backgroundColor: colors.grey200,
-    border: `0.5px solid ${colors.grey300}`
-  },
-
-  disabled: {
-    paddingRight: theme.spacing(6)
-  },
-
-  statsContainer: {
-    width: '100%',
-    paddingRight: theme.spacing(3)
-  }
-}))
+const titleSx = (theme) => ({
+  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
+})
 
 const RoundDetails = (props: Props) => {
   const { roundId, round, fetchRound } = props
-
-  const { classes } = useStyles()
 
   useEffect(
     () => {
@@ -67,7 +45,7 @@ const RoundDetails = (props: Props) => {
 
   return (
     <div data-testid='RoundDetails'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={titleSx}>
         {name}
       </Typography>
       {
@@ -76,7 +54,7 @@ const RoundDetails = (props: Props) => {
             data-testid='round-day-container'
             key={day}
           >
-            <Typography variant='subtitle1' className={classes.title}>
+            <Typography variant='subtitle1' sx={titleSx}>
               {day}
             </Typography>
             {

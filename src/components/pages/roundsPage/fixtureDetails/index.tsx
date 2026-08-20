@@ -1,10 +1,8 @@
 import { Fragment } from 'react'
 
 import { startCase, orderBy } from 'lodash'
-import { makeStyles } from 'tss-react/mui'
 import {
   AccordionDetails,
-  Theme,
   Table,
   TableHead,
   TableBody,
@@ -22,29 +20,20 @@ type Props = {
   fixture: Fixture
 }
 
-const useStyles = makeStyles()((theme: Theme) =>
-  ({
-    container: {
-      padding: 0
-    },
+const headerCellSx = (theme) => ({
+  backgroundColor: colors.grey200,
+  '&:last-child': {
+    paddingRight: theme.spacing(6.5)
+  }
+})
 
-    headerCell: {
-      backgroundColor: colors.grey200,
-      '&:last-child': {
-        paddingRight: theme.spacing(6.5)
-      }
-    },
-
-    detailsCell: {
-      width: '50%',
-      paddingRight: theme.spacing(12.5)
-    }
-  }));
+const detailsCellSx = (theme) => ({
+  width: '50%',
+  paddingRight: theme.spacing(12.5)
+})
 
 const FixtureDetails = (props: Props) => {
   const { fixture: { stats } } = props
-
-  const { classes } = useStyles()
 
   const playerStatsDisplay = (statGroup) => (
     orderBy(statGroup, ({ value }) => value, 'desc').map(({ value, player: { id, lastName } }, key) => (
@@ -55,7 +44,7 @@ const FixtureDetails = (props: Props) => {
   )
 
   return (
-    <AccordionDetails className={classes.container}>
+    <AccordionDetails sx={{ padding: 0 }}>
       <Table size='small'>
         {
           orderBy(stats, ({ displayOrder }) => displayOrder).map(({ identifier, home, away }, key) => {
@@ -65,17 +54,17 @@ const FixtureDetails = (props: Props) => {
               <Fragment key={key}>
                 <TableHead>
                   <TableRow>
-                    <TableCell align='center' colSpan={2} className={classes.headerCell}>
+                    <TableCell align='center' colSpan={2} sx={headerCellSx}>
                       {startCase(identifier)}
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell align='center' className={classes.detailsCell}>
+                    <TableCell align='center' sx={detailsCellSx}>
                       {playerStatsDisplay(home)}
                     </TableCell>
-                    <TableCell  align='center' className={classes.detailsCell}>
+                    <TableCell  align='center' sx={detailsCellSx}>
                        {playerStatsDisplay(away)}
                     </TableCell>
                   </TableRow>

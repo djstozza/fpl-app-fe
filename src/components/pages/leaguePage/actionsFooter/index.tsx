@@ -1,5 +1,4 @@
-import { makeStyles } from 'tss-react/mui'
-import { Button, Theme } from '@mui/material'
+import { Button, Box } from '@mui/material'
 
 import ButtonLink from 'components/common/buttonLink'
 import { LEAGUES_URL } from 'utilities/constants'
@@ -13,18 +12,6 @@ type Props = {
   createDraft: Function,
   submitting: boolean
 }
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-
-  rightMargin: {
-    marginRight: theme.spacing(1)
-  }
-}))
 
 const ActionsFooter = (props: Props) => {
   const {
@@ -41,8 +28,6 @@ const ActionsFooter = (props: Props) => {
     submitting,
     detailsPage
   } = props
-
-  const { classes, cx } = useStyles()
 
   const setColor = (index) => index === 0 || index % 2 === 0 ? 'primary' : 'inherit'
 
@@ -69,7 +54,7 @@ const ActionsFooter = (props: Props) => {
           color={setColor(index)}
           onClick={() => generateDraftPicks(id)}
           disabled={submitting}
-          className={cx({ [classes.rightMargin]: addRightMargin })}
+          sx={addRightMargin ? (theme) => ({ marginRight: theme.spacing(1) }) : undefined}
         >
           Generate draft picks
         </Button>
@@ -84,7 +69,7 @@ const ActionsFooter = (props: Props) => {
           color={setColor(index)}
           onClick={() => createDraft(id)}
           disabled={submitting}
-          className={cx({ [classes.rightMargin]: addRightMargin })}
+          sx={addRightMargin ? (theme) => ({ marginRight: theme.spacing(1) }) : undefined}
         >
           Create draft
         </Button>
@@ -122,7 +107,7 @@ const ActionsFooter = (props: Props) => {
   const renderableButtonsLength = renderableButtons.length
 
   return (
-    <div className={classes.actions}>
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
       {
         renderableButtons.map(({ render }, index) => {
           const addRightMargin = renderableButtonsLength > 1 && index < renderableButtonsLength
@@ -130,7 +115,7 @@ const ActionsFooter = (props: Props) => {
           return render(index, addRightMargin)
         })
       }
-    </div>
+    </Box>
   )
 }
 

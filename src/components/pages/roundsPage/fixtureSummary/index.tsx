@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import { makeStyles } from 'tss-react/mui'
 import {
   AccordionSummary,
   Typography,
   Grid,
-  Theme,
   Box
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
@@ -20,35 +19,31 @@ type Props = {
   fixture: Fixture
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  summary: {
-    textAlign: 'center',
-    backgroundColor: colors.grey200,
-    border: `0.5px solid ${colors.grey300}`
-  },
+const summarySx = {
+  textAlign: 'center',
+  backgroundColor: colors.grey200,
+  border: `0.5px solid ${colors.grey300}`
+}
 
-  disabled: {
-    paddingRight: theme.spacing(6),
-    pointerEvents: 'none',
-    '& a': {
-      pointerEvents: 'all'
-    }
-  },
-
-  crest: {
-    maxWidth: theme.spacing(6),
-    maxHeight: theme.spacing(6)
-  },
-
-  teamLink: {
-    textDecoration: 'none',
-    color: colors.linkBlue
-  },
-
-  inProgressTeamLink: {
-    color: colors.white
+const disabledSx = (theme) => ({
+  paddingRight: theme.spacing(6),
+  pointerEvents: 'none',
+  '& a': {
+    pointerEvents: 'all'
   }
-}))
+})
+
+const crestSx = (theme) => ({
+  maxWidth: theme.spacing(6),
+  maxHeight: theme.spacing(6)
+})
+
+const TeamLink = styled(Link)({
+  textDecoration: 'none',
+  color: colors.linkBlue
+})
+
+const Crest = styled('img')(({ theme }) => crestSx(theme))
 
 const SummaryInfo = ({ inProgress, children }:{ inProgress?: boolean, children: any }) => (
   <Typography component='div'>
@@ -73,33 +68,22 @@ const FixtureSummary = (props: Props) => {
     }
   } = props
 
-  const { classes, cx } = useStyles()
   const inProgress = started && !finished
 
   const teamDetailsGrid = (teamId, shortName) => (
     <Grid size={{ xs: 4, md: 4, lg: 4 }}>
-      <Link
-        to={`${TEAMS_URL}/${teamId}`}
-        className={cx(classes.teamLink)}
-      >
-        <img src={teamCrestPathLoader(shortName)} className={classes.crest} alt={shortName} />
+      <TeamLink to={`${TEAMS_URL}/${teamId}`}>
+        <Crest src={teamCrestPathLoader(shortName)} alt={shortName} />
         <SummaryInfo inProgress={inProgress}>
           {shortName}
         </SummaryInfo>
-      </Link>
+      </TeamLink>
     </Grid>
   )
 
   return (
     <AccordionSummary
-      className={
-        cx(
-          classes.summary,
-          {
-            [classes.disabled]: !started
-          }
-        )
-      }
+      sx={[summarySx, !started && disabledSx]}
       expandIcon={stats.length > 0 ? <ExpandMoreIcon /> : ''}
     >
       <Grid container spacing={1} sx={{ alignItems: 'center' }}>

@@ -1,12 +1,10 @@
 import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
 import {
   Table,
   TableBody,
   TableCell,
-  TableRow,
-  Theme
+  TableRow
 } from '@mui/material'
 
 import ActionsFooter from '../actionsFooter'
@@ -22,12 +20,6 @@ const LEAGUE_DETAILS_ROWS = [
   }
 ]
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  table: {
-    marginBottom: theme.spacing(2)
-  }
-}))
-
 const LeagueDetails = () => {
   const {
     league,
@@ -37,7 +29,6 @@ const LeagueDetails = () => {
     setTab,
     setAction
   } = useOutletContext<LeagueContext>()
-  const { classes } = useStyles()
 
   const tab = 'details'
   
@@ -49,7 +40,7 @@ const LeagueDetails = () => {
   return (
     <div data-testid='LeagueDetails'>
       <Table
-        className={classes.table}
+        sx={(theme) => ({ marginBottom: theme.spacing(2) })}
         size='small'
       >
         <TableBody>

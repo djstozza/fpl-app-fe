@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useParams, Outlet } from 'react-router-dom'
 import { capitalize } from 'lodash'
-import { makeStyles } from 'tss-react/mui'
-import { Typography, Theme } from '@mui/material'
+import { Typography } from '@mui/material'
 
 import { leagueActions } from 'state/league'
 import Tabs from 'components/common/tabs'
@@ -39,12 +38,6 @@ export type LeagueContext = {
   setAction: (string?: string) => void
 } & Props
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    padding: theme.spacing(1)
-  }
-}))
-
 export const TABS = {
   details: { label: 'Details', value: 'details', display: true },
   fplTeams: { label: 'Fpl Teams', value: 'fplTeams', display: true }
@@ -55,7 +48,6 @@ export const LeaguePage = (props: Props) => {
     league,
     fetchLeague
   } = props
-  const { classes } = useStyles()
   const { leagueId } = useParams<LeagueParams>()
   const [tab, setTab] = useState<Tab>('details')
   const [action, setAction] = useState<string>()
@@ -82,7 +74,7 @@ export const LeaguePage = (props: Props) => {
 
   return (
     <div data-testid='LeaguePage'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={(theme) => ({ padding: theme.spacing(1) })}>
         {name}
       </Typography>
       <Tabs
