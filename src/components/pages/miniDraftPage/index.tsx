@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { useParams, Outlet } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
@@ -13,7 +13,8 @@ import { fplTeamListActions } from 'state/fplTeamList'
 import Tabs from 'components/common/tabs'
 import UserCanPickAlert from './userCanPickAlert'
 import DraftCompletedAlert from 'components/common/draftCompletedAlert'
-import { LEAGUES_URL, cable } from 'utilities/constants'
+import { LEAGUES_URL } from 'utilities/constants'
+import { useActionCableSubscription } from 'utilities/useActionCableSubscription'
 
 import type { FplTeamListState } from 'state/fplTeamList'
 import type { MiniDraftPicksState } from 'state/miniDraftPicks'
@@ -107,7 +108,7 @@ export const MiniDraftPage = (props: Props) => {
   )
 
   const handleReceived = useCallback(
-    ({ updatedAt, message }) => {
+    ({ updatedAt, message }: { updatedAt: number, message?: string }) => {
       if (updatedAt <= miniDraftPickUpdatedAt) return
       fetchMiniDraftPicksStatus(leagueId)
       fetchMiniDraftPicks({ sort: miniDraftPicks.sort, filter: miniDraftPicks.filter })
@@ -119,29 +120,7 @@ export const MiniDraftPage = (props: Props) => {
     ]
   )
 
-  const handleReceivedRef = useRef(handleReceived)
-
-  useEffect(
-    () => {
-      handleReceivedRef.current = handleReceived
-    }, [handleReceived]
-  )
-
-  useEffect(
-    () => {
-      let isActive = true
-
-      const subscription = cable.subscriptions.create(
-        { channel: 'MiniDraftPicksChannel', league_id: leagueId },
-        { received: received  => { if (isActive) handleReceivedRef.current(received) } }
-      )
-
-      return () => {
-        isActive = false
-        subscription.unsubscribe()
-      }
-    }, [leagueId]
-  )
+  useActionCableSubscription({ channel: 'MiniDraftPicksChannel', league_id: leagueId }, handleReceived)
 
   const { errors } = miniDraftPicks
 

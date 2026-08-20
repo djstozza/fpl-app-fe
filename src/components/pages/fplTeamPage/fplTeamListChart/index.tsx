@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { groupBy } from 'lodash'
@@ -7,10 +7,8 @@ import { colors } from 'utilities/colors'
 import TabPanel from 'components/common/tabPanel'
 
 import ListPositionBox from './listPositionBox'
-import {
-  FPL_TEAMS_URL,
-  cable
-} from 'utilities/constants'
+import { FPL_TEAMS_URL } from 'utilities/constants'
+import { useActionCableSubscription } from 'utilities/useActionCableSubscription'
 
 import type { FplTeamContext } from '..'
 import type { ListPosition, FplTeamList, ListPositionChartDisplay } from 'types'
@@ -282,29 +280,9 @@ const FplTeamListChart = () => {
     }, [enqueueSnackbar, errors]
   )
 
-  const handleReceivedRef = useRef(handleReceived)
-
-  useEffect(
-    () => {
-      handleReceivedRef.current = handleReceived
-    }, [handleReceived]
-  )
-
-  useEffect(
-    () => {
-      if (!selectedFplTeamListId) return
-      let isActive = true
-
-      const subscription = cable.subscriptions.create(
-        { channel: 'FplTeamListScoreChannel', fpl_team_list_id: selectedFplTeamListId },
-        { received: received  => { if (isActive) handleReceivedRef.current(received) } }
-      )
-
-      return () => {
-        isActive = false
-        subscription.unsubscribe()
-      }
-    }, [selectedFplTeamListId]
+  useActionCableSubscription(
+    selectedFplTeamListId ? { channel: 'FplTeamListScoreChannel', fpl_team_list_id: selectedFplTeamListId } : undefined,
+    handleReceived
   )
 
   if (!fplTeamList || !listPositions.length) return null

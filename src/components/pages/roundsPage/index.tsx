@@ -1,10 +1,11 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { roundActions } from 'state/round'
 import { roundsActions } from 'state/rounds'
-import { ROUNDS_URL, TITLE, cable } from 'utilities/constants'
+import { ROUNDS_URL, TITLE } from 'utilities/constants'
+import { useActionCableSubscription } from 'utilities/useActionCableSubscription'
 
 import TabPanel from 'components/common/tabPanel'
 import RoundDetails from './roundDetails'
@@ -58,29 +59,9 @@ export const RoundsPage = (props: Props) => {
     }, [setSelectedRoundId, roundId, currentRoundId, lastRoundId]
   )
 
-  const handleReceivedRef = useRef(handleReceived)
-
-  useEffect(
-    () => {
-      handleReceivedRef.current = handleReceived
-    }, [handleReceived]
-  )
-
-  useEffect(
-    () => {
-      if (!selectedRounId) return
-      let isActive = true
-
-      const subscription = cable.subscriptions.create(
-        { channel: 'RoundsChannel', round_id: selectedRounId },
-        { received: received => { if (isActive) handleReceivedRef.current(received) } }
-      )
-
-      return () => {
-        isActive = false
-        subscription.unsubscribe()
-      }
-    }, [selectedRounId]
+  useActionCableSubscription(
+    selectedRounId ? { channel: 'RoundsChannel', round_id: selectedRounId } : undefined,
+    handleReceived
   )
 
   if (rounds.length === 0) return null

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { useParams, Outlet } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
@@ -10,7 +10,8 @@ import { draftPicksActions } from 'state/draftPicks'
 import Tabs from 'components/common/tabs'
 import UserCanPickAlert from './userCanPickAlert'
 import DraftCompletedAlert from 'components/common/draftCompletedAlert'
-import { LEAGUES_URL, cable } from 'utilities/constants'
+import { LEAGUES_URL } from 'utilities/constants'
+import { useActionCableSubscription } from 'utilities/useActionCableSubscription'
 
 import type { DraftPicksState } from 'state/draftPicks'
 import type { PlayersState } from 'state/players'
@@ -76,7 +77,7 @@ export const DraftPage = (props: Props) => {
   )
 
   const handleReceived = useCallback(
-    ({ updatedAt, message }) => {
+    ({ updatedAt, message }: { updatedAt: number, message?: string }) => {
       if (updatedAt <= draftPickUpdatedAt) return
       fetchDraftPicksStatus(leagueId)
       fetchDraftPicks({ sort: draftPicks.sort, filter: draftPicks.filter })
@@ -85,29 +86,7 @@ export const DraftPage = (props: Props) => {
     }, [leagueId, fetchDraftPicksStatus, fetchDraftPicks, draftPicks.sort, draftPicks.filter, draftPickUpdatedAt, enqueueSnackbar]
   )
 
-  const handleReceivedRef = useRef(handleReceived)
-
-  useEffect(
-    () => {
-      handleReceivedRef.current = handleReceived
-    }, [handleReceived]
-  )
-
-  useEffect(
-    () => {
-      let isActive = true
-
-      const subscription = cable.subscriptions.create(
-        { channel: 'DraftPicksChannel', league_id: leagueId },
-        { received: received => { if (isActive) handleReceivedRef.current(received) } }
-      )
-
-      return () => {
-        isActive = false
-        subscription.unsubscribe()
-      }
-    }, [leagueId]
-  )
+  useActionCableSubscription({ channel: 'DraftPicksChannel', league_id: leagueId }, handleReceived)
 
   const { draftFinished, errors } = draftPicks
 
