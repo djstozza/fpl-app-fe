@@ -36,6 +36,20 @@ describe('Players actions', () => {
         failureAction: failure(actions.API_PLAYERS_INDEX)
       })
     })
+
+    it('defaults sort, filter, and page when not provided', () => {
+      const dispatch = vi.fn()
+
+      actions.fetchPlayers({})(dispatch)
+
+      expect(apiRequest).toHaveBeenCalledWith({
+        needsAuth: false,
+        method: 'GET',
+        url: `${API_URL}${PLAYERS_URL}?${stringify({ sort: {}, filter: {}, page: {} })}`,
+        successAction: success(actions.API_PLAYERS_INDEX),
+        failureAction: failure(actions.API_PLAYERS_INDEX)
+      })
+    })
   })
 
   describe('fetchFacets', () => {

@@ -61,6 +61,22 @@ describe('Mini draft picks actions', () => {
         failureAction: failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX)
       })
     })
+
+    it('defaults sort and filter when not provided', () => {
+      const dispatch = vi.fn()
+      const getState = () => ({ league: { data: LIVE_LEAGUE }, miniDraftPicks: { season } })
+
+      actions.fetchMiniDraftPicks({})(dispatch, getState)
+
+      const query = { mini_draft_pick: { season }, sort: {}, filter: {} }
+      expect(apiRequest).toHaveBeenCalledWith({
+        needsAuth: true,
+        method: 'GET',
+        url: `${API_URL}${LEAGUES_URL}/${id}/mini_draft_picks?${stringify(query)}`,
+        successAction: success(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX),
+        failureAction: failure(actions.API_LEAGUE_MINI_DRAFT_PICKS_INDEX)
+      })
+    })
   })
 
   describe('fetchMiniDraftPicksStatus', () => {

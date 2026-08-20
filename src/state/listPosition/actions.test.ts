@@ -175,6 +175,22 @@ describe('List position actions', () => {
         failureAction: failure(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS)
       })
     })
+
+    it('defaults sort and filter when not provided', () => {
+      const dispatch = vi.fn()
+      const getState = () => ({ fplTeamList: { outListPosition: LIST_POSITION_1 } })
+
+      actions.fetchTradeableListPositions({})(dispatch, getState)
+
+      expect(apiRequest).toHaveBeenCalledWith({
+        needsAuth: true,
+        method: 'GET',
+        url:
+          `${API_URL}${API_LIST_POSITIONS_PATH}/${outListPositionId}/tradeable_list_positions?${stringify({ sort: {}, filter: {} })}`,
+        successAction: success(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS),
+        failureAction: failure(actions.API_LIST_POSITION_TRADEABLE_LIST_POSITIONS)
+      })
+    })
   })
 
   describe('fetchTradeableListPositionFacets', () => {
