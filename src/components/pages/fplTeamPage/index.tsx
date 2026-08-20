@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useParams, Outlet } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
-import { Typography, Theme } from '@mui/material'
+import { Typography } from '@mui/material'
 import { capitalize } from 'lodash'
 import pluralize from 'pluralize'
 
@@ -90,12 +89,6 @@ export type FplTeamContext = {
   setAction: (action?: string) => void
 } & Props
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    padding: theme.spacing(1)
-  }
-}))
-
 export const TABS = {
   details: { label: 'Details', value: 'details', display: true },
   teamLists: {
@@ -132,7 +125,6 @@ export const FplTeamPage = (props: Props) => {
     fetchListPositions,
     setOutListPosition
   } = props
-  const { classes } = useStyles()
   const { fplTeamId, fplTeamListId, teamTradeId } = useParams()
   const [deadlineTimeAsTime, setDeadlineTimeAsTime] = useState<Date|undefined>()
   const [waiverDeadlineAsTime, setWaiverDeadlineAsTime] = useState<Date|undefined>()
@@ -231,7 +223,7 @@ export const FplTeamPage = (props: Props) => {
 
   return (
     <div data-testid='FplTeamPage'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={(theme) => ({ padding: theme.spacing(1) })}>
         {name}
         {
           showSelectedRoundNameTabs.includes(tab) && selectedRoundName &&

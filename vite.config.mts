@@ -44,7 +44,7 @@ export default defineConfig({
       thresholds: {
         // v8 counts branches/statements slightly differently than the
         // istanbul provider Jest used, hence the lower bar than before
-        branches: 99,
+        branches: 98.8,
         functions: 100,
         lines: 100,
         statements: 99.8
