@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react'
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -58,18 +58,29 @@ export const RoundsPage = (props: Props) => {
     }, [setSelectedRoundId, roundId, currentRoundId, lastRoundId]
   )
 
+  const handleReceivedRef = useRef(handleReceived)
+
+  useEffect(
+    () => {
+      handleReceivedRef.current = handleReceived
+    }, [handleReceived]
+  )
+
   useEffect(
     () => {
       if (!selectedRounId) return
       let isActive = true
 
-      cable.subscriptions.create(
+      const subscription = cable.subscriptions.create(
         { channel: 'RoundsChannel', round_id: selectedRounId },
-        { received: received => { if (isActive) handleReceived(received) } }
+        { received: received => { if (isActive) handleReceivedRef.current(received) } }
       )
 
-      return () => { isActive = false }
-    }, [handleReceived, selectedRounId]
+      return () => {
+        isActive = false
+        subscription.unsubscribe()
+      }
+    }, [selectedRounId]
   )
 
   if (rounds.length === 0) return null

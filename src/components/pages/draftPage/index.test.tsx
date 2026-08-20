@@ -19,13 +19,16 @@ vi.mock('react-router-dom', async () => ({
   useParams: vi.fn(), // Mock the useParams hook
 }))
 
+global.subscriptionsCreate = vi.fn((_, handlers) => {
+  // Save the received handler so we can call it later
+  global.receivedHandler = handlers.received
+  return { unsubscribe: vi.fn() }
+})
+
 vi.mock('@rails/actioncable', () => ({
   createConsumer: () => ({
     subscriptions: {
-      create: (_, handlers) => {
-        // Save the received handler so we can call it later
-        global.receivedHandler = handlers.received
-      }
+      create: (...args) => global.subscriptionsCreate(...args)
     }
   })
 }))
@@ -198,6 +201,18 @@ describe('DraftPage', () => {
         act(() => global.receivedHandler({ updatedAt: -1, message }))
 
         expect(fetchDraftPicks).not.toHaveBeenCalled()
+      })
+
+      it('does not create a new subscription for each message received', async () => {
+        customRender()
+
+        global.subscriptionsCreate.mockClear()
+
+        act(() => global.receivedHandler({ updatedAt: 1, message }))
+        act(() => global.receivedHandler({ updatedAt: 2, message }))
+        act(() => global.receivedHandler({ updatedAt: 3, message }))
+
+        expect(global.subscriptionsCreate).not.toHaveBeenCalled()
       })
     })
   })

@@ -17,13 +17,16 @@ vi.mock('react-router-dom', async () => ({
   useParams: vi.fn(), // Mock the useParams hook
 }))
 
+global.subscriptionsCreate = vi.fn((_, handlers) => {
+  // Save the received handler so we can call it later
+  global.receivedHandler = handlers.received
+  return { unsubscribe: vi.fn() }
+})
+
 vi.mock('@rails/actioncable', () => ({
   createConsumer: () => ({
     subscriptions: {
-      create: (_, handlers) => {
-        // Save the received handler so we can call it later
-        global.receivedHandler = handlers.received
-      }
+      create: (...args) => global.subscriptionsCreate(...args)
     }
   })
 }))
@@ -118,11 +121,23 @@ describe('RoundsPage', () => {
       it('does not fetch the round again if updatedAt < previous updatedAt', async () => {
         const fetchRound = vi.fn()
         customRender({ fetchRound })
-        
+
 
         act(() => global.receivedHandler({ updatedAt: -1, message }))
 
         expect(fetchRound).toHaveBeenNthCalledWith(1, ROUND_1.id)
+      })
+
+      it('does not create a new subscription for each message received', async () => {
+        customRender()
+
+        global.subscriptionsCreate.mockClear()
+
+        act(() => global.receivedHandler({ updatedAt: 1, message }))
+        act(() => global.receivedHandler({ updatedAt: 2, message }))
+        act(() => global.receivedHandler({ updatedAt: 3, message }))
+
+        expect(global.subscriptionsCreate).not.toHaveBeenCalled()
       })
     })
 

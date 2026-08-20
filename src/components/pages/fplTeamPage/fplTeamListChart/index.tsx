@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { groupBy } from 'lodash'
@@ -282,18 +282,29 @@ const FplTeamListChart = () => {
     }, [enqueueSnackbar, errors]
   )
 
+  const handleReceivedRef = useRef(handleReceived)
+
+  useEffect(
+    () => {
+      handleReceivedRef.current = handleReceived
+    }, [handleReceived]
+  )
+
   useEffect(
     () => {
       if (!selectedFplTeamListId) return
       let isActive = true
 
-      cable.subscriptions.create(
+      const subscription = cable.subscriptions.create(
         { channel: 'FplTeamListScoreChannel', fpl_team_list_id: selectedFplTeamListId },
-        { received: received  => { if (isActive) handleReceived(received) } }
+        { received: received  => { if (isActive) handleReceivedRef.current(received) } }
       )
 
-      return () => { isActive = false }
-    }, [handleReceived, selectedFplTeamListId]
+      return () => {
+        isActive = false
+        subscription.unsubscribe()
+      }
+    }, [selectedFplTeamListId]
   )
 
   if (!fplTeamList || !listPositions.length) return null

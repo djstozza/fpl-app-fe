@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
 import { useParams, Outlet } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
@@ -85,17 +85,28 @@ export const DraftPage = (props: Props) => {
     }, [leagueId, fetchDraftPicksStatus, fetchDraftPicks, draftPicks.sort, draftPicks.filter, draftPickUpdatedAt, enqueueSnackbar]
   )
 
+  const handleReceivedRef = useRef(handleReceived)
+
+  useEffect(
+    () => {
+      handleReceivedRef.current = handleReceived
+    }, [handleReceived]
+  )
+
   useEffect(
     () => {
       let isActive = true
 
-      cable.subscriptions.create(
+      const subscription = cable.subscriptions.create(
         { channel: 'DraftPicksChannel', league_id: leagueId },
-        { received: received => { if (isActive) handleReceived(received) } }
+        { received: received => { if (isActive) handleReceivedRef.current(received) } }
       )
 
-      return () => { isActive = false }
-    }, [handleReceived, leagueId]
+      return () => {
+        isActive = false
+        subscription.unsubscribe()
+      }
+    }, [leagueId]
   )
 
   const { draftFinished, errors } = draftPicks
