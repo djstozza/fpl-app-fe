@@ -2,10 +2,8 @@ import { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { useParams, Outlet } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import { makeStyles } from 'tss-react/mui';
 import {
-  Typography,
-  Theme
+  Typography
 } from '@mui/material'
 
 import { leagueActions } from 'state/league'
@@ -53,12 +51,6 @@ export type MiniDraftContext = {
   setTab: (tab: Tab) => void
 } & Props
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    padding: theme.spacing(1)
-  }
-}))
-
 export const TABS = [
   { label: 'Tradeable List Positions', value: 'miniDraft/tradeableListPositions', display: true },
   { label: 'Mini Draft Picks', value: 'miniDraft/miniDraftPicks', display: true }
@@ -74,7 +66,6 @@ export const MiniDraftPage = (props: Props) => {
     fetchListPositions
   } = props
 
-  const { classes } = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const [miniDraftPickUpdatedAt, setMiniDraftPickUpdatedAt] = useState(0)
   const [deadline, setDeadline] = useState<Date|undefined>()
@@ -159,7 +150,7 @@ export const MiniDraftPage = (props: Props) => {
 
   return (
     <div data-testid='MiniDraftPage'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={(theme) => ({ padding: theme.spacing(1) })}>
         {name} Mini Draft
       </Typography>
       <Tabs

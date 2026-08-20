@@ -2,8 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { useParams, Outlet } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import { makeStyles } from 'tss-react/mui'
-import { Typography, Theme } from '@mui/material'
+import { Typography } from '@mui/material'
 
 import { leagueActions } from 'state/league'
 import { playersActions } from 'state/players'
@@ -43,12 +42,6 @@ export type DraftContext = {
   setTab: (string: Tab) => void
 } & Props
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    padding: theme.spacing(1)
-  }
-}))
-
 export const TABS = [
   { label: 'Available Players', value: 'draft/availablePlayers', display: true },
   { label: 'Draft Picks', value: 'draft/draftPicks', display: true }
@@ -63,7 +56,6 @@ export const DraftPage = (props: Props) => {
     fetchDraftPicksStatus
   } = props
 
-  const { classes } = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const [draftPickUpdatedAt, setDraftPickUpdatedAt] = useState(0)
   const { leagueId } = useParams()
@@ -126,7 +118,7 @@ export const DraftPage = (props: Props) => {
 
   return (
     <div data-testid='DraftPage'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={(theme) => ({ padding: theme.spacing(1) })}>
         {name} Draft
       </Typography>
       <Tabs

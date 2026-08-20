@@ -1,13 +1,13 @@
 import { useState, useEffect, Fragment } from 'react'
-import { makeStyles } from 'tss-react/mui'
 import {
   Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  Theme
+  Box
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
 
 import type { DraftPicksState } from 'state/draftPicks'
@@ -20,19 +20,9 @@ type Props = {
   updateDraftPick: Function
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  alertContainer: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  draftPlayerLink: {
-    color: colors.white,
-    marginLeft: theme.spacing(0.5)
-  },
-  makeDraftPickContainer: {
-    display: 'inline',
-    marginLeft: theme.spacing(0.5)
-  }
+const DraftPlayerLink = styled(Link)(({ theme }) => ({
+  color: colors.white,
+  marginLeft: theme.spacing(0.5)
 }))
 
 const UserCanPickAlert = (props: Props) => {
@@ -42,7 +32,6 @@ const UserCanPickAlert = (props: Props) => {
     updateDraftPick
   } = props
 
-  const { classes } = useStyles()
   const [dialogOpen, setDialogOpen] = useState(false)
   const handleConfirmDraftPick = () => {
     setDialogOpen(false)
@@ -59,13 +48,13 @@ const UserCanPickAlert = (props: Props) => {
 
   return (
     <Fragment>
-      <Alert className={classes.alertContainer} variant='filled' severity='info'>
+      <Alert sx={{ display: 'flex', alignItems: 'center' }} variant='filled' severity='info'>
         It&apos;s your turn to
         {
           canMakePlayerPick &&
-          <Link className={classes.draftPlayerLink} to={`${LEAGUES_URL}/${leagueId}/draft/availablePlayers`}>
+          <DraftPlayerLink to={`${LEAGUES_URL}/${leagueId}/draft/availablePlayers`}>
             draft a player
-          </Link>
+          </DraftPlayerLink>
         }
         {
           canMakePlayerPick && canMakeMiniDraftPick &&
@@ -73,7 +62,7 @@ const UserCanPickAlert = (props: Props) => {
         }
         {
           canMakeMiniDraftPick &&
-          <div className={classes.makeDraftPickContainer}>
+          <Box sx={(theme) => ({ display: 'inline', marginLeft: theme.spacing(0.5) })}>
             make a <Button
               variant='contained'
               color='secondary'
@@ -81,7 +70,7 @@ const UserCanPickAlert = (props: Props) => {
             >
               Mini draft Pick
             </Button>
-          </div>
+          </Box>
         }
       </Alert>
       <Dialog

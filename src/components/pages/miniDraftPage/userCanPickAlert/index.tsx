@@ -1,13 +1,13 @@
 import { useState, useEffect, Fragment } from 'react'
-import { makeStyles } from 'tss-react/mui'
 import {
   Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  Theme
+  Box
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
 
 import type { MiniDraftPicksState } from 'state/miniDraftPicks'
@@ -21,19 +21,9 @@ type Props = {
   deadline?: Date
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  alertContainer: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  draftPlayerLink: {
-    color: colors.white,
-    marginLeft: theme.spacing(0.5)
-  },
-  makeDraftPickContainer: {
-    display: 'inline',
-    marginLeft: theme.spacing(0.5)
-  }
+const DraftPlayerLink = styled(Link)(({ theme }) => ({
+  color: colors.white,
+  marginLeft: theme.spacing(0.5)
 }))
 
 const UserCanPickAlert = (props: Props) => {
@@ -44,7 +34,6 @@ const UserCanPickAlert = (props: Props) => {
     deadline
   } = props
 
-  const { classes } = useStyles()
   const [dialogOpen, setDialogOpen] = useState(false)
   const handleConfirmDraftPick = () => {
     setDialogOpen(false)
@@ -61,12 +50,12 @@ const UserCanPickAlert = (props: Props) => {
 
   return (
     <Fragment>
-      <Alert className={classes.alertContainer} variant='filled' severity='info'>
+      <Alert sx={{ display: 'flex', alignItems: 'center' }} variant='filled' severity='info'>
         It&apos;s your turn to
-        <Link className={classes.draftPlayerLink} to={`${LEAGUES_URL}/${leagueId}/miniDraft/tradeableListPositions`}>
+        <DraftPlayerLink to={`${LEAGUES_URL}/${leagueId}/miniDraft/tradeableListPositions`}>
           draft a player
-        </Link> or
-        <div className={classes.makeDraftPickContainer}>
+        </DraftPlayerLink> or
+        <Box sx={(theme) => ({ display: 'inline', marginLeft: theme.spacing(0.5) })}>
           <Button
             variant='contained'
             color='secondary'
@@ -74,7 +63,7 @@ const UserCanPickAlert = (props: Props) => {
           >
             Pass
           </Button>
-        </div>
+        </Box>
       </Alert>
       <Dialog
         open={dialogOpen}
