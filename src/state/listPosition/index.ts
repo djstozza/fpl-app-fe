@@ -2,11 +2,9 @@ import reducer from './reducer'
 import type { State } from './reducer'
 
 import * as listPositionActions from './actions'
-import listPositionSagas from './sagas'
 
 export {
-  listPositionActions,
-  listPositionSagas
+  listPositionActions
 }
 
 export type ListPositionState = State

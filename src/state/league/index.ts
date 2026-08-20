@@ -2,11 +2,9 @@ import reducer from './reducer'
 import type { State } from './reducer'
 
 import * as leagueActions from './actions'
-import leagueSagas from './sagas'
 
 export {
-  leagueActions,
-  leagueSagas
+  leagueActions
 }
 
 export type LeagueState = State

@@ -17,6 +17,11 @@ import { success, failure } from 'utilities/actions'
 
 import { LIST_POSITION_1 } from 'test/fixtures'
 
+vi.mock('state/fplTeamList/actions', async () => ({
+  ...(await vi.importActual('state/fplTeamList/actions')),
+  fetchListPositions: vi.fn()
+}))
+
 const fplTeamListId = '1'
 // LIST_POSITION_1 has no fplTeamListId of its own - the saga reads it off
 // action.inListPosition, which is undefined for this fixture
@@ -239,6 +244,9 @@ describe('Inter team trade groups sagas', () => {
   })
 
   test('approveInterTeamTradeGroupSuccess', () => {
+    const fetchListPositionsThunk = vi.fn()
+    vi.mocked(fplTeamListActions.fetchListPositions).mockReturnValue(fetchListPositionsThunk)
+
     expectSaga(sagas.approveInterTeamTradeGroupSuccess)
       .withState({
         fplTeamList: {
@@ -246,12 +254,10 @@ describe('Inter team trade groups sagas', () => {
         }
       })
       .put({ type: fplTeamListActions.SET_OUT_LIST_POSITION, outListPosition: undefined })
-      .put({
-        type: fplTeamListActions.API_FPL_TEAM_LIST_LIST_POSITIONS_INDEX,
-        fplTeamListId,
-        interTeamTradeGroup: undefined
-      })
+      .put.like({ action: fetchListPositionsThunk })
       .dispatch({ type: success(actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUPS_APPROVE) })
       .run()
+
+    expect(fplTeamListActions.fetchListPositions).toHaveBeenCalledWith(fplTeamListId)
   })
 })
