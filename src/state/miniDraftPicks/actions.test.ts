@@ -274,7 +274,7 @@ describe('Mini draft picks actions', () => {
 
       const query = { filter: { ...filter, leagueId: id, positionId }, sort, page: { ...page, offset: page.offset } }
       expect(historyReplaceSpy)
-        .toHaveBeenCalledWith(`${LEAGUES_URL}/${id}/miniDraft/tradeableListPositions?$${qs.stringify(query)}`)
+        .toHaveBeenCalledWith(`${LEAGUES_URL}/${id}/miniDraft/tradeableListPositions?${qs.stringify(query)}`)
     })
   })
 })

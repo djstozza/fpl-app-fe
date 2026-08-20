@@ -199,5 +199,5 @@ export const updateTradeablePlayersPage = (offset: string) => (dispatch, getStat
     page: { ...page, offset }
   }
 
-  history.replace(`${LEAGUES_URL}/${leagueId}/miniDraft/tradeableListPositions?$${qs.stringify(query)}`)
+  history.replace(`${LEAGUES_URL}/${leagueId}/miniDraft/tradeableListPositions?${qs.stringify(query)}`)
 }
