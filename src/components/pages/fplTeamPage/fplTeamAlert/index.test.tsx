@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, act } from '@testing-library/react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 import FplTeamAlert from '.'
 import { MockedRouter, blank__ } from 'test/helpers'
@@ -38,7 +38,7 @@ describe('FplTeamAlert', () => {
   const alert = () => screen.getByRole('alert')
   const buttonLinks = () => screen.getAllByRole('link')
 
-  const deadline = moment().add(1, 'day').add(5, 'hours').add(10, 'minutes').add(37, 'seconds').toDate()
+  const deadline = dayjs().add(1, 'day').add(5, 'hours').add(10, 'minutes').add(37, 'seconds').toDate()
 
   it('renders the new trade button', () => {
     customRender({ deadline })
@@ -137,8 +137,8 @@ describe('FplTeamAlert', () => {
   })
 
   it('calls setDeadline with deadlineTimeAsTime if the waiverDeadline has passed', async () => {
-    const waiverDeadline = moment().add(1, 'second').toDate()
-    const deadlineTimeAsTime = moment().add(1, 'day').toDate()
+    const waiverDeadline = dayjs().add(1, 'second').toDate()
+    const deadlineTimeAsTime = dayjs().add(1, 'day').toDate()
 
     const setIsWaiver = vi.fn()
     const setDeadline = vi.fn()
@@ -156,7 +156,7 @@ describe('FplTeamAlert', () => {
   })
 
   it('calls setDeadline with undefined if deadlineTimeAsTime time has passed', async () => {
-    const deadlineTimeAsTime = moment().add(1, 'second').toDate()
+    const deadlineTimeAsTime = dayjs().add(1, 'second').toDate()
 
     const setIsWaiver = vi.fn()
     const setDeadline = vi.fn()
@@ -186,7 +186,7 @@ describe('FplTeamAlert', () => {
   })
 
   it('only shows days in the countdown if there are no hours, minutes or seconds', () => {
-    customRender({ deadline: moment().add(2, 'days').toDate() })
+    customRender({ deadline: dayjs().add(2, 'days').toDate() })
 
     expect(alert()).toHaveTextContent(
       `${FPL_TEAM_LIST_1.round.name} trade deadline ends in 2 days`
@@ -194,7 +194,7 @@ describe('FplTeamAlert', () => {
   })
 
   it('only shows hours in the countdown if there are no days, minutes or seconds', () => {
-    customRender({ deadline: moment().add(2, 'hours').toDate() })
+    customRender({ deadline: dayjs().add(2, 'hours').toDate() })
 
     expect(alert()).toHaveTextContent(
       `${FPL_TEAM_LIST_1.round.name} trade deadline ends in 2 hours`
@@ -202,7 +202,7 @@ describe('FplTeamAlert', () => {
   })
 
   it('only shows minutes in the countdown if there are no days, hours or seconds', () => {
-    customRender({ deadline: moment().add(2, 'minutes').toDate() })
+    customRender({ deadline: dayjs().add(2, 'minutes').toDate() })
 
     expect(alert()).toHaveTextContent(
       `${FPL_TEAM_LIST_1.round.name} trade deadline ends in 2 minutes`

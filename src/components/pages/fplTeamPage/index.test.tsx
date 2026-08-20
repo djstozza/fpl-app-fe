@@ -1,7 +1,7 @@
 import type { Mocked } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import * as rrd from 'react-router-dom'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 import ConnectedFplTeamPage, { FplTeamPage, TABS } from '.'
 import { initialState as fplTeamListInitialState } from 'state/fplTeamList/reducer'
@@ -229,8 +229,8 @@ describe('FplTeamPage', () => {
     
     describe('deadlineTime', () => {
       it('gets set as the waiverDeadline if it has not passed', () => {
-        const waiverDeadline = moment().add(1, 'day').toDate()
-        const deadlineTime = moment().add(3, 'days').toDate()
+        const waiverDeadline = dayjs().add(1, 'day').toDate()
+        const deadlineTime = dayjs().add(3, 'days').toDate()
 
         const fplTeamLists = [
           {
@@ -258,8 +258,8 @@ describe('FplTeamPage', () => {
       })
 
       it('gets set as the deadlineTime it has not passed but the waiverDeadline has', () => {
-        const waiverDeadline = moment().subtract(2, 'days').toDate()
-        const deadlineTime = moment().add(1, 'day').toDate()
+        const waiverDeadline = dayjs().subtract(2, 'days').toDate()
+        const deadlineTime = dayjs().add(1, 'day').toDate()
 
         const fplTeamLists = [
           {
@@ -286,8 +286,8 @@ describe('FplTeamPage', () => {
       })
 
       it('does not get set if both the waiverDeadline and the deadlineTime have passed', () => {
-        const waiverDeadline = moment().subtract(2, 'days').toDate()
-        const deadlineTime = moment().subtract(1, 'day').toDate()
+        const waiverDeadline = dayjs().subtract(2, 'days').toDate()
+        const deadlineTime = dayjs().subtract(1, 'day').toDate()
 
         const fplTeamLists = [
           {

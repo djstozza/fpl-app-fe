@@ -3,7 +3,7 @@ import { within, render, screen, act } from '@testing-library/react'
 import WS from 'vitest-websocket-mock'
 import * as rrd from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 import ConnectedMiniDraftPage, { MiniDraftPage, TABS } from '.'
 
@@ -163,7 +163,7 @@ describe('MiniDraftPage', () => {
     })
 
     it('sets the deadline time as the waiverDeadline if waiverDeadline < the current time', () => {
-      const waiverDeadline = moment().add(2, 'days').toDate()
+      const waiverDeadline = dayjs().add(2, 'days').toDate()
 
       const round = {
         ...ROUND_1,
@@ -175,7 +175,7 @@ describe('MiniDraftPage', () => {
     })
 
     it('sets the deadline time as undefined if waiverDeadline > the current time', () => {
-      const waiverDeadline = moment().subtract(2, 'days').toDate()
+      const waiverDeadline = dayjs().subtract(2, 'days').toDate()
 
       const round = {
         ...ROUND_1,

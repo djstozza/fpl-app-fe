@@ -1,7 +1,7 @@
 import { within, render, screen, fireEvent, act } from '@testing-library/react'
 import WS from 'vitest-websocket-mock'
 import { SnackbarProvider } from 'notistack'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 import FplTeamListChart from '.'
 import { RouteWithOutletContext, blank__ } from 'test/helpers'
@@ -192,7 +192,7 @@ describe('FplTeamListChart', () => {
     const scrollIntoViewMock = vi.fn()
     window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
 
-    const deadlineTime = moment().add(2, 'days').toDate()
+    const deadlineTime = dayjs().add(2, 'days').toDate()
     const fplTeamList = {
       ...FPL_TEAM_LISTS[0],
       round: {
@@ -240,7 +240,7 @@ describe('FplTeamListChart', () => {
   })
 
   it('unselects the selected list position if clicked twice', () => {
-    const deadlineTime = moment().add(2, 'days').toDate()
+    const deadlineTime = dayjs().add(2, 'days').toDate()
     const fplTeamList = {
       ...FPL_TEAM_LISTS[0],
       round: {
@@ -260,7 +260,7 @@ describe('FplTeamListChart', () => {
   })
 
   it('does not select a list position if the deadline time has passed', () => {
-    const deadlineTime = moment().subtract(2, 'days').toDate()
+    const deadlineTime = dayjs().subtract(2, 'days').toDate()
     const fplTeamList = {
       ...FPL_TEAM_LISTS[0],
       round: {

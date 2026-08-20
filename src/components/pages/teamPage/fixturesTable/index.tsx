@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useOutletContext } from 'react-router-dom'
 import { Box } from '@mui/material'
 
@@ -40,7 +40,7 @@ const FIXTURES_TABLE_CELLS = [
     toolTipLabel: 'Kickoff Time',
     customRender: ({ kickoffTime }: TeamFixture) => (
       <Box sx={noWrapSx}>
-        {moment(kickoffTime).format('DD/MM/YY HH:mm')}
+        {dayjs(kickoffTime).format('DD/MM/YY HH:mm')}
       </Box>
     ),
     sortParam: 'kickoffTime'

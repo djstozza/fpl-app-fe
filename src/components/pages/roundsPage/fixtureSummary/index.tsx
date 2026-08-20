@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
   AccordionSummary,
   Typography,
@@ -90,7 +90,7 @@ const FixtureSummary = (props: Props) => {
         {teamDetailsGrid(homeTeamId, homeTeamName)}
         <Grid size={{ xs: 4, md: 4, lg: 4 }}>
           <SummaryInfo inProgress={inProgress}>
-            {moment(kickoffTime).format('HH:mm')}
+            {dayjs(kickoffTime).format('HH:mm')}
           </SummaryInfo>
           {
             (homeTeamScore !== null && awayTeamScore !== null) &&

@@ -5,7 +5,7 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
 import FlightIcon from '@mui/icons-material/Flight'
 import HelpIcon from '@mui/icons-material/Help'
 import GavelIcon from '@mui/icons-material/Gavel'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 import { colors } from 'utilities/colors'
 
@@ -30,7 +30,7 @@ const StatusIconMapper = ({ status, news, newsAdded, chance = 0 }: Props) => {
     'i': <LocalHospitalIcon sx={unavailableSx} />
   }
 
-  const title = news ? (news + (newsAdded ? `. News added: ${moment(newsAdded).format('DD/MM/YY HH:mm')}` : '')) : ''
+  const title = news ? (news + (newsAdded ? `. News added: ${dayjs(newsAdded).format('DD/MM/YY HH:mm')}` : '')) : ''
 
   return (
     <Tooltip title={title}>

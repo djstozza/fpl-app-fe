@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { groupBy } from 'lodash'
+
+dayjs.extend(advancedFormat)
 import {
   Accordion,
   Typography
@@ -41,7 +44,7 @@ const RoundDetails = (props: Props) => {
   const { name, fixtures } = round
 
   const groupedFixtures: GroupedFixtures =
-    groupBy(fixtures, ({ kickoffTime }) => moment(kickoffTime).format('Do MMMM YYYY'))
+    groupBy(fixtures, ({ kickoffTime }) => dayjs(kickoffTime).format('Do MMMM YYYY'))
 
   return (
     <div data-testid='RoundDetails'>
