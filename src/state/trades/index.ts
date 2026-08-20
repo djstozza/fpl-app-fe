@@ -2,11 +2,9 @@ import reducer from './reducer'
 import type { State } from './reducer'
 
 import * as tradesActions from './actions'
-import tradesSagas from './sagas'
 
 export {
-  tradesActions,
-  tradesSagas
+  tradesActions
 }
 
 export type TradesState = State
