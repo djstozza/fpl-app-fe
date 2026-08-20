@@ -39,6 +39,9 @@ const crestSx = (theme) => ({
 })
 
 const TeamLink = styled(Link)({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   textDecoration: 'none',
   color: colors.linkBlue
 })
@@ -86,7 +89,7 @@ const FixtureSummary = (props: Props) => {
       sx={[summarySx, !started && disabledSx]}
       expandIcon={stats.length > 0 ? <ExpandMoreIcon /> : ''}
     >
-      <Grid container spacing={1} sx={{ alignItems: 'center' }}>
+      <Grid container spacing={1} sx={{ alignItems: 'center', width: '100%', maxWidth: 500, mx: 'auto' }}>
         {teamDetailsGrid(homeTeamId, homeTeamName)}
         <Grid size={{ xs: 4, md: 4, lg: 4 }}>
           <SummaryInfo inProgress={inProgress}>

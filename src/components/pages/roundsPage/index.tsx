@@ -82,6 +82,7 @@ export const RoundsPage = (props: Props) => {
         collectionId={selectedRounId}
         labelRenderer={labelRenderer}
         url={ROUNDS_URL}
+        sticky
       />
       <RoundDetails
         roundId={selectedRounId}

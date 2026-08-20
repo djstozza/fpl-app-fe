@@ -1,4 +1,4 @@
-import { AppBar, Tabs, Tab, Box } from '@mui/material'
+import { AppBar, Tabs, Tab } from '@mui/material'
 import history from 'state/history'
 
 import type { RoundSummary, TeamSummary, FplTeamList } from 'types'
@@ -8,7 +8,8 @@ type Props = {
   collectionId?: string,
   labelRenderer: Function,
   url: string,
-  tab?: string
+  tab?: string,
+  sticky?: boolean
 }
 
 const scrollProps = (index: number) => {
@@ -18,43 +19,46 @@ const scrollProps = (index: number) => {
   };
 }
 
+const stickyAppBarSx = (theme) => ({
+  top: theme.spacing(7),
+  [theme.breakpoints.up('sm')]: {
+    top: theme.spacing(8)
+  }
+})
+
 const TabPanel = (props: Props) => {
-  const { collection, collectionId, labelRenderer, url, tab } = props
+  const { collection, collectionId, labelRenderer, url, tab, sticky } = props
 
   const index = collection.findIndex(({ id }) => id === collectionId)
 
   const handleChange = (newId) => history.push(`${url}/${newId}/${tab ? tab : ''}`)
 
   return (
-    <Box
-      sx={(theme) => ({
-        flexGrow: 1,
-        width: '100%',
-        backgroundColor: theme.palette.background.paper
-      })}
+    <AppBar
+      position={sticky ? 'sticky' : 'static'}
+      color='inherit'
+      sx={sticky ? stickyAppBarSx : undefined}
     >
-      <AppBar position='static' color='inherit'>
-        <Tabs
-          value={index}
-          indicatorColor='primary'
-          textColor='primary'
-          variant='scrollable'
-          scrollButtons='auto'
-        >
-          {
-            collection.map((item, key) => (
-              <Tab
-                key={item['id']}
-                label={labelRenderer(item)}
-                onClick={() => handleChange(item['id'])}
-                {...scrollProps(key)}
-                wrapped
-              />
-            ))
-          }
-        </Tabs>
-      </AppBar>
-    </Box>
+      <Tabs
+        value={index}
+        indicatorColor='primary'
+        textColor='primary'
+        variant='scrollable'
+        scrollButtons='auto'
+      >
+        {
+          collection.map((item, key) => (
+            <Tab
+              key={item['id']}
+              label={labelRenderer(item)}
+              onClick={() => handleChange(item['id'])}
+              {...scrollProps(key)}
+              wrapped
+            />
+          ))
+        }
+      </Tabs>
+    </AppBar>
   )
 }
 
