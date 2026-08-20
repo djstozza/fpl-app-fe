@@ -114,7 +114,7 @@ describe('EditLeagueForm', () => {
     customRender({ league: { ...LIVE_LEAGUE, isOwner: false } })
     expect(Navigate).toHaveBeenCalledWith(
       { to: `${LEAGUES_URL}/${LIVE_LEAGUE.id}/details` },
-      {}
+      undefined
     )
   })
 })

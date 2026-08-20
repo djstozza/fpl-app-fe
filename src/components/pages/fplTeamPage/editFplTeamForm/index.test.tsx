@@ -92,7 +92,7 @@ describe('EditFplTeamForm', () => {
     customRender({ fplTeam: { ...FPL_TEAM_1, isOwner: false } })
     expect(Navigate).toHaveBeenCalledWith(
       { to: `${FPL_TEAMS_URL}/${FPL_TEAM_1.id}/details` },
-      {}
+      undefined
     )
   })
 })

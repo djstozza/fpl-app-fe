@@ -49,7 +49,7 @@ describe('HistoryTable', () => {
 
     expect(Navigate).toHaveBeenCalledWith(
       { to: `${PLAYERS_URL}/${playerId}` },
-      {}
+      undefined
     )
   })
 
