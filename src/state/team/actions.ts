@@ -1,3 +1,12 @@
+import qs from 'qs'
+
+import { API_URL, TEAMS_URL } from 'utilities/constants'
+import { success, failure } from 'utilities/actions'
+import { apiRequest } from 'state/request/actions'
+import { fetchPlayers } from 'state/players/actions'
+import history from 'state/history'
+import { stringify } from 'utilities/helpers'
+
 export const API_TEAMS_SHOW = 'API_TEAMS_SHOW'
 export const FETCH_TEAM_PLAYERS = 'FETCH_TEAM_PLAYERS'
 export const API_TEAMS_FIXTURES_INDEX = 'API_TEAMS_FIXTURES_INDEX'
@@ -33,17 +42,49 @@ type UpdateProps = {
   }
 }
 
-export const fetchTeam = (teamId: string, tab: string, sort: Object) =>
-  ({ type: API_TEAMS_SHOW, teamId, tab, sort })
+export const fetchTeam = (teamId: string, tab: string, sort: any) => (dispatch, _getState) => {
+  dispatch({ type: API_TEAMS_SHOW, teamId, tab, sort })
 
-export const fetchTeamFixtures = ({ id: teamId, tab, sort }: Props) =>
-  ({ type: API_TEAMS_FIXTURES_INDEX, teamId, tab, sort })
+  return dispatch(apiRequest({
+    needsAuth: false,
+    method: 'GET',
+    url: `${API_URL}${TEAMS_URL}/${teamId}`,
+    successAction: success(API_TEAMS_SHOW),
+    failureAction: failure(API_TEAMS_SHOW)
+  }))
+}
 
-export const fetchTeamPlayers = ({ id: teamId, sort }: FetchTeamPlayersProps) =>
-  ({ type: FETCH_TEAM_PLAYERS, teamId, sort })
+export const fetchTeamFixtures = ({ id: teamId, tab, sort }: Props) => (dispatch, _getState) => {
+  dispatch({ type: API_TEAMS_FIXTURES_INDEX, teamId, tab, sort })
 
-export const updateTeamPlayersSort = ({ tab, sort }: UpdateProps) =>
-    ({ type: UPDATE_TEAM_PLAYERS_SORT, tab, sort })
+  const url = `${API_URL}${TEAMS_URL}/${teamId}/fixtures?${stringify({ sort: sort.fixtures })}`
 
-export const updateTeamFixturesSort = ({ tab, sort }: UpdateProps) =>
-    ({ type: UPDATE_TEAM_FIXTURES_SORT, tab, sort })
+  return dispatch(apiRequest({
+    needsAuth: false,
+    method: 'GET',
+    url,
+    successAction: success(API_TEAMS_FIXTURES_INDEX),
+    failureAction: failure(API_TEAMS_FIXTURES_INDEX)
+  }))
+}
+
+export const fetchTeamPlayers = ({ id: teamId, sort }: FetchTeamPlayersProps) => (dispatch, _getState) => {
+  dispatch({ type: FETCH_TEAM_PLAYERS, teamId, sort })
+  dispatch(fetchPlayers({ filter: { teamId }, sort: sort.players }))
+}
+
+export const updateTeamPlayersSort = ({ tab, sort }: UpdateProps) => (dispatch, getState) => {
+  dispatch({ type: UPDATE_TEAM_PLAYERS_SORT, tab, sort })
+
+  const { data: { id: teamId } } = getState().team
+
+  history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify({ sort: { players: sort } })}`)
+}
+
+export const updateTeamFixturesSort = ({ tab, sort }: UpdateProps) => (dispatch, getState) => {
+  dispatch({ type: UPDATE_TEAM_FIXTURES_SORT, tab, sort })
+
+  const { data: { id: teamId } } = getState().team
+
+  history.push(`${TEAMS_URL}/${teamId}/${tab}?${qs.stringify({ sort: { fixtures: sort } })}`)
+}
