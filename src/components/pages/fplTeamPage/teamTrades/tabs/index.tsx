@@ -116,7 +116,11 @@ const TeamTradeTabs = () => {
 
   const handleConfirm = () => {
     setDialogOpen(false)
-    trade ? removeTrade(trade.id) : context[`${str.toLowerCase()}InterTeamTradeGroup`](interTeamTradeGroupId)
+    if (trade) {
+      removeTrade(trade.id)
+    } else {
+      context[`${str.toLowerCase()}InterTeamTradeGroup`](interTeamTradeGroupId)
+    }
     setStr('')
     setInterTeamTradeGroup(undefined)
     setTrade(undefined)

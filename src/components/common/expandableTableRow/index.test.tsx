@@ -22,10 +22,11 @@ describe('ExpandableTableRow', () => {
     <table>
       <tbody>
         <ExpandableTableRow
-          children={children}
           expandComponent={expandComponent}
           {...props}
-        />
+        >
+          {children}
+        </ExpandableTableRow>
       </tbody>
     </table>
   )

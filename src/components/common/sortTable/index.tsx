@@ -143,12 +143,12 @@ const SortTable = (props: Props) => {
       [name]: newDirection
     }
 
-    handleSortChange && handleSortChange(newSort)
+    handleSortChange?.(newSort)
   }
 
   const changePage = (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     event?.preventDefault()
-    handleChangePage && handleChangePage(newPage * limit)
+    handleChangePage?.(newPage * limit)
   }
 
   return (

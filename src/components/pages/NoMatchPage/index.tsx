@@ -47,7 +47,7 @@ const NotMatchPage = () => {
             Page Not Found
           </Typography>
           <Typography variant='body1' className={classes.textField}>
-            Oops! Looks like you've wandered into uncharted territory.
+            Oops! Looks like you&apos;ve wandered into uncharted territory.
           </Typography>
           <ButtonLink
             to='/'

@@ -47,7 +47,7 @@ export const ErrorDialog = (props: Props) => {
   const handleClose = (event: Event, reason: string) => {
     if (reason === 'backdropClick') return event.stopPropagation()
     clearRequestErrors()
-    onClose && onClose()
+    onClose?.()
   }
 
   const actions = () => {

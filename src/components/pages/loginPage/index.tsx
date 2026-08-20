@@ -155,7 +155,7 @@ export const LoginPage = (props: Props) => {
           <div className={classes.actions}>
             <div>
               <Typography>
-                Don't have an account?
+                Don&apos;t have an account?
               </Typography>
               <Typography>
                 <Link to={SIGN_UP_URL}>Sign up</Link> now!

@@ -10,10 +10,11 @@ describe('User Login Form', () => {
     <MockedRouter>
       <ButtonLink
         to='foo/1'
-        children={name}
         color='inherit'
         {...props}
-      />
+      >
+        {name}
+      </ButtonLink>
     </MockedRouter>
   )
 

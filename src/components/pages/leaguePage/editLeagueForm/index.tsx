@@ -22,12 +22,12 @@ const EditLeagueForm = () => {
 
   const returnUrl = `${LEAGUES_URL}/${id}/details`
 
-  if (!isOwner) return <Navigate to={returnUrl} />
-
   useEffect(() => {
     setTab(tab)
     setAction(action)
   }, [])
+
+  if (!isOwner) return <Navigate to={returnUrl} />
 
   return (
     <div data-testid='EditLeagueForm'>

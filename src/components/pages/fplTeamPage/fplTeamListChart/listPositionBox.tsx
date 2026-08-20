@@ -130,12 +130,19 @@ const ListPositionBox = (props: Props) => {
     if (!canSubstitute) return
     if (Boolean(selectedListPositionId) && Boolean(!isSelected) && Boolean(!validSubstitution)) return
 
-    validSubstitution
-      ? handleSubstitution()
-      : setSelectedListPositionId(selectedListPositionId ? null : id)
+    if (validSubstitution) {
+      handleSubstitution()
+    } else {
+      setSelectedListPositionId(selectedListPositionId ? null : id)
+    }
 
-    selectedListPositionId ? clearValidSubstitutions() : fetchValidSubstitutions(id)
-    !selectedListPositionId && playerRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (selectedListPositionId) {
+      clearValidSubstitutions()
+    } else {
+      fetchValidSubstitutions(id)
+    }
+
+    if (!selectedListPositionId) playerRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (

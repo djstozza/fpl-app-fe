@@ -62,7 +62,7 @@ const UserCanPickAlert = (props: Props) => {
   return (
     <Fragment>
       <Alert className={classes.alertContainer} variant='filled' severity='info'>
-        It's your turn to
+        It&apos;s your turn to
         <Link className={classes.draftPlayerLink} to={`${LEAGUES_URL}/${leagueId}/miniDraft/tradeableListPositions`}>
           draft a player
         </Link> or

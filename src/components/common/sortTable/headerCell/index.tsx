@@ -70,7 +70,7 @@ const HeaderCell = (props: Props) => {
     }
 
     if (!selection.length) delete newFilter[filterName]
-    handleFilterChange && handleFilterChange(newFilter)
+    handleFilterChange?.(newFilter)
     setFilterAnchorEl(null)
   }
 
