@@ -47,6 +47,7 @@ describe('FplTeamListChart', () => {
       processSubstitution: blank__,
       clearValidSubstitutions: blank__,
       fetchFplTeamList: blank__,
+      fetchListPositions: blank__,
       setTab: blank__,
       setAction: blank__,
       ...context
@@ -324,22 +325,26 @@ describe('FplTeamListChart', () => {
 
     afterEach(() => server.close())
 
-    it('calls fetchFplTeamList', async () => {
+    it('calls fetchFplTeamList and fetchListPositions', async () => {
       const fetchFplTeamList = vi.fn()
-      customRender({ fetchFplTeamList })
-  
+      const fetchListPositions = vi.fn()
+      customRender({ fetchFplTeamList, fetchListPositions })
+
       act(() => global.receivedHandler({ updatedAt: 1, message }))
 
       expect(fetchFplTeamList).toHaveBeenCalledWith(FPL_TEAM_LISTS[0].id)
+      expect(fetchListPositions).toHaveBeenCalledWith(FPL_TEAM_LISTS[0].id)
     })
 
-    it('does not call fetchFplTeamList if updatedAt < fplTeamListUpdatedAt', () => {
+    it('does not call fetchFplTeamList or fetchListPositions if updatedAt < fplTeamListUpdatedAt', () => {
       const fetchFplTeamList = vi.fn()
-      customRender({ fetchFplTeamList })
-  
+      const fetchListPositions = vi.fn()
+      customRender({ fetchFplTeamList, fetchListPositions })
+
       act(() => global.receivedHandler({ updatedAt: -1, message }))
 
       expect(fetchFplTeamList).not.toHaveBeenCalled()
+      expect(fetchListPositions).not.toHaveBeenCalled()
     })
   })
 })

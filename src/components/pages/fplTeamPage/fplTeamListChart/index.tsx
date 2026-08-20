@@ -250,6 +250,7 @@ const FplTeamListChart = () => {
     clearValidSubstitutions,
     selectedFplTeamListId,
     fetchFplTeamList,
+    fetchListPositions,
     setTab,
     setAction
   } = useOutletContext<FplTeamContext>()
@@ -270,8 +271,9 @@ const FplTeamListChart = () => {
       if (updatedAt <= fplTeamListUpdatedAt) return
 
       fetchFplTeamList(selectedFplTeamListId)
+      fetchListPositions(selectedFplTeamListId)
       setFplTeamListUpdatedAt(updatedAt)
-    }, [selectedFplTeamListId, fetchFplTeamList, setFplTeamListUpdatedAt, fplTeamListUpdatedAt]
+    }, [selectedFplTeamListId, fetchFplTeamList, fetchListPositions, setFplTeamListUpdatedAt, fplTeamListUpdatedAt]
   )
 
   useEffect(
