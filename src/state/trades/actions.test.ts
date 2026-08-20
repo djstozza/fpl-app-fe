@@ -73,7 +73,7 @@ describe('Trades actions', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
 
-      actions.fetchTrades(fplTeamListId)(dispatch, getState)
+      actions.fetchTrades(fplTeamListId)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_FPL_TEAM_LIST_TRADES_INDEX, fplTeamListId })
       expect(apiRequest).toHaveBeenCalledWith({

@@ -14,35 +14,22 @@ export const API_TEAM_PLAYERS_INDEX = 'API_TEAMS_PLAYERS_INDEX'
 export const UPDATE_TEAM_PLAYERS_SORT = 'UPDATE_TEAM_PLAYERS_SORT'
 export const UPDATE_TEAM_FIXTURES_SORT = 'UPDATE_TEAM_FIXTURES_SORT'
 
+type SortValue = { [key: string]: string }
+
+type TeamSort = { fixtures: SortValue, players: SortValue }
+
 type Props = {
   id: string,
   tab: string,
-  sort: {
-    [key: string]:  {
-      [key: string]: string
-    }
-  }
-}
-
-type FetchTeamPlayersProps = {
-  id: string,
-  sort: {
-    [key: string]:  {
-      [key: string]: string
-    }
-  }
+  sort: TeamSort
 }
 
 type UpdateProps = {
   tab: string,
-  sort: {
-
-      [key: string]: string
-
-  }
+  sort: SortValue
 }
 
-export const fetchTeam = (teamId: string, tab: string, sort: any) => (dispatch, _getState) => {
+export const fetchTeam = (teamId: string, tab: string, sort: TeamSort) => (dispatch) => {
   dispatch({ type: API_TEAMS_SHOW, teamId, tab, sort })
 
   return dispatch(apiRequest({
@@ -54,7 +41,7 @@ export const fetchTeam = (teamId: string, tab: string, sort: any) => (dispatch, 
   }))
 }
 
-export const fetchTeamFixtures = ({ id: teamId, tab, sort }: Props) => (dispatch, _getState) => {
+export const fetchTeamFixtures = ({ id: teamId, tab, sort }: Props) => (dispatch) => {
   dispatch({ type: API_TEAMS_FIXTURES_INDEX, teamId, tab, sort })
 
   const url = `${API_URL}${TEAMS_URL}/${teamId}/fixtures?${stringify({ sort: sort.fixtures })}`
@@ -68,7 +55,7 @@ export const fetchTeamFixtures = ({ id: teamId, tab, sort }: Props) => (dispatch
   }))
 }
 
-export const fetchTeamPlayers = ({ id: teamId, sort }: FetchTeamPlayersProps) => (dispatch, _getState) => {
+export const fetchTeamPlayers = ({ id: teamId, sort }: Pick<Props, 'id' | 'sort'>) => (dispatch) => {
   dispatch({ type: FETCH_TEAM_PLAYERS, teamId, sort })
   dispatch(fetchPlayers({ filter: { teamId }, sort: sort.players }))
 }

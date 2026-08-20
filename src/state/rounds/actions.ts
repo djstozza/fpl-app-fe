@@ -4,7 +4,7 @@ import { apiRequest } from 'state/request/actions'
 
 export const API_ROUNDS_INDEX = 'API_ROUNDS_INDEX'
 
-export const fetchRounds = () => (dispatch, _getState) => {
+export const fetchRounds = () => (dispatch) => {
   dispatch({ type: API_ROUNDS_INDEX })
 
   return dispatch(apiRequest({

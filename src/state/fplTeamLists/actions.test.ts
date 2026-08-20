@@ -13,10 +13,9 @@ describe('Fpl team lists actions', () => {
   describe('fetchFplTeamLists', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
       const fplTeamId = '1'
 
-      actions.fetchFplTeamLists(fplTeamId)(dispatch, getState)
+      actions.fetchFplTeamLists(fplTeamId)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_FPL_TEAM_LISTS_INDEX, fplTeamId })
       expect(apiRequest).toHaveBeenCalledWith({

@@ -19,9 +19,8 @@ describe('Fpl teams actions', () => {
   describe('fetchFplTeams', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchFplTeams()(dispatch, getState)
+      actions.fetchFplTeams()(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_FPL_TEAMS_INDEX })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -37,11 +36,10 @@ describe('Fpl teams actions', () => {
   describe('updateFplTeamsSort', () => {
     it('dispatches the bare action and pushes the new sort into the URL', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
       const historyPushSpy = vi.spyOn(history, 'push')
       const sort = { name: 'desc' }
 
-      actions.updateFplTeamsSort(sort)(dispatch, getState)
+      actions.updateFplTeamsSort(sort)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.UPDATE_FPL_TEAMS_SORT, sort })
       expect(historyPushSpy).toHaveBeenCalledWith(`${PROFILE_URL}${FPL_TEAMS_URL}?${stringify({ sort })}`)

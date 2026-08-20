@@ -12,11 +12,10 @@ describe('Inter team trade group actions', () => {
   describe('fetchInterTeamTradeGroup', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
       const fplTeamListId = '1'
       const interTeamTradeGroupId = '4'
 
-      actions.fetchInterTeamTradeGroup(fplTeamListId, interTeamTradeGroupId)(dispatch, getState)
+      actions.fetchInterTeamTradeGroup(fplTeamListId, interTeamTradeGroupId)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({
         type: actions.API_FPL_TEAM_LIST_INTER_TEAM_TRADE_GROUP, fplTeamListId, interTeamTradeGroupId

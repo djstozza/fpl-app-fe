@@ -33,7 +33,7 @@ describe('apiRequest', () => {
     expect(dispatch).toHaveBeenCalledWith({
       type: actions.AUTHED_REQUEST, method, url, body, successAction, failureAction
     })
-    expect(dispatch).toHaveBeenCalledWith({ type: successAction, ...result, redirect: undefined, notification: undefined })
+    expect(dispatch).toHaveBeenCalledWith({ type: successAction, ...result })
     expect(dispatch).toHaveBeenCalledWith({ type: actions.REQUEST_DONE })
 
     expect(fetchStub).toHaveBeenCalledWith(
@@ -93,7 +93,7 @@ describe('apiRequest', () => {
     expect(dispatch).toHaveBeenCalledWith({
       type: actions.UNAUTHED_REQUEST, method, url, body, successAction, failureAction
     })
-    expect(dispatch).toHaveBeenCalledWith({ type: successAction, ...result, redirect: undefined, notification: undefined })
+    expect(dispatch).toHaveBeenCalledWith({ type: successAction, ...result })
 
     expect(fetchStub).toHaveBeenCalledWith(
       url,

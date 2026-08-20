@@ -24,7 +24,7 @@ type LeagueProps = {
   fplTeamName: string
 }
 
-export const fetchLeagues = () => (dispatch, _getState) => {
+export const fetchLeagues = () => (dispatch) => {
   dispatch({ type: API_LEAGUES_INDEX })
 
   return dispatch(apiRequest({
@@ -36,7 +36,7 @@ export const fetchLeagues = () => (dispatch, _getState) => {
   }))
 }
 
-export const createLeague = ({ league }:{ league: LeagueProps }) => async (dispatch, _getState) => {
+export const createLeague = ({ league }:{ league: LeagueProps }) => async (dispatch) => {
   dispatch({ type: API_LEAGUES_CREATE, league })
 
   const ok = await dispatch(apiRequest({
@@ -51,7 +51,7 @@ export const createLeague = ({ league }:{ league: LeagueProps }) => async (dispa
   if (ok) history.replace(`${PROFILE_URL}${LEAGUES_URL}`)
 }
 
-export const joinLeague = ({ league }:{ league: LeagueProps }) => async (dispatch, _getState) => {
+export const joinLeague = ({ league }:{ league: LeagueProps }) => async (dispatch) => {
   dispatch({ type: API_LEAGUES_JOIN, league })
 
   const ok = await dispatch(apiRequest({
@@ -66,7 +66,7 @@ export const joinLeague = ({ league }:{ league: LeagueProps }) => async (dispatc
   if (ok) history.replace(`${PROFILE_URL}${LEAGUES_URL}`)
 }
 
-export const updateSort = (sort: Object) => (dispatch, _getState) => {
+export const updateSort = (sort: Object) => (dispatch) => {
   dispatch({ type: UPDATE_LEAGUES_SORT, sort })
   history.push(`${PROFILE_URL}${LEAGUES_URL}?${qs.stringify({ sort })}`)
 }

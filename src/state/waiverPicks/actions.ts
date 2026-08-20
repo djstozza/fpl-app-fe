@@ -36,7 +36,7 @@ export const createWaiverPick = (inPlayerId: string) => async (dispatch, getStat
   }
 }
 
-export const fetchWaiverPicks = (fplTeamListId: string) => (dispatch, _getState) => {
+export const fetchWaiverPicks = (fplTeamListId: string) => (dispatch) => {
   dispatch({ type: API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX, fplTeamListId })
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/waiver_picks`
@@ -51,7 +51,7 @@ export const fetchWaiverPicks = (fplTeamListId: string) => (dispatch, _getState)
 }
 
 export const changeWaiverPickOrder = (fplTeamListId: string, waiverPickId: string, newPickNumber: string) =>
-  (dispatch, _getState) => {
+  (dispatch) => {
     dispatch({ type: API_FPL_TEAM_LSIT_WAIVER_PICKS_CHANGE_ORDER, fplTeamListId, waiverPickId, newPickNumber })
 
     const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/waiver_picks/${waiverPickId}/change_order`

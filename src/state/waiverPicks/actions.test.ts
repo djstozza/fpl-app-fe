@@ -64,7 +64,7 @@ describe('Waiver picks actions', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
 
-      actions.fetchWaiverPicks(fplTeamListId)(dispatch, getState)
+      actions.fetchWaiverPicks(fplTeamListId)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_FPL_TEAM_LIST_WAIVER_PICKS_INDEX, fplTeamListId })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -83,7 +83,7 @@ describe('Waiver picks actions', () => {
       const waiverPickId = '3'
       const newPickNumber = '2'
 
-      actions.changeWaiverPickOrder(fplTeamListId, waiverPickId, newPickNumber)(dispatch, getState)
+      actions.changeWaiverPickOrder(fplTeamListId, waiverPickId, newPickNumber)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({
         type: actions.API_FPL_TEAM_LSIT_WAIVER_PICKS_CHANGE_ORDER, fplTeamListId, waiverPickId, newPickNumber

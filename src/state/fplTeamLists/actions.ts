@@ -9,7 +9,7 @@ import { success, failure } from 'utilities/actions'
 
 export const API_FPL_TEAM_LISTS_INDEX = 'API_FPL_TEAM_LISTS_INDEX'
 
-export const fetchFplTeamLists = (fplTeamId: string) => (dispatch, _getState) => {
+export const fetchFplTeamLists = (fplTeamId: string) => (dispatch) => {
   dispatch({ type: API_FPL_TEAM_LISTS_INDEX, fplTeamId })
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}?${stringify({ fplTeamList: { fplTeamId } })}`

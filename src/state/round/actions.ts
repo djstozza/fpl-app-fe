@@ -4,7 +4,7 @@ import { apiRequest } from 'state/request/actions'
 
 export const API_ROUNDS_SHOW = 'API_ROUNDS_SHOW'
 
-export const fetchRound = (roundId: number) => (dispatch, _getState) => {
+export const fetchRound = (roundId: number) => (dispatch) => {
   dispatch({ type: API_ROUNDS_SHOW, roundId })
 
   return dispatch(apiRequest({

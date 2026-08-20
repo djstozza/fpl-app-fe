@@ -12,9 +12,8 @@ describe('Rounds actions', () => {
   describe('fetchRounds', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchRounds()(dispatch, getState)
+      actions.fetchRounds()(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_ROUNDS_INDEX })
       expect(apiRequest).toHaveBeenCalledWith({

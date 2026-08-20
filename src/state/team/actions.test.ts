@@ -33,9 +33,8 @@ describe('Team actions', () => {
   describe('fetchTeam', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchTeam(teamId, tab, sort)(dispatch, getState)
+      actions.fetchTeam(teamId, tab, sort)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_TEAMS_SHOW, teamId, tab, sort })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -51,9 +50,8 @@ describe('Team actions', () => {
   describe('fetchTeamFixtures', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchTeamFixtures({ id: teamId, tab, sort })(dispatch, getState)
+      actions.fetchTeamFixtures({ id: teamId, tab, sort })(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_TEAMS_FIXTURES_INDEX, teamId, tab, sort })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -69,9 +67,8 @@ describe('Team actions', () => {
   describe('fetchTeamPlayers', () => {
     it('dispatches the bare action and the players domain fetch', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchTeamPlayers({ id: teamId, sort })(dispatch, getState)
+      actions.fetchTeamPlayers({ id: teamId, sort })(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.FETCH_TEAM_PLAYERS, teamId, sort })
       expect(fetchPlayers).toHaveBeenCalledWith({ filter: { teamId }, sort: sort.players })

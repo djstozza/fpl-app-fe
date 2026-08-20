@@ -10,7 +10,7 @@ export const API_TEAMS_INDEX = 'API_TEAMS_INDEX'
 export const GET_NEW_SORT = 'GET_NEW_SORT'
 export const UPDATE_TEAMS_SORT = 'UPDATE_TEAMS_SORT'
 
-export const fetchTeams = ({ sort }:{ sort: Object }) => (dispatch, _getState) => {
+export const fetchTeams = ({ sort }:{ sort: Object }) => (dispatch) => {
   dispatch({ type: API_TEAMS_INDEX, sort })
 
   const url = `${API_URL}${TEAMS_URL}?${qs.stringify(decamelizeKeys({ sort }))}`
@@ -24,7 +24,7 @@ export const fetchTeams = ({ sort }:{ sort: Object }) => (dispatch, _getState) =
   }))
 }
 
-export const updateSort = (sort: Object) => (dispatch, _getState) => {
+export const updateSort = (sort: Object) => (dispatch) => {
   dispatch({ type: UPDATE_TEAMS_SORT, sort })
   history.push(`${TEAMS_URL}?${qs.stringify({ sort })}`)
 }

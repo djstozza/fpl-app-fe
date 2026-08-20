@@ -17,9 +17,8 @@ describe('Teams actions', () => {
   describe('fetchTeams', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchTeams({ sort })(dispatch, getState)
+      actions.fetchTeams({ sort })(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_TEAMS_INDEX, sort })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -35,10 +34,9 @@ describe('Teams actions', () => {
   describe('updateSort', () => {
     it('dispatches the bare action and pushes the new sort into the URL', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
       const historyPushSpy = vi.spyOn(history, 'push')
 
-      actions.updateSort(sort)(dispatch, getState)
+      actions.updateSort(sort)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.UPDATE_TEAMS_SORT, sort })
       expect(historyPushSpy).toHaveBeenCalledWith(`${TEAMS_URL}?${qs.stringify({ sort })}`)

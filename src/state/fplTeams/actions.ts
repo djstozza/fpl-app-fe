@@ -13,7 +13,7 @@ import { success, failure } from 'utilities/actions'
 export const API_FPL_TEAMS_INDEX = 'API_FPL_TEAMS_INDEX'
 export const UPDATE_FPL_TEAMS_SORT = 'UPDATE_FPL_TEAMS_SORT'
 
-export const fetchFplTeams = () => (dispatch, _getState) => {
+export const fetchFplTeams = () => (dispatch) => {
   dispatch({ type: API_FPL_TEAMS_INDEX })
 
   return dispatch(apiRequest({
@@ -25,7 +25,7 @@ export const fetchFplTeams = () => (dispatch, _getState) => {
   }))
 }
 
-export const updateFplTeamsSort = (sort: any) => (dispatch, _getState) => {
+export const updateFplTeamsSort = (sort: { [key: string]: string }) => (dispatch) => {
   dispatch({ type: UPDATE_FPL_TEAMS_SORT, sort })
   history.push(`${PROFILE_URL}${FPL_TEAMS_URL}?${stringify({ sort })}`)
 }

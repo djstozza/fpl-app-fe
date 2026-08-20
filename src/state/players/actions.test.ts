@@ -24,9 +24,8 @@ describe('Players actions', () => {
   describe('fetchPlayers', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchPlayers({ sort, filter, page })(dispatch, getState)
+      actions.fetchPlayers({ sort, filter, page })(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_INDEX, sort, filter, page })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -42,9 +41,8 @@ describe('Players actions', () => {
   describe('fetchFacets', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchFacets()(dispatch, getState)
+      actions.fetchFacets()(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_FACETS_INDEX })
       expect(apiRequest).toHaveBeenCalledWith({

@@ -17,7 +17,7 @@ type Props = {
   fplTeam: { name: string }
 }
 
-export const fetchFplTeam = (fplTeamId: string) => (dispatch, _getState) => {
+export const fetchFplTeam = (fplTeamId: string) => (dispatch) => {
   dispatch({ type: API_FPL_TEAMS_SHOW, fplTeamId })
 
   const url = `${API_URL}${API_FPL_TEAMS_PATH}/${fplTeamId}`

@@ -28,9 +28,8 @@ describe('Leagues actions', () => {
   describe('fetchLeagues', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchLeagues()(dispatch, getState)
+      actions.fetchLeagues()(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_LEAGUES_INDEX })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -46,10 +45,9 @@ describe('Leagues actions', () => {
   describe('createLeague', () => {
     it('dispatches the bare action, an apiRequest, and redirects on success', async () => {
       const dispatch = vi.fn().mockResolvedValue(true)
-      const getState = vi.fn()
       const historyReplaceSpy = vi.spyOn(history, 'replace')
 
-      await actions.createLeague({ league })(dispatch, getState)
+      await actions.createLeague({ league })(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_LEAGUES_CREATE, league })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -65,10 +63,9 @@ describe('Leagues actions', () => {
 
     it('does not redirect if the request fails', async () => {
       const dispatch = vi.fn().mockResolvedValue(false)
-      const getState = vi.fn()
       const historyReplaceSpy = vi.spyOn(history, 'replace')
 
-      await actions.createLeague({ league })(dispatch, getState)
+      await actions.createLeague({ league })(dispatch)
 
       expect(historyReplaceSpy).not.toHaveBeenCalled()
     })
@@ -77,10 +74,9 @@ describe('Leagues actions', () => {
   describe('joinLeague', () => {
     it('dispatches the bare action, an apiRequest, and redirects on success', async () => {
       const dispatch = vi.fn().mockResolvedValue(true)
-      const getState = vi.fn()
       const historyReplaceSpy = vi.spyOn(history, 'replace')
 
-      await actions.joinLeague({ league })(dispatch, getState)
+      await actions.joinLeague({ league })(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_LEAGUES_JOIN, league })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -96,10 +92,9 @@ describe('Leagues actions', () => {
 
     it('does not redirect if the request fails', async () => {
       const dispatch = vi.fn().mockResolvedValue(false)
-      const getState = vi.fn()
       const historyReplaceSpy = vi.spyOn(history, 'replace')
 
-      await actions.joinLeague({ league })(dispatch, getState)
+      await actions.joinLeague({ league })(dispatch)
 
       expect(historyReplaceSpy).not.toHaveBeenCalled()
     })
@@ -108,10 +103,9 @@ describe('Leagues actions', () => {
   describe('updateSort', () => {
     it('dispatches the bare action and pushes the new sort into the URL', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
       const historyPushSpy = vi.spyOn(history, 'push')
 
-      actions.updateSort(sort)(dispatch, getState)
+      actions.updateSort(sort)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.UPDATE_LEAGUES_SORT, sort })
       expect(historyPushSpy).toHaveBeenCalledWith(`${PROFILE_URL}${LEAGUES_URL}?${qs.stringify({ sort })}`)

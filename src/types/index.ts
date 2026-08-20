@@ -202,14 +202,16 @@ export type History = {
   goalsConceded: number
 }
 
-export type QueryParam = { [key: string]: string | string[] } | string | string[]
+type QueryValue = string | number | string[]
+
+export type QueryParam = { [key: string]: QueryValue | { [key: string]: QueryValue } } | QueryValue
 
 export type Query = {
   [key: string]: QueryParam
 }
 
 export type Filter = {
-  [key: string]: string[] | {
+  [key: string]: string | string[] | {
     [key: string]: string[]
   }
 }

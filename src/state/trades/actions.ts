@@ -40,7 +40,7 @@ export const createTrade = (inPlayerId: string) => async (dispatch, getState) =>
   }
 }
 
-export const fetchTrades = (fplTeamListId: string) => (dispatch, _getState) => {
+export const fetchTrades = (fplTeamListId: string) => (dispatch) => {
   dispatch({ type: API_FPL_TEAM_LIST_TRADES_INDEX, fplTeamListId })
 
   const url = `${API_URL}${API_FPL_TEAM_LISTS_PATH}/${fplTeamListId}/trades`

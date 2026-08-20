@@ -20,9 +20,7 @@ type ApiRequestParams = {
   url: string,
   body?: Object,
   successAction: string,
-  failureAction: string,
-  redirect?: any,
-  notification?: any
+  failureAction: string
 }
 
 // Replaces the old sendRequest/requestFail saga pair. Dispatches the same
@@ -31,7 +29,7 @@ type ApiRequestParams = {
 // whether the request succeeded, so callers can chain follow-up side effects
 // (history navigation, refetches) the way saga-on-saga-success watchers used to.
 export const apiRequest = (
-  { needsAuth, method, url, body, successAction, failureAction, redirect, notification }: ApiRequestParams
+  { needsAuth, method, url, body, successAction, failureAction }: ApiRequestParams
 ) => async (dispatch, getState): Promise<boolean> => {
   dispatch({ type: needsAuth ? AUTHED_REQUEST : UNAUTHED_REQUEST, method, url, body, successAction, failureAction })
 
@@ -49,7 +47,7 @@ export const apiRequest = (
       return false
     }
 
-    dispatch({ type: successAction, ...camelizeKeys(result), redirect, notification })
+    dispatch({ type: successAction, ...camelizeKeys(result) })
 
     return true
   } catch (e) {

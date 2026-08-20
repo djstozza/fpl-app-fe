@@ -12,12 +12,19 @@ export const API_PLAYERS_HISTORY_PAST_INDEX = 'API_PLAYERS_HISTORY_PAST_INDEX'
 export const UPDATE_PLAYER_HISTORY_SORT = 'UPDATE_PLAYER_HISTORY_SORT'
 export const UPDATE_PLAYER_HISTORY_PAST_SORT = 'UPDATE_PLAYER_HISTORY_PAST_SORT'
 
-type Props = {
+type SortValue = { [key: string]: string }
+
+type FetchHistoryProps = {
   id: string,
-  sort: any
+  sort: { history: SortValue, historyPast: SortValue }
 }
 
-export const fetchPlayer = (playerId: string) => (dispatch, _getState) => {
+type UpdateSortProps = {
+  id: string,
+  sort: SortValue
+}
+
+export const fetchPlayer = (playerId: string) => (dispatch) => {
   dispatch({ type: API_PLAYERS_SHOW, playerId })
 
   return dispatch(apiRequest({
@@ -29,7 +36,7 @@ export const fetchPlayer = (playerId: string) => (dispatch, _getState) => {
   }))
 }
 
-export const fetchPlayerHistory = ({ id: playerId, sort }: Props) => (dispatch, _getState) => {
+export const fetchPlayerHistory = ({ id: playerId, sort }: FetchHistoryProps) => (dispatch) => {
   dispatch({ type: API_PLAYERS_HISTORY_INDEX, playerId, sort })
 
   const url = `${API_URL}${PLAYERS_URL}/${playerId}/history?${stringify({ sort: sort.history })}`
@@ -43,7 +50,7 @@ export const fetchPlayerHistory = ({ id: playerId, sort }: Props) => (dispatch, 
   }))
 }
 
-export const fetchPlayerHistoryPast = ({ id: playerId, sort }: Props) => (dispatch, _getState) => {
+export const fetchPlayerHistoryPast = ({ id: playerId, sort }: FetchHistoryProps) => (dispatch) => {
   dispatch({ type: API_PLAYERS_HISTORY_PAST_INDEX, playerId, sort })
 
   const url = `${API_URL}${PLAYERS_URL}/${playerId}/history_past?${stringify({ sort: sort.historyPast })}`
@@ -57,7 +64,7 @@ export const fetchPlayerHistoryPast = ({ id: playerId, sort }: Props) => (dispat
   }))
 }
 
-export const updatePlayerHistorySort = ({ sort }: Props) => (dispatch, getState) => {
+export const updatePlayerHistorySort = ({ sort }: UpdateSortProps) => (dispatch, getState) => {
   dispatch({ type: UPDATE_PLAYER_HISTORY_SORT, sort })
 
   const { data: { id: playerId } } = getState().player
@@ -65,7 +72,7 @@ export const updatePlayerHistorySort = ({ sort }: Props) => (dispatch, getState)
   history.push(`${PLAYERS_URL}/${playerId}/history?${qs.stringify({ sort: { history: sort } })}`)
 }
 
-export const updatePlayerHistoryPastSort = ({ sort }: Props) => (dispatch, getState) => {
+export const updatePlayerHistoryPastSort = ({ sort }: UpdateSortProps) => (dispatch, getState) => {
   dispatch({ type: UPDATE_PLAYER_HISTORY_PAST_SORT, sort })
 
   const { data: { id: playerId } } = getState().player

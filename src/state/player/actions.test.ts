@@ -25,9 +25,8 @@ describe('Player actions', () => {
   describe('fetchPlayer', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchPlayer(playerId)(dispatch, getState)
+      actions.fetchPlayer(playerId)(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_SHOW, playerId })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -43,9 +42,8 @@ describe('Player actions', () => {
   describe('fetchPlayerHistory', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchPlayerHistory({ id: playerId, sort })(dispatch, getState)
+      actions.fetchPlayerHistory({ id: playerId, sort })(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_HISTORY_INDEX, playerId, sort })
       expect(apiRequest).toHaveBeenCalledWith({
@@ -61,9 +59,8 @@ describe('Player actions', () => {
   describe('fetchPlayerHistoryPast', () => {
     it('dispatches the bare action and an apiRequest', () => {
       const dispatch = vi.fn()
-      const getState = vi.fn()
 
-      actions.fetchPlayerHistoryPast({ id: playerId, sort })(dispatch, getState)
+      actions.fetchPlayerHistoryPast({ id: playerId, sort })(dispatch)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_HISTORY_PAST_INDEX, playerId, sort })
       expect(apiRequest).toHaveBeenCalledWith({
