@@ -10,8 +10,7 @@ import Link from 'components/common/link'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import StatusIconMapper from 'components/common/statusIconMapper'
 
-import { makeStyles } from 'tss-react/mui'
-import { Theme, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 
 import type { PlayersState } from 'state/players'
 import type { PlayerSummary } from 'types'
@@ -24,12 +23,6 @@ type Props = {
   updateSort: Function,
   updatePage: Function
 }
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    padding: theme.spacing(1)
-  }
-}))
 
 export const playersTableCells = () => ({
   lastName: {
@@ -113,8 +106,6 @@ export const PlayersPage = (props: Props) => {
     updatePage
   } = props
 
-  const { classes } = useStyles()
-
   useEffect(
     () => {
       fetchFacets()
@@ -125,7 +116,7 @@ export const PlayersPage = (props: Props) => {
 
   return (
     <div data-testid='PlayersPage'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={(theme) => ({ padding: theme.spacing(1) })}>
         Players
       </Typography>
       <SearchListener fetchAction={fetchPlayers} initialFilterState={initialFilterState}>

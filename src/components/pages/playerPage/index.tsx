@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useParams, Outlet } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
-  Theme
+  Box
 } from '@mui/material'
 
 import { playerActions } from 'state/player'
@@ -29,25 +28,25 @@ const TABS = {
   historyPast: { label: 'Past Seasons', value: 'historyPast', display: true }
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
-    [theme.breakpoints.down('sm')]: {
-      justifyContent: 'space-between'
-    },
+const titleSx = (theme) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
+  [theme.breakpoints.down('sm')]: {
+    justifyContent: 'space-between'
   },
-  crestContainer: {
-    display: 'inline-flex',
-    marginLeft: theme.spacing(2)
-  },
-  bracket: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none'
-    }
+})
+
+const crestContainerSx = (theme) => ({
+  display: 'inline-flex',
+  marginLeft: theme.spacing(2)
+})
+
+const bracketSx = (theme) => ({
+  [theme.breakpoints.down('sm')]: {
+    display: 'none'
   }
-}))
+})
 
 type Tab = 'details' | 'history' | 'historyPast'
 
@@ -61,7 +60,6 @@ export const PlayerPage = (props: Props) => {
     player: { data: player },
     fetchPlayer
   } = props
-  const { classes } = useStyles()
   const { playerId } = useParams()
   const [tab, setTab] = useState<Tab>('details')
   
@@ -86,13 +84,13 @@ export const PlayerPage = (props: Props) => {
 
   return (
     <div data-testid='PlayerPage'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={titleSx}>
         {firstName} {lastName}
-        <div className={classes.crestContainer}>
-          <div className={classes.bracket}>(</div>
+        <Box sx={crestContainerSx}>
+          <Box sx={bracketSx}>(</Box>
           <TeamCrestLink team={team} tab='players' size='large' />
-          <div className={classes.bracket}>)</div>
-        </div>
+          <Box sx={bracketSx}>)</Box>
+        </Box>
       </Typography>
       <Tabs
         key={playerId}

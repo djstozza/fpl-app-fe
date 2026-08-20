@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useParams, useLocation, Outlet } from 'react-router-dom'
 import qs from 'qs'
-import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
-  Theme
+  Box
 } from '@mui/material'
 
 import { teamsActions } from 'state/teams'
@@ -38,26 +37,27 @@ type TeamParams = {
 
 type Tab = 'details' | 'fixtures' | 'players'
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  crest: {
-    marginRight: theme.spacing(0.75),
-    maxHeight: theme.spacing(4)
-  },
-  titleWrapper: {
-    padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
-    flexDirection: 'row',
-    display: 'flex',
-    alignItems: 'center'
-  },
-  titleCrest: {
-    marginRight: theme.spacing(0.5),
-    maxHeight: theme.spacing(5)
-  },
-  tabTextWrapper: {
-    display: 'flex',
-    alignItems: 'center'
-  }
-}))
+const crestSx = (theme) => ({
+  marginRight: theme.spacing(0.75),
+  maxHeight: theme.spacing(4)
+})
+
+const titleWrapperSx = (theme) => ({
+  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
+  flexDirection: 'row',
+  display: 'flex',
+  alignItems: 'center'
+})
+
+const titleCrestSx = (theme) => ({
+  marginRight: theme.spacing(0.5),
+  maxHeight: theme.spacing(5)
+})
+
+const tabTextWrapperSx = {
+  display: 'flex',
+  alignItems: 'center'
+}
 
 export const TABS = [
   { label: 'Details', value: 'details', display: true },
@@ -90,15 +90,13 @@ export const TeamPage = (props: Props) => {
 
   const sortQuery = qs.parse(search.substring(1)).sort || sort
 
-  const { classes } = useStyles()
-
   const labelRenderer = (teamSummary: TeamSummary) => {
     const { shortName } = teamSummary
     return (
-      <div className={classes.tabTextWrapper}>
-        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
+      <Box sx={tabTextWrapperSx}>
+        <Box component='img' src={teamCrestPathLoader(shortName)} alt={shortName} sx={crestSx} />
         <Typography>{shortName}</Typography>
-      </div>
+      </Box>
     )
   }
 
@@ -136,12 +134,12 @@ export const TeamPage = (props: Props) => {
         url={TEAMS_URL}
         tab={tab}
       />
-      <div className={classes.titleWrapper}>
-        <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.titleCrest} />
+      <Box sx={titleWrapperSx}>
+        <Box component='img' src={teamCrestPathLoader(shortName)} alt={shortName} sx={titleCrestSx} />
         <Typography variant='h4'>
           {name}
         </Typography>
-      </div>
+      </Box>
       <Tabs
         currentTab={tab}
         tabs={TABS}

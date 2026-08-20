@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   TextField,
   Button,
-  Theme,
-  Paper
+  Paper,
+  Box
 } from '@mui/material'
 
 import Link from 'components/common/link'
@@ -26,50 +25,36 @@ type Props = {
   errors: Error[]
 }
 
-type StyleProps = {
-  height: number
+const formSx = (theme) => ({
+  display: 'flex',
+  position: 'fixed',
+  [theme.breakpoints.up('sm')]: {
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100vw',
+    top: '35%'
+  },
+})
+
+const paperSx = (theme) => ({
+  padding: theme.spacing(3),
+  [theme.breakpoints.down('sm')]: {
+    width: '100vw'
+  }
+})
+
+const textFieldSx = (theme) => ({ paddingBottom: theme.spacing(2) })
+
+const actionsSx = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center'
 }
 
-const useStyles = makeStyles<StyleProps>()((theme: Theme, { height }) => ({
-  background: {
-    width: '100vw',
-    height: height,
-    display: 'block',
-    backgroundImage: `url(${stadiumCrowdLoader()})`,
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat'
-  },
-  form: {
-    display: 'flex',
-    position: 'fixed',
-    [theme.breakpoints.up('sm')]: {
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)'
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100vw',
-      top: '35%'
-    },
-  },
-  paper: {
-    padding: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      width: '100vw'
-    }
-  },
-  textField: {
-    paddingBottom: theme.spacing(2)
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  noWrap: {
-    whiteSpace: 'nowrap'
-  }
-}));
+const noWrapSx = { whiteSpace: 'nowrap' }
 
 export const LoginPage = (props: Props) => {
   const { 
@@ -107,24 +92,29 @@ export const LoginPage = (props: Props) => {
     }, [initializeAuth]
   )
 
-  const { classes } = useStyles({ height })
-
   document.title = `${TITLE} - Log In`
 
   return (
-    <div
+    <Box
       data-testid='LoginPage'
       ref={backgroundRef}
-      className={classes.background}
+      sx={{
+        width: '100vw',
+        height,
+        display: 'block',
+        backgroundImage: `url(${stadiumCrowdLoader()})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat'
+      }}
     >
-      <form onSubmit={handleSubmit} className={classes.form}>
-        <Paper className={classes.paper}>
-          <Typography variant='h5' className={classes.textField}>
+      <Box component='form' onSubmit={handleSubmit} sx={formSx}>
+        <Paper sx={paperSx}>
+          <Typography variant='h5' sx={textFieldSx}>
             Log in
           </Typography>
           <TextField
             required
-            className={classes.textField}
+            sx={textFieldSx}
             fullWidth
             variant='outlined'
             label='Email'
@@ -138,7 +128,7 @@ export const LoginPage = (props: Props) => {
           <TextField
             data-testid='password'
             required
-            className={classes.textField}
+            sx={textFieldSx}
             fullWidth
             variant='outlined'
             label='Password'
@@ -152,7 +142,7 @@ export const LoginPage = (props: Props) => {
             error={Boolean(errors?.find(({ source }) => source.includes('password')))}
             helperText={errors?.find(({ source }) => source.includes('password'))?.detail}
           />
-          <div className={classes.actions}>
+          <Box sx={actionsSx}>
             <div>
               <Typography>
                 Don&apos;t have an account?
@@ -162,7 +152,7 @@ export const LoginPage = (props: Props) => {
               </Typography>
             </div>
             <Button
-              className={classes.noWrap}
+              sx={noWrapSx}
               type='submit'
               disabled={!email || !password || submitting}
               variant='contained'
@@ -170,10 +160,10 @@ export const LoginPage = (props: Props) => {
             >
               Log in
             </Button>
-          </div>
+          </Box>
         </Paper>
-      </form>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

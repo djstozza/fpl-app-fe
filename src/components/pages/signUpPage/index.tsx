@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { makeStyles } from 'tss-react/mui'
 import {
   Typography,
   TextField,
   Button,
-  Theme,
   Paper,
+  Box
 } from '@mui/material'
 
 import { SetElHeight } from 'utilities/helpers'
@@ -25,47 +24,34 @@ type Props = {
   errors: Error[]
 }
 
-type StyleProps = {
-  height: number
-}
-
-const useStyles = makeStyles<StyleProps>()((theme: Theme, { height }) => ({
-  background: {
+const formSx = (theme) => ({
+  display: 'flex',
+  position: 'fixed',
+  [theme.breakpoints.up('sm')]: {
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  },
+  [theme.breakpoints.down('sm')]: {
     width: '100vw',
-    height: height,
-    display: 'block',
-    backgroundImage: `url(${stadiumCrowdLoader()})`,
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat'
+    top: '33%'
   },
-  form: {
-    display: 'flex',
-    position: 'fixed',
-    [theme.breakpoints.up('sm')]: {
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)'
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100vw',
-      top: '33%'
-    },
-  },
-  paper: {
-    padding: theme.spacing(3),
-    [theme.breakpoints.only('sm')]: {
-      width: '100vw'
-    }
-  },
-  textField: {
-    paddingBottom: theme.spacing(2)
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+})
+
+const paperSx = (theme) => ({
+  padding: theme.spacing(3),
+  [theme.breakpoints.only('sm')]: {
+    width: '100vw'
   }
-}))
+})
+
+const textFieldSx = (theme) => ({ paddingBottom: theme.spacing(2) })
+
+const actionsSx = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center'
+}
 
 export const SignUpPage = (props: Props) => {
   const { signUp, errors = [], submitting, initializeAuth } = props
@@ -97,24 +83,29 @@ export const SignUpPage = (props: Props) => {
     }
   }, [initializeAuth])
 
-  const { classes } = useStyles({ height })
-
   document.title = `${TITLE} - Sign Up`
 
   return (
-    <div
+    <Box
       data-testid='SignUpPage'
       ref={backgroundRef}
-      className={classes.background}
+      sx={{
+        width: '100vw',
+        height,
+        display: 'block',
+        backgroundImage: `url(${stadiumCrowdLoader()})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat'
+      }}
     >
-      <form onSubmit={handleSubmit} className={classes.form}>
-        <Paper className={classes.paper}>
-          <Typography variant='h5' className={classes.textField}>
+      <Box component='form' onSubmit={handleSubmit} sx={formSx}>
+        <Paper sx={paperSx}>
+          <Typography variant='h5' sx={textFieldSx}>
             Sign Up
           </Typography>
           <TextField
             required
-            className={classes.textField}
+            sx={textFieldSx}
             fullWidth
             variant='outlined'
             label='Email'
@@ -127,7 +118,7 @@ export const SignUpPage = (props: Props) => {
           />
           <TextField
             required
-            className={classes.textField}
+            sx={textFieldSx}
             fullWidth
             variant='outlined'
             label='Username'
@@ -140,7 +131,7 @@ export const SignUpPage = (props: Props) => {
           />
           <TextField
             required
-            className={classes.textField}
+            sx={textFieldSx}
             fullWidth
             variant='outlined'
             data-testid='password'
@@ -155,7 +146,7 @@ export const SignUpPage = (props: Props) => {
             error={Boolean(errors.find(({ source }) => source === 'password'))}
             helperText={errors.find(({ source }) => source === 'password')?.detail}
           />
-          <div className={classes.actions}>
+          <Box sx={actionsSx}>
             <Typography><Link to={LOGIN_URL}>Log in</Link> if you already have an account</Typography>
             <Button
               type='submit'
@@ -165,10 +156,10 @@ export const SignUpPage = (props: Props) => {
             >
               Submit
             </Button>
-          </div>
+          </Box>
         </Paper>
-      </form>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

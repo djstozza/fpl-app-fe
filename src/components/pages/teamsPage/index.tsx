@@ -7,9 +7,7 @@ import { initialFilterState } from 'state/teams/reducer'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
 import { TITLE } from 'utilities/constants'
 
-import { makeStyles } from 'tss-react/mui';
 import {
-  Theme,
   Typography
 } from '@mui/material'
 
@@ -21,12 +19,6 @@ type Props = {
   fetchTeams: Function,
   updateSort: Function
 }
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    padding: theme.spacing(1)
-  }
-}))
 
 const TEAMS_TABLE_CELLS = [
   {
@@ -57,13 +49,11 @@ export const TeamsPage = (props: Props) => {
     updateSort
   } = props
 
-  const { classes } = useStyles()
-
   document.title = `${TITLE} - Teams`
 
   return (
     <div data-testid='TeamsPage'>
-      <Typography variant='h4' className={classes.title}>
+      <Typography variant='h4' sx={(theme) => ({ padding: theme.spacing(1) })}>
         Team Ladder
       </Typography>
       <SearchListener fetchAction={fetchTeams} initialFilterState={initialFilterState}>

@@ -1,13 +1,12 @@
 import { useRef, useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui'
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
   Grid,
-  Theme
+  Box
 } from '@mui/material'
 
 import { SetElHeight } from 'utilities/helpers'
@@ -16,31 +15,6 @@ import { playersTableCells } from 'components/pages/playersPage'
 
 import { CellHash } from 'types'
 import type { PlayerContext } from '..'
-
-type HeightProps = {
-  tableHeight: number
-}
-
-const useStyles = makeStyles<HeightProps>()((theme: Theme, { tableHeight }) => ({
-  container: {
-    maxWidth: '100vw',
-    overflow: 'scroll',
-    [theme.breakpoints.up('sm')]: {
-      maxHeight: tableHeight
-    },
-    maxHeight: tableHeight
-  },
-
-  playerImageContainer: {
-    textAlign: 'center'
-  },
-
-  playerImage: {
-    [theme.breakpoints.up('sm')]: {
-      maxHeight: tableHeight
-    }
-  }
-}))
 
 const PlayerDetails = () => {
   const tableRef = useRef(null)
@@ -59,8 +33,6 @@ const PlayerDetails = () => {
     }
   }, [tableHeight])
 
-  const { classes } = useStyles({ tableHeight })
-
   const cells: CellHash = playersTableCells()
   delete cells.firstName
   delete cells.lastName
@@ -69,17 +41,27 @@ const PlayerDetails = () => {
   return (
     <Grid data-testid='PlayerDetails' container>
       <Grid size={{ md: 3, sm: 5, xs: 12 }}>
-        <div className={classes.playerImageContainer}>
+        <Box sx={{ textAlign: 'center' }}>
           <PlayerImage
             key={code}
             code={code}
             lastName={lastName}
             maxHeight={tableHeight}
           />
-        </div>
+        </Box>
       </Grid>
       <Grid size={{ md: 9, sm: 7, xs: 12 }}>
-        <div ref={tableRef} className={classes.container}>
+        <Box
+          ref={tableRef}
+          sx={(theme) => ({
+            maxWidth: '100vw',
+            overflow: 'scroll',
+            [theme.breakpoints.up('sm')]: {
+              maxHeight: tableHeight
+            },
+            maxHeight: tableHeight
+          })}
+        >
           <Table size='small'>
             <TableBody>
               {
@@ -96,7 +78,7 @@ const PlayerDetails = () => {
               }
             </TableBody>
           </Table>
-        </div>
+        </Box>
       </Grid>
     </Grid>
   )

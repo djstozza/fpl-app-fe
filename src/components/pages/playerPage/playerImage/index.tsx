@@ -1,8 +1,5 @@
 import { useCallback, useEffect, useState  } from 'react'
-import { makeStyles } from 'tss-react/mui';
-import {
-  Theme,
-} from '@mui/material'
+import { Box } from '@mui/material'
 
 import { playerPlaceHolderLoader, playerImage } from 'utilities/helpers'
 
@@ -12,24 +9,8 @@ type Props = {
   maxHeight: number
 }
 
-type HeightProps = {
-  maxHeight: number,
-}
-
-const useStyles = makeStyles<HeightProps>()((theme: Theme, { maxHeight }) => ({
-  playerImage: {
-    width: theme.spacing(27.5),
-    height: theme.spacing(35),
-    [theme.breakpoints.up('sm')]: {
-      maxHeight: maxHeight,
-      maxWidth: 0.79 * maxHeight
-    }
-  }
-}));
-
 const PlayerImage = (props: Props) => {
   const { code, lastName, maxHeight } = props
-  const { classes } = useStyles({ maxHeight })
   const src = playerImage(code)
   const [imgSrc, setSrc] = useState(playerPlaceHolderLoader())
 
@@ -46,7 +27,21 @@ const PlayerImage = (props: Props) => {
     }
   }, [src, onLoad])
 
-  return <img className={classes.playerImage} alt={lastName} src={imgSrc} />
+  return (
+    <Box
+      component='img'
+      alt={lastName}
+      src={imgSrc}
+      sx={(theme) => ({
+        width: theme.spacing(27.5),
+        height: theme.spacing(35),
+        [theme.breakpoints.up('sm')]: {
+          maxHeight,
+          maxWidth: 0.79 * maxHeight
+        }
+      })}
+    />
+  )
 }
 
 export default PlayerImage
