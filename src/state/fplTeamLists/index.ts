@@ -2,11 +2,9 @@ import reducer from './reducer'
 import type { State } from './reducer'
 
 import * as fplTeamListsActions from './actions'
-import fplTeamListsSagas from './sagas'
 
 export {
-  fplTeamListsActions,
-  fplTeamListsSagas
+  fplTeamListsActions
 }
 
 export type FplTeamListsState = State
