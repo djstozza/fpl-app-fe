@@ -1,6 +1,5 @@
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui';
-import classNames from 'classnames';
+import { styled } from '@mui/material/styles'
 
 import { colors } from 'utilities/colors'
 
@@ -11,22 +10,14 @@ type Props = {
   image?: boolean
 }
 
-const useStyles = makeStyles()(() =>
-  ({
-    link: {
-      textDecoration: 'none',
-      color: colors.linkBlue
-    },
-
-    noWrap: {
-      whiteSpace: 'nowrap'
-    },
-
-    imageContainer: {
-      display: 'flex',
-      alignItems: 'center'
-    }
-  }));
+const StyledLink = styled(ReactRouterLink, {
+  shouldForwardProp: (prop) => prop !== 'noWrap' && prop !== 'image'
+})<{ noWrap?: boolean, image?: boolean }>(({ noWrap, image }) => ({
+  textDecoration: 'none',
+  color: colors.linkBlue,
+  ...(noWrap && { whiteSpace: 'nowrap' }),
+  ...(image && { display: 'flex', alignItems: 'center' })
+}))
 
 const Link = (props: Props) => {
   const {
@@ -35,23 +26,15 @@ const Link = (props: Props) => {
     image,
     children
   } = props
-  const { classes }= useStyles()
 
   return (
-    <ReactRouterLink
+    <StyledLink
       to={to}
-      className={
-        classNames(
-          classes.link,
-          {
-            [classes.noWrap]: noWrap,
-            [classes.imageContainer]: image
-          }
-        )
-      }
+      noWrap={noWrap}
+      image={image}
     >
      {children}
-    </ReactRouterLink>
+    </StyledLink>
   );
 }
 

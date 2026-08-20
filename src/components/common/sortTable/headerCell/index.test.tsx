@@ -38,12 +38,12 @@ describe('HeaderCell', () => {
   describe('mainHeaderCell', () => {
     it('does not have mainHeadercell if sticky != true', () => {
       customRender()
-      expect(tableCell().className).not.toContain('mainHeaderCell')
+      expect(tableCell()).not.toHaveStyle({ position: 'sticky' })
     })
   
     it('adds the mainHeaderCell class if sticky = true', () => {
       customRender({ sticky: true })
-      expect(tableCell().className).toContain('mainHeaderCell')
+      expect(tableCell()).toHaveStyle({ position: 'sticky' })
     })
   })
 
@@ -121,12 +121,12 @@ describe('HeaderCell', () => {
     describe('noPaddingRight', () => {
       it('has the noPaddingRight class if the sortParam is present', () => {
         customRender()
-        expect(tableCell().className).toContain('noPaddingRight')
+        expect(tableCell()).toHaveStyle({ paddingRight: '0px' })
       })
 
       it('does not have noPaddingRight if the sortParam is not present', () => {
         customRender({ sortParam: undefined })
-        expect(tableCell().className).not.toContain('noPaddingRight')
+        expect(tableCell()).not.toHaveStyle({ paddingRight: '0px' })
       })
     })
 

@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import moment from 'moment'
 import { Navigate, useOutletContext } from 'react-router-dom'
+import { Box } from '@mui/material'
 
-import SortTable from 'components/common/sortTable'
+import SortTable, { noWrapSx } from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/player/reducer'
 import { PLAYERS_URL, ROUNDS_URL } from 'utilities/constants'
@@ -36,10 +37,10 @@ const HISTORY_TABLE_CELLS = [
     cellId: 'kickoffTime',
     label: 'K',
     toolTipLabel: 'Kickoff Time',
-    customRender: ({ kickoffTime }: History, classes) => (
-      <div className={classes.noWrap}>
+    customRender: ({ kickoffTime }: History) => (
+      <Box sx={noWrapSx}>
         {moment(kickoffTime).format('DD/MM/YY HH:mm')}
-      </div>
+      </Box>
     ),
     sortParam: 'kickoffTime'
   },

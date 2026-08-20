@@ -1,8 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
-import { makeStyles } from 'tss-react/mui';
-import { CssBaseline } from '@mui/material';
-import { ThemeProvider, Theme } from '@mui/material/styles';
+import { CssBaseline, Box } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 
 import {
   ROUNDS_URL,
@@ -73,24 +72,20 @@ import ChangePasswordForm from 'components/pages/profilePage/changePasswordForm'
 
 import NotMatchPage from 'components/pages/NoMatchPage'
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  container: {
-    [theme.breakpoints.up('sm')]: {
-      marginTop: theme.spacing(8)
-    },
-    marginTop: theme.spacing(7)
-  }
-}));
-
 const App = () => {
-  const { classes } = useStyles()
- 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
         <SnackbarProvider maxSnack={3}>
           <NavBar />
-          <div className={classes.container}>
+          <Box
+            sx={(theme) => ({
+              [theme.breakpoints.up('sm')]: {
+                marginTop: theme.spacing(8)
+              },
+              marginTop: theme.spacing(7)
+            })}
+          >
             <ErrorDialog />
             <Routes>
               <Route path="/" element={<RoundsPage />} >
@@ -219,7 +214,7 @@ const App = () => {
               </Route>
               <Route path='*' element={<NotMatchPage />} />
             </Routes>
-          </div>
+          </Box>
         </SnackbarProvider>
       </CssBaseline>
     </ThemeProvider>

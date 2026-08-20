@@ -29,7 +29,7 @@ describe('Link', () => {
   it('adds the noWrap and imageContainer', () => {
     customRender({ noWrap: true, image: true })
 
-    expect(link().className).toContain('noWrap')
-    expect(link().className).toContain('imageContainer')
+    expect(link()).toHaveStyle({ whiteSpace: 'nowrap' })
+    expect(link()).toHaveStyle({ display: 'flex' })
   })
 })

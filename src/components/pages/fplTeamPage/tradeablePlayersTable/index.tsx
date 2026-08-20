@@ -7,7 +7,7 @@ import {
   Button
 } from '@mui/material'
 
-import SortTable from 'components/common/sortTable'
+import SortTable, { noWrapSx } from 'components/common/sortTable'
 import { initialFilterState } from 'state/players/reducer'
 import SearchListener from 'components/common/searchListener'
 import { playersTableCells } from 'components/pages/playersPage'
@@ -78,10 +78,10 @@ const TradeablePlayersTable = (props: Props) => {
     label: '',
     toolTipLabel: '',
     sortParam: '',
-    customRender: (player: PlayerSummary, classes) => (
+    customRender: (player: PlayerSummary) => (
       <Fragment>
         <Button
-          className={classes.noWrap}
+          sx={noWrapSx}
           variant='contained'
           color='secondary'
           onClick={() => handleOpenDialog(player)}

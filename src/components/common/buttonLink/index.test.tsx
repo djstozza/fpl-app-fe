@@ -33,6 +33,6 @@ describe('User Login Form', () => {
     customRender({ rightMargin: true })
 
     const link = screen.getByRole('link')
-    expect(link.className).toContain('rightMargin')
+    expect(link).toHaveStyle({ marginRight: '8px' })
   })
 })

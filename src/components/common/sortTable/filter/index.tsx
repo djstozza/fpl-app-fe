@@ -1,5 +1,4 @@
 import { useState, Fragment, MouseEvent } from 'react'
-import { makeStyles } from 'tss-react/mui';
 
 import {
   Menu,
@@ -9,7 +8,7 @@ import {
   ListItemText,
   Checkbox,
   Button,
-  Theme,
+  Box,
 } from '@mui/material';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
@@ -25,15 +24,6 @@ type Props = {
   filterSelection?: string[]
 }
 
-const useStyles = makeStyles()((theme: Theme) =>
-  ({
-    facetList: {
-      maxHeight: theme.spacing(50),
-      overflow: 'auto',
-      paddingLeft: 0
-    }
-  }));
-
 const Filter = (props: Props) => {
   const {
     facetValues,
@@ -43,7 +33,6 @@ const Filter = (props: Props) => {
     applyFilter,
     filterSelection = []
   } = props
-  const { classes } = useStyles()
 
   const [selected, setSelected] = useState<string[]>(filterSelection)
 
@@ -75,7 +64,14 @@ const Filter = (props: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <ul className={classes.facetList}>
+        <Box
+          component='ul'
+          sx={(theme) => ({
+            maxHeight: theme.spacing(50),
+            overflow: 'auto',
+            paddingLeft: 0
+          })}
+        >
           {
             facetValues.map(({ label, value }) => (
               <MenuItem
@@ -90,7 +86,7 @@ const Filter = (props: Props) => {
               </MenuItem>
             ))
           }
-        </ul>
+        </Box>
         <li>
           <Button disabled={!selected.length} onClick={() => setSelected([])}>
             Clear all

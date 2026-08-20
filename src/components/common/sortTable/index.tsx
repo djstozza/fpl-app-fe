@@ -1,5 +1,4 @@
 import { MouseEvent, Fragment, useEffect, useRef, useContext } from 'react'
-import { makeStyles } from 'tss-react/mui';
 import {
   Table,
   TableBody,
@@ -8,10 +7,9 @@ import {
   TableHead,
   TablePagination,
   Typography,
-  Theme,
+  Box,
 } from '@mui/material';
 import HeaderCell from './headerCell'
-import classNames from 'classnames';
 
 import { SearchContext } from 'components/common/searchListener'
 import { colors } from 'utilities/colors'
@@ -66,39 +64,21 @@ type Props = {
   name: string
 }
 
-type HeightProps = {
-  tableHeight: number,
-  paginationHeight: number
+export const noWrapSx = {
+  whiteSpace: 'nowrap'
 }
 
-const useStyles = makeStyles<HeightProps>()((theme: Theme, { tableHeight, paginationHeight }: HeightProps) =>
-  ({
-    container: {
-      maxWidth: '100vw',
-      overflow: 'scroll',
-      maxHeight: tableHeight - paginationHeight
-    },
+export const crestSx = (theme) => ({
+  maxHeight: theme.spacing(3),
+  marginRight: theme.spacing(1)
+})
 
-    table: {
-      margin: '0 auto'
-    },
-
-    noWrap: {
-      whiteSpace: 'nowrap'
-    },
-
-    crest: {
-      maxHeight: theme.spacing(3),
-      marginRight: theme.spacing(1)
-    },
-
-    mainCell: {
-      position: 'sticky',
-      left: 0,
-      backgroundColor: colors.white,
-      zIndex: 2
-    }
-  }));
+const mainCellSx = {
+  position: 'sticky',
+  left: 0,
+  backgroundColor: colors.white,
+  zIndex: 2
+}
 
 const SortTable = (props: Props) => {
   const {
@@ -134,8 +114,6 @@ const SortTable = (props: Props) => {
     }
   }, [tableHeight, paginationHeight])
 
-  const { classes } = useStyles({ tableHeight, paginationHeight })
-
   const handleSort = (name, direction) => (event: MouseEvent<unknown>) => {
     event.preventDefault()
     const newDirection = direction === 'asc' ? 'desc' : 'asc'
@@ -153,7 +131,14 @@ const SortTable = (props: Props) => {
 
   return (
     <Fragment>
-      <div ref={tableRef} className={classes.container}>
+      <Box
+        ref={tableRef}
+        sx={{
+          maxWidth: '100vw',
+          overflow: 'scroll',
+          maxHeight: tableHeight - paginationHeight
+        }}
+      >
         <Table
           data-testid='SortTable'
           size='small'
@@ -204,9 +189,9 @@ const SortTable = (props: Props) => {
                           <TableCell
                             align='center'
                             key={cellKey}
-                            className={classNames({ [classes.mainCell]: sticky })}
+                            sx={sticky ? mainCellSx : undefined}
                           >
-                            {customRender ? customRender(record, classes, tab) : record[cellId]}
+                            {customRender ? customRender(record, tab) : record[cellId]}
                           </TableCell>
                         ))
                       }
@@ -216,7 +201,7 @@ const SortTable = (props: Props) => {
             }
           </TableBody>
         </Table>
-      </div>
+      </Box>
       <TablePagination
         data-testid='SortTablePagination'
         ref={paginationRef}

@@ -1,7 +1,5 @@
 import { useState } from 'react'
-import { makeStyles } from 'tss-react/mui';
-import { TableCell, Tooltip, TableSortLabel } from '@mui/material';
-import classNames from 'classnames';
+import { TableCell, Tooltip, TableSortLabel, Box } from '@mui/material';
 
 import Filter from '../filter'
 import { colors } from 'utilities/colors'
@@ -22,28 +20,19 @@ type Props = {
   handleFilterChange?: Function
 }
 
-const useStyles = makeStyles()(() =>
-  ({
-    noPaddingRight: {
-      paddingRight: 0,
-      '&:last-child': {
-        paddingRight: 0
-      }
-    },
+const noPaddingRightSx = {
+  paddingRight: 0,
+  '&:last-child': {
+    paddingRight: 0
+  }
+}
 
-    mainHeaderCell: {
-      zIndex: 3,
-      position: 'sticky',
-      left: 0,
-      backgroundColor: colors.white
-    },
-
-    headerWrapper: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  }));
+const mainHeaderCellSx = {
+  zIndex: 3,
+  position: 'sticky',
+  left: 0,
+  backgroundColor: colors.white
+}
 
 const HeaderCell = (props: Props) => {
   const {
@@ -60,7 +49,6 @@ const HeaderCell = (props: Props) => {
     handleFilterChange
   } = props
 
-  const { classes } = useStyles()
   const sortDirection = sort[sortParam]
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null)
   const applyFilter = (filterName, selection) => {
@@ -77,10 +65,10 @@ const HeaderCell = (props: Props) => {
   return (
     <TableCell
       align='center'
-      className={classNames({ [classes.mainHeaderCell]: sticky, [classes.noPaddingRight]: sortParam })}
+      sx={[sticky && mainHeaderCellSx, Boolean(sortParam) && noPaddingRightSx]}
     >
       <Tooltip title={filterAnchorEl ? '' : toolTipLabel}>
-        <div className={classes.headerWrapper}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {label}
           {
             filterParam &&
@@ -102,7 +90,7 @@ const HeaderCell = (props: Props) => {
               direction={sortDirection}
             />
           }
-        </div>
+        </Box>
       </Tooltip>
     </TableCell>
   );

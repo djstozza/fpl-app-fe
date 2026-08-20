@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
+import { Box } from '@mui/material'
 
 import { teamCrestPathLoader } from 'utilities/helpers'
 import { TEAMS_URL, PLAYERS_URL } from 'utilities/constants'
-import SortTable from 'components/common/sortTable'
+import SortTable, { crestSx } from 'components/common/sortTable'
 import { initialFilterState } from 'state/draftPicks/reducer'
 import SearchListener from 'components/common/searchListener'
 import Link from 'components/common/link'
@@ -55,7 +56,7 @@ const DRAFT_PICKS_TABLE_CELLS = [
     toolTipLabel: 'Team',
     sortParam: 'teams.shortName',
     filterParam: 'teamId',
-    customRender: ({ team, miniDraft }: DraftPick, classes) => {
+    customRender: ({ team, miniDraft }: DraftPick) => {
       if (miniDraft) return '-'
       if (!team) return null
 
@@ -63,7 +64,7 @@ const DRAFT_PICKS_TABLE_CELLS = [
 
       return (
         <Link to={`${TEAMS_URL}/${id}`} image>
-          <img src={teamCrestPathLoader(shortName)} alt={shortName} className={classes.crest} />
+          <Box component='img' src={teamCrestPathLoader(shortName)} alt={shortName} sx={crestSx} />
           <div>
             {shortName}
           </div>

@@ -2,7 +2,7 @@ import {
   Button
 } from '@mui/material'
 
-import SortTable from 'components/common/sortTable'
+import SortTable, { noWrapSx } from 'components/common/sortTable'
 import { PLAYERS_URL } from 'utilities/constants'
 import Link from 'components/common/link'
 import ContainedTeamCrestLink from 'components/common/teamCrestLink/contained'
@@ -102,9 +102,9 @@ const ListPositionsTable = (props: Props) => {
         cellId: 'action',
         label: '',
         toolTipLabel: '',
-        customRender: (listPosition: ListPosition, classes) => (
+        customRender: (listPosition: ListPosition) => (
           <Button
-            className={classes.noWrap}
+            sx={noWrapSx}
             size='small'
             color='secondary'
             variant='contained'

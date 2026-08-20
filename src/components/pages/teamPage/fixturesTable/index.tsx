@@ -1,7 +1,8 @@
 import moment from 'moment'
 import { useOutletContext } from 'react-router-dom'
+import { Box } from '@mui/material'
 
-import SortTable from 'components/common/sortTable'
+import SortTable, { noWrapSx } from 'components/common/sortTable'
 import SearchListener from 'components/common/searchListener'
 import { initialFilterState } from 'state/team/reducer'
 import { ROUNDS_URL } from 'utilities/constants'
@@ -29,7 +30,7 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'oppositionTeam',
     label: 'O',
     toolTipLabel: 'Opponent',
-    customRender: ({ opponent }: TeamFixture, _classes, tab) => <ContainedTeamCrestLink team={opponent} tab={tab} />,
+    customRender: ({ opponent }: TeamFixture, tab) => <ContainedTeamCrestLink team={opponent} tab={tab} />,
     sortParam: 'oppositionTeam.shortName',
   },
   { cellId: 'leg', label: 'L', toolTipLabel: 'Leg', sticky: false, sortParam: 'leg' },
@@ -37,10 +38,10 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'kickoffTime',
     label: 'K',
     toolTipLabel: 'Kickoff Time',
-    customRender: ({ kickoffTime }: TeamFixture, classes) => (
-      <div className={classes.noWrap}>
+    customRender: ({ kickoffTime }: TeamFixture) => (
+      <Box sx={noWrapSx}>
         {moment(kickoffTime).format('DD/MM/YY HH:mm')}
-      </div>
+      </Box>
     ),
     sortParam: 'kickoffTime'
   },
@@ -58,13 +59,13 @@ const FIXTURES_TABLE_CELLS = [
     cellId: 'score',
     label: 'S',
     toolTipLabel: 'Score',
-    customRender: ({ started, homeTeamScore, awayTeamScore }: TeamFixture, classes) => {
+    customRender: ({ started, homeTeamScore, awayTeamScore }: TeamFixture) => {
       if (!started) return null
 
       return (
-        <div className={classes.noWrap}>
+        <Box sx={noWrapSx}>
           {homeTeamScore} - {awayTeamScore}
-        </div>
+        </Box>
       )
     }
   },

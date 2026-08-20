@@ -7,7 +7,7 @@ import {
   Button
 } from '@mui/material'
 
-import SortTable from 'components/common/sortTable'
+import SortTable, { noWrapSx } from 'components/common/sortTable'
 import { initialFilterState } from 'state/listPosition/reducer'
 import SearchListener from 'components/common/searchListener'
 import { listPositionTableCells } from '../../listPositionsTable'
@@ -98,10 +98,10 @@ const TradeableListPositionsTable = (props: Props) => {
     label: '',
     toolTipLabel: '',
     sortParam: '',
-    customRender: (listPosition: ListPosition, classes) => (
+    customRender: (listPosition: ListPosition) => (
       <Fragment>
         <Button
-          className={classes.noWrap}
+          sx={noWrapSx}
           variant='contained'
           color='secondary'
           onClick={() => handleOpenDialog(listPosition)}
