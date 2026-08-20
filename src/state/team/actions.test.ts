@@ -13,6 +13,11 @@ vi.mock('state/request/actions', async () => ({
   apiRequest: vi.fn()
 }))
 
+vi.mock('state/players/actions', async () => ({
+  ...(await vi.importActual('state/players/actions')),
+  fetchPlayers: vi.fn()
+}))
+
 afterEach(() => {
   vi.restoreAllMocks()
 })
@@ -69,7 +74,7 @@ describe('Team actions', () => {
       actions.fetchTeamPlayers({ id: teamId, sort })(dispatch, getState)
 
       expect(dispatch).toHaveBeenCalledWith({ type: actions.FETCH_TEAM_PLAYERS, teamId, sort })
-      expect(dispatch).toHaveBeenCalledWith(fetchPlayers({ filter: { teamId }, sort: sort.players }))
+      expect(fetchPlayers).toHaveBeenCalledWith({ filter: { teamId }, sort: sort.players })
     })
   })
 

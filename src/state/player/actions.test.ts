@@ -1,31 +1,108 @@
+import qs from 'qs'
+
 import * as actions from './actions'
+import { apiRequest } from 'state/request/actions'
+import { stringify } from 'utilities/helpers'
+import history from 'state/history'
+import { API_URL, PLAYERS_URL } from 'utilities/constants'
+import { success, failure } from 'utilities/actions'
+
+vi.mock('state/request/actions', async () => ({
+  ...(await vi.importActual('state/request/actions')),
+  apiRequest: vi.fn()
+}))
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 const playerId = '352'
 const historySort = { kickoffTime: 'desc' }
 const historyPastSort = { seasonName: 'asc' }
+const sort = { history: historySort, historyPast: historyPastSort }
 
 describe('Player actions', () => {
-  test(actions.API_PLAYERS_SHOW, () => {
-    expect(actions.fetchPlayer(playerId)).toEqual({ type: actions.API_PLAYERS_SHOW, playerId })
+  describe('fetchPlayer', () => {
+    it('dispatches the bare action and an apiRequest', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn()
+
+      actions.fetchPlayer(playerId)(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_SHOW, playerId })
+      expect(apiRequest).toHaveBeenCalledWith({
+        needsAuth: false,
+        method: 'GET',
+        url: `${API_URL}${PLAYERS_URL}/${playerId}`,
+        successAction: success(actions.API_PLAYERS_SHOW),
+        failureAction: failure(actions.API_PLAYERS_SHOW)
+      })
+    })
   })
 
-  test(actions.API_PLAYERS_HISTORY_INDEX, () => {
-    expect(actions.fetchPlayerHistory({ id: playerId, sort: historySort }))
-      .toEqual({ type: actions.API_PLAYERS_HISTORY_INDEX, playerId, sort: historySort })
+  describe('fetchPlayerHistory', () => {
+    it('dispatches the bare action and an apiRequest', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn()
+
+      actions.fetchPlayerHistory({ id: playerId, sort })(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_HISTORY_INDEX, playerId, sort })
+      expect(apiRequest).toHaveBeenCalledWith({
+        needsAuth: false,
+        method: 'GET',
+        url: `${API_URL}${PLAYERS_URL}/${playerId}/history?${stringify({ sort: historySort })}`,
+        successAction: success(actions.API_PLAYERS_HISTORY_INDEX),
+        failureAction: failure(actions.API_PLAYERS_HISTORY_INDEX)
+      })
+    })
   })
 
-  test(actions.API_PLAYERS_HISTORY_PAST_INDEX, () => {
-    expect(actions.fetchPlayerHistoryPast({ id: playerId, sort: historyPastSort }))
-      .toEqual({ type: actions.API_PLAYERS_HISTORY_PAST_INDEX, playerId, sort: historyPastSort })
+  describe('fetchPlayerHistoryPast', () => {
+    it('dispatches the bare action and an apiRequest', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn()
+
+      actions.fetchPlayerHistoryPast({ id: playerId, sort })(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_HISTORY_PAST_INDEX, playerId, sort })
+      expect(apiRequest).toHaveBeenCalledWith({
+        needsAuth: false,
+        method: 'GET',
+        url: `${API_URL}${PLAYERS_URL}/${playerId}/history_past?${stringify({ sort: historyPastSort })}`,
+        successAction: success(actions.API_PLAYERS_HISTORY_PAST_INDEX),
+        failureAction: failure(actions.API_PLAYERS_HISTORY_PAST_INDEX)
+      })
+    })
   })
 
-  test(actions.UPDATE_PLAYER_HISTORY_SORT, () => {
-    expect(actions.updatePlayerHistorySort({ id: playerId, sort: historySort }))
-      .toEqual({ type: actions.UPDATE_PLAYER_HISTORY_SORT, sort: historySort })
+  describe('updatePlayerHistorySort', () => {
+    it('dispatches the bare action and pushes the new sort into the URL', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn().mockReturnValue({ player: { data: { id: playerId } } })
+      const historyPushSpy = vi.spyOn(history, 'push')
+
+      actions.updatePlayerHistorySort({ id: playerId, sort: historySort })(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.UPDATE_PLAYER_HISTORY_SORT, sort: historySort })
+      expect(historyPushSpy).toHaveBeenCalledWith(
+        `${PLAYERS_URL}/${playerId}/history?${qs.stringify({ sort: { history: historySort } })}`
+      )
+    })
   })
 
-  test(actions.UPDATE_PLAYER_HISTORY_PAST_SORT, () => {
-    expect(actions.updatePlayerHistoryPastSort({ id: playerId, sort: historyPastSort }))
-      .toEqual({ type: actions.UPDATE_PLAYER_HISTORY_PAST_SORT, sort: historyPastSort })
+  describe('updatePlayerHistoryPastSort', () => {
+    it('dispatches the bare action and pushes the new sort into the URL', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn().mockReturnValue({ player: { data: { id: playerId } } })
+      const historyPushSpy = vi.spyOn(history, 'push')
+
+      actions.updatePlayerHistoryPastSort({ id: playerId, sort: historyPastSort })(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.UPDATE_PLAYER_HISTORY_PAST_SORT, sort: historyPastSort })
+      expect(historyPushSpy).toHaveBeenCalledWith(
+        `${PLAYERS_URL}/${playerId}/historyPast?${qs.stringify({ sort: { historyPast: historyPastSort } })}`
+      )
+    })
   })
 })

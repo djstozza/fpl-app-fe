@@ -1,31 +1,102 @@
+import qs from 'qs'
+
 import * as actions from './actions'
+import { apiRequest } from 'state/request/actions'
+import { stringify } from 'utilities/helpers'
+import history from 'state/history'
+import { API_URL, PLAYERS_URL } from 'utilities/constants'
+import { success, failure } from 'utilities/actions'
+
+vi.mock('state/request/actions', async () => ({
+  ...(await vi.importActual('state/request/actions')),
+  apiRequest: vi.fn()
+}))
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 const sort = { lastName: 'desc' }
 const filter = { team_id: ['1'] }
 const page = { offset: '1', limit: '50' }
 
 describe('Players actions', () => {
-  test(actions.API_PLAYERS_INDEX, () => {
-    expect(actions.fetchPlayers({ sort: undefined, filter: undefined, page: undefined }))
-      .toEqual({ type: actions.API_PLAYERS_INDEX, sort: undefined, filter: undefined, page: undefined })
+  describe('fetchPlayers', () => {
+    it('dispatches the bare action and an apiRequest', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn()
 
-    expect(actions.fetchPlayers({ sort, filter, page }))
-      .toEqual({ type: actions.API_PLAYERS_INDEX, sort, filter, page })
+      actions.fetchPlayers({ sort, filter, page })(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_INDEX, sort, filter, page })
+      expect(apiRequest).toHaveBeenCalledWith({
+        needsAuth: false,
+        method: 'GET',
+        url: `${API_URL}${PLAYERS_URL}?${stringify({ sort, filter, page })}`,
+        successAction: success(actions.API_PLAYERS_INDEX),
+        failureAction: failure(actions.API_PLAYERS_INDEX)
+      })
+    })
   })
 
-  test(actions.API_PLAYERS_FACETS_INDEX, () => {
-    expect(actions.fetchFacets()).toEqual({ type: actions.API_PLAYERS_FACETS_INDEX })
+  describe('fetchFacets', () => {
+    it('dispatches the bare action and an apiRequest', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn()
+
+      actions.fetchFacets()(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.API_PLAYERS_FACETS_INDEX })
+      expect(apiRequest).toHaveBeenCalledWith({
+        needsAuth: false,
+        method: 'GET',
+        url: `${API_URL}${PLAYERS_URL}/facets`,
+        successAction: success(actions.API_PLAYERS_FACETS_INDEX),
+        failureAction: failure(actions.API_PLAYERS_FACETS_INDEX)
+      })
+    })
   })
 
-  test(actions.UPDATE_PLAYERS_FILTER, () => {
-    expect(actions.updateFilter(filter)).toEqual({ type: actions.UPDATE_PLAYERS_FILTER, filter })
+  describe('updateFilter', () => {
+    it('dispatches the bare action and pushes the new query into the URL', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn().mockReturnValue({ players: { sort, page } })
+      const historyPushSpy = vi.spyOn(history, 'push')
+
+      actions.updateFilter(filter)(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.UPDATE_PLAYERS_FILTER, filter })
+      expect(historyPushSpy).toHaveBeenCalledWith(
+        `${PLAYERS_URL}?${qs.stringify({ filter, sort, page: { ...page, offset: 0 } })}`
+      )
+    })
   })
 
-  test(actions.UPDATE_PLAYERS_SORT, () => {
-    expect(actions.updateSort(sort)).toEqual({ type: actions.UPDATE_PLAYERS_SORT, sort })
+  describe('updateSort', () => {
+    it('dispatches the bare action and pushes the new query into the URL', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn().mockReturnValue({ players: { filter, page } })
+      const historyPushSpy = vi.spyOn(history, 'push')
+
+      actions.updateSort(sort)(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.UPDATE_PLAYERS_SORT, sort })
+      expect(historyPushSpy).toHaveBeenCalledWith(`${PLAYERS_URL}?${qs.stringify({ filter, sort, page })}`)
+    })
   })
 
-  test(actions.UPDATE_PLAYERS_PAGE, () => {
-    expect(actions.updatePage(page.offset)).toEqual({ type: actions.UPDATE_PLAYERS_PAGE, offset: page.offset })
+  describe('updatePage', () => {
+    it('dispatches the bare action and pushes the new query into the URL', () => {
+      const dispatch = vi.fn()
+      const getState = vi.fn().mockReturnValue({ players: { filter, sort, page } })
+      const historyPushSpy = vi.spyOn(history, 'push')
+
+      actions.updatePage(page.offset)(dispatch, getState)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: actions.UPDATE_PLAYERS_PAGE, offset: page.offset })
+      expect(historyPushSpy).toHaveBeenCalledWith(
+        `${PLAYERS_URL}?${qs.stringify({ filter, sort, page: { ...page, offset: page.offset } })}`
+      )
+    })
   })
 })
