@@ -6,6 +6,7 @@ import moment from 'moment'
 import FplTeamListChart from '.'
 import { RouteWithOutletContext, blank__ } from 'test/helpers'
 import { LIST_POSITIONS, FPL_TEAM_LISTS, WEST_HAM_TEAM_BASE } from 'test/fixtures'
+import { colors } from 'utilities/colors'
 
 const fplTeamId = '1'
 
@@ -72,7 +73,7 @@ describe('FplTeamListChart', () => {
     expect(starting()).toHaveLength(4)
     expect(substitute()).toBeInTheDocument()
     
-    expect(starting()[0].className).toContain('startingRow')
+    expect(starting()[0]).toHaveStyle({ justifyContent: 'center' })
     expect(startingPlayers(0)).toHaveLength(3)
     expect(startingPlayers(0)[0]).toHaveTextContent((
       `${LIST_POSITIONS[0].player.lastName}${LIST_POSITIONS[0].opponent.shortName} ` +
@@ -87,7 +88,7 @@ describe('FplTeamListChart', () => {
         `(${LIST_POSITIONS[2].leg})${LIST_POSITIONS[2].totalPoints}`
     )
 
-    expect(starting()[1].className).toContain('startingRow')
+    expect(starting()[1]).toHaveStyle({ justifyContent: 'center' })
     expect(startingPlayers(1)).toHaveLength(4)
     expect(startingPlayers(1)[0]).toHaveTextContent(
       `${LIST_POSITIONS[3].player.lastName}${LIST_POSITIONS[3].opponent.shortName} ` +
@@ -106,7 +107,7 @@ describe('FplTeamListChart', () => {
         `(${LIST_POSITIONS[6].leg})${LIST_POSITIONS[6].totalPoints}`
     )
 
-    expect(starting()[2].className).toContain('startingRow')
+    expect(starting()[2]).toHaveStyle({ justifyContent: 'center' })
     expect(startingPlayers(2)).toHaveLength(3)
     expect(startingPlayers(2)[0]).toHaveTextContent(
       `${LIST_POSITIONS[7].player.lastName}${LIST_POSITIONS[7].opponent.shortName} ` +
@@ -121,13 +122,13 @@ describe('FplTeamListChart', () => {
         `(${LIST_POSITIONS[9].leg})${LIST_POSITIONS[9].totalPoints}`
     )
 
-    expect(starting()[3].className).toContain('startingRow')
+    expect(starting()[3]).toHaveStyle({ justifyContent: 'center' })
     expect(startingPlayers(3)[0]).toHaveTextContent(
       `${LIST_POSITIONS[10].player.lastName}${LIST_POSITIONS[10].opponent.shortName} ` +
         `(${LIST_POSITIONS[10].leg})${LIST_POSITIONS[10].totalPoints}`
     )
 
-    expect(substitute().className).toContain('substitutesContainer')
+    expect(substitute()).toHaveStyle({ justifyContent: 'space-evenly' })
     expect(substitutePlayers()).toHaveLength(4)
 
     expect(substitutePlayers()[0]).toHaveTextContent(
@@ -216,14 +217,14 @@ describe('FplTeamListChart', () => {
 
     expect(fetchValidSubstitutions).toHaveBeenCalledWith(LIST_POSITIONS[1].id)
     expect(scrollIntoViewMock).toHaveBeenCalled()
-    expect(startingPlayers(0)[1].className).toContain('selected')
+    expect(startingPlayers(0)[1]).toHaveStyle({ backgroundColor: colors.red })
 
-    expect(substitutePlayers()[0].className).toContain('validSubstitution')
-    expect(substitutePlayers()[1].className).toContain('validSubstitution')
-    expect(substitutePlayers()[2].className).toContain('validSubstitution')
+    expect(substitutePlayers()[0]).toHaveStyle({ backgroundColor: colors.blue700 })
+    expect(substitutePlayers()[1]).toHaveStyle({ backgroundColor: colors.blue700 })
+    expect(substitutePlayers()[2]).toHaveStyle({ backgroundColor: colors.blue700 })
 
     // Can't process
-    expect(startingPlayers(2)[0].className).not.toContain('validSubstitution')
+    expect(startingPlayers(2)[0]).not.toHaveStyle({ backgroundColor: colors.blue700 })
     fireEvent.click(startingPlayers(2)[0])
     expect(processSubstitution).not.toHaveBeenCalled()
 
@@ -235,7 +236,7 @@ describe('FplTeamListChart', () => {
       LIST_POSITIONS[13].id
     )
 
-    expect(startingPlayers(0)[1].className).not.toContain('selected')
+    expect(startingPlayers(0)[1]).not.toHaveStyle({ backgroundColor: colors.red })
   })
 
   it('unselects the selected list position if clicked twice', () => {
@@ -252,10 +253,10 @@ describe('FplTeamListChart', () => {
     })
 
     fireEvent.click(substitutePlayers()[0])
-    expect(substitutePlayers()[0].className).toContain('selected')
+    expect(substitutePlayers()[0]).toHaveStyle({ backgroundColor: colors.red })
 
     fireEvent.click(substitutePlayers()[0])
-    expect(substitutePlayers()[0].className).not.toContain('selected')
+    expect(substitutePlayers()[0]).not.toHaveStyle({ backgroundColor: colors.red })
   })
 
   it('does not select a list position if the deadline time has passed', () => {

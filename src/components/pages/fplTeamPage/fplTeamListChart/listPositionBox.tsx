@@ -1,7 +1,5 @@
 import { useRef } from 'react'
-import { makeStyles } from 'tss-react/mui'
-import { Theme } from '@mui/material'
-import classNames from 'classnames'
+import { Box } from '@mui/material'
 
 import { colors } from 'utilities/colors'
 import { teamCrestPathLoader } from 'utilities/helpers'
@@ -22,73 +20,16 @@ type Props = {
   clearValidSubstitutions: Function
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  crest: {
-    maxHeight: theme.spacing(4)
-  },
+const crestSx = (theme) => ({ maxHeight: theme.spacing(4) })
 
-  large: {
-    maxHeight: theme.spacing(4)
-  },
+const playerSx = { zIndex: 2 }
 
-  startingContainer: {
-    display: 'flex',
-    alignItems: 'start',
-    justifyContent: 'center'
-  },
-
-  substitutesContainer: {
-    display: 'flex',
-    alignItems: 'start',
-    justifyContent: 'space-evenly',
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'column'
-    }
-  },
-
-  playerContainer: {
-    display: 'flex',
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: theme.spacing(20),
-    height: theme.spacing(12),
-    color: colors.white,
-    [theme.breakpoints.up('md')]: {
-      height: theme.spacing(22)
-    }
-  },
-
-  substitute: {
-    backgroundColor: colors.grey700,
-    border: `1px solid ${colors.white}`,
-  },
-
-  selected: {
-    backgroundColor: colors.red,
-    border: `1px solid ${colors.white}`,
-  },
-
-  validSubstitution: {
-    backgroundColor: colors.blue700,
-    border: `1px solid ${colors.white}`
-  },
-
-  canSelect: {
-    cursor: 'pointer'
-  },
-
-  player: {
-    zIndex: 2
-  },
-
-  playerInfo: {
-    border: `1px solid ${colors.black}`,
-    borderRadius: theme.spacing(0.5),
-    backgroundColor: colors.black,
-    fontSize: 12
-  }
-}))
+const playerInfoSx = (theme) => ({
+  border: `1px solid ${colors.black}`,
+  borderRadius: theme.spacing(0.5),
+  backgroundColor: colors.black,
+  fontSize: 12
+})
 
 const ListPositionBox = (props: Props) => {
   const {
@@ -113,7 +54,6 @@ const ListPositionBox = (props: Props) => {
     clearValidSubstitutions
   } = props
 
-  const { classes } = useStyles()
   const playerRef = useRef<null | HTMLDivElement>(null)
 
   const isSelected = selectedListPositionId === id
@@ -145,29 +85,49 @@ const ListPositionBox = (props: Props) => {
     if (!selectedListPositionId) playerRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const isValidSubstitution = Boolean(!fetching && selectedListPositionId && validSubstitution)
+  const canSelect = Boolean(canSubstitute && (!selectedListPositionId || isSelected || validSubstitution))
+
   return (
-    <div
+    <Box
       data-testid='ListPositionBox'
       onClick={handleClick}
-      className={
-        classNames(
-          classes.playerContainer,
-          {
-            [classes.substitute]: substitute,
-            [classes.selected]: isSelected,
-            [classes.validSubstitution]: !fetching && selectedListPositionId && validSubstitution,
-            [classes.canSelect]: canSubstitute && (!selectedListPositionId || isSelected || validSubstitution)
+      sx={[
+        (theme) => ({
+          display: 'flex',
+          textAlign: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: theme.spacing(20),
+          height: theme.spacing(12),
+          color: colors.white,
+          [theme.breakpoints.up('md')]: {
+            height: theme.spacing(22)
           }
-        )
-      }
+        }),
+        Boolean(substitute) && {
+          backgroundColor: colors.grey700,
+          border: `1px solid ${colors.white}`
+        },
+        isSelected && {
+          backgroundColor: colors.red,
+          border: `1px solid ${colors.white}`
+        },
+        isValidSubstitution && {
+          backgroundColor: colors.blue700,
+          border: `1px solid ${colors.white}`
+        },
+        canSelect && { cursor: 'pointer' }
+      ]}
     >
-      <div className={classes.player}>
-        <img
+      <Box sx={playerSx}>
+        <Box
+          component='img'
           src={teamCrestPathLoader(shortName)}
           alt={shortName}
-          className={classes.crest}
+          sx={crestSx}
         />
-        <div className={classes.playerInfo}>
+        <Box sx={playerInfoSx}>
           <div>
             {lastName}
           </div>
@@ -180,10 +140,10 @@ const ListPositionBox = (props: Props) => {
               {totalPoints}
             </div>
           }
-        </div>
+        </Box>
         <div ref={playerRef} />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
