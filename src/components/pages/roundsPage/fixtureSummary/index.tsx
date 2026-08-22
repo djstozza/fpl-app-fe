@@ -19,19 +19,36 @@ type Props = {
   fixture: Fixture
 }
 
+// The content block must stay centered on the page regardless of whether the
+// expand icon is present (it only renders for fixtures with stats) - a flex
+// layout centers content+icon as one group, shifting content off-center
+// whenever the icon shows up. Grid tracks keep the two independent: the
+// content always centers within the fixed middle track, and the icon sits
+// immediately after it in the right track without affecting that position.
 const summarySx = {
   textAlign: 'center',
   backgroundColor: colors.grey200,
-  border: `0.5px solid ${colors.grey300}`
+  border: `0.5px solid ${colors.grey300}`,
+  display: 'grid',
+  gridTemplateColumns: '1fr minmax(0, 500px) 1fr',
+  '& .MuiAccordionSummary-content': {
+    flexGrow: 0,
+    gridColumn: 2,
+    width: '100%',
+    textAlign: 'center'
+  },
+  '& .MuiAccordionSummary-expandIconWrapper': {
+    gridColumn: 3,
+    justifySelf: 'start'
+  }
 }
 
-const disabledSx = (theme) => ({
-  paddingRight: theme.spacing(6),
+const disabledSx = {
   pointerEvents: 'none',
   '& a': {
     pointerEvents: 'all'
   }
-})
+}
 
 const crestSx = (theme) => ({
   maxWidth: theme.spacing(6),
@@ -89,7 +106,7 @@ const FixtureSummary = (props: Props) => {
       sx={[summarySx, !started && disabledSx]}
       expandIcon={stats.length > 0 ? <ExpandMoreIcon /> : ''}
     >
-      <Grid container spacing={1} sx={{ alignItems: 'center', width: '100%', maxWidth: 500, mx: 'auto' }}>
+      <Grid container spacing={1} sx={{ alignItems: 'center', width: '100%' }}>
         {teamDetailsGrid(homeTeamId, homeTeamName)}
         <Grid size={{ xs: 4, md: 4, lg: 4 }}>
           <SummaryInfo inProgress={inProgress}>
